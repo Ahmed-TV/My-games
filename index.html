@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 موقع الألعاب</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    color: #fff;
+    min-height: 100vh;
+    padding: 30px 20px;
+  }
+  header { text-align: center; margin-bottom: 40px; }
+  header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, #e94560, #f5a623, #e94560);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p { color: #a0a0b0; margin-top: 10px; }
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .game-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .game-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(233,69,96,0.3);
+    border-color: #e94560;
+  }
+  .game-thumb {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    background: linear-gradient(135deg, #e94560, #0f3460);
+  }
+  .game-info { padding: 16px; }
+  .game-info h2 { font-size: 1.2rem; margin-bottom: 6px; }
+  .game-info p { font-size: 0.85rem; color: #a0a0b0; }
+  footer { text-align: center; margin-top: 50px; color: #666; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>🎮 موقع الألعاب</h1>
+    <p>اختر لعبة وابدأ اللعب مباشرة</p>
+  </header>
+
+  <div class="games-grid">
+    <a class="game-card" href="games/memory/index.html">
+      <div class="game-thumb">🧠</div>
+      <div class="game-info">
+        <h2>لعبة الذاكرة</h2>
+        <p>قلّب الكروت وطابق الأزواج</p>
+      </div>
+    </a>
+
+    <a class="game-card" href="games/snake/index.html">
+      <div class="game-thumb">🐍</div>
+      <div class="game-info">
+        <h2>الثعبان</h2>
+        <p>كل التفاح وابعد عن الحيطان</p>
+      </div>
+    </a>
+  </div>
+
+  <footer>© موقع الألعاب — صُنع بحب ❤️</footer>
+</body>
+</html>
