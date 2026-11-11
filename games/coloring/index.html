@@ -20,7 +20,6 @@
   .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
   .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
   
-  /* اللوجو */
   .logo {
     width: 70px; height: 70px; flex-shrink: 0;
     background: linear-gradient(135deg, #10b981, #3b82f6); 
@@ -63,18 +62,29 @@
 
   /* شريط الألوان */
   .palette {
-    display: flex; justify-content: center; gap: 10px;
-    padding: 10px; background: #1e293b; flex-wrap: wrap;
+    display: flex; justify-content: center; gap: 8px;
+    padding: 8px; background: #1e293b; flex-wrap: wrap;
     flex-shrink: 0;
   }
 
   .color-btn {
-    width: 40px; height: 40px;
+    width: 35px; height: 35px;
     border-radius: 50%; border: 3px solid transparent;
     cursor: pointer; transition: transform 0.2s, border-color 0.2s;
   }
   .color-btn:active { transform: scale(0.9); }
   .color-btn.active { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+  /* زرار التخطي */
+  .skip-container {
+    display: flex; justify-content: center; padding: 10px; background: #1e293b; flex-shrink: 0;
+  }
+  #nextBtn {
+    background: #f59e0b; color: #000; border: none; padding: 10px 20px;
+    border-radius: 10px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 100%; max-width: 250px;
+  }
+  #nextBtn:active { background: #d97706; }
 
   #overlay {
     position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
@@ -108,14 +118,16 @@
     <div class="watermark">Ahmed TV</div>
     <canvas id="gameCanvas"></canvas>
     
-    <!-- شريط الألوان -->
     <div class="palette" id="palette"></div>
+    <div class="skip-container">
+      <button id="nextBtn">🔄 الرسمة التالية</button>
+    </div>
 
     <div id="overlay">
       <h2>لعبة تلوين الأشكال</h2>
       <p>
-        <b>Ahmed TV</b> - لون الرسمة بألوانك المفضلة!<br>
-        اختار لون من تحت، ودوس على أي جزء في الرسمة
+        <b>Ahmed TV</b> - لون الحيوانات والطيور!<br>
+        اختار لون، ودوس على أي جزء في الرسمة
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ التلوين</button>
     </div>
@@ -131,28 +143,19 @@ const ctx = canvas.getContext('2d');
 const paletteEl = document.getElementById('palette');
 const overlay = document.getElementById('overlay');
 const startBtn = document.getElementById('startBtn');
+const nextBtn = document.getElementById('nextBtn');
 
 let W = 0, H = 0;
 let running = false;
 let audioCtx = null;
+let currentDrawing = 0;
 
-// الألوان المتاحة
 const COLORS = [
-  '#ef4444', // أحمر
-  '#f59e0b', // برتقالي
-  '#facc15', // أصفر
-  '#22c55e', // أخضر
-  '#3b82f6', // أزرق
-  '#8b5cf6', // بنفسجي
-  '#ec4899', // وردي
-  '#a16207', // بني
-  '#ffffff', // أبيض
-  '#0f172a'  // أسود
+  '#ef4444', '#f59e0b', '#facc15', '#22c55e', '#3b82f6', 
+  '#8b5cf6', '#ec4899', '#a16207', '#ffffff', '#0f172a'
 ];
 let currentColor = COLORS[0];
 
-// مناطق التلوين (أشكال هندسية متداخلة لتبدو كرسمة)
-// كل شكل له مسار (Path) ولون (Color)
 let shapes = [];
 
 function initAudio() {
@@ -167,7 +170,6 @@ function playSound() {
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.connect(gain); gain.connect(audioCtx.destination);
-  
   osc.type = 'sine';
   osc.frequency.setValueAtTime(600, audioCtx.currentTime);
   osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.1);
@@ -178,78 +180,58 @@ function playSound() {
 
 function resize() {
   const rect = canvas.parentElement.getBoundingClientRect();
+  // نطرح مساحة الألوان والزرار
   canvas.width = rect.width;
-  canvas.height = rect.height - paletteEl.offsetHeight; // نطرح مساحة الألوان
+  canvas.height = rect.height - paletteEl.offsetHeight - nextBtn.parentElement.offsetHeight;
   W = canvas.width;
   H = canvas.height;
   
-  buildShapes();
+  buildDrawing(currentDrawing);
   draw();
 }
 
-function buildShapes() {
+function buildDrawing(index) {
   shapes = [];
   const cx = W / 2;
   const cy = H / 2;
-  const scale = Math.min(W, H) / 500; // مقياس عشان تظبط على أي شاشة
+  const scale = Math.min(W, H) / 500;
 
-  // 1. خلفية (دائرة كبيرة)
-  shapes.push({
-    type: 'circle', x: cx, y: cy, r: 200 * scale, color: '#fff', border: '#333'
-  });
-  
-  // 2. جسم (مستطيل)
-  shapes.push({
-    type: 'rect', x: cx - 60*scale, y: cy - 100*scale, w: 120*scale, h: 200*scale, color: '#fff', border: '#333'
-  });
-
-  // 3. رأس (دائرة)
-  shapes.push({
-    type: 'circle', x: cx, y: cy - 150*scale, r: 60 * scale, color: '#fff', border: '#333'
-  });
-
-  // 4. عين شممال (دائرة صغيرة)
-  shapes.push({
-    type: 'circle', x: cx - 20*scale, y: cy - 170*scale, r: 10 * scale, color: '#fff', border: '#333'
-  });
-  
-  // 5. عين يمين (دائرة صغيرة)
-  shapes.push({
-    type: 'circle', x: cx + 20*scale, y: cy - 170*scale, r: 10 * scale, color: '#fff', border: '#333'
-  });
-
-  // 6. فم (مستطيل)
-  shapes.push({
-    type: 'rect', x: cx - 20*scale, y: cy - 140*scale, w: 40*scale, h: 10*scale, color: '#fff', border: '#333'
-  });
-
-  // 7. ذراع شمال (مستطيل)
-  shapes.push({
-    type: 'rect', x: cx - 100*scale, y: cy - 80*scale, w: 40*scale, h: 15*scale, color: '#fff', border: '#333'
-  });
-
-  // 8. ذراع يمين (مستطيل)
-  shapes.push({
-    type: 'rect', x: cx + 60*scale, y: cy - 80*scale, w: 40*scale, h: 15*scale, color: '#fff', border: '#333'
-  });
-
-  // 9. رجل شمال
-  shapes.push({
-    type: 'rect', x: cx - 40*scale, y: cy + 100*scale, w: 30*scale, h: 50*scale, color: '#fff', border: '#333'
-  });
-
-  // 10. رجل يمين
-  shapes.push({
-    type: 'rect', x: cx + 10*scale, y: cy + 100*scale, w: 30*scale, h: 50*scale, color: '#fff', border: '#333'
-  });
+  if (index === 0) {
+    // --- أسد ---
+    shapes.push({ type: 'circle', x: cx, y: cy, r: 220 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx - 80*scale, y: cy - 60*scale, w: 160*scale, h: 140*scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx, y: cy - 100*scale, r: 70 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx, y: cy - 100*scale, r: 100 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx - 25*scale, y: cy - 115*scale, r: 10 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx + 25*scale, y: cy - 115*scale, r: 10 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx, y: cy - 90*scale, r: 15 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx - 50*scale, y: cy + 80*scale, w: 30*scale, h: 50*scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx + 20*scale, y: cy + 80*scale, w: 30*scale, h: 50*scale, color: '#fff', border: '#333' });
+  } 
+  else if (index === 1) {
+    // --- سمكة ---
+    shapes.push({ type: 'circle', x: cx, y: cy, r: 120 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx + 100*scale, y: cy - 40*scale, w: 60*scale, h: 80*scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx - 30*scale, y: cy - 130*scale, w: 60*scale, h: 40*scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx - 50*scale, y: cy - 20*scale, r: 15 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx - 110*scale, y: cy + 10*scale, w: 40*scale, h: 10*scale, color: '#fff', border: '#333' });
+  }
+  else if (index === 2) {
+    // --- بطة ---
+    shapes.push({ type: 'circle', x: cx, y: cy + 30*scale, r: 100 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx - 60*scale, y: cy - 80*scale, r: 60 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx - 140*scale, y: cy - 80*scale, w: 40*scale, h: 20*scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx - 70*scale, y: cy - 95*scale, r: 10 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'circle', x: cx + 30*scale, y: cy + 20*scale, r: 50 * scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx - 20*scale, y: cy + 120*scale, w: 15*scale, h: 30*scale, color: '#fff', border: '#333' });
+    shapes.push({ type: 'rect', x: cx + 20*scale, y: cy + 120*scale, w: 15*scale, h: 30*scale, color: '#fff', border: '#333' });
+  }
 }
 
 function draw() {
-  // خلفية الكانفس
   ctx.fillStyle = '#f8fafc';
   ctx.fillRect(0, 0, W, H);
 
-  // رسم الأشكال
   shapes.forEach(s => {
     ctx.beginPath();
     if (s.type === 'circle') {
@@ -297,7 +279,6 @@ function handlePaint(e) {
   const x = clientX - rect.left;
   const y = clientY - rect.top;
 
-  // عكس ترتيب الرسم عشان نلون الأشكال اللي قدام الأول
   for (let i = shapes.length - 1; i >= 0; i--) {
     let s = shapes[i];
     let inside = false;
@@ -313,9 +294,15 @@ function handlePaint(e) {
       s.color = currentColor;
       playSound();
       draw();
-      break; // نلون شكل واحد بس في المرة
+      break;
     }
   }
+}
+
+function nextDrawing() {
+  currentDrawing = (currentDrawing + 1) % 3;
+  buildDrawing(currentDrawing);
+  draw();
 }
 
 function startGame() {
@@ -326,19 +313,15 @@ function startGame() {
   resize();
 }
 
-// ربط الأحداث
 canvas.addEventListener('mousedown', handlePaint);
 canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handlePaint(e); }, { passive: false });
-
+nextBtn.onclick = nextDrawing;
 startBtn.onclick = startGame;
 
-window.addEventListener('resize', () => {
-  if (running) resize();
-});
+window.addEventListener('resize', () => { if (running) resize(); });
 
 document.body.addEventListener('touchstart', initAudio, { once: true });
 document.body.addEventListener('click', initAudio, { once: true });
-
 </script>
 </body>
 </html>
