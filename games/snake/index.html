@@ -152,7 +152,7 @@ let food = {};
 let dx = 0, dy = 0;
 let score = 0;
 let highScore = localStorage.getItem('snakeProHighScore') || 0;
-let speed = 200; // سرعة مريحة جداً
+let speed = 350; // سرعة بطيئة جداً ومريحة
 let gameLoop;
 let isPlaying = false;
 let changingDirection = false;
@@ -168,7 +168,7 @@ function startGame() {
   ];
   dx = 0; dy = 0;
   score = 0;
-  speed = 200; 
+  speed = 350; // تصفير السرعة عند البداية
   scoreEl.textContent = score;
   changingDirection = false;
   isPlaying = true;
@@ -215,9 +215,9 @@ function drawGame() {
       scoreEl.textContent = score;
       generateFood();
       
-      // تسريع بسيط جداً كل 5 نقاط
-      if (score % 5 === 0 && speed > 120) {
-        speed -= 10;
+      // تسريع بسيط جداً كل 10 نقاط (عشان تفضل سهلة وبطيئة)
+      if (score % 10 === 0 && speed > 200) {
+        speed -= 20;
         clearInterval(gameLoop);
         gameLoop = setInterval(drawGame, speed);
       }
