@@ -15,7 +15,6 @@
     text-align: center;
   }
 
-  /* --- قسم الترحيب --- */
   .hero-section {
     display: flex;
     flex-direction: column;
@@ -25,23 +24,32 @@
     animation: fadeIn 1s ease-in-out;
   }
 
-  /* الدائرة (اللوجو) */
-  .logo-circle {
-    width: 100px; height: 100px;
+  /* اللوجو (صورة) */
+  .logo-img {
+    width: 150px; height: 150px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #e94560, #f5a623);
-    border: 5px solid #fff;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    color: #fff; line-height: 1.1;
-    font-weight: 900;
-    box-shadow: 0 0 30px rgba(233, 69, 96, 0.6);
+    border: 6px solid #fff;
+    object-fit: cover;
+    box-shadow: 0 0 40px rgba(233, 69, 96, 0.8);
     margin-bottom: 15px;
-    font-size: 18px;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    background: #fff;
   }
 
-  /* العنوان الترحيبي */
+  .my-name {
+    font-size: 1.8rem;
+    color: #facc15;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+  }
+  
+  .my-name-en {
+    font-size: 1.2rem;
+    color: #cbd5e1;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
   .hero-section h1 {
     font-size: 2.2rem;
     color: #f5a623;
@@ -50,25 +58,12 @@
     text-shadow: 0 0 15px rgba(245, 166, 35, 0.6);
   }
 
-  /* الجملة الترحيبية */
   .hero-section p {
     font-size: 1.1rem;
     color: #e0e0e0;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     max-width: 600px;
     line-height: 1.6;
-  }
-
-  /* اسمك */
-  .hero-section .my-name {
-    font-size: 1rem;
-    color: #a0a0b0;
-    font-weight: bold;
-    margin-top: 10px;
-    padding: 5px 15px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
   }
 
   @keyframes fadeIn {
@@ -76,7 +71,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* --- شبكة الألعاب --- */
   .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -108,15 +102,17 @@
 </head>
 <body>
 
-  <!-- قسم الترحيب -->
   <div class="hero-section">
-    <div class="logo-circle">Ahmed<br>TV</div>
+    <!-- اللوجو بتاعك بالرابط المباشر -->
+    <img src="https://raw.githubusercontent.com/Ahmed-TV/My-games/main/IMG_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A1%D9%A0%D9%A1_%D9%A1%D9%A3%D9%A0%D9%A8%D9%A0%D9%A9.png" alt="Ahmed TV Logo" class="logo-img">
+    
+    <div class="my-name">أحمد عبدالعزيز</div>
+    <div class="my-name-en">Ahmed Abdelaziz</div>
+    
     <h1>مرحباً بك في موقع بنك الألعاب</h1>
     <p>أهلاً بك يا بطل! استعد لأقوى التحديات والمرح مع Ahmed TV</p>
-    <div class="my-name">أحمد عبدالعزيز • Ahmed Abdelaziz</div>
   </div>
 
-  <!-- شبكة الألعاب -->
   <div class="games-grid">
     
     <!-- 1. خمن علم الدولة -->
@@ -370,38 +366,42 @@
         <p>جهز البرجر بالترتيب!</p>
       </div>
     </a>
-   <!-- لعبة ترتيب الكواكب -->
-<a class="game-card" href="games/planets/index.html">
-  <div class="game-thumb">🪐</div>
-  <div class="game-info">
-    <h4>ترتيب الكواكب</h4>
-    <p>رتب الكواكب من الشمس!</p>
-  </div>
-</a>
-   <!-- لعبة تجميع الصورة -->
-<a class="game-card" href="games/sliding-puzzle/index.html">
-  <div class="game-thumb">🖼️</div>
-  <div class="game-info">
-    <h4>تجميع الصورة</h4>
-    <p>رتب الصور الفنية!</p>
-  </div>
-</a>
-   <!-- لعبة بناء منزل -->
-<a class="game-card" href="games/build-house/index.html">
-  <div class="game-thumb">🏠</div>
-  <div class="game-info">
-    <h4>بناء منزل</h4>
-    <p>ابنِ أطول منزل!</p>
-  </div>
-</a>
-   <!-- لعبة صيد السمك -->
-<a class="game-card" href="games/fishing/index.html">
-  <div class="game-thumb">🎣</div>
-  <div class="game-info">
-    <h4>صيد السمك</h4>
-    <p>اصطاد أكتر سمك!</p>
-  </div>
-</a>
+
+    <!-- 29. ترتيب الكواكب -->
+    <a class="game-card" href="games/planets/index.html">
+      <div class="game-thumb">🪐</div>
+      <div class="game-info">
+        <h4>ترتيب الكواكب</h4>
+        <p>رتب الكواكب من الشمس!</p>
+      </div>
+    </a>
+
+    <!-- 30. تجميع الصورة -->
+    <a class="game-card" href="games/sliding-puzzle/index.html">
+      <div class="game-thumb">🖼️</div>
+      <div class="game-info">
+        <h4>تجميع الصورة</h4>
+        <p>رتب الصور الفنية!</p>
+      </div>
+    </a>
+
+    <!-- 31. بناء منزل -->
+    <a class="game-card" href="games/build-house/index.html">
+      <div class="game-thumb">🏠</div>
+      <div class="game-info">
+        <h4>بناء منزل</h4>
+        <p>ابنِ أطول منزل!</p>
+      </div>
+    </a>
+
+    <!-- 32. صيد السمك -->
+    <a class="game-card" href="games/fishing/index.html">
+      <div class="game-thumb">🎣</div>
+      <div class="game-info">
+        <h4>صيد السمك</h4>
+        <p>اصطاد أكتر سمك!</p>
+      </div>
+    </a>
 
   </div>
 
