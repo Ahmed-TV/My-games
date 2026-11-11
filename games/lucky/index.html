@@ -1,215 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>حظك اليوم - Ahmed TV</title>
 <style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
   body {
-    margin: 0 !important;
-    padding: 0 !important;
-    background-color: #080808 !important;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    overflow: hidden; /* لمنع أي سكرول */
+    text-align: center;
+  }
+
+  /* تنسيق اللعبة بالكامل */
+  #lucky-game {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px;
+    background: radial-gradient(circle, #1a1a1a 0%, #000 80%);
+  }
+
+  h2 {
+    font-size: 26px;
+    color: #fff;
+    text-shadow: 0 0 10px #e040fb, 0 0 20px #00e5ff;
+    border: 2px solid #00e5ff;
+    border-radius: 12px;
+    padding: 10px;
+    width: 90%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  p {
+    font-size: 16px;
+    color: #e0f7fa;
+    margin: 5px 0;
+  }
+
+  /* تنسيق العجلة */
+  .wheel-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 95vw;
+    max-height: 55vh; /* يخلي العجلة تاخد مساحة معقولة */
+    display: flex;
+    justify-content: center;
+  }
+
+  canvas {
+    width: 100%;
+    height: auto;
+    max-height: 55vh;
+    object-fit: contain;
+  }
+
+  /* السهم */
+  .pointer {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 35px solid #fff;
+    filter: drop-shadow(0 0 10px #00e5ff);
+    z-index: 2;
+  }
+
+  /* الزرار */
+  button {
+    background: linear-gradient(#333, #050505);
+    color: #fff;
+    border: 3px solid #00e5ff;
+    border-radius: 25px;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 0 15px #00e5ff;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 80%;
+    max-width: 300px;
+  }
+
+  button:disabled {
+    opacity: 0.6;
+  }
+
+  /* النتيجة */
+  #lucky-result {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 10px #e040fb;
+    min-height: 30px;
+    padding: 5px;
   }
 </style>
+</head>
+<body>
 
 <div id="lucky-game" dir="rtl">
-<style>
-#lucky-game{
-  width:100%;max-width:100vw;margin:auto;padding:14px;
-  box-sizing:border-box;text-align:center;color:#fff;
-  font-family:Arial,sans-serif;border:4px solid #222;
-  border-radius:22px;
-  background:radial-gradient(circle,#292929 0%,#080808 75%);
-  box-shadow:inset 0 0 25px #000,0 0 15px #00e5ff;
-  overflow:hidden;
-}
-#lucky-game *{box-sizing:border-box}
-#lucky-game h2{
-  font-size:clamp(24px,5vw,34px);margin:8px;
-  color:#fff;text-shadow:0 0 10px #e040fb,0 0 20px #00e5ff;
-  border:3px solid #00e5ff;border-radius:14px;
-  padding:12px;background:linear-gradient(120deg,#080808,#252525);
-}
-#lucky-game p{font-size:17px;color:#e0f7fa}
-#lucky-game .wheel-wrap{
-  position:relative;width:100%;max-width:620px;margin:18px auto;
-}
-#lucky-game canvas{width:100%;height:auto;display:block}
-#lucky-game .pointer{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  border-left:22px solid transparent;border-right:22px solid transparent;
-  border-top:40px solid #fff;
-  filter:drop-shadow(0 0 8px #00e5ff);z-index:2
-}
-#lucky-game button{
-  background:linear-gradient(#333,#050505);
-  color:#fff;border:3px solid #00e5ff;border-radius:28px;
-  padding:15px 35px;font-size:22px;font-weight:bold;
-  box-shadow:0 0 15px #00e5ff;cursor:pointer
-}
-#lucky-game button:disabled{opacity:.6}
-#lucky-game #lucky-result{
-  min-height:65px;padding:15px 5px;font-size:22px;
-  font-weight:bold;color:#fff;text-shadow:0 0 10px #e040fb
-}
-@media(max-width:500px){
-  #lucky-game{padding:8px}
-  #lucky-game p{font-size:15px}
-  #lucky-game button{font-size:18px;padding:12px 25px}
-}
-</style>
+  <h2>🍀 حظك اليوم 🍀</h2>
+  <p>لف العجلة واكتشف بختك!</p>
 
-<h2>🍀 حظك اليوم 🍀</h2>
-<p>لف العجلة واكتشف بختك النهارده!</p>
+  <div class="wheel-wrap">
+    <div class="pointer"></div>
+    <canvas id="lucky-wheel" width="800" height="800"></canvas>
+  </div>
 
-<div class="wheel-wrap">
-  <div class="pointer"></div>
-  <canvas id="lucky-wheel" width="800" height="800"></canvas>
+  <button id="lucky-spin">لف العجلة ✨</button>
+  <div id="lucky-result">جاهز؟ يلا بينا!</div>
 </div>
-
-<button id="lucky-spin">لف العجلة ✨</button>
-<div id="lucky-result">جاهز؟ يلا بينا!</div>
 
 <script>
 (function(){
-const root=document.getElementById("lucky-game");
-const canvas=root.querySelector("#lucky-wheel");
-const ctx=canvas.getContext("2d");
-const button=root.querySelector("#lucky-spin");
-const result=root.querySelector("#lucky-result");
+  const root = document.getElementById("lucky-game");
+  const canvas = root.querySelector("#lucky-wheel");
+  const ctx = canvas.getContext("2d");
+  const button = root.querySelector("#lucky-spin");
+  const result = root.querySelector("#lucky-result");
 
-const items=[
-"حظ سعيد اليوم","بختك حلو","يومك جميل","فرحة قريبة",
-"خبر سعيد","مفاجأة حلوة","رزق واسع","بداية جديدة",
-"نجاح وتوفيق","راحة بال","طاقة إيجابية","ضحكة من القلب",
-"فرصة مميزة","أيام أجمل","حظك مبتسم","تفاؤل دائم",
-"مكسب معنوي","صديق مخلص","حب وود","أمل جديد",
-"خطوة ناجحة","راحة نفسية","يوم مميز","بخت سعيد",
-"مفاجأة جميلة","تحقيق أمنية","سعادة قريبة","حظ رائع",
-"تقدم ونجاح","فرحة كبيرة","أخبار حلوة","قلب مرتاح",
-"ابتسامة جميلة","طريق مفتوح","بداية موفقة","يوم مليان خير",
-"فرصة جديدة","توفيق في القادم","راحة وهدوء","أمل وتفاؤل",
-"حظك منور","ضحكة حلوة","لحظة سعيدة","نجمة حظ",
-"صباح جميل","مساء سعيد","خير وبركة","أيام وردية",
-"طاقة حلوة","بختك منور","قوة وإصرار","نجاح قريب",
-"أمنية تتحقق","مفاجأة اليوم","فرحة منتظرة","حظ مضاعف",
-"أحلى الأيام","تفاؤل وسعادة","يوم مشرق","بختك اليوم"
-];
+  const items = [
+    "حظ سعيد اليوم","بختك حلو","يومك جميل","فرحة قريبة",
+    "خبر سعيد","مفاجأة حلوة","رزق واسع","بداية جديدة",
+    "نجاح وتوفيق","راحة بال","طاقة إيجابية","ضحكة من القلب",
+    "فرصة مميزة","أيام أجمل","حظك مبتسم","تفاؤل دائم",
+    "مكسب معنوي","صديق مخلص","حب وود","أمل جديد",
+    "خطوة ناجحة","راحة نفسية","يوم مميز","بخت سعيد",
+    "مفاجأة جميلة","تحقيق أمنية","سعادة قريبة","حظ رائع",
+    "تقدم ونجاح","فرحة كبيرة","أخبار حلوة","قلب مرتاح",
+    "ابتسامة جميلة","طريق مفتوح","بداية موفقة","يوم مليان خير",
+    "فرصة جديدة","توفيق في القادم","راحة وهدوء","أمل وتفاؤل",
+    "حظك منور","ضحكة حلوة","لحظة سعيدة","نجمة حظ",
+    "صباح جميل","مساء سعيد","خير وبركة","أيام وردية",
+    "طاقة حلوة","بختك منور","قوة وإصرار","نجاح قريب",
+    "أمنية تتحقق","مفاجأة اليوم","فرحة منتظرة","حظ مضاعف",
+    "أحلى الأيام","تفاؤل وسعادة","يوم مشرق","بختك اليوم"
+  ];
 
-const colors=[
-"#9ed9f7","#c5b5f5","#f5b8d1","#b9e6cf",
-"#f8df9b","#a9d9e8","#e2c5f4","#c4dcae"
-];
+  const colors = [
+    "#9ed9f7","#c5b5f5","#f5b8d1","#b9e6cf",
+    "#f8df9b","#a9d9e8","#e2c5f4","#c4dcae"
+  ];
 
-const center=400,radius=370;
-const slice=2*Math.PI/items.length;
-let rotation=0,spinning=false;
+  const center = 400, radius = 370;
+  const slice = 2 * Math.PI / items.length;
+  let rotation = 0, spinning = false;
 
-function draw(){
- ctx.clearRect(0,0,800,800);
+  function draw() {
+    ctx.clearRect(0, 0, 800, 800);
 
- items.forEach((item,i)=>{
-  const start=rotation+i*slice-Math.PI/2;
+    items.forEach((item, i) => {
+      const start = rotation + i * slice - Math.PI / 2;
 
-  ctx.beginPath();
-  ctx.moveTo(center,center);
-  ctx.arc(center,center,radius,start,start+slice);
-  ctx.closePath();
+      ctx.beginPath();
+      ctx.moveTo(center, center);
+      ctx.arc(center, center, radius, start, start + slice);
+      ctx.closePath();
 
-  const grad=ctx.createLinearGradient(0,0,800,800);
-  grad.addColorStop(0,colors[i%colors.length]);
-  grad.addColorStop(1,"#252525");
-  ctx.fillStyle=grad;
-  ctx.fill();
+      const grad = ctx.createLinearGradient(0, 0, 800, 800);
+      grad.addColorStop(0, colors[i % colors.length]);
+      grad.addColorStop(1, "#252525");
+      ctx.fillStyle = grad;
+      ctx.fill();
 
-  ctx.strokeStyle="#111";
-  ctx.lineWidth=2;
-  ctx.stroke();
+      ctx.strokeStyle = "#111";
+      ctx.lineWidth = 2;
+      ctx.stroke();
 
-  ctx.save();
-  ctx.translate(center,center);
-  ctx.rotate(start+slice/2);
-  ctx.textAlign="right";
-  ctx.textBaseline="middle";
-  ctx.fillStyle="#111";
-  ctx.font="bold 12px Arial";
-  ctx.fillText(item,radius-12,0,155);
-  ctx.restore();
- });
+      // رسم الكلام على العجلة
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate(start + slice / 2);
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#111";
+      ctx.font = "bold 16px Arial"; // تكبير الخط
+      ctx.fillText(item, radius - 15, 0, 180); // زيادة المساحة
+      ctx.restore();
+    });
 
- // إطار أسود لامع
- ctx.beginPath();
- ctx.arc(center,center,382,0,Math.PI*2);
- ctx.strokeStyle="#111";
- ctx.lineWidth=20;
- ctx.stroke();
+    // إطار العجلة
+    ctx.beginPath();
+    ctx.arc(center, center, 382, 0, Math.PI * 2);
+    ctx.strokeStyle = "#111";
+    ctx.lineWidth = 20;
+    ctx.stroke();
 
- // لمبات نيون ملونة
- const lights=["#00e5ff","#ff4dff","#fff176","#69f0ae"];
- for(let i=0;i<48;i++){
-  const a=i*Math.PI*2/48;
-  const x=center+380*Math.cos(a);
-  const y=center+380*Math.sin(a);
+    // اللمبات النيون
+    const lights = ["#00e5ff", "#ff4dff", "#fff176", "#69f0ae"];
+    for (let i = 0; i < 48; i++) {
+      const a = i * Math.PI * 2 / 48;
+      const x = center + 380 * Math.cos(a);
+      const y = center + 380 * Math.sin(a);
 
-  ctx.beginPath();
-  ctx.arc(x,y,7,0,Math.PI*2);
-  ctx.fillStyle=lights[i%lights.length];
-  ctx.shadowColor=lights[i%lights.length];
-  ctx.shadowBlur=14;
-  ctx.fill();
-  ctx.shadowBlur=0;
- }
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, Math.PI * 2);
+      ctx.fillStyle = lights[i % lights.length];
+      ctx.shadowColor = lights[i % lights.length];
+      ctx.shadowBlur = 15;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
 
- // مركز العجلة
- ctx.beginPath();
- ctx.arc(center,center,105,0,Math.PI*2);
- ctx.fillStyle="#050505";
- ctx.fill();
- ctx.strokeStyle="#00e5ff";
- ctx.lineWidth=10;
- ctx.shadowColor="#00e5ff";
- ctx.shadowBlur=20;
- ctx.stroke();
- ctx.shadowBlur=0;
+    // مركز العجلة
+    ctx.beginPath();
+    ctx.arc(center, center, 110, 0, Math.PI * 2);
+    ctx.fillStyle = "#050505";
+    ctx.fill();
+    ctx.strokeStyle = "#00e5ff";
+    ctx.lineWidth = 10;
+    ctx.shadowColor = "#00e5ff";
+    ctx.shadowBlur = 20;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
 
- ctx.fillStyle="#fff";
- ctx.textAlign="center";
- ctx.font="bold 30px Arial";
- ctx.fillText("TV",center,center-10);
- ctx.fillText("AHMED",center,center+25);
-}
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.font = "bold 35px Arial";
+    ctx.fillText("TV", center, center - 12);
+    ctx.fillText("AHMED", center, center + 28);
+  }
 
-draw();
-
-button.onclick=function(){
- if(spinning)return;
- spinning=true;
- button.disabled=true;
- result.textContent="العجلة بتلف...";
-
- const start=rotation;
- const target=start+Math.PI*2*(8+Math.random()*5);
- const startTime=performance.now();
-
- function animate(now){
-  const progress=Math.min((now-startTime)/5500,1);
-  const eased=1-Math.pow(1-progress,4);
-  rotation=start+(target-start)*eased;
   draw();
 
-  if(progress<1){
-   requestAnimationFrame(animate);
-  }else{
-   const angle=((rotation%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
-   const index=Math.floor(
-     ((Math.PI*2-angle)%(Math.PI*2))/slice
-   );
+  button.onclick = function() {
+    if (spinning) return;
+    spinning = true;
+    button.disabled = true;
+    result.textContent = "العجلة بتلف...";
 
-   result.textContent="🍀 بختك اليوم: "+items[index];
-   spinning=false;
-   button.disabled=false;
-  }
- }
- requestAnimationFrame(animate);
-};
+    const start = rotation;
+    const target = start + Math.PI * 2 * (8 + Math.random() * 5);
+    const startTime = performance.now();
+
+    function animate(now) {
+      const progress = Math.min((now - startTime) / 5500, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      rotation = start + (target - start) * eased;
+      draw();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        const angle = ((rotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+        const index = Math.floor(((Math.PI * 2 - angle) % (Math.PI * 2)) / slice);
+
+        result.textContent = "🍀 بختك اليوم: " + items[index];
+        spinning = false;
+        button.disabled = false;
+      }
+    }
+    requestAnimationFrame(animate);
+  };
 })();
 </script>
-</div>
+</body>
+</html>
