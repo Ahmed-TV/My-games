@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ذاكرة الأرقام | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 70px; height: 70px; flex-shrink: 0;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6); 
+    border: 4px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff; line-height: 1;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+  .logo b { font-size: 14px; }
+  .logo span { font-size: 9px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 22px; line-height: 1.2; color: #facc15;}
+  h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 15px; color: #cbd5e1; margin-bottom: 10px; font-weight: bold;}
+  .names b { color: #facc15; font-size: 17px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0 10px; flex-wrap: wrap; }
+  .stat {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 5px 15px; min-width: 80px; text-align: center;
+  }
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #1e293b; 
+    border: 4px solid #f59e0b; border-radius: 16px;
+    overflow: hidden;
+    justify-content: center; align-items: center;
+    padding: 20px;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.05);
+    font-size: 40px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  /* شاشة الأرقام */
+  #numberDisplay {
+    font-size: 80px; font-weight: 900; color: #38bdf8;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+    z-index: 2;
+    text-align: center;
+  }
+
+  /* لوحة الأرقام */
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%; max-width: 300px;
+    z-index: 2;
+  }
+
+  .num-btn {
+    background: #334155; border-radius: 12px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 30px; font-weight: bold; color: #fff;
+    height: 80px; cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    user-select: none;
+  }
+  .num-btn:active { transform: scale(0.95); }
+  .num-btn.correct { background: #22c55e; }
+  .num-btn.wrong { background: #ef4444; }
+
+  /* شاشة البداية والنهاية */
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+    border-radius: 12px;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 15px 30px;
+    border-radius: 12px; font-size: 18px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>ذاكرة الأرقام<small>AHMED TV MEMORY</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+
+    <div class="stats">
+      <div class="stat"><b id="level">1</b><span>المستوى</span></div>
+      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    
+    <!-- شاشة عرض الأرقام -->
+    <div id="numberDisplay" style="display:none;">123</div>
+
+    <!-- لوحة الأرقام (تظهر بعد اختفاء الرقم) -->
+    <div id="grid" style="display:none;"></div>
+
+    <div id="overlay">
+      <h2>لعبة ذاكرة الأرقام</h2>
+      <p>
+        <b>Ahmed TV</b> - اختبر ذاكرتك!<br>
+        هيظهرلك رقم .. احفظه .. وبعدين دوس عليه
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const numberDisplay = document.getElementById('numberDisplay');
+const gridEl = document.getElementById('grid');
+const levelEl = document.getElementById('level');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let running = false;
+let level = 1;
+let best = parseInt(localStorage.getItem('memoryNumBest') || '0');
+bestEl.textContent = best;
+
+let currentNumber = "";
+let userInput = "";
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'correct') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'wrong') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+  }
+}
+
+function generateNumber(length) {
+  let num = "";
+  for (let i = 0; i < length; i++) {
+    num += Math.floor(Math.random() * 10); // 0-9
+  }
+  return num;
+}
+
+function startLevel() {
+  userInput = "";
+  currentNumber = generateNumber(level);
+  
+  // إخفاء اللوحة وإظهار الرقم
+  gridEl.style.display = 'none';
+  numberDisplay.style.display = 'block';
+  numberDisplay.textContent = currentNumber;
+  
+  // عرض الرقم لمدة (1.5 ثانية + 0.5 ثانية لكل رقم)
+  let displayTime = 1000 + (level * 500);
+  
+  setTimeout(() => {
+    numberDisplay.style.display = 'none';
+    buildGrid();
+  }, displayTime);
+}
+
+function buildGrid() {
+  gridEl.innerHTML = '';
+  gridEl.style.display = 'grid';
+  
+  // عمل أزرار من 0 لـ 9
+  for (let i = 0; i < 10; i++) {
+    let btn = document.createElement('div');
+    btn.className = 'num-btn';
+    btn.textContent = i;
+    btn.dataset.val = i;
+    btn.onclick = () => handleNumberClick(i, btn);
+    gridEl.appendChild(btn);
+  }
+  
+  // ضفت زرار مسح (عشان لو غلط) في آخر مكان
+  let clearBtn = document.createElement('div');
+  clearBtn.className = 'num-btn';
+  clearBtn.style.background = '#ef4444';
+  clearBtn.textContent = '❌';
+  clearBtn.onclick = () => {
+    userInput = userInput.slice(0, -1);
+  };
+  // هنا بنستبدل آخر زرار بالمسح عشان يبقى 9 أرقام + مسح
+  gridEl.replaceChild(clearBtn, gridEl.lastChild);
+}
+
+function handleNumberClick(num, btn) {
+  if (!running) return;
+  
+  playSound('correct');
+  userInput += num;
+  btn.classList.add('correct');
+  setTimeout(() => btn.classList.remove('correct'), 200);
+
+  // التحقق من الإدخال
+  if (userInput === currentNumber) {
+    // نجح
+    setTimeout(() => {
+      level++;
+      levelEl.textContent = level;
+      if (level > best) {
+        best = level;
+        localStorage.setItem('memoryNumBest', best);
+        bestEl.textContent = best;
+      }
+      startLevel();
+    }, 500);
+  } else if (!currentNumber.startsWith(userInput)) {
+    // غلط
+    playSound('wrong');
+    btn.classList.add('wrong');
+    setTimeout(() => {
+      endGame();
+    }, 500);
+  }
+}
+
+function endGame() {
+  running = false;
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">🧠</div>
+    <h2>خلصت المحاولة!</h2>
+    <p>وصلت للمستوى <b style="color:#facc15;font-size:22px">${level}</b><br>
+    أعلى مستوى: ${best}<br>
+    أحمد TV بيقولك: ذاكرتك كويسة!</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  running = true;
+  level = 1;
+  levelEl.textContent = level;
+  startLevel();
+}
+
+startBtn.onclick = startGame;
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
