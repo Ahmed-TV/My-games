@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ahmed TV - 195 علم</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#03A9F4;font-family:system-ui,Tahoma,Arial;height:100vh;height:100dvh;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:5px}
+
+/* الحاوية الرئيسية */
+.container{
+  width:100%;max-width:450px;height:100%;
+  background:#29B6F6;border-radius:16px;border:3px solid #01579B;
+  overflow:hidden;box-shadow:0 10px 30px rgba(1,87,155,.5);
+  display:flex;flex-direction:column;
+}
+
+.header{background:linear-gradient(135deg,#29B6F6,#0288D1 50%,#01579B);padding:10px;text-align:center;flex-shrink:0}
+.logo{width:50px;height:50px;margin:0 auto 5px;background:#4FC3F7;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #000;color:#000;font-weight:900;font-size:13px}
+.main-title{color:#000;font-weight:900;font-size:16px}
+.sub-title{color:#000;font-weight:900;font-size:11px;margin-top:4px;background:#4FC3F7;display:inline-block;padding:4px 10px;border-radius:12px;border:2px solid #000}
+
+.progress{padding:8px 12px;background:#4FC3F7;display:flex;justify-content:space-between;font-size:14px;color:#000;font-weight:900;border-bottom:2px solid #000;border-top:2px solid #000;flex-shrink:0}
+.bar{height:8px;background:#01579B;border-radius:4px;overflow:hidden;border:1px solid #000;margin:0 10px;flex-shrink:0}
+.fill{height:100%;background:#FFEB3B;width:0%;transition:.4s}
+
+.card{padding:8px;background:#29B6F6;display:flex;flex-direction:column;flex-grow:1;justify-content:space-evenly;overflow:hidden}
+
+.flag-box{background:#4FC3F7;padding:8px;border-radius:12px;border:3px solid #000;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.flag-img{width:100%;max-width:200px;height:auto;max-height:120px;object-fit:contain;border-radius:4px;background:#fff}
+.badge{display:inline-block;background:#000;color:#4FC3F7;font-size:12px;padding:4px 12px;border-radius:10px;margin-bottom:6px;font-weight:900}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;flex-grow:1;align-content:center}
+.opt{background:#4FC3F7;border:2px solid #000;border-radius:10px;padding:10px 4px;text-align:center;font-size:14px;font-weight:900;color:#000;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
+.opt:active{transform:scale(0.97)}
+.correct{background:#1B5E20 !important;color:#fff !important}
+.wrong{background:#b71c1c !important;color:#fff !important}
+
+.skip-btn{background:#000;color:#4FC3F7;border:2px solid #4FC3F7;padding:8px 20px;border-radius:20px;font-size:14px;font-weight:900;cursor:pointer;width:100%;flex-shrink:0;margin-top:5px}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="logo">TV<br>AHMED</div>
+    <div class="main-title">خمن الدولة من العلم</div>
+    <div class="sub-title">195 علم - كل دول العالم</div>
+  </div>
+
+  <div class="progress">
+    <span id="qn">1 / 195</span>
+    <span id="sc">0 نقطة</span>
+  </div>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+
+  <div class="card">
+    <div style="text-align:center;">
+      <span class="badge">علم رقم <span id="num">1</span></span>
+    </div>
+    <div class="flag-box">
+      <img class="flag-img" id="flagImg" src="" alt="">
+    </div>
+    <div class="opts" id="opts"></div>
+    <button onclick="skip()" class="skip-btn">تخطي ⏭</button>
+  </div>
+</div>
+
+<script>
+const qs=[
+{"emoji":"🇪🇬","code":"eg","o":["تونس","مصر","لبنان","سلوفينيا"],"a":1},
+{"emoji":"🇸🇦","code":"sa","o":["ترينيداد وتوباغو","أذربيجان","السعودية","غينيا بيساو"],"a":2},
+{"emoji":"🇦🇪","code":"ae","o":["ليختنشتاين","الإمارات","العراق","سيراليون"],"a":1},
+{"emoji":"🇶🇦","code":"qa","o":["موناكو","بيلاروسيا","قطر","روسيا"],"a":2},
+{"emoji":"🇰🇼","code":"kw","o":["السويد","الكويت","كرواتيا","فلسطين"],"a":1},
+{"emoji":"🇧🇭","code":"bh","o":["سلوفينيا","ترينيداد وتوباغو","البحرين","الإمارات"],"a":2},
+{"emoji":"🇴🇲","code":"om","o":["سيشل","لاوس","فانواتو","عمان"],"a":3},
+{"emoji":"🇾🇪","code":"ye","o":["النيجر","الفاتيكان","اليمن","سانت لوسيا"],"a":2},
+{"emoji":"🇯🇴","code":"jo","o":["الأردن","المجر","بريطانيا","هندوراس"],"a":0},
+{"emoji":"🇱🇧","code":"lb","o":["لبنان","ليتوانيا","السويد","الفلبين"],"a":0},
+{"emoji":"🇸🇾","code":"sy","o":["ساحل العاج","سوريا","إندونيسيا","الهند"],"a":1},
+{"emoji":"🇮🇶","code":"iq","o":["لاتفيا","ساموا","العراق","آيسلندا"],"a":2},
+{"emoji":"🇵🇸","code":"ps","o":["إيطاليا","فلسطين","أمريكا","سان مارينو"],"a":1},
+{"emoji":"🇲🇦","code":"ma","o":["كيريباتي","بلجيكا","كينيا","المغرب"],"a":3},
+{"emoji":"🇩🇿","code":"dz","o":["تشاد","سيراليون","الجزائر","إندونيسيا"],"a":2},
+{"emoji":"🇹🇳","code":"tn","o":["هندوراس","أوكرانيا","تونس","هايتي"],"a":2},
+{"emoji":"🇱🇾","code":"ly","o":["الفاتيكان","فنزويلا","غيانا","ليبيا"],"a":3},
+{"emoji":"🇸🇩","code":"sd","o":["اليمن","أيرلندا","بوتسوانا","السودان"],"a":3},
+{"emoji":"🇺🇸","code":"us","o":["أمريكا","الغابون","لبنان","إيران"],"a":0},
+{"emoji":"🇨🇦","code":"ca","o":["لبنان","بوركينا فاسو","سان مارينو","كندا"],"a":3},
+{"emoji":"🇧🇷","code":"br","o":["أرمينيا","البرازيل","غامبيا","هندوراس"],"a":1},
+{"emoji":"🇦🇷","code":"ar","o":["جورجيا","بوتان","الأرجنتين","غينيا الاستوائية"],"a":2},
+{"emoji":"🇲🇽","code":"mx","o":["ميكرونيزيا","اليونان","المكسيك","أندورا"],"a":2},
+{"emoji":"🇬🇧","code":"gb","o":["بريطانيا","جزر القمر","بوروندي","تايلاند"],"a":0},
+{"emoji":"🇫🇷","code":"fr","o":["بريطانيا","أيرلندا","الهند","فرنسا"],"a":3},
+{"emoji":"🇩🇪","code":"de","o":["البحرين","جامايكا","الجبل الأسود","ألمانيا"],"a":3},
+{"emoji":"🇮🇹","code":"it","o":["نيبال","قبرص","كيريباتي","إيطاليا"],"a":3},
+{"emoji":"🇪🇸","code":"es","o":["أمريكا","إسبانيا","التشيك","ليختنشتاين"],"a":1},
+{"emoji":"🇹🇷","code":"tr","o":["أستراليا","تركيا","الدنمارك","إيران"],"a":1},
+{"emoji":"🇷🇺","code":"ru","o":["بنين","ساحل العاج","روسيا","ميكرونيزيا"],"a":2}
+];
+
+let idx=0,score=0,lock=false;
+const optsEl=document.getElementById("opts");
+
+function render(){
+  if(idx>=qs.length) return endGame();
+  const cur=qs[idx];
+  document.getElementById("flagImg").src="https://flagcdn.com/w320/"+cur.code+".png";
+  document.getElementById("num").textContent=idx+1;
+  document.getElementById("qn").textContent=(idx+1)+" / "+qs.length;
+  document.getElementById("sc").textContent=score+" نقطة";
+  document.getElementById("fill").style.width=(idx/qs.length*100)+"%";
+  
+  optsEl.innerHTML="";
+  lock=false;
+  
+  cur.o.forEach((t,i)=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.textContent=t;
+    b.onclick=()=>{
+      if(lock)return;
+      lock=true;
+      if(i===cur.a){
+        b.classList.add("correct");
+        score+=10;
+      }else{
+        b.classList.add("wrong");
+        optsEl.children[cur.a].classList.add("correct");
+      }
+      setTimeout(()=>{idx++;render();},800);
+    };
+    optsEl.appendChild(b);
+  });
+}
+
+function skip(){
+  idx++;
+  if(idx<qs.length)render();
+  else endGame();
+}
+
+function endGame(){
+  optsEl.innerHTML="<button class='opt' style='grid-column: span 2; background:#000; color:#4FC3F7;' onclick='location.reload()'>العب تاني 🔄</button>";
+  document.getElementById("flagImg").style.display="none";
+  document.querySelector(".badge").style.display="none";
+  document.querySelector(".skip-btn").style.display="none";
+  document.getElementById("sc").textContent="النتيجة: "+score;
+}
+
+render();
+</script>
+</body>
+</html>
