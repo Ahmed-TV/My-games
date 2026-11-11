@@ -64,7 +64,6 @@
     border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 10px;
   }
 
-  /* الزرار الكبير الجديد */
   #jumpBtn {
     width: 100%; max-width: 500px;
     background: #22c55e; color: #000;
@@ -107,7 +106,6 @@
     </div>
   </div>
 
-  <!-- الزرار الجديد -->
   <button id="jumpBtn" style="display:none;">🚀 اطير</button>
 
   <div class="footer">
@@ -130,11 +128,22 @@ let best = parseInt(localStorage.getItem('flappyBest') || '0');
 bestEl.textContent = best;
 
 let audioCtx = null;
-let bird = { x: 50, y: 200, vy: 0, gravity: 0.5, jump: -8, radius: 15, rotation: 0 };
+
+// إعدادات صعبة جداً (بطيئة جداً للأطفال)
+let bird = { 
+  x: 50, 
+  y: 200, 
+  vy: 0, 
+  gravity: 0.15, // جاذبية خفيفة جداً
+  jump: -4.5,    // قفزة خفيفة
+  radius: 18,    // حجم أكبر شوية
+  rotation: 0 
+};
+
 let pipes = [];
 const PIPE_WIDTH = 60;
-const GAP = 150;
-const PIPE_SPEED = 2.5;
+const GAP = 200; // فتحة واسعة جداً
+const PIPE_SPEED = 1.2; // سرعة بطيئة جداً
 let pipeTimer = 0;
 
 function resize() {
@@ -162,13 +171,13 @@ function playSound(type) {
   if (type === 'jump') {
     osc.type = 'sine';
     osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
     osc.start(); osc.stop(audioCtx.currentTime + 0.1);
   } else if (type === 'score') {
     osc.type = 'square';
-    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
     osc.start(); osc.stop(audioCtx.currentTime + 0.1);
@@ -185,7 +194,7 @@ function playSound(type) {
 function startGame() {
   initAudio();
   overlay.style.display = 'none';
-  jumpBtn.style.display = 'block'; // إظهار الزرار
+  jumpBtn.style.display = 'block';
   bird.y = H / 2; bird.vy = 0; bird.rotation = 0;
   score = 0; scoreEl.textContent = score;
   pipes = []; pipeTimer = 0;
@@ -212,14 +221,17 @@ function update() {
   bird.vy += bird.gravity;
   bird.y += bird.vy;
 
-  if (bird.vy < 0) bird.rotation = -0.5;
-  else { bird.rotation += 0.05; if (bird.rotation > 1.5) bird.rotation = 1.5; }
+  if (bird.vy < 0) bird.rotation = -0.3;
+  else { bird.rotation += 0.03; if (bird.rotation > 1.2) bird.rotation = 1.2; }
 
   if (bird.y + bird.radius > H) { bird.y = H - bird.radius; return endGame(); }
   if (bird.y - bird.radius < 0) { bird.y = bird.radius; bird.vy = 0; }
 
   pipeTimer++;
-  if (pipeTimer > 90) { spawnPipe(); pipeTimer = 0; }
+  if (pipeTimer > 140) { // مسافة كبيرة بين الأنابيب
+    spawnPipe(); 
+    pipeTimer = 0; 
+  }
 
   for (let i = pipes.length - 1; i >= 0; i--) {
     let p = pipes[i];
@@ -275,7 +287,7 @@ function endGame() {
   running = false; playSound('hit');
   if (score > best) { best = score; localStorage.setItem('flappyBest', best); bestEl.textContent = best; }
   
-  jumpBtn.style.display = 'none'; // إخفاء الزرار وقت الخسارة
+  jumpBtn.style.display = 'none';
   
   overlay.style.display = 'flex';
   overlay.innerHTML = `
@@ -289,7 +301,6 @@ function endGame() {
   document.getElementById('againBtn').onclick = startGame;
 }
 
-// ربط الزرار الجديد باللعبة
 jumpBtn.addEventListener('click', jump);
 jumpBtn.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, { passive: false });
 startBtn.onclick = startGame;
