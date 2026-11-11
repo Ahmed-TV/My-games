@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎮 موقع الألعاب</title>
+<title>Ahmed TV - الألعاب</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -12,16 +12,36 @@
     color: #fff;
     min-height: 100vh;
     padding: 30px 20px;
+    text-align: center;
   }
-  header { text-align: center; margin-bottom: 40px; }
-  header h1 {
+  
+  /* تنسيق اسمك */
+  .profile-section {
+    margin-bottom: 30px;
+  }
+  .profile-section h1 {
     font-size: 2.5rem;
-    background: linear-gradient(90deg, #e94560, #f5a623, #e94560);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #f5a623;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(245, 166, 35, 0.4);
   }
-  header p { color: #a0a0b0; margin-top: 10px; }
+  .profile-section h2 {
+    font-size: 1.2rem;
+    color: #a0a0b0;
+    font-weight: normal;
+  }
+
+  /* تنسيق عنوان الموقع */
+  .site-header {
+    margin-bottom: 40px;
+  }
+  .site-header h3 {
+    font-size: 1.5rem;
+    color: #e94560;
+  }
+
+  /* تنسيق كروت الألعاب */
   .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -52,41 +72,57 @@
     background: linear-gradient(135deg, #e94560, #0f3460);
   }
   .game-info { padding: 16px; }
-  .game-info h2 { font-size: 1.2rem; margin-bottom: 6px; }
+  .game-info h4 { font-size: 1.2rem; margin-bottom: 6px; }
   .game-info p { font-size: 0.85rem; color: #a0a0b0; }
+  
   footer { text-align: center; margin-top: 50px; color: #666; font-size: 0.85rem; }
 </style>
 </head>
 <body>
-  <header>
-    <h1>🎮 موقع الألعاب</h1>
-    <p>اختر لعبة وابدأ اللعب مباشرة</p>
-  </header>
 
+  <!-- هنا اسمك -->
+  <div class="profile-section">
+    <h1>Ahmed TV</h1>
+    <h2>أحمد عبدالعزيز</h2>
+  </div>
+
+  <!-- عنوان موقعك -->
+  <div class="site-header">
+    <h3>🎮 أهلاً بك في موقع الألعاب</h3>
+  </div>
+
+  <!-- الألعاب -->
   <div class="games-grid">
+    
+    <!-- لعبة الذاكرة -->
     <a class="game-card" href="games/memory/index.html">
       <div class="game-thumb">🧠</div>
       <div class="game-info">
-        <h2>لعبة الذاكرة</h2>
+        <h4>لعبة الذاكرة</h4>
         <p>قلّب الكروت وطابق الأزواج</p>
       </div>
     </a>
 
+    <!-- لعبة الثعبان -->
     <a class="game-card" href="games/snake/index.html">
       <div class="game-thumb">🐍</div>
       <div class="game-info">
-        <h2>الثعبان</h2>
+        <h4>الثعبان</h4>
         <p>كل التفاح وابعد عن الحيطان</p>
       </div>
     </a>
+
+    <!-- اللعبة الجديدة اللي إنت ضفتها -->
+    <a class="game-card" href="games/game1/index.html">
+      <div class="game-thumb">🎮</div>
+      <div class="game-info">
+        <h4>اسم اللعبة بتاعتك</h4>
+        <p>وصف اللعبة</p>
+      </div>
+    </a>
+
   </div>
-<a class="game-card" href="games/game1/index.html">
-  <div class="game-thumb">🎮</div>
-  <div class="game-info">
-    <h2>يويو وحازم  </h2>
-    <p>لعبة يويو وحازم </p>
-  </div>
-</a>
-  <footer>© موقع الألعاب — صُنع بحب ❤️</footer>
+
+  <footer>© 2024 Ahmed TV — جميع الحقوق محفوظة</footer>
 </body>
 </html>
