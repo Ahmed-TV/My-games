@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ركلات الترجيح | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 55px; height: 55px; flex-shrink: 0;
+    background: radial-gradient(circle, #fde047, #f59e0b 55%, #b45309);
+    border: 3px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #111; line-height: 1;
+  }
+  .logo b { font-size: 12px; }
+  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 20px; line-height: 1.2; }
+  h1 small { display: block; font-size: 11px; color: #facc15; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 13px; color: #cbd5e1; margin-bottom: 5px; }
+  .names b { color: #fff; }
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0 10px; flex-wrap: wrap; }
+  .stat {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 5px 15px; min-width: 80px; text-align: center;
+  }
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #22c55e; /* لون النجيلة */
+    border: 4px solid #f59e0b; border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 30px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .goal-area {
+    width: 100%; height: 60%; position: relative; margin-top: 20px;
+    z-index: 1; display: flex; justify-content: center;
+  }
+
+  .goal-frame {
+    width: 80%; height: 80%;
+    border: 6px solid #fff;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    background: rgba(255,255,255,0.1);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  /* شبكة المرمى */
+  .goal-frame::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  .goalkeeper {
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+  }
+
+  .ball {
+    position: absolute;
+    bottom: 15%; left: 50%;
+    transform: translateX(-50%);
+    font-size: 35px;
+    z-index: 3;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .shoot-target {
+    position: absolute;
+    width: 25%; height: 33%;
+    z-index: 4; cursor: pointer;
+  }
+
+  /* توزيع أماكن التصويب */
+  .t1 { top: 0; left: 0; }
+  .t2 { top: 0; left: 37.5%; }
+  .t3 { top: 0; left: 75%; }
+  .t4 { top: 33%; left: 0; }
+  .t5 { top: 33%; left: 37.5%; }
+  .t6 { top: 33%; left: 75%; }
+  .t7 { top: 66%; left: 0; }
+  .t8 { top: 66%; left: 37.5%; }
+  .t9 { top: 66%; left: 75%; }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; }
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn:hover { background: #d97706; }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>ركلات الترجيح<small>AHMED TV PENALTY SHOOTOUT</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><span>أهداف</span></div>
+      <div class="stat"><b id="rounds">0 / 5</b><span>تسديدات</span></div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">أحمد عبدالعزيز<br>Ahmed TV</div>
+    
+    <div class="goal-area">
+      <div class="goal-frame" id="goalFrame">
+        <div class="goalkeeper" id="goalkeeper">🧤</div>
+        
+        <!-- أماكن التصويب -->
+        <div class="shoot-target t1" data-pos="0"></div>
+        <div class="shoot-target t2" data-pos="1"></div>
+        <div class="shoot-target t3" data-pos="2"></div>
+        <div class="shoot-target t4" data-pos="3"></div>
+        <div class="shoot-target t5" data-pos="4"></div>
+        <div class="shoot-target t6" data-pos="5"></div>
+        <div class="shoot-target t7" data-pos="6"></div>
+        <div class="shoot-target t8" data-pos="7"></div>
+        <div class="shoot-target t9" data-pos="8"></div>
+      </div>
+    </div>
+
+    <div class="ball" id="ball">⚽</div>
+
+    <div id="overlay">
+      <h2>ركلات الترجيح</h2>
+      <p>
+        <b>Ahmed TV</b> - سجل 5 أهداف!<br>
+        دوس على أي مكان في المرمى عشان تصوب
+      </p>
+      <button class="btn" id="startBtn">▶ ابدأ التحدي</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const goalFrame = document.getElementById('goalFrame');
+const goalkeeper = document.getElementById('goalkeeper');
+const ball = document.getElementById('ball');
+const scoreEl = document.getElementById('score');
+const roundsEl = document.getElementById('rounds');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+const targets = document.querySelectorAll('.shoot-target');
+
+let score = 0;
+let shotCount = 0;
+const maxShots = 5;
+let gameActive = false;
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'kick') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'goal') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  } else if (type === 'save') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+  }
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  score = 0;
+  shotCount = 0;
+  gameActive = true;
+  scoreEl.textContent = score;
+  roundsEl.textContent = `${shotCount} / ${maxShots}`;
+  resetPositions();
+  enableTargets(true);
+}
+
+function resetPositions() {
+  ball.style.transform = `translateX(-50%) translateY(0) scale(1)`;
+  ball.style.left = '50%';
+  ball.style.bottom = '15%';
+  ball.style.opacity = '1';
+  
+  // إعادة الحارس للمنتصف
+  goalkeeper.style.transform = `translateX(-50%)`;
+  goalkeeper.style.left = '50%';
+  goalkeeper.style.bottom = '0';
+}
+
+function enableTargets(enable) {
+  targets.forEach(t => {
+    if (enable) {
+      t.style.pointerEvents = 'auto';
+      t.addEventListener('click', handleShoot);
+    } else {
+      t.style.pointerEvents = 'none';
+      t.removeEventListener('click', handleShoot);
+    }
+  });
+}
+
+function handleShoot(e) {
+  if (!gameActive) return;
+  
+  const targetPos = parseInt(e.target.dataset.pos);
+  enableTargets(false); // منع الضغط المتكرر
+  
+  playSound('kick');
+  
+  // 1. تحريك الحارس عشوائياً (بيصد في 30% من الحالات)
+  const keeperPos = Math.floor(Math.random() * 9);
+  const keeperX = (keeperPos % 3) * 37.5; // 0, 37.5, 75
+  goalkeeper.style.transform = `translateX(-50%)`;
+  goalkeeper.style.left = `${keeperX + 12.5}%`;
+  goalkeeper.style.bottom = keeperPos < 3 ? '60%' : (keeperPos < 6 ? '30%' : '0');
+  
+  // 2. تحريك الكرة لمكان التصويب
+  const targetX = (targetPos % 3) * 37.5;
+  const targetY = targetPos < 3 ? '60%' : (targetPos < 6 ? '30%' : '0%');
+  
+  setTimeout(() => {
+    ball.style.transform = `translateX(-50%) scale(0.6)`;
+    ball.style.left = `${targetX + 12.5}%`;
+    ball.style.bottom = targetY;
+    ball.style.opacity = '0';
+  }, 100);
+
+  // 3. التحقق من النتيجة بعد حركة الكرة
+  setTimeout(() => {
+    if (keeperPos === targetPos) {
+      // الحارس صد
+      playSound('save');
+      // تأثير الحارس
+      goalkeeper.style.transform = `translateX(-50%) scale(1.3)`;
+      setTimeout(() => goalkeeper.style.transform = `translateX(-50%) scale(1)`, 300);
+    } else {
+      // هدف
+      playSound('goal');
+      score++;
+      scoreEl.textContent = score;
+    }
+
+    shotCount++;
+    roundsEl.textContent = `${shotCount} / ${maxShots}`;
+    
+    setTimeout(() => {
+      if (shotCount >= maxShots) {
+        endGame();
+      } else {
+        resetPositions();
+        enableTargets(true);
+      }
+    }, 800);
+
+  }, 600);
+}
+
+function endGame() {
+  gameActive = false;
+  overlay.style.display = 'flex';
+  let msg = "";
+  if (score === maxShots) msg = "مثالي! سجلت كل الركلات! 🏆";
+  else if (score >= 3) msg = "ممتاز! أداء رائع 🎉";
+  else msg = "محاولة كويسة، جرب تاني! 💪";
+
+  overlay.innerHTML = `
+    <div style="font-size:35px">⚽</div>
+    <h2>خلصت التحدي!</h2>
+    <p>سجلت <b style="color:#facc15;font-size:24px">${score} أهداف</b><br>
+    ${msg}</p>
+    <button class="btn" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+startBtn.onclick = startGame;
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
