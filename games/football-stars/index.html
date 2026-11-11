@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ahmed TV - تحدي مشاهير الكرة</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#030805;color:#8fffb0;font-family:'Segoe UI',Tahoma,Arial,sans-serif;height:100vh;height:100dvh;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:5px}
+
+/* الحاوية الرئيسية */
+#ahmed-football{
+  width:100%;max-width:450px;height:100%;display:flex;flex-direction:column;justify-content:space-between;
+  padding:10px;box-sizing:border-box;
+  background:linear-gradient(145deg,#030805,#092416,#030805);
+  border:2px solid #176b3b;border-radius:16px;
+  box-shadow:0 0 20px #00a34a33;overflow:hidden;
+}
+
+.brand{font-size:14px;font-weight:bold;color:#6bff9b;text-align:center;margin-bottom:2px}
+h2{font-size:18px;margin:0 0 8px;color:#b6ffca;text-align:center}
+
+.top{display:flex;justify-content:space-between;gap:4px;flex-wrap:nowrap;flex-shrink:0}
+.pill{background:#10271b;border:1px solid #1b7543;padding:6px 8px;border-radius:20px;font-size:12px;font-weight:bold;white-space:nowrap}
+
+.progress{height:6px;background:#13251a;border-radius:10px;overflow:hidden;margin:8px 0;flex-shrink:0}
+.bar{height:100%;width:0;background:#21a653;transition:width .3s}
+
+.photo-box{min-height:40px;margin:4px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.player-photo{display:none;width:100%;max-width:250px;height:150px;object-fit:cover;border-radius:12px;border:2px solid #25854b;background:#061009}
+.reveal{background:#163b26;color:#a6f5bd;border:2px solid #27834b;padding:8px 16px;border-radius:20px;font-size:14px;font-weight:bold;cursor:pointer}
+
+.question{margin:4px 0;padding:10px;background:#0b1b12;border:1px solid #176b3b;border-radius:12px;font-size:16px;font-weight:bold;line-height:1.4;text-align:center;flex-shrink:0;min-height:60px;display:flex;align-items:center;justify-content:center}
+
+.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:6px 0;flex-shrink:0}
+.answer{min-height:50px;padding:8px;background:#10271b;color:#a8f0be;border:1px solid #287b4b;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;text-align:center}
+.answer:hover:not(:disabled){background:#17482d}
+.answer:disabled{opacity:1}
+.correct{background:#14552d!important;border-color:#48d879!important;color:#9cffb8!important}
+.wrong{background:#451818!important;border-color:#b83e3e!important;color:#ffaaaa!important}
+
+.feedback{min-height:20px;margin:2px 0;font-size:14px;font-weight:bold;text-align:center;flex-shrink:0}
+
+.skip{background:#163b26;color:#a6f5bd;border:1px solid #27834b;padding:10px;border-radius:20px;font-size:14px;font-weight:bold;cursor:pointer;width:100%;margin-top:4px;flex-shrink:0}
+.restart{background:#14552d;color:#b6f5c9;border:2px solid #48d879;padding:12px;border-radius:20px;margin-top:10px;font-size:15px;font-weight:bold;cursor:pointer;width:100%}
+</style>
+</head>
+<body>
+
+<div id="ahmed-football" dir="rtl">
+  <div class="brand">مسابقات مع أحمد TV</div>
+  <h2>🏆 تحدي مشاهير الكرة ⚽</h2>
+
+  <div class="top">
+    <div class="pill">⚽ مشاهير الكرة</div>
+    <div class="pill" id="af-score">النقاط: 0</div>
+    <div class="pill" id="af-number">السؤال: 1 / 50</div>
+  </div>
+
+  <div class="progress"><div class="bar" id="af-bar"></div></div>
+
+  <div class="photo-box">
+    <button class="reveal" id="af-reveal">🕵️ اكشف الصورة وخمّن</button>
+    <img class="player-photo" id="af-photo" alt="صورة لاعب">
+  </div>
+
+  <div class="question" id="af-question"></div>
+  <div class="answers" id="af-answers"></div>
+  <div class="feedback" id="af-feedback"></div>
+  <button class="skip" id="af-skip">⏭ تخطي السؤال</button>
+  <div id="af-end"></div>
+</div>
+
+<script>
+(function(){
+const root=document.getElementById("ahmed-football");
+if(root.dataset.ready)return;
+root.dataset.ready="1";
+
+const questions=[
+["من هو اللاعب المصري المعروف بلقب الملك المصري؟",["محمد صلاح","عمر مرموش","محمد النني","أحمد حجازي"],0,"Mohamed Salah football"],
+["ما جنسية ليونيل ميسي؟",["البرازيل","الأرجنتين","إسبانيا","البرتغال"],1,"Lionel Messi football"],
+["ما جنسية كريستيانو رونالدو؟",["إيطاليا","فرنسا","البرتغال","الأرجنتين"],2,"Cristiano Ronaldo football"],
+["في أي مركز يلعب مانويل نوير؟",["مهاجم","حارس مرمى","مدافع","لاعب وسط"],1,"Manuel Neuer goalkeeper"],
+["ما النادي الذي اشتهر به ميسي قبل باريس؟",["ريال مدريد","برشلونة","مانشستر يونايتد","بايرن ميونخ"],1,"Lionel Messi Barcelona"],
+["ما جنسية كيليان مبابي؟",["فرنسية","إيطالية","ألمانية","إنجليزية"],0,"Kylian Mbappe football"],
+["أي منتخب فاز بكأس العالم 2022؟",["فرنسا","البرازيل","الأرجنتين","كرواتيا"],2,"Argentina national football team"],
+["من هو اللاعب المعروف بلقب الظاهرة؟",["رونالدو نازاريو","رونالدينيو","كاكا","ريفالدو"],0,"Ronaldo Nazario football"],
+["ما جنسية نيمار؟",["الأرجنتين","البرازيل","كولومبيا","تشيلي"],1,"Neymar football"],
+["أي نادٍ يلعب له محمد صلاح؟",["ليفربول","تشيلسي","أرسنال","مانشستر سيتي"],0,"Mohamed Salah Liverpool"],
+["من هو اللاعب المعروف بلقب الدون؟",["ميسي","رونالدو","زيدان","بيكهام"],1,"Cristiano Ronaldo football"],
+["ما جنسية لوكا مودريتش؟",["صربيا","كرواتيا","سلوفينيا","البوسنة"],1,"Luka Modric football"],
+["من اشتهر بمهارة المراوغة والابتسامة؟",["رونالدينيو","بوفون","راموس","كاسياس"],0,"Ronaldinho football"],
+["ما مركز سيرجيو راموس؟",["حارس مرمى","مدافع","مهاجم","جناح"],1,"Sergio Ramos football"],
+["أي منتخب فاز بكأس العالم 2018؟",["ألمانيا","فرنسا","الأرجنتين","إسبانيا"],1,"France national football team"],
+["ما جنسية إيرلينغ هالاند؟",["السويد","الدنمارك","النرويج","فنلندا"],2,"Erling Haaland football"],
+["من هو زيزو؟",["زين الدين زيدان","زيدان إقبال","شاكيري","زين الدين زكي"],0,"Zinedine Zidane football"],
+["أي نادٍ اشتهر به أندريس إنييستا؟",["برشلونة","يوفنتوس","بايرن ميونخ","أياكس"],0,"Andres Iniesta football"],
+["ما جنسية ساديو ماني؟",["غانا","السنغال","نيجيريا","مالي"],1,"Sadio Mane football"],
+["من هو حارس المرمى الإيطالي الشهير؟",["بوفون","بيرلو","توتي","كانافارو"],0,"Gianluigi Buffon football"]
+];
+
+let index=0,score=0,locked=false;
+const qEl=root.querySelector("#af-question");
+const aEl=root.querySelector("#af-answers");
+const fEl=root.querySelector("#af-feedback");
+const scoreEl=root.querySelector("#af-score");
+const numEl=root.querySelector("#af-number");
+const barEl=root.querySelector("#af-bar");
+const photo=root.querySelector("#af-photo");
+const reveal=root.querySelector("#af-reveal");
+const endEl=root.querySelector("#af-end");
+const skipBtn=root.querySelector("#af-skip");
+
+function render(){
+ if(index>=questions.length){finish();return;}
+ locked=false;
+ const q=questions[index];
+ qEl.textContent=q[0];
+ photo.style.display="none";
+ photo.src="";
+ reveal.style.display="inline-block";
+ aEl.innerHTML="";
+ fEl.textContent="";
+ scoreEl.textContent="النقاط: "+score;
+ numEl.textContent="السؤال: "+(index+1)+" / "+questions.length;
+ barEl.style.width=(index/questions.length*100)+"%";
+ q[1].forEach((answer,i)=>{
+  const btn=document.createElement("button");
+  btn.className="answer";btn.textContent=answer;
+  btn.onclick=()=>choose(i,btn);
+  aEl.appendChild(btn);
+ });
+}
+
+reveal.onclick=()=>{
+ const q=questions[index];
+ photo.src="https://tse1.mm.bing.net/th?q="+encodeURIComponent(q[3])+"&w=400&h=250&c=7&rs=1&p=0";
+ photo.style.display="inline-block";
+ reveal.style.display="none";
+};
+
+function choose(i,btn){
+ if(locked)return;locked=true;
+ const q=questions[index],buttons=aEl.querySelectorAll("button");
+ buttons.forEach(b=>b.disabled=true);
+ if(i===q[2]){
+  score++;btn.classList.add("correct");
+  fEl.textContent="✔ إجابة صحيحة!";
+  fEl.style.color="#6df29b";
+ }else{
+  btn.classList.add("wrong");buttons[q[2]].classList.add("correct");
+  fEl.textContent="✖ الصح: "+q[1][q[2]];
+  fEl.style.color="#ff9999";
+ }
+ scoreEl.textContent="النقاط: "+score;
+ skipBtn.textContent="السؤال التالي ⬅";
+}
+
+function next(){
+ index++;skipBtn.textContent="⏭ تخطي السؤال";render();
+}
+
+function finish(){
+ qEl.textContent="🏆 انتهت المسابقة!";
+ photo.style.display="none";reveal.style.display="none";aEl.innerHTML="";
+ fEl.textContent="نتيجتك: "+score+" من "+questions.length;
+ fEl.style.color="#6df29b";barEl.style.width="100%";
+ numEl.textContent="اكتملت المسابقة";skipBtn.style.display="none";
+ const btn=document.createElement("button");
+ btn.className="restart";btn.textContent="🔄 العب من جديد";
+ btn.onclick=()=>{index=0;score=0;skipBtn.style.display="inline-block";render();};
+ endEl.appendChild(btn);
+}
+skipBtn.onclick=next;
+render();
+})();
+</script>
+</body>
+</html>
