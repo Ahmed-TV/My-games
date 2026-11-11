@@ -21,28 +21,32 @@
   }
 
   .header {
-    width: 95vw;
-    max-width: 500px; /* كبرنا عرض الهيدر */
+    width: 98vw;
+    max-width: 600px;
     display: flex;
     justify-content: space-between;
-    padding: 10px 15px;
-    font-size: 20px;
+    align-items: center;
+    padding: 5px 10px;
+    font-size: 16px;
     font-weight: 900;
     color: #00e5ff;
     text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    flex-shrink: 0;
   }
+  
+  .header .name { color: #ff0055; text-shadow: 0 0 10px rgba(255,0,85,0.5); font-size: 18px; }
 
   .canvas-container {
     position: relative;
-    width: 95vw;
-    max-width: 500px; /* كبرنا عرض الشاشة */
+    width: 98vw;
+    max-width: 600px;
     aspect-ratio: 1 / 1;
     background: #0a0a0a;
-    border-radius: 20px;
-    border: 3px solid #222; /* كبرنا الإطار */
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(0,0,0,0.8);
+    border-radius: 15px;
+    border: 4px solid #222;
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.3), inset 0 0 20px rgba(0,0,0,0.8);
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 5px;
   }
 
   canvas {
@@ -51,19 +55,27 @@
     height: 100%;
   }
 
+  /* الدايرة اللي فيها الاسم في نص اللعبة */
   .watermark {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: rgba(255, 255, 255, 0.05);
-    font-size: 40px; /* كبرنا العلامة المائية */
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px dashed rgba(0, 229, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 22px;
     font-weight: 900;
-    letter-spacing: 2px;
     pointer-events: none;
     z-index: 1;
     text-align: center;
-    white-space: nowrap;
+    line-height: 1.2;
   }
 
   .btn {
@@ -77,15 +89,15 @@
     box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
     cursor: pointer;
     transition: transform 0.1s;
-    margin-top: 15px;
+    margin-top: 10px;
   }
   .btn:active { transform: scale(0.95); }
 
   .back {
-    margin-top: 15px;
+    margin-top: 10px;
     color: #666;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .overlay {
@@ -97,10 +109,10 @@
     justify-content: center;
     align-items: center;
     z-index: 10;
-    border-radius: 20px;
+    border-radius: 15px;
   }
   .overlay h2 { color: #ff0055; font-size: 32px; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255,0,85,0.6); }
-  .overlay p { color: #fff; font-size: 20px; margin-bottom: 20px; text-align: center; padding: 0 10px; }
+  .overlay p { color: #fff; font-size: 18px; margin-bottom: 20px; text-align: center; padding: 0 10px; }
   .hide { display: none !important; }
 </style>
 </head>
@@ -108,13 +120,16 @@
 
   <div class="header">
     <div>النقاط: <span id="score">0</span></div>
+    <div class="name">Ahmed TV</div>
     <div>الأعلى: <span id="highScore">0</span></div>
   </div>
 
   <div class="canvas-container">
-    <div class="watermark">AHMED TV<br>PRO</div>
-    <!-- كبرنا حجم الكانفس لـ 600 عشان الشاشة تبقى أوضح -->
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <!-- الدايرة اللي في النص -->
+    <div class="watermark">AHMED<br>TV<br>PRO</div>
+    
+    <!-- كبرنا حجم الكانفس لـ 800 عشان المربعات تبقى كبيرة جداً -->
+    <canvas id="gameCanvas" width="800" height="800"></canvas>
     
     <div class="overlay" id="startScreen">
       <h2>🐍 ثعبان أحمد TV</h2>
@@ -140,9 +155,9 @@ const finalScoreEl = document.getElementById('finalScore');
 const startScreen = document.getElementById('startScreen');
 const gameOverScreen = document.getElementById('gameOverScreen');
 
-// كبرنا حجم المربع لـ 30 بدل 20
-const gridSize = 30; 
-const tileCount = canvas.width / gridSize; // 600 / 30 = 20 مربع
+// كبرنا حجم المربع جداً لـ 40 (بدل 30)
+const gridSize = 40; 
+const tileCount = canvas.width / gridSize; // 800 / 40 = 20 مربع
 
 let snake = [];
 let food = {};
@@ -227,40 +242,41 @@ function drawGame() {
     ctx.beginPath(); ctx.moveTo(0, i * gridSize); ctx.lineTo(canvas.width, i * gridSize); ctx.stroke();
   }
 
-  // رسم التفاحة (كبرناها)
-  ctx.shadowBlur = 20;
+  // رسم التفاحة (ضخمة)
+  ctx.shadowBlur = 25;
   ctx.shadowColor = '#ff0055';
   ctx.fillStyle = '#ff0055';
   ctx.beginPath();
-  ctx.arc(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, gridSize/2 - 2, 0, Math.PI * 2);
+  ctx.arc(food.x * gridSize + gridSize/2, food.y * gridSize + gridSize/2, gridSize/2 - 3, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
 
-  // رسم الثعبان (كبرناه)
+  // رسم الثعبان (ضخم)
   snake.forEach((segment, index) => {
     const isHead = index === 0;
     ctx.fillStyle = isHead ? '#00e5ff' : '#0077ff';
-    ctx.shadowBlur = isHead ? 20 : 0;
+    ctx.shadowBlur = isHead ? 25 : 0;
     ctx.shadowColor = '#00e5ff';
     
     ctx.beginPath();
-    ctx.roundRect(segment.x * gridSize + 1, segment.y * gridSize + 1, gridSize - 2, gridSize - 2, isHead ? 12 : 6);
+    ctx.roundRect(segment.x * gridSize + 2, segment.y * gridSize + 2, gridSize - 4, gridSize - 4, isHead ? 15 : 8);
     ctx.fill();
     ctx.shadowBlur = 0;
     
     if (isHead) {
       ctx.fillStyle = '#000';
-      let eyeX1 = segment.x * gridSize + 8;
-      let eyeY1 = segment.y * gridSize + 8;
-      let eyeX2 = segment.x * gridSize + 20;
-      let eyeY2 = segment.y * gridSize + 8;
+      // تكبير العيون عشان تبان أوضح
+      let eyeX1 = segment.x * gridSize + 10;
+      let eyeY1 = segment.y * gridSize + 10;
+      let eyeX2 = segment.x * gridSize + 25;
+      let eyeY2 = segment.y * gridSize + 10;
 
-      if (dx === 1) { eyeX1 = segment.x * gridSize + 18; eyeX2 = segment.x * gridSize + 18; eyeY1 = segment.y * gridSize + 8; eyeY2 = segment.y * gridSize + 20; }
-      else if (dx === -1) { eyeX1 = segment.x * gridSize + 8; eyeX2 = segment.x * gridSize + 8; eyeY1 = segment.y * gridSize + 8; eyeY2 = segment.y * gridSize + 20; }
-      else if (dy === 1) { eyeX1 = segment.x * gridSize + 8; eyeX2 = segment.x * gridSize + 20; eyeY1 = segment.y * gridSize + 18; eyeY2 = segment.y * gridSize + 18; }
+      if (dx === 1) { eyeX1 = segment.x * gridSize + 25; eyeX2 = segment.x * gridSize + 25; eyeY1 = segment.y * gridSize + 10; eyeY2 = segment.y * gridSize + 25; }
+      else if (dx === -1) { eyeX1 = segment.x * gridSize + 10; eyeX2 = segment.x * gridSize + 10; eyeY1 = segment.y * gridSize + 10; eyeY2 = segment.y * gridSize + 25; }
+      else if (dy === 1) { eyeX1 = segment.x * gridSize + 10; eyeX2 = segment.x * gridSize + 25; eyeY1 = segment.y * gridSize + 25; eyeY2 = segment.y * gridSize + 25; }
       
-      ctx.beginPath(); ctx.arc(eyeX1, eyeY1, 3, 0, Math.PI*2); ctx.fill();
-      ctx.beginPath(); ctx.arc(eyeX2, eyeY2, 3, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(eyeX1, eyeY1, 4, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(eyeX2, eyeY2, 4, 0, Math.PI*2); ctx.fill();
     }
   });
 
