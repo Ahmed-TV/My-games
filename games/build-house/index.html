@@ -69,50 +69,51 @@
 
   /* منطقة البناء */
   .build-area {
-    flex-grow: 1; position: relative; display: flex; flex-direction: column-reverse;
-    align-items: center; justify-content: flex-start; z-index: 1;
-    padding-bottom: 10px; overflow: hidden;
+    flex-grow: 1; position: relative; display: flex; flex-direction: column;
+    justify-content: flex-end; /* يبدأ من تحت */
+    align-items: center; z-index: 1; overflow: hidden;
+    padding-bottom: 20px; /* مساحة للأرضية */
   }
 
-  /* الأرضية */
+  /* الارضية */
   .ground {
-    width: 100%; height: 20px; background: #22c55e;
-    border-radius: 4px; position: absolute; bottom: 0;
-    z-index: 2;
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 20px;
+    background: #22c55e; z-index: 2;
   }
 
-  /* الطوابق */
-  .floor {
-    width: 60%; height: 40px;
+  /* الطابق الحالي (المتحرك) */
+  .moving-floor {
+    position: absolute;
+    height: 30px;
+    background: #f59e0b;
+    border: 2px solid #b45309;
+    border-radius: 4px;
+    z-index: 5;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+
+  /* الطوابق المستقرة */
+  .placed-floor {
+    width: 60%; height: 30px;
     background: #f59e0b;
     border: 2px solid #b45309;
     border-radius: 4px;
     margin-bottom: 2px;
     display: flex; justify-content: center; align-items: center;
-    font-size: 20px;
+    font-size: 16px;
     position: relative;
-    animation: dropIn 0.3s ease-out;
     z-index: 1;
   }
+
+  .placed-floor.door::before { content: '🚪'; }
+  .placed-floor.window::before { content: '🪟'; font-size: 14px;}
   
-  .floor.window::before {
-    content: '🪟'; font-size: 16px;
-  }
-  
-  .floor.door::before {
-    content: '🚪'; font-size: 20px;
-  }
-  
-  .floor.roof {
+  .placed-floor.roof {
     background: #ef4444;
     border-color: #991b1b;
-    height: 30px;
-    border-radius: 10px 10px 4px 4px;
-  }
-
-  @keyframes dropIn {
-    0% { transform: translateY(-50px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+    height: 25px;
+    border-radius: 10px 10px 0 0;
+    width: 65%; /* السقف أعرض شوية */
   }
 
   /* الأزرار */
@@ -122,11 +123,12 @@
     flex-shrink: 0;
   }
   .btn {
-    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
-    border-radius: 10px; font-size: 16px; font-weight: 900; cursor: pointer;
+    background: #f59e0b; color: #000; border: none; padding: 15px 25px;
+    border-radius: 10px; font-size: 18px; font-weight: 900; cursor: pointer;
     flex-grow: 1;
+    box-shadow: 0 4px 0 #d97706;
   }
-  .btn:active { transform: scale(0.95); }
+  .btn:active { transform: translateY(4px); box-shadow: 0 0 0 #d97706; }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
   #overlay {
@@ -170,15 +172,14 @@
     </div>
 
     <div class="controls">
-      <button class="btn" id="addFloorBtn">➕ أضف طابق</button>
-      <button class="btn" id="resetBtn">🔄 إعادة</button>
+      <button class="btn" id="placeBtn" disabled>🎯 ركز وحط الطابق</button>
     </div>
 
     <div id="overlay">
       <h2>لعبة بناء منزل</h2>
       <p>
         <b>Ahmed TV</b> - ابنِ أطول منزل!<br>
-        دوس على "أضف طابق" عشان تبني
+        ركز عشان تحط الطوابق فوق بعض بالظبط
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ البناء</button>
     </div>
@@ -190,8 +191,7 @@
 
 <script>
 const buildArea = document.getElementById('buildArea');
-const addFloorBtn = document.getElementById('addFloorBtn');
-const resetBtn = document.getElementById('resetBtn');
+const placeBtn = document.getElementById('placeBtn');
 const floorsEl = document.getElementById('floors');
 const bestEl = document.getElementById('best');
 const overlay = document.getElementById('overlay');
@@ -201,7 +201,18 @@ let floorCount = 0;
 let running = false;
 let best = parseInt(localStorage.getItem('houseBest') || '0');
 let audioCtx = null;
-const MAX_FLOORS = 10; // الهدف
+
+// المتغيرات بتاعة الحركة
+let movingFloor = null;
+let floorDirection = 1;
+let floorPosition = 0; // من 0 لـ 100 (نسبة مئوية)
+let moveInterval = null;
+let baseFloorWidth = 60; // عرض الطابق الأساسي
+
+// إحداثيات الطوابق المستقرة
+let placedFloors = []; 
+let lastFloorLeft = 0;
+let lastFloorWidth = 60;
 
 bestEl.textContent = best;
 
@@ -225,6 +236,12 @@ function playSound(type) {
     gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
     osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+  } else if (type === 'fail') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
   } else if (type === 'win') {
     osc.type = 'triangle';
     osc.frequency.setValueAtTime(600, audioCtx.currentTime);
@@ -235,48 +252,63 @@ function playSound(type) {
   }
 }
 
-function addFloor() {
-  if (!running || floorCount >= MAX_FLOORS) return;
+// إنشاء الطابق المتحرك
+function createMovingFloor() {
+  movingFloor = document.createElement('div');
+  movingFloor.className = 'moving-floor';
+  movingFloor.style.width = lastFloorWidth + '%';
+  movingFloor.style.bottom = (floorCount * 32) + 20 + 'px'; // فوق الطوابق اللي قبلها
+  movingFloor.style.left = '0%';
+  buildArea.appendChild(movingFloor);
   
-  playSound('build');
-  floorCount++;
-  floorsEl.textContent = floorCount;
+  floorPosition = 0;
+  floorDirection = 1;
   
-  let floor = document.createElement('div');
-  floor.className = 'floor';
-  
-  // لو أول طابق، نحط باب
-  if (floorCount === 1) {
-    floor.classList.add('door');
-  } 
-  // لو الطوابق اللي فوق، نحط شبابيك
-  else {
-    floor.classList.add('window');
-  }
-  
-  // لو خلصنا الطوابق، نحط السقف
-  if (floorCount === MAX_FLOORS) {
-    let roof = document.createElement('div');
-    roof.className = 'floor roof';
-    buildArea.appendChild(roof);
+  // حركة الطابق
+  moveInterval = setInterval(() => {
+    floorPosition += floorDirection * 1.5;
     
-    running = false;
-    addFloorBtn.disabled = true;
-    
-    if (best === 0 || floorCount > best) {
-      best = floorCount;
-      localStorage.setItem('houseBest', best);
-      bestEl.textContent = best;
+    // حدود الحركة (من 0 لـ 100 - عرض الطابق)
+    if (floorPosition > (100 - lastFloorWidth)) {
+      floorPosition = 100 - lastFloorWidth;
+      floorDirection = -1;
+    }
+    if (floorPosition < 0) {
+      floorPosition = 0;
+      floorDirection = 1;
     }
     
+    movingFloor.style.left = floorPosition + '%';
+  }, 16); // ~60 fps
+  
+  placeBtn.disabled = false;
+}
+
+// وضع الطابق
+function placeFloor() {
+  if (!running || !movingFloor) return;
+  
+  clearInterval(moveInterval);
+  placeBtn.disabled = true;
+  
+  // حساب الفرق بين مكان الطابق الجديد والطابق اللي تحته
+  let diff = Math.abs(floorPosition - lastFloorLeft);
+  
+  // لو الفرق كبير، اللعبة بتخلص
+  if (diff > (lastFloorWidth / 2)) {
+    // خسر
+    playSound('fail');
+    movingFloor.style.background = '#ef4444';
+    running = false;
+    
     setTimeout(() => {
-      playSound('win');
       overlay.style.display = 'flex';
       overlay.innerHTML = `
-        <div style="font-size:35px">🏠</div>
-        <h2>مبروك! بنيت المنزل!</h2>
+        <div style="font-size:35px">💥</div>
+        <h2>البناء وقع!</h2>
         <p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>
-        Ahmed TV بيقولك: إنت مهندس معمارى بجد!</p>
+        أعلى نتيجة: ${best}<br>
+        Ahmed TV بيقولك: حاول تاني، ركز في النص!</p>
         <button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>
       `;
       document.getElementById('againBtn').onclick = startGame;
@@ -284,26 +316,82 @@ function addFloor() {
     return;
   }
   
-  // إضافة الطابق قبل السقف
-  buildArea.insertBefore(floor, buildArea.firstChild);
+  // الطابق لزق صح
+  playSound('build');
+  
+  // نحوله لطابق ثابت
+  movingFloor.className = 'placed-floor';
+  movingFloor.style.left = floorPosition + '%'; // تثبيت المكان
+  movingFloor.style.bottom = (floorCount * 32) + 20 + 'px';
+  
+  // نحسب المكان الجديد للطابق اللي بعده
+  lastFloorLeft = floorPosition;
+  
+  // لو الطابق الجديد أوسع شوية، بنخليه يبقى فيه شباك
+  if (floorCount === 0) {
+    movingFloor.classList.add('door');
+  } else {
+    movingFloor.classList.add('window');
+  }
+  
+  floorCount++;
+  floorsEl.textContent = floorCount;
+  
+  // لو وصلنا لعدد طوابق كبير، نفوز
+  if (floorCount >= 10) {
+    running = false;
+    playSound('win');
+    
+    if (best === 0 || floorCount > best) {
+      best = floorCount;
+      localStorage.setItem('houseBest', best);
+      bestEl.textContent = best;
+    }
+    
+    // نحط السقف
+    let roof = document.createElement('div');
+    roof.className = 'placed-floor roof';
+    roof.style.bottom = (floorCount * 32) + 20 + 'px';
+    roof.style.left = (lastFloorLeft + (lastFloorWidth - 65) / 2) + '%'; // في النص
+    buildArea.appendChild(roof);
+    
+    setTimeout(() => {
+      overlay.style.display = 'flex';
+      overlay.innerHTML = `
+        <div style="font-size:35px">🏠</div>
+        <h2>مبروك! بنيت المنزل!</h2>
+        <p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>
+        Ahmed TV بيقولك: إنت مهندس معماري!</p>
+        <button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>
+      `;
+      document.getElementById('againBtn').onclick = startGame;
+    }, 500);
+    
+    return;
+  }
+  
+  // نجهز الطابق اللي بعده
+  setTimeout(createMovingFloor, 300);
 }
 
 function startGame() {
   initAudio();
   overlay.style.display = 'none';
-  // إزالة كل الطوابق (ما عدا الأرضية)
-  while (buildArea.children.length > 1) {
-    buildArea.removeChild(buildArea.firstChild);
-  }
+  
+  // تنظيف الساحة
+  buildArea.innerHTML = '<div class="ground"></div>';
   
   floorCount = 0;
   floorsEl.textContent = 0;
-  addFloorBtn.disabled = false;
+  lastFloorLeft = 0;
+  lastFloorWidth = baseFloorWidth;
   running = true;
+  
+  // نبدأ الطابق الأول
+  createMovingFloor();
 }
 
-addFloorBtn.onclick = addFloor;
-resetBtn.onclick = startGame;
+placeBtn.onclick = placeFloor;
 startBtn.onclick = startGame;
 
 document.body.addEventListener('touchstart', initAudio, { once: true });
