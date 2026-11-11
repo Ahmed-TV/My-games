@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ahmed TV - تحدي نجوم مصر 80</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',Tahoma,system-ui;min-height:100vh;min-height:100dvh;display:flex;justify-content:center;align-items:flex-start;padding:10px;overflow-y:auto;overflow-x:hidden}
+.container{width:100%;max-width:680px;background:#111;border-radius:24px;border:2px solid #222;overflow:visible;margin:0 auto;box-shadow:0 10px 40px rgba(0,0,0,0.8);position:relative;}
+.header{background:linear-gradient(135deg,#8FFF00,#5cb71a 60%,#4CAF50);padding:22px 16px;text-align:center;border-bottom:4px solid #000;border-radius:22px 22px 0 0}
+.logo{width:80px;height:80px;margin:0 auto 10px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #fff;color:#7ED321;font-weight:900;font-size:16px;line-height:1.1;box-shadow:0 0 20px rgba(0,0,0,0.5)}
+.main-title{color:#000;font-weight:900;font-size:24px;letter-spacing:1px}
+.sub-title{color:#111;font-weight:800;font-size:15px;margin-top:8px;background:rgba(255,255,255,0.4);display:inline-block;padding:6px 14px;border-radius:20px}
+.progress{padding:14px 18px;background:#1a1a1a;display:flex;justify-content:space-between;font-size:18px;color:#7ED321;font-weight:900;border-bottom:2px solid #222}
+.bar{height:12px;background:#333;margin:0 18px;border-radius:6px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,#7ED321,#5cb71a);width:0%;transition:.4s;border-radius:6px}
+
+.card{padding:20px 16px}
+
+.fifa-card{background:linear-gradient(145deg, #1a1a1a, #0a0a0a);width:100%;border-radius:20px;border:3px solid #333;position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:inset 0 0 40px rgba(0,0,0,0.8);margin-bottom:20px}
+.fifa-top{background:linear-gradient(90deg, transparent, rgba(126,211,33,0.2), transparent);padding:15px 20px;display:flex;justify-content:space-between;align-items:flex-start}
+.fifa-num{font-size:70px;font-weight:900;color:#7ED321;line-height:1;text-shadow:0 0 30px rgba(126,211,33,0.5)}
+.fifa-pos{background:#7ED321;color:#000;padding:6px 16px;border-radius:12px;font-size:16px;font-weight:900;box-shadow:0 4px 10px rgba(0,0,0,0.3)}
+.fifa-name{text-align:center;font-size:28px;font-weight:900;color:#fff;padding:0 20px;margin-bottom:15px;letter-spacing:2px;border-bottom:2px solid #333;padding-bottom:15px;transition:0.3s}
+.fifa-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 20px}
+.stat{display:flex;justify-content:space-between;background:#222;padding:10px 15px;border-radius:10px;font-size:16px;font-weight:800;border:1px solid #333}
+.stat span:first-child{color:#aaa}
+.stat span:last-child{color:#7ED321}
+
+.hints{display:flex;gap:8px;margin-top:10px}
+.hbtn{flex:1;background:#1e1e1e;border:2px solid #333;border-radius:12px;padding:14px 4px;font-size:14px;font-weight:900;color:#aaa;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.hbtn:not(:disabled):hover{background:#2a2a2a;color:#fff;border-color:#7ED321}
+.hbtn:disabled{opacity:0.3}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.opt{background:#1e1e1e;border:2px solid #333;border-radius:14px;padding:18px 8px;text-align:center;font-size:18px;font-weight:900;color:#fff;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.opt:hover{border-color:#7ED321;background:#2a2a2a}
+.opt:active{transform:scale(0.96)}
+.opt:disabled{opacity:0.3;cursor:default}
+
+.skipBtn{width:100%;margin-top:12px;background:#333;border:2px solid #444;border-radius:14px;padding:16px;font-size:16px;font-weight:900;color:#fff;cursor:pointer;font-family:inherit;transition:background 0.2s}
+.skipBtn:hover{background:#444}
+
+.hintBox{text-align:center;margin-top:16px;color:#7ED321;font-weight:900;font-size:16px;min-height:40px;background:rgba(126,211,33,0.1);border-radius:12px;padding:10px;transition:0.3s;border:1px dashed #444;display:flex;align-items:center;justify-content:center}
+.hintBox:empty{background:transparent;border:none}
+
+.footer{text-align:center;padding:12px;font-size:12px;color:#666;font-weight:600}
+
+.end-screen{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:22px;z-index:100;text-align:center;padding:20px}
+.end-screen h2{color:#7ED321;font-size:36px;margin-bottom:15px}
+.end-screen p{font-size:22px;font-weight:800;margin-bottom:30px;line-height:1.6}
+.end-btn{background:#7ED321;color:#000;border:none;padding:16px 40px;border-radius:30px;font-size:22px;font-weight:900;font-family:inherit;cursor:pointer}
+
+@keyframes shake{0%, 100% { transform: translateX(0); }25% { transform: translateX(-10px); }50% { transform: translateX(10px); }75% { transform: translateX(-10px); }}
+.shake{animation:shake 0.4s ease-in-out}
+@keyframes pop{0% { transform: scale(1); }50% { transform: scale(1.02); }100% { transform: scale(1); }}
+.pop{animation:pop 0.3s ease-in-out}
+
+@media(max-width:500px){
+  .header{padding:16px 12px}
+  .logo{width:70px;height:70px;font-size:14px}
+  .main-title{font-size:20px}
+  .sub-title{font-size:13px}
+  .fifa-num{font-size:60px}
+  .fifa-name{font-size:22px}
+  .stat{font-size:14px;padding:8px 10px}
+  .opt{font-size:16px;padding:16px 6px}
+  .hbtn{font-size:12px;padding:12px 2px}
+  .skipBtn{font-size:15px;padding:14px}
+  .hintBox{font-size:14px}
+}
+@media(max-width:380px){
+  .fifa-num{font-size:50px}
+  .fifa-name{font-size:20px}
+  .opt{font-size:15px;padding:14px 4px}
+}
+</style>
+</head>
+<body>
+<div class="container" id="mainContainer">
+  <div class="header">
+    <div class="logo">TV<br>AHMED</div>
+    <div class="main-title">Ahmed TV - تحدي نجوم مصر 🇪🇬⚽</div>
+    <div class="sub-title">حلل شخصية اللاعب من أرقامه ومواصفاته</div>
+  </div>
+  
+  <div class="progress">
+    <span id="qn">1 / 80</span>
+    <span id="sc">0 نقطة</span>
+  </div>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+
+  <div class="card">
+    <div style="text-align:center;margin-bottom:12px;">
+      <span style="background:#222;color:#7ED321;padding:6px 16px;border-radius:15px;font-size:14px;font-weight:900;border:1px solid #444">⚽ بطاقة اللاعب</span>
+    </div>
+    
+    <div class="fifa-card" id="fifaCard">
+      <div class="fifa-top">
+        <div class="fifa-num" id="pNum">10</div>
+        <div class="fifa-pos" id="pPos">مهاجم</div>
+      </div>
+      <div class="fifa-name" id="pName">؟ ؟ ؟</div>
+      <div class="fifa-stats">
+        <div class="stat"><span>السرعة</span><span id="pSpd">95</span></div>
+        <div class="stat"><span>التسديد</span><span id="pSho">94</span></div>
+        <div class="stat"><span>التمرير</span><span id="pPas">88</span></div>
+        <div class="stat"><span>المهارة</span><span id="pDri">96</span></div>
+      </div>
+    </div>
+
+    <div class="hints">
+      <button class="hbtn" id="h1" onclick="hintClear()">خمن أكتر 🔍 -5</button>
+      <button class="hbtn" id="h2" onclick="hintText()">تلميح 💡 -5</button>
+      <button class="hbtn" id="h3" onclick="hintDel()">احذف 2 ❌ -10</button>
+    </div>
+    
+    <div class="hintBox" id="hintBox"></div>
+    
+    <div class="opts" id="opts"></div>
+    
+    <button class="skipBtn" onclick="skipLevel()">تخطي ⏭️</button>
+  </div>
+
+  <div class="footer">© Ahmed TV - 80 سؤال عن نجوم الكرة المصرية</div>
+</div>
+
+<script>
+// 40 لاعب أساسي
+var baseLevels = [
+  {num:'10', pos:'مهاجم', name:'محمد صلاح', opts:['محمد صلاح','تريزيجيه','مرموش','النني'], hint:'الملك المصري - ليفربول', extra:'إنجلترا 🇬🇧 - ليفربول - أفضل لاعب أفريقي', spd:95, sho:94, pas:88, dri:96},
+  {num:'1', pos:'حارس مرمى', name:'عصام الحضري', opts:['عصام الحضري','الشناوي','أبو جبل','شوبير'], hint:'السد العالي - أكبر لاعب سناً في كأس العالم', extra:'مصر 🇪🇬 - اعتزل دولياً - أسطورة', spd:60, sho:20, pas:50, dri:30},
+  {num:'17', pos:'وسط', name:'محمد النني', opts:['محمد النني','طارق حامد','السولية','حمدي فتحي'], hint:'وسط أرسنال السابق - الجزيرة الإماراتي', extra:'إنجلترا 🇬🇧 سابقاً - الجزيرة حالياً', spd:70, sho:65, pas:80, dri:75},
+  {num:'22', pos:'صانع ألعاب', name:'أبو تريكة', opts:['أبو تريكة','بركات','متعب','الخطيب'], hint:'الماجيكو - 22 - أسطورة الأهلي', extra:'مصر 🇪🇬 - اعتزل - محلل رياضي', spd:75, sho:85, pas:92, dri:90},
+  {num:'1', pos:'حارس مرمى', name:'محمد الشناوي', opts:['محمد الشناوي','الحضري','أبو جبل','صبحي'], hint:'حارس الأهلي الأساسي والمنتخب', extra:'مصر 🇪🇬 - الأهلي - رد فعل سريع', spd:65, sho:25, pas:60, dri:40},
+  {num:'9', pos:'مهاجم', name:'حسام حسن', opts:['حسام حسن','إبراهيم حسن','الخطيب','أحمد حسن'], hint:'العميد - هداف تاريخي - توأم إبراهيم', extra:'مصر 🇪🇬 - الاتحاد السكندري - مدير فني', spd:80, sho:90, pas:75, dri:82},
+  {num:'11', pos:'وسط', name:'أحمد حسن', opts:['أحمد حسن','حسام حسن','الحضري','أبو تريكة'], hint:'عميد لاعبي العالم 184 مباراة', extra:'مصر 🇪🇬 - اعتزل - رقم قياسي عالمي', spd:78, sho:88, pas:85, dri:80},
+  {num:'21', pos:'جناح', name:'تريزيجيه', opts:['تريزيجيه','صلاح','مرموش','صبحي'], hint:'محمود حسن - قادش - طرابزون', extra:'تركيا 🇹🇷 - طرابزون - جناح سريع', spd:88, sho:80, pas:78, dri:85},
+  {num:'7', pos:'جناح', name:'عمر مرموش', opts:['عمر مرموش','صلاح','مصطفى محمد','تريزيجيه'], hint:'مان سيتي - سريع جداً', extra:'إنجلترا 🇬🇧 - مان سيتي - نجم صاعد', spd:92, sho:85, pas:80, dri:88},
+  {num:'19', pos:'مهاجم', name:'مصطفى محمد', opts:['مصطفى محمد','مرموش','صلاح','متعب'], hint:'الأناكوندا - نانت الفرنسي', extra:'فرنسا 🇫🇷 - نانت - مهاجم قوي', spd:82, sho:84, pas:70, dri:78},
+  {num:'10', pos:'مهاجم', name:'محمود الخطيب', opts:['محمود الخطيب','أبو تريكة','حسن شحاتة','صالح سليم'], hint:'بيبو - أسطورة الأهلي - رئيس النادي', extra:'مصر 🇪🇬 - اعتزل - رئيس الأهلي', spd:85, sho:92, pas:80, dri:88},
+  {num:'10', pos:'صانع ألعاب', name:'شيكابالا', opts:['شيكابالا','زيزو','إمام عاشور','طارق حامد'], hint:'الأباتشي - الزمالك - مهارات', extra:'مصر 🇪🇬 - الزمالك - مهارات خارقة', spd:75, sho:80, pas:85, dri:94},
+  {num:'7', pos:'جناح', name:'زيزو', opts:['زيزو','شيكابالا','إمام عاشور','بن شرقي'], hint:'أحمد سيد زيزو - الزمالك - أهداف', extra:'مصر 🇪🇬 - الزمالك - أهداف من ركلات', spd:86, sho:82, pas:84, dri:87},
+  {num:'8', pos:'وسط', name:'إمام عاشور', opts:['إمام عاشور','السولية','أفشة','زيزو'], hint:'الأهلي - وسط هجومي', extra:'مصر 🇪🇬 - الأهلي - تسديدات قوية', spd:78, sho:85, pas:82, dri:84},
+  {num:'3', pos:'وسط مدافع', name:'طارق حامد', opts:['طارق حامد','النني','السولية','إمام عاشور'], hint:'الزمالك - مقاتل - وسط دفاعي', extra:'مصر 🇪🇬 - الاتحاد - تدخلات قوية', spd:70, sho:60, pas:75, dri:72},
+  {num:'17', pos:'وسط', name:'عمرو السولية', opts:['عمرو السولية','حمدي فتحي','إمام عاشور','طارق حامد'], hint:'الأهلي - وسط - أهداف حاسمة', extra:'مصر 🇪🇬 - الأهلي - تسديدات من بعيد', spd:72, sho:80, pas:82, dri:76},
+  {num:'14', pos:'جناح', name:'حسين الشحات', opts:['حسين الشحات','بيرسي تاو','أفشة','معلول'], hint:'الأهلي - جناح أيمن - سريع', extra:'الإمارات 🇦🇪 سابقاً - الأهلي حالياً', spd:88, sho:78, pas:80, dri:86},
+  {num:'12', pos:'ظهير أيسر', name:'علي معلول', opts:['علي معلول','التونسي','أكرم توفيق','هاني'], hint:'الأهلي - ظهير تونسي - عرضيات', extra:'تونس 🇹🇳 - الأهلي - أفضل ظهير', spd:84, sho:70, pas:88, dri:85},
+  {num:'23', pos:'جناح', name:'بيرسي تاو', opts:['بيرسي تاو','الشحات','معلول','السولية'], hint:'الأهلي - جنوب أفريقيا - سرعة', extra:'جنوب أفريقيا 🇿🇦 - قطر - الأهلي سابقاً', spd:90, sho:80, pas:78, dri:86},
+  {num:'20', pos:'مدافع', name:'محمد عبد المنعم', opts:['محمد عبد المنعم','ياسر إبراهيم','رامي ربيعة','حسام عبد المجيد'], hint:'مدافع الأهلي والمنتخب', extra:'مصر 🇪🇬 - الأهلي - قوي في الهواء', spd:75, sho:40, pas:70, dri:60},
+  {num:'13', pos:'ظهير أيسر', name:'أحمد فتوح', opts:['أحمد فتوح','كريم حافظ','طارق علاء','محمد هاني'], hint:'ظهير أيسر الزمالك', extra:'مصر 🇪🇬 - الزمالك - سريع', spd:85, sho:65, pas:78, dri:80},
+  {num:'8', pos:'وسط', name:'مروان عطية', opts:['مروان عطية','مهند لاشين','دونجا','محمود صابر'], hint:'وسط الأهلي - تمرير', extra:'مصر 🇪🇬 - الأهلي - تمريرات دقيقة', spd:74, sho:68, pas:85, dri:78},
+  {num:'30', pos:'ظهير أيمن', name:'محمد هاني', opts:['محمد هاني','طارق علاء','كريم حافظ','أحمد فتوح'], hint:'ظهير أيمن الأهلي', extra:'مصر 🇪🇬 - الأهلي - خبرة', spd:80, sho:60, pas:82, dri:78},
+  {num:'4', pos:'مدافع', name:'رامي ربيعة', opts:['رامي ربيعة','عبد المنعم','ياسر إبراهيم','حسام عبد المجيد'], hint:'مدافع الأهلي - رأسيات', extra:'مصر 🇪🇬 - الأهلي - قائد', spd:70, sho:45, pas:65, dri:55},
+  {num:'11', pos:'جناح', name:'محمد بركات', opts:['بركات','أبو تريكة','متعب','الخطيب'], hint:'بركات - جناح الأهلي - ملك البطولات', extra:'مصر 🇪🇬 - اعتزل - نجم أهلاوي', spd:88, sho:80, pas:78, dri:85},
+  {num:'9', pos:'مهاجم', name:'عماد متعب', opts:['عماد متعب','بركات','أبو تريكة','الخطيب'], hint:'متعب - مهاجم الأهلي - أهداف', extra:'مصر 🇪🇬 - اعتزل - رأس حربة', spd:78, sho:88, pas:70, dri:80},
+  {num:'15', pos:'وسط', name:'حسن شحاتة', opts:['حسن شحاتة','الخطيب','أبو تريكة','بركات'], hint:'المعلم - مدرب المنتخب - 3 بطولات', extra:'مصر 🇪🇬 - اعتزل - مدرب أسطوري', spd:65, sho:70, pas:85, dri:75},
+  {num:'10', pos:'مهاجم', name:'صالح سليم', opts:['صالح سليم','الخطيب','أبو تريكة','شحاتة'], hint:'المايسترو - أسطورة الأهلي القديم', extra:'مصر 🇪🇬 - رحل - رئيس أسبق', spd:80, sho:85, pas:90, dri:88},
+  {num:'6', pos:'وسط مدافع', name:'حمدي فتحي', opts:['حمدي فتحي','السولية','النني','طارق حامد'], hint:'وسط دفاعي - الوكرة القطري', extra:'قطر 🇶🇦 - الوكرة - قوة بدنية', spd:76, sho:72, pas:80, dri:74},
+  {num:'1', pos:'حارس مرمى', name:'أحمد شوبير', opts:['أحمد شوبير','الحضري','الشناوي','أبو جبل'], hint:'حارس الأهلي والمنتخب سابقاً', extra:'مصر 🇪🇬 - اعتزل - إعلامي', spd:60, sho:20, pas:55, dri:35},
+  {num:'13', pos:'ظهير', name:'أحمد فتحي', opts:['أحمد فتحي','معلول','هاني','فتوح'], hint:'ظهير أيمن - المنتخب - الأهلي', extra:'مصر 🇪🇬 - بيراميدز - خبرة', spd:78, sho:60, pas:78, dri:72},
+  {num:'2', pos:'ظهير أيمن', name:'أحمد المحمدي', opts:['أحمد المحمدي','هاني','فتوح','معلول'], hint:'المحمدي - ظهير المنتخب - أستون فيلا', extra:'إنجلترا 🇬🇧 - أستون فيلا - خبرة', spd:82, sho:65, pas:80, dri:76},
+  {num:'18', pos:'وسط', name:'أفشة', opts:['أفشة','السولية','إمام عاشور','طارق حامد'], hint:'أفشة - الأهلي - وسط', extra:'مصر 🇪🇬 - الخليج - صناعة ألعاب', spd:75, sho:76, pas:86, dri:82},
+  {num:'7', pos:'جناح', name:'محمود كهربا', opts:['محمود كهربا','زيزو','شيكابالا','أفشة'], hint:'كهربا - الأهلي - جناح', extra:'مصر 🇪🇬 - الأهلي - سرعة', spd:86, sho:80, pas:74, dri:84},
+  {num:'10', pos:'مهاجم', name:'محمد شريف', opts:['محمد شريف','كهربا','حسام حسن','متعب'], hint:'شريف - مهاجم الأهلي', extra:'مصر 🇪🇬 - الخليج - أهداف', spd:80, sho:82, pas:70, dri:76},
+  {num:'9', pos:'مهاجم', name:'ناصر ماهر', opts:['ناصر ماهر','كهربا','شريف','السولية'], hint:'ناصر ماهر - الزمالك - مهاجم', extra:'مصر 🇪🇬 - الزمالك - أهداف', spd:78, sho:80, pas:72, dri:75},
+  {num:'17', pos:'وسط', name:'نبيل عماد دونجا', opts:['دونجا','السولية','مروان عطية','طارق حامد'], hint:'دونجا - الزمالك - وسط', extra:'مصر 🇪🇬 - الزمالك - وسط', spd:74, sho:76, pas:80, dri:78},
+  {num:'5', pos:'مدافع', name:'ياسر إبراهيم', opts:['ياسر إبراهيم','عبد المنعم','رامي ربيعة','حسام عبد المجيد'], hint:'مدافع الأهلي - قوي', extra:'مصر 🇪🇬 - الأهلي - دفاع صلب', spd:72, sho:40, pas:68, dri:58},
+  {num:'2', pos:'ظهير أيسر', name:'كريم حافظ', opts:['كريم حافظ','فتوح','هاني','طارق علاء'], hint:'كريم حافظ - الزمالك - ظهير', extra:'مصر 🇪🇬 - الزمالك - دفاع', spd:82, sho:60, pas:74, dri:78},
+  {num:'20', pos:'وسط', name:'حسام غالي', opts:['حسام غالي','حسن شحاتة','مروان عطية','دونجا'], hint:'كابتن الأهلي السابق - وسط', extra:'مصر 🇪🇬 - اعتزل - قائد', spd:72, sho:75, pas:85, dri:80},
+  {num:'9', pos:'مهاجم', name:'عمرو زكي', opts:['عمرو زكي','ميدو','حسام حسن','متعب'], hint:'الرجل العنكبوت - الزمالك والمنتخب', extra:'إنجلترا 🇬🇧 - اعتزل - رأس حربة', spd:78, sho:85, pas:65, dri:72}
+];
+
+// دالة الخلط العشوائي
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+
+// توليد 80 سؤال من غير تكرار متتالي
+var levels = [];
+var pool = [];
+
+for (var i = 0; i < 80; i++) {
+  if (pool.length === 0) {
+    pool = shuffle(baseLevels.slice());
+  }
+  levels.push(pool.pop());
+}
+
+var idx = 0;
+var score = 0;
+var currentAnswer = "";
+
+function render() {
+  var cur = levels[idx];
+  currentAnswer = cur.name;
+
+  document.getElementById('qn').textContent = (idx + 1) + ' / ' + levels.length;
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('fill').style.width = (idx / levels.length * 100) + '%';
+  
+  document.getElementById('pNum').textContent = cur.num;
+  document.getElementById('pPos').textContent = cur.pos;
+  document.getElementById('pName').textContent = '؟ ؟ ؟';
+  document.getElementById('pName').style.color = '#fff';
+  document.getElementById('pSpd').textContent = cur.spd;
+  document.getElementById('pSho').textContent = cur.sho;
+  document.getElementById('pPas').textContent = cur.pas;
+  document.getElementById('pDri').textContent = cur.dri;
+  
+  document.getElementById('fifaCard').classList.remove('shake');
+  document.getElementById('fifaCard').classList.add('pop');
+  setTimeout(function(){ document.getElementById('fifaCard').classList.remove('pop'); }, 300);
+
+  document.getElementById('hintBox').textContent = '';
+  document.getElementById('h1').disabled = false;
+  document.getElementById('h2').disabled = false;
+  document.getElementById('h3').disabled = false;
+
+  var optsEl = document.getElementById('opts');
+  optsEl.innerHTML = '';
+  var opts = shuffle(cur.opts.slice());
+  
+  opts.forEach(function(t) {
+    var b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = t;
+    b.onclick = function() { handleAnswer(t, b); };
+    optsEl.appendChild(b);
+  });
+}
+
+function handleAnswer(selected, btn) {
+  var allBtns = document.querySelectorAll('.opt');
+  allBtns.forEach(function(b) { b.disabled = true; });
+
+  if (selected === currentAnswer) {
+    score += 20;
+    document.getElementById('sc').textContent = score + ' نقطة';
+    btn.style.background = '#7ED321';
+    btn.style.color = '#000';
+    btn.style.borderColor = '#fff';
+    document.getElementById('hintBox').textContent = '✅ إجابة صحيحة! +20';
+    document.getElementById('pName').textContent = currentAnswer;
+    document.getElementById('pName').style.color = '#7ED321';
+    
+    setTimeout(function() {
+      idx++;
+      if (idx < levels.length) render();
+      else endGame();
+    }, 1000);
+  } else {
+    btn.style.background = '#ff4444';
+    btn.style.color = '#fff';
+    btn.style.borderColor = '#ff4444';
+    
+    allBtns.forEach(function(b) {
+      if (b.textContent === currentAnswer) {
+        b.style.background = '#7ED321';
+        b.style.color = '#000';
+        b.style.borderColor = '#fff';
+      }
+    });
+    
+    document.getElementById('hintBox').textContent = '❌ خطأ! الصح: ' + currentAnswer;
+    document.getElementById('pName').textContent = currentAnswer;
+    document.getElementById('pName').style.color = '#ff4444';
+    document.getElementById('fifaCard').classList.add('shake');
+    
+    setTimeout(function() {
+      idx++;
+      if (idx < levels.length) render();
+      else endGame();
+    }, 2000);
+  }
+}
+
+function hintClear() {
+  if (document.getElementById('h1').disabled) return;
+  score = Math.max(0, score - 5);
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('h1').disabled = true;
+  document.getElementById('hintBox').textContent = '🔍 ' + levels[idx].extra;
+}
+
+function hintText() {
+  if (document.getElementById('h2').disabled) return;
+  score = Math.max(0, score - 5);
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('h2').disabled = true;
+  document.getElementById('hintBox').textContent = '💡 ' + levels[idx].hint;
+}
+
+function hintDel() {
+  if (document.getElementById('h3').disabled) return;
+  score = Math.max(0, score - 10);
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('h3').disabled = true;
+  
+  var allBtns = Array.from(document.querySelectorAll('.opt'));
+  var removed = 0;
+  
+  allBtns.forEach(function(b) {
+    if (b.textContent !== currentAnswer && removed < 2) {
+      b.disabled = true;
+      b.style.opacity = '0.2';
+      removed++;
+    }
+  });
+  
+  document.getElementById('hintBox').textContent = '❌ تم حذف إجابتين خاطئتين';
+}
+
+function skipLevel() {
+  idx++;
+  if (idx < levels.length) render();
+  else endGame();
+}
+
+function endGame() {
+  var container = document.getElementById('mainContainer');
+  var endScreen = document.createElement('div');
+  endScreen.className = 'end-screen';
+  endScreen.innerHTML = `
+    <h2>🏆 انتهت اللعبة!</h2>
+    <p>لقد جمعت <b>${score}</b> نقطة<br>من أصل ${levels.length * 20} نقطة</p>
+    <button class="end-btn" onclick="location.reload()">العب تاني 🔄</button>
+  `;
+  container.appendChild(endScreen);
+}
+
+render();
+</script>
+</body>
+</html>
