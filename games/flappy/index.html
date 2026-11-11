@@ -61,13 +61,16 @@
   #overlay {
     position: absolute; inset: 0; background: rgba(0,0,0,.75);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 8px;
+    text-align: center; padding: 15px; gap: 8px; pointer-events: none; /* عشان نمنع تداخل الزراير */
   }
+  #overlay > * { pointer-events: auto; } /* نرجع الزراير تشتغل */
+  
   #overlay h2 { font-size: 22px; }
   #overlay p { line-height: 1.6; font-size: 13px; color: #e2e8f0; }
   .btn-start {
     background: #f59e0b; border: none; padding: 12px 25px;
     border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 10px;
+    color: #000;
   }
 
   .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; }
@@ -97,8 +100,7 @@
       <h2>لعبة الطائر</h2>
       <p>
         <b>Ahmed TV</b> - طير بين الأنابيب!<br>
-        دوس على الشاشة عشان تطير<br>
-        اوعى تخبط في الأنابيب!
+        دوس على الشاشة عشان تطير
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
     </div>
@@ -119,6 +121,7 @@ const soundBtn = document.getElementById('soundBtn');
 
 let W = 0, H = 0;
 let running = false;
+let gameStarted = false;
 let score = 0;
 let best = parseInt(localStorage.getItem('flappyBest') || '0');
 bestEl.textContent = best;
@@ -126,10 +129,7 @@ bestEl.textContent = best;
 let soundOn = true;
 let audioCtx = null;
 
-// Bird variables
 let bird = { x: 50, y: 200, vy: 0, gravity: 0.5, jump: -8, radius: 15, rotation: 0 };
-
-// Pipes
 let pipes = [];
 const PIPE_WIDTH = 60;
 const GAP = 150;
@@ -186,7 +186,10 @@ function playSound(type) {
   }
 }
 
-function resetGame() {
+// الدالة دي هي اللي بتشغل اللعبة
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
   bird.y = H / 2;
   bird.vy = 0;
   bird.rotation = 0;
@@ -195,7 +198,8 @@ function resetGame() {
   pipes = [];
   pipeTimer = 0;
   running = true;
-  overlay.style.display = 'none';
+  gameStarted = true;
+  loop();
 }
 
 function jump() {
@@ -219,11 +223,9 @@ function spawnPipe() {
 function update() {
   if (!running) return;
 
-  // Bird physics
   bird.vy += bird.gravity;
   bird.y += bird.vy;
 
-  // Rotation
   if (bird.vy < 0) {
     bird.rotation = -0.5;
   } else {
@@ -231,7 +233,6 @@ function update() {
     if (bird.rotation > 1.5) bird.rotation = 1.5;
   }
 
-  // Floor & Ceiling
   if (bird.y + bird.radius > H) {
     bird.y = H - bird.radius;
     return endGame();
@@ -241,9 +242,8 @@ function update() {
     bird.vy = 0;
   }
 
-  // Pipes movement
   pipeTimer++;
-  if (pipeTimer > 90) { // Spawn rate
+  if (pipeTimer > 90) { 
     spawnPipe();
     pipeTimer = 0;
   }
@@ -252,7 +252,6 @@ function update() {
     let p = pipes[i];
     p.x -= PIPE_SPEED;
 
-    // Score
     if (!p.passed && p.x + PIPE_WIDTH < bird.x) {
       p.passed = true;
       score++;
@@ -260,14 +259,12 @@ function update() {
       playSound('score');
     }
 
-    // Collision
     if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + PIPE_WIDTH) {
       if (bird.y - bird.radius < p.top || bird.y + bird.radius > H - p.bottom) {
         return endGame();
       }
     }
 
-    // Remove
     if (p.x + PIPE_WIDTH < 0) {
       pipes.splice(i, 1);
     }
@@ -275,51 +272,41 @@ function update() {
 }
 
 function draw() {
-  // Background
   const grad = ctx.createLinearGradient(0, 0, 0, H);
   grad.addColorStop(0, '#38bdf8');
   grad.addColorStop(1, '#0ea5e9');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
-  // Clouds (decor)
   ctx.fillStyle = 'rgba(255,255,255,0.4)';
   ctx.beginPath(); ctx.arc(W*0.2, H*0.2, 30, 0, Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(W*0.8, H*0.4, 40, 0, Math.PI*2); ctx.fill();
   
-  // Ground
   ctx.fillStyle = '#22c55e';
   ctx.fillRect(0, H - 20, W, 20);
   ctx.fillStyle = '#16a34a';
   ctx.fillRect(0, H - 20, W, 5);
 
-  // Pipes
   pipes.forEach(p => {
     ctx.fillStyle = '#22c55e';
     ctx.strokeStyle = '#166534';
     ctx.lineWidth = 3;
     
-    // Top pipe
     ctx.fillRect(p.x, 0, PIPE_WIDTH, p.top);
     ctx.strokeRect(p.x, -3, PIPE_WIDTH, p.top + 3);
-    // Top cap
     ctx.fillRect(p.x - 5, p.top - 20, PIPE_WIDTH + 10, 20);
     ctx.strokeRect(p.x - 5, p.top - 20, PIPE_WIDTH + 10, 20);
     
-    // Bottom pipe
     ctx.fillRect(p.x, H - p.bottom, PIPE_WIDTH, p.bottom);
     ctx.strokeRect(p.x, H - p.bottom, PIPE_WIDTH, p.bottom + 3);
-    // Bottom cap
     ctx.fillRect(p.x - 5, H - p.bottom, PIPE_WIDTH + 10, 20);
     ctx.strokeRect(p.x - 5, H - p.bottom, PIPE_WIDTH + 10, 20);
   });
 
-  // Bird
   ctx.save();
   ctx.translate(bird.x, bird.y);
   ctx.rotate(bird.rotation);
   
-  // Body
   ctx.fillStyle = '#facc15';
   ctx.strokeStyle = '#ca8a04';
   ctx.lineWidth = 2;
@@ -327,13 +314,11 @@ function draw() {
   ctx.arc(0, 0, bird.radius, 0, Math.PI*2);
   ctx.fill(); ctx.stroke();
   
-  // Eye
   ctx.fillStyle = '#fff';
   ctx.beginPath(); ctx.arc(bird.radius/2, -bird.radius/3, bird.radius/2.5, 0, Math.PI*2); ctx.fill();
   ctx.fillStyle = '#000';
   ctx.beginPath(); ctx.arc(bird.radius/2 + 2, -bird.radius/3, bird.radius/5, 0, Math.PI*2); ctx.fill();
   
-  // Beak
   ctx.fillStyle = '#f97316';
   ctx.beginPath();
   ctx.moveTo(bird.radius - 2, 0);
@@ -370,17 +355,24 @@ function endGame() {
     Ahmed TV بيقولك: حاول تاني!</p>
     <button class="btn-start" id="againBtn">🔄 العب تاني</button>
   `;
-  document.getElementById('againBtn').onclick = resetGame;
+  document.getElementById('againBtn').onclick = startGame;
 }
 
+// هنا السر: الاستماع لأي ضغطة على الشاشة أو الكيبورد
 function handleInput(e) {
-  if (e) e.preventDefault();
-  jump();
+  if(e) e.preventDefault();
+  if (running) {
+    jump();
+  }
 }
 
 canvas.addEventListener('mousedown', handleInput);
 canvas.addEventListener('touchstart', handleInput, { passive: false });
-startBtn.onclick = resetGame;
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') handleInput(e);
+});
+
+startBtn.onclick = startGame;
 
 soundBtn.onclick = function() {
   soundOn = !soundOn;
@@ -392,10 +384,9 @@ soundBtn.onclick = function() {
 
 window.addEventListener('resize', () => {
   resize();
-  if (!running) draw();
+  if (!running && !gameStarted) draw();
 });
 
-// Start
 resize();
 draw();
 </script>
