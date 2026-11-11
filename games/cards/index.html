@@ -89,10 +89,13 @@
     border: 2px solid #991b1b;
   }
 
+  /* شكل ظهر الكارت - مربع بسيط جداً */
   .card .back-design {
-    width: 80%; height: 80%; border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 5px; display: flex; justify-content: center; align-items: center;
-    font-size: 30px; color: rgba(255,255,255,0.3);
+    width: 80%; height: 80%; border: 3px solid rgba(255,255,255,0.4);
+    border-radius: 5px; 
+    display: flex; justify-content: center; align-items: center;
+    font-size: 20px; color: #fff; font-weight: bold;
+    background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
   }
 
   /* وجه الكارت */
@@ -104,6 +107,8 @@
     flex-direction: column; justify-content: space-between;
     padding: 5px;
   }
+  
+  /* ألوان الكروت */
   .card .front.red { color: #dc2626; }
   .card .front.black { color: #000; }
 
@@ -115,7 +120,7 @@
 
   /* عناصر الكارت الأمامي */
   .card .top-num { font-size: 18px; font-weight: bold; line-height: 1; }
-  .card .center-symbol { font-size: 35px; text-align: center; }
+  .card .center-symbol { font-size: 35px; text-align: center; font-weight: bold;}
   .card .bottom-num { font-size: 18px; font-weight: bold; line-height: 1; text-align: left; transform: rotate(180deg); }
 
   #overlay {
@@ -187,9 +192,9 @@ let best = parseInt(localStorage.getItem('cardBest') || '0');
 let audioCtx = null;
 bestEl.textContent = best;
 
-// قيم الكوتشينة الأصلية (هنستخدم حروف وأرقام بدون الرموز اللي بتتلخبط)
-const VALUES = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-// الألوان (أحمر وأسود)
+// قيم الكروت (حروف وأرقام واضحة جداً بدون رموز)
+const VALUES = ['A', 'B', 'C', 'D', '1', '2', '3', '4'];
+// الألوان
 const COLORS = ['red', 'black'];
 
 function initAudio() {
@@ -247,18 +252,14 @@ function createBoard() {
   movesEl.textContent = moves;
 
   let deck = [];
-  let allCards = [];
   
-  // هنعمل كروت من الأرقام والألوان
-  VALUES.forEach(val => {
-    COLORS.forEach(color => {
-      allCards.push({ val, color });
-    });
-  });
-  
-  shuffle(allCards);
-  // نختار 8 كروت مختلفة كأزواج
-  let selectedCards = allCards.slice(0, 8); 
+  // هنختار 8 كروت عشوائية، كل واحدة بلون
+  let selectedCards = [];
+  for (let i = 0; i < 8; i++) {
+      let val = VALUES[i];
+      let color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      selectedCards.push({ val, color });
+  }
 
   // نكررهم عشان نعمل 16 كارت (8 أزواج)
   deck = [...selectedCards, ...selectedCards];
@@ -272,7 +273,7 @@ function createBoard() {
     card.dataset.index = index;
     
     card.innerHTML = `
-      <div class="back-design">♠</div>
+      <div class="back-design">Ahmed TV</div>
       <div class="front ${cardData.color}">
         <div class="top-num">${cardData.val}</div>
         <div class="center-symbol">${cardData.val}</div>
