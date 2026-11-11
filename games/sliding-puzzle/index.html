@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>تجميع الصورة | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 60px; height: 60px; flex-shrink: 0;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6); 
+    border: 4px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff; line-height: 1;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+  .logo b { font-size: 12px; }
+  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 20px; line-height: 1.2; color: #facc15;}
+  h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 14px; color: #cbd5e1; margin-bottom: 5px; font-weight: bold;}
+  .names b { color: #facc15; font-size: 16px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0; flex-wrap: wrap; }
+  .stat {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 5px 15px; min-width: 80px; text-align: center;
+  }
+  .stat b { display: block; font-size: 16px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #1e293b; 
+    border: 4px solid #f59e0b; border-radius: 16px;
+    overflow: hidden;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.05);
+    font-size: 40px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  /* لوحة اللعب */
+  #board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    width: 90%; max-width: 360px;
+    aspect-ratio: 1/1;
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 4px;
+    z-index: 1;
+  }
+
+  .tile {
+    background-size: 300% 300%; /* 3x3 */
+    background-position: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    border: 2px solid transparent;
+  }
+  
+  .tile.selected {
+    border-color: #facc15;
+    box-shadow: 0 0 10px #facc15;
+    transform: scale(0.95);
+    z-index: 5;
+  }
+
+  .tile.empty {
+    background: #334155;
+    cursor: default;
+    border: 1px dashed #475569;
+  }
+
+  /* الأزرار */
+  .controls { display: flex; gap: 10px; margin-top: 15px; z-index: 1; }
+  .btn {
+    background: #f59e0b; color: #000; border: none; padding: 10px 20px;
+    border-radius: 10px; font-size: 14px; font-weight: 900; cursor: pointer;
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn.sec { background: #3b82f6; color: #fff; }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>تجميع الصورة<small>AHMED TV PUZZLE</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+
+    <div class="stats">
+      <div class="stat"><b id="moves">0</b><span>الحركات</span></div>
+      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    
+    <div id="board"></div>
+
+    <div class="controls">
+      <button class="btn sec" id="nextImgBtn">🖼️ صورة تانية</button>
+      <button class="btn" id="startBtn">🔄 إعادة</button>
+    </div>
+
+    <div id="overlay">
+      <h2>لعبة تجميع الصورة</h2>
+      <p>
+        <b>Ahmed TV</b> - رتب الصورة!<br>
+        دوس على مربع، ودوس على مربع تاني عشان تبدلهم
+      </p>
+      <button class="btn-start" id="startGameBtn">▶ ابدأ اللعب</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const boardEl = document.getElementById('board');
+const movesEl = document.getElementById('moves');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startGameBtn = document.getElementById('startGameBtn');
+const startBtn = document.getElementById('startBtn');
+const nextImgBtn = document.getElementById('nextImgBtn');
+
+let tiles = []; // [0,1,2,3,4,5,6,7,8]
+let selectedIndex = null;
+let moves = 0;
+let running = false;
+let audioCtx = null;
+let best = parseInt(localStorage.getItem('slidingBest') || '0');
+bestEl.textContent = best;
+let currentImageIndex = 0;
+
+// الصور (مرسومة بالكود CSS Gradients لتشتغل على كل الأجهزة)
+const IMAGES = [
+  // 1. الموناليزا (محاكاة بسيطة)
+  `radial-gradient(circle at 50% 30%, #d4a373 0%, #d4a373 15%, transparent 15%), 
+   radial-gradient(circle at 50% 45%, #8b5a2b 0%, #8b5a2b 30%, transparent 30%),
+   linear-gradient(to bottom, #4a4e69 0%, #4a4e69 40%, #9a8c98 40%, #9a8c98 100%)`,
+  
+  // 2. ليلة النجوم
+  `radial-gradient(circle at 70% 20%, #facc15 0%, #facc15 5%, transparent 5%),
+   radial-gradient(circle at 30% 40%, #facc15 0%, #facc15 3%, transparent 3%),
+   radial-gradient(circle at 80% 70%, #facc15 0%, #facc15 4%, transparent 4%),
+   linear-gradient(45deg, #1e3a8a 0%, #1e3a8a 40%, #0f172a 40%, #0f172a 100%)`,
+
+  // 3. عباد الشمس
+  `radial-gradient(circle at 50% 50%, #78350f 0%, #78350f 15%, transparent 15%),
+   radial-gradient(circle at 50% 50%, #eab308 0%, #eab308 30%, transparent 30%),
+   linear-gradient(to bottom, #38bdf8 0%, #38bdf8 60%, #22c55e 60%, #22c55e 100%)`,
+
+  // 4. برج إيفل
+  `linear-gradient(to right, transparent 45%, #475569 45%, #475569 55%, transparent 55%),
+   linear-gradient(to bottom, transparent 20%, #475569 20%, #475569 80%, transparent 80%),
+   linear-gradient(to bottom, #f472b6 0%, #f472b6 40%, #93c5fd 40%, #93c5fd 100%)`
+];
+
+const IMAGE_NAMES = ["الموناليزا", "ليلة النجوم", "عباد الشمس", "برج إيفل"];
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'click') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'swap') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'win') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+  }
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function renderBoard() {
+  boardEl.innerHTML = '';
+  const img = IMAGES[currentImageIndex];
+  
+  tiles.forEach((tileVal, i) => {
+    let tile = document.createElement('div');
+    tile.className = 'tile';
+    tile.dataset.index = i;
+    tile.dataset.val = tileVal;
+    
+    // حساب الخلفية للجزء ده
+    let col = tileVal % 3;
+    let row = Math.floor(tileVal / 3);
+    
+    // تعيين الخلفية
+    tile.style.background = img;
+    tile.style.backgroundSize = '300% 300%';
+    tile.style.backgroundPosition = `${col * 50}% ${row * 50}%`; // 50% بدل 100% للترتيب
+    
+    // إضافة رقم للتوضيح
+    let numSpan = document.createElement('span');
+    numSpan.style.position = 'absolute';
+    numSpan.style.top = '5px';
+    numSpan.style.right = '5px';
+    numSpan.style.color = 'rgba(255,255,255,0.7)';
+    numSpan.style.fontSize = '14px';
+    numSpan.style.fontWeight = 'bold';
+    numSpan.style.textShadow = '1px 1px 2px #000';
+    numSpan.textContent = tileVal + 1;
+    tile.appendChild(numSpan);
+
+    if (selectedIndex === i) tile.classList.add('selected');
+    
+    tile.onclick = () => handleTileClick(i);
+    boardEl.appendChild(tile);
+  });
+}
+
+function handleTileClick(index) {
+  if (!running) return;
+  
+  if (selectedIndex === null) {
+    // أول اختيار
+    selectedIndex = index;
+    renderBoard();
+    playSound('click');
+  } else if (selectedIndex === index) {
+    // إلغاء التحديد
+    selectedIndex = null;
+    renderBoard();
+  } else {
+    // تبديل
+    playSound('swap');
+    let temp = tiles[selectedIndex];
+    tiles[selectedIndex] = tiles[index];
+    tiles[index] = temp;
+    
+    moves++;
+    movesEl.textContent = moves;
+    
+    selectedIndex = null;
+    renderBoard();
+    checkWin();
+  }
+}
+
+function checkWin() {
+  let isWin = true;
+  for (let i = 0; i < 9; i++) {
+    if (tiles[i] !== i) { isWin = false; break; }
+  }
+  
+  if (isWin) {
+    running = false;
+    playSound('win');
+    if (best === 0 || moves < best) {
+      best = moves;
+      localStorage.setItem('slidingBest', best);
+      bestEl.textContent = best;
+    }
+    
+    setTimeout(() => {
+      overlay.style.display = 'flex';
+      overlay.innerHTML = `
+        <div style="font-size:35px">🏆</div>
+        <h2>مبروك! رتبت الصورة!</h2>
+        <p>خلصتها في <b style="color:#facc15;font-size:22px">${moves}</b> حركة<br>
+        الصورة كانت: <b>${IMAGE_NAMES[currentImageIndex]}</b><br>
+        أحمد TV بيقولك: إنت فنان!</p>
+        <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+      `;
+      document.getElementById('againBtn').onclick = () => startGame(currentImageIndex);
+    }, 500);
+  }
+}
+
+function startGame(imgIndex) {
+  initAudio();
+  overlay.style.display = 'none';
+  currentImageIndex = imgIndex !== undefined ? imgIndex : currentImageIndex;
+  moves = 0;
+  movesEl.textContent = moves;
+  selectedIndex = null;
+  running = true;
+  
+  // نبدأ بالصورة مرتبة
+  tiles = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  
+  // خلطها (مع التأكد إنها مش مرتبة بالصدفة)
+  do {
+    tiles = shuffle([...tiles]);
+  } while (tiles.every((val, i) => val === i)); // لو طلعت مرتبة، خلطها تاني
+  
+  renderBoard();
+}
+
+nextImgBtn.onclick = () => {
+  currentImageIndex = (currentImageIndex + 1) % IMAGES.length;
+  startGame(currentImageIndex);
+};
+
+startBtn.onclick = () => startGame(currentImageIndex);
+startGameBtn.onclick = () => startGame(0);
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
