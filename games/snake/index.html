@@ -93,7 +93,6 @@
     font-size: 14px;
   }
 
-  /* سكرين اللعب */
   .overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -153,7 +152,7 @@ let food = {};
 let dx = 0, dy = 0;
 let score = 0;
 let highScore = localStorage.getItem('snakeProHighScore') || 0;
-let speed = 150; // سرعة البداية (كل ما تقل، اللعبة تبقى أسرع)
+let speed = 250; // سرعة البداية أبطأ للأطفال (كل ما تقل، اللعبة تبقى أسرع)
 let gameLoop;
 let isPlaying = false;
 let changingDirection = false;
@@ -161,10 +160,16 @@ let changingDirection = false;
 highScoreEl.textContent = highScore;
 
 function startGame() {
-  snake = [{x: 10, y: 10}];
+  // بدء الثعبان بـ 4 مربعات عشان يبقى أطول
+  snake = [
+    {x: 10, y: 10},
+    {x: 9, y: 10},
+    {x: 8, y: 10},
+    {x: 7, y: 10}
+  ];
   dx = 0; dy = 0;
   score = 0;
-  speed = 150;
+  speed = 250; // تصفير السرعة عند البداية
   scoreEl.textContent = score;
   changingDirection = false;
   isPlaying = true;
@@ -189,31 +194,27 @@ function generateFood() {
 function drawGame() {
   if (!isPlaying) return;
   
-  // حركة الثعبان
   if (dx !== 0 || dy !== 0) {
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
     
-    // الاصطدام بالحوائط
     if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
       return endGame();
     }
     
-    // الاصطدام بنفسه
     if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
       return endGame();
     }
     
     snake.unshift(head);
     
-    // أكل التفاحة
     if (head.x === food.x && head.y === food.y) {
       score++;
       scoreEl.textContent = score;
       generateFood();
       
-      // تسريع اللعبة كل 5 نقاط
-      if (score % 5 === 0 && speed > 60) {
-        speed -= 10;
+      // تسريع اللعبة كل 10 نقاط (عشان تفضل سهلة فترة أطول)
+      if (score % 10 === 0 && speed > 100) {
+        speed -= 15;
         clearInterval(gameLoop);
         gameLoop = setInterval(drawGame, speed);
       }
@@ -250,13 +251,11 @@ function drawGame() {
     ctx.shadowBlur = isHead ? 15 : 0;
     ctx.shadowColor = '#00e5ff';
     
-    // شكل دائري للثعبان
     ctx.beginPath();
     ctx.roundRect(segment.x * gridSize + 1, segment.y * gridSize + 1, gridSize - 2, gridSize - 2, isHead ? 8 : 4);
     ctx.fill();
     ctx.shadowBlur = 0;
     
-    // عيون الثعبان
     if (isHead) {
       ctx.fillStyle = '#000';
       let eyeX1 = segment.x * gridSize + 5;
@@ -264,7 +263,6 @@ function drawGame() {
       let eyeX2 = segment.x * gridSize + 13;
       let eyeY2 = segment.y * gridSize + 5;
 
-      // تعديل مكان العيون حسب اتجاه الحركة
       if (dx === 1) { eyeX1 = segment.x * gridSize + 12; eyeX2 = segment.x * gridSize + 12; eyeY1 = segment.y * gridSize + 5; eyeY2 = segment.y * gridSize + 13; }
       else if (dx === -1) { eyeX1 = segment.x * gridSize + 5; eyeX2 = segment.x * gridSize + 5; eyeY1 = segment.y * gridSize + 5; eyeY2 = segment.y * gridSize + 13; }
       else if (dy === 1) { eyeX1 = segment.x * gridSize + 5; eyeX2 = segment.x * gridSize + 13; eyeY1 = segment.y * gridSize + 12; eyeY2 = segment.y * gridSize + 12; }
@@ -291,7 +289,6 @@ function endGame() {
   gameOverScreen.classList.remove('hide');
 }
 
-// التحكم بالكيبورد
 document.addEventListener('keydown', (e) => {
   if (!isPlaying || changingDirection) return;
   
@@ -301,7 +298,6 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === 'ArrowRight' && dx === 0) { dx = 1; dy = 0; changingDirection = true; }
 });
 
-// التحكم باللمس
 let touchStartX = 0, touchStartY = 0;
 canvas.addEventListener('touchstart', (e) => {
   touchStartX = e.touches[0].clientX;
@@ -326,7 +322,6 @@ canvas.addEventListener('touchend', (e) => {
   }
 });
 
-// دالة مساعدة لرسم المربعات ذات الحواف الدائرية
 CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
   if (w < 2 * r) r = w / 2;
   if (h < 2 * r) r = h / 2;
@@ -340,7 +335,6 @@ CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
   return this;
 };
 
-// رسم شاشة البداية
 ctx.fillStyle = '#0a0a0a';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 </script>
