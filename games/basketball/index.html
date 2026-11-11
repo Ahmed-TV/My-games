@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>رمي السلة | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 55px; height: 55px; flex-shrink: 0;
+    background: radial-gradient(circle, #fde047, #f59e0b 55%, #b45309);
+    border: 3px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #111; line-height: 1;
+  }
+  .logo b { font-size: 12px; }
+  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 20px; line-height: 1.2; }
+  h1 small { display: block; font-size: 11px; color: #facc15; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 13px; color: #cbd5e1; margin-bottom: 5px; }
+  .names b { color: #fff; }
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0 10px; flex-wrap: wrap; }
+  .stat {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 5px 15px; min-width: 80px; text-align: center;
+  }
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #f59e0b; /* لون ملعب السلة */
+    border: 4px solid #f59e0b; border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 30px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  canvas { width: 100%; height: 100%; display: block; z-index: 1; }
+
+  .controls {
+    position: absolute; bottom: 10px; left: 0; width: 100%;
+    display: flex; justify-content: center; gap: 20px; z-index: 5;
+  }
+
+  .btn {
+    background: #ef4444; color: #fff; border: 3px solid #fff; 
+    padding: 10px 20px; border-radius: 20px; font-size: 16px; font-weight: 900;
+    cursor: pointer; user-select: none;
+  }
+  .btn:active { background: #b91c1c; }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; }
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>رمي السلة<small>AHMED TV BASKETBALL</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><span>أهداف</span></div>
+      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">أحمد عبدالعزيز<br>Ahmed TV</div>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="overlay">
+      <h2>رمي السلة</h2>
+      <p>
+        <b>Ahmed TV</b> - سجل أكتر عدد من الأهداف!<br>
+        اضغط مع الاستمرار عشان تحدد القوة، وسيب عشان ترمي
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let W = 0, H = 0;
+let running = false;
+let score = 0;
+let best = parseInt(localStorage.getItem('basketBest') || '0');
+bestEl.textContent = best;
+let audioCtx = null;
+
+// إعدادات اللعبة
+let ball = { x: 50, y: 0, vx: 0, vy: 0, radius: 15, isShot: false, scored: false };
+let hoop = { x: 0, y: 0, w: 60, h: 10, baseY: 0 };
+let power = 0;
+let isCharging = false;
+let direction = 1; // 1 لليمين، -1 للشمال
+let dirAngle = 0; // زاوية السهم
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'shoot') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'score') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  } else if (type === 'bounce') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  }
+}
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  W = canvas.width;
+  H = canvas.height;
+
+  hoop.x = W - 80;
+  hoop.y = H * 0.3;
+  hoop.w = 70;
+  hoop.h = 10;
+  
+  if (!running) resetBall();
+}
+
+function resetBall() {
+  ball.x = W / 4;
+  ball.y = H - 30;
+  ball.vx = 0;
+  ball.vy = 0;
+  ball.isShot = false;
+  ball.scored = false;
+  power = 0;
+  dirAngle = 0;
+}
+
+function draw() {
+  // خلفية
+  ctx.fillStyle = '#f59e0b';
+  ctx.fillRect(0, 0, W, H);
+  
+  // خطوط الملعب
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(W/2, 0); ctx.lineTo(W/2, H); ctx.stroke();
+  ctx.beginPath(); ctx.arc(W/2, H, W/3, Math.PI, 0); ctx.stroke();
+
+  // السلة
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(hoop.x, hoop.y, hoop.w, hoop.h); // اللوحة
+  ctx.strokeStyle = '#ef4444'; // الحلقة
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(hoop.x - 5, hoop.y + hoop.h);
+  ctx.lineTo(hoop.x + 20, hoop.y + hoop.h);
+  ctx.stroke();
+  // الشبكة
+  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(hoop.x - 5, hoop.y + hoop.h); ctx.lineTo(hoop.x + 5, hoop.y + hoop.h + 20); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(hoop.x + 20, hoop.y + hoop.h); ctx.lineTo(hoop.x + 10, hoop.y + hoop.h + 20); ctx.stroke();
+
+  // الكرة
+  ctx.fillStyle = '#ea580c';
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#7c2d12';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // مؤشر القوة
+  if (isCharging) {
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.fillRect(W/4 - 30, H - 60, power, 10);
+    ctx.strokeStyle = '#000';
+    ctx.strokeRect(W/4 - 30, H - 60, 60, 10);
+  }
+}
+
+function update() {
+  if (!running) return;
+
+  if (isCharging) {
+    power = (power + 2) % 60; // القوة بتزيد وتقفز لـ 0 لما توصل 60
+  }
+
+  if (ball.isShot) {
+    // فيزياء الكرة
+    ball.vy += 0.4; // جاذبية
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+
+    // ارتداد من الأرض
+    if (ball.y + ball.radius > H) {
+      ball.y = H - ball.radius;
+      ball.vy *= -0.6; // فقدان طاقة
+      ball.vx *= 0.8;
+      if (Math.abs(ball.vy) < 1) ball.vy = 0;
+      playSound('bounce');
+    }
+
+    // ارتداد من الحوائط
+    if (ball.x + ball.radius > W) {
+      ball.x = W - ball.radius;
+      ball.vx *= -0.6;
+      playSound('bounce');
+    }
+    if (ball.x - ball.radius < 0) {
+      ball.x = ball.radius;
+      ball.vx *= -0.6;
+      playSound('bounce');
+    }
+
+    // التسجيل
+    if (!ball.scored) {
+      // لو الكرة دخلت منطقة السلة
+      let dx = ball.x - (hoop.x + 7.5);
+      let dy = ball.y - (hoop.y + hoop.h);
+      if (dx > -20 && dx < 20 && dy > -10 && dy < 20 && ball.vy > 0) {
+        ball.scored = true;
+        score++;
+        scoreEl.textContent = score;
+        playSound('score');
+        // تأثير بصري
+        ctx.fillStyle = 'rgba(255,255,0,0.5)';
+        ctx.fillRect(0,0,W,H);
+      }
+    }
+
+    // إعادة تعيين لو الكرة استقرت
+    if (Math.abs(ball.vx) < 0.5 && ball.vy === 0 && ball.y >= H - ball.radius) {
+      setTimeout(() => {
+        if (!ball.scored) {
+           // لم يسجل
+        }
+        resetBall();
+      }, 500);
+    }
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function handlePointerDown(e) {
+  if (!running || ball.isShot) return;
+  isCharging = true;
+  power = 0;
+}
+
+function handlePointerUp(e) {
+  if (!running || !isCharging || ball.isShot) return;
+  isCharging = false;
+  
+  // الرمية
+  ball.isShot = true;
+  let shootPower = power / 10 + 5; // تحويل القوة لسرعة
+  // حساب الاتجاه بناءً على مكان الضغط (لو في النص، يروح فوق، لو في اليمين يروح يمين)
+  // للتبسيط: بنخلي الكرة تروح ناحية السلة بزاوية عشوائية شوية
+  let angle = -Math.PI / 4; // 45 درجة لفوق
+  if (power > 30) {
+      angle = -Math.PI / 3; // أعلى
+  }
+  
+  ball.vx = shootPower * Math.cos(angle);
+  ball.vy = shootPower * Math.sin(angle);
+  
+  playSound('shoot');
+}
+
+// تشغيل اللعبة
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  score = 0;
+  scoreEl.textContent = score;
+  running = true;
+  resetBall();
+  loop();
+}
+
+// التحكم (ماوس ولمس)
+canvas.addEventListener('mousedown', handlePointerDown);
+canvas.addEventListener('mouseup', handlePointerUp);
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handlePointerDown(); }, {passive: false});
+canvas.addEventListener('touchend', (e) => { e.preventDefault(); handlePointerUp(); }, {passive: false});
+
+startBtn.onclick = startGame;
+
+window.addEventListener('resize', () => { resize(); if(!running) draw(); });
+
+// بدء التشغيل
+resize();
+draw();
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
