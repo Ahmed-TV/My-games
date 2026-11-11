@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة X-O | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 450px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 55px; height: 55px; flex-shrink: 0;
+    background: radial-gradient(circle, #fde047, #f59e0b 55%, #b45309);
+    border: 3px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #111; line-height: 1;
+  }
+  .logo b { font-size: 12px; }
+  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 22px; line-height: 1.2; }
+  h1 small { display: block; font-size: 11px; color: #facc15; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 13px; color: #cbd5e1; margin-bottom: 10px; }
+  .names b { color: #fff; }
+
+  .score-board {
+    display: flex; gap: 20px; justify-content: center; margin-bottom: 15px;
+  }
+  .score-item {
+    background: #1e293b; border: 2px solid #334155; border-radius: 12px;
+    padding: 8px 20px; text-align: center;
+  }
+  .score-item.x-color { border-color: #ef4444; color: #ef4444; }
+  .score-item.o-color { border-color: #3b82f6; color: #3b82f6; }
+  .score-item b { display: block; font-size: 24px; }
+  .score-item span { font-size: 12px; color: #94a3b8; }
+
+  #turnIndicator {
+    font-size: 18px; font-weight: bold; margin-bottom: 15px; height: 25px;
+    transition: color 0.3s;
+  }
+
+  #game-container {
+    width: 100%; max-width: 350px; aspect-ratio: 1/1;
+    position: relative; 
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.05);
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 1.2;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+    text-shadow: 0 0 10px rgba(255,255,255,0.1);
+  }
+
+  #wrap {
+    width: 100%; height: 100%;
+    background: #1e293b; border: 4px solid #f59e0b; border-radius: 16px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    padding: 10px; position: relative; z-index: 1;
+  }
+
+  .cell {
+    background: #0f172a; border-radius: 12px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 60px; font-weight: bold; cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+    position: relative; z-index: 2;
+  }
+  .cell:active { background: #334155; }
+  .cell.disabled { cursor: default; }
+  
+  .cell.x { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+  .cell.o { color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.92);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; border-radius: 12px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; }
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn:hover { background: #d97706; }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 15px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>لعبة X-O<small>AHMED TV TIC-TAC-TOE</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+    
+    <div class="score-board">
+      <div class="score-item x-color">
+        <b id="scoreX">0</b>
+        <span>اللاعب X</span>
+      </div>
+      <div class="score-item o-color">
+        <b id="scoreO">0</b>
+        <span>الكمبيوتر O</span>
+      </div>
+    </div>
+
+    <div id="turnIndicator">دورك (X)</div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">أحمد عبدالعزيز<br>Ahmed TV</div>
+
+    <div id="wrap">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+
+      <div id="overlay">
+        <h2>مرحباً بك!</h2>
+        <p>إنت <b style="color:#ef4444">X</b> والكمبيوتر <b style="color:#3b82f6">O</b><br>هتلعب مين الأول؟</p>
+        <button class="btn" id="startX">إنت تبدأ (X)</button>
+        <button class="btn" id="startO" style="background:#3b82f6; color:#fff">الكمبيوتر يبدأ (O)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const cells = document.querySelectorAll('.cell');
+const turnIndicator = document.getElementById('turnIndicator');
+const overlay = document.getElementById('overlay');
+const scoreXEl = document.getElementById('scoreX');
+const scoreOEl = document.getElementById('scoreO');
+
+let board = ['', '', '', '', '', '', '', '', ''];
+let currentPlayer = 'X';
+let gameActive = false;
+let playerScore = 0;
+let cpuScore = 0;
+let audioCtx = null;
+
+const WIN_PATTERNS = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8],
+  [0, 3, 6], [1, 4, 7], [2, 5, 8],
+  [0, 4, 8], [2, 4, 6]
+];
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'click') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'win') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  } else if (type === 'lose') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+  } else if (type === 'draw') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+  }
+}
+
+function startGame(starter) {
+  initAudio();
+  board = ['', '', '', '', '', '', '', '', ''];
+  gameActive = true;
+  currentPlayer = 'X';
+  overlay.style.display = 'none';
+  
+  cells.forEach(c => {
+    c.textContent = '';
+    c.classList.remove('x', 'o', 'disabled');
+  });
+
+  if (starter === 'O') {
+    turnIndicator.textContent = "دور الكمبيوتر...";
+    turnIndicator.style.color = "#3b82f6";
+    setTimeout(cpuMove, 800);
+  } else {
+    turnIndicator.textContent = "دورك (X)";
+    turnIndicator.style.color = "#ef4444";
+  }
+}
+
+function handleCellClick(e) {
+  const cell = e.target;
+  const index = parseInt(cell.dataset.index);
+  
+  if (!gameActive || currentPlayer !== 'X' || board[index] !== '') return;
+
+  makeMove(index, 'X');
+  
+  if (gameActive) {
+    currentPlayer = 'O';
+    turnIndicator.textContent = "دور الكمبيوتر...";
+    turnIndicator.style.color = "#3b82f6";
+    setTimeout(cpuMove, 800);
+  }
+}
+
+function makeMove(index, player) {
+  board[index] = player;
+  const cell = cells[index];
+  cell.textContent = player;
+  cell.classList.add(player.toLowerCase(), 'disabled');
+  playSound('click');
+  
+  const winner = checkWin();
+  if (winner) {
+    endGame(winner);
+  } else if (board.every(c => c !== '')) {
+    endGame('draw');
+  }
+}
+
+function cpuMove() {
+  if (!gameActive) return;
+
+  let move = findBestMove('O');
+  if (move === null) {
+    move = findBestMove('X');
+  }
+  if (move === null) {
+    let emptyCells = board.map((val, i) => val === '' ? i : null).filter(v => v !== null);
+    move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+  }
+
+  if (move !== undefined && move !== null) {
+    makeMove(move, 'O');
+    if (gameActive) {
+      currentPlayer = 'X';
+      turnIndicator.textContent = "دورك (X)";
+      turnIndicator.style.color = "#ef4444";
+    }
+  }
+}
+
+function findBestMove(player) {
+  for (let pattern of WIN_PATTERNS) {
+    const [a, b, c] = pattern;
+    const values = [board[a], board[b], board[c]];
+    if (values.filter(v => v === player).length === 2 && values.includes('')) {
+      if (board[a] === '') return a;
+      if (board[b] === '') return b;
+      if (board[c] === '') return c;
+    }
+  }
+  return null;
+}
+
+function checkWin() {
+  for (let pattern of WIN_PATTERNS) {
+    const [a, b, c] = pattern;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      return board[a];
+    }
+  }
+  return null;
+}
+
+function endGame(result) {
+  gameActive = false;
+  cells.forEach(c => c.classList.add('disabled'));
+  
+  setTimeout(() => {
+    overlay.style.display = 'flex';
+    
+    if (result === 'X') {
+      playerScore++;
+      scoreXEl.textContent = playerScore;
+      playSound('win');
+      overlay.innerHTML = `
+        <div style="font-size:35px">🏆</div>
+        <h2 style="color:#10b981">مبروك! إنت كسبت!</h2>
+        <p>Ahmed TV بيقولك: شاطر يا بطل!</p>
+        <button class="btn" onclick="startGame('X')">🔄 العب تاني</button>
+      `;
+    } else if (result === 'O') {
+      cpuScore++;
+      scoreOEl.textContent = cpuScore;
+      playSound('lose');
+      overlay.innerHTML = `
+        <div style="font-size:35px">🤖</div>
+        <h2 style="color:#ef4444">الكمبيوتر كسب!</h2>
+        <p>حاول تاني .. إنت تقدر!</p>
+        <button class="btn" onclick="startGame('X')">🔄 العب تاني</button>
+      `;
+    } else {
+      playSound('draw');
+      overlay.innerHTML = `
+        <div style="font-size:35px">🤝</div>
+        <h2 style="color:#f59e0b">تعادل!</h2>
+        <p>مفيش فايز .. جرب تاني!</p>
+        <button class="btn" onclick="startGame('X')">🔄 العب تاني</button>
+      `;
+    }
+  }, 600);
+}
+
+cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+
+document.getElementById('startX').addEventListener('click', () => startGame('X'));
+document.getElementById('startO').addEventListener('click', () => startGame('O'));
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
