@@ -47,9 +47,10 @@
   #game-container {
     width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
     position: relative; display: flex; flex-direction: column;
-    background: #f59e0b; /* لون ملعب السلة */
+    background: #f59e0b; 
     border: 4px solid #f59e0b; border-radius: 16px;
     overflow: hidden;
+    cursor: pointer;
   }
 
   .watermark {
@@ -105,10 +106,10 @@
     <canvas id="gameCanvas"></canvas>
 
     <div id="overlay">
-      <h2>رمي السلة</h2>
+      <h2>رمي السلة السهلة</h2>
       <p>
-        <b>Ahmed TV</b> - سجل أكتر عدد من الأهداف!<br>
-        اضغط مع الاستمرار عشان تحدد القوة، وسيب عشان ترمي
+        <b>Ahmed TV</b> - دوس عشان توقف السهم<br>
+        لما يبقى في نص السلة، هتسجل هدف!
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
     </div>
@@ -134,10 +135,11 @@ bestEl.textContent = best;
 let audioCtx = null;
 
 // إعدادات اللعبة
-let ball = { x: 0, y: 0, vx: 0, vy: 0, radius: 18, isShot: false, scored: false };
-let hoop = { x: 0, y: 0, w: 70, h: 10 };
-let power = 0;
-let isCharging = false;
+let ball = { x: 0, y: 0, radius: 15, isShot: false };
+let hoop = { x: 0, y: 0, w: 100, h: 15 }; 
+let arrowX = 0; 
+let arrowDir = 1; 
+let isStopped = false;
 
 function initAudio() {
   if (!audioCtx) {
@@ -166,12 +168,12 @@ function playSound(type) {
     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
     osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-  } else if (type === 'bounce') {
-    osc.type = 'square';
+  } else if (type === 'miss') {
+    osc.type = 'sawtooth';
     osc.frequency.setValueAtTime(200, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
   }
 }
 
@@ -182,48 +184,49 @@ function resize() {
   W = canvas.width;
   H = canvas.height;
 
-  hoop.x = W - 100;
-  hoop.y = H * 0.25; // السلة عالية
+  // السلة في النص بالظبط، وقريبة من فوق عشان سهلة
+  hoop.w = W * 0.4; 
+  hoop.x = (W - hoop.w) / 2; 
+  hoop.y = H * 0.25; 
   
-  if (!running) resetBall();
+  resetShot();
 }
 
-function resetBall() {
-  ball.x = W / 4; // الكرة في الربع الأول
-  ball.y = H - 30; // على الأرض
-  ball.vx = 0;
-  ball.vy = 0;
+function resetShot() {
+  ball.x = W / 2;
+  ball.y = H - 40;
   ball.isShot = false;
-  ball.scored = false;
-  power = 0;
+  
+  arrowX = 0;
+  arrowDir = 1;
+  isStopped = false;
 }
 
 function draw() {
   // خلفية
   ctx.fillStyle = '#f59e0b';
   ctx.fillRect(0, 0, W, H);
-  
-  // خطوط الملعب
-  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(W/2, 0); ctx.lineTo(W/2, H); ctx.stroke();
-  ctx.beginPath(); ctx.arc(W/2, H, W/3, Math.PI, 0); ctx.stroke();
 
-  // السلة
+  // السلة (اللوحة والحلقة)
   ctx.fillStyle = '#fff';
-  ctx.fillRect(hoop.x, hoop.y, hoop.w, hoop.h); // اللوحة
-  ctx.strokeStyle = '#ef4444'; // الحلقة
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.moveTo(hoop.x - 10, hoop.y + hoop.h);
-  ctx.lineTo(hoop.x + 25, hoop.y + hoop.h);
-  ctx.stroke();
+  ctx.fillRect(hoop.x, hoop.y, hoop.w, hoop.h); 
   
-  // الشبكة
+  ctx.strokeStyle = '#ef4444'; 
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(hoop.x, hoop.y + hoop.h);
+  ctx.lineTo(hoop.x + hoop.w, hoop.y + hoop.h);
+  ctx.stroke();
+
+  // شبكة بسيطة
   ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(hoop.x - 10, hoop.y + hoop.h); ctx.lineTo(hoop.x, hoop.y + hoop.h + 25); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(hoop.x + 25, hoop.y + hoop.h); ctx.lineTo(hoop.x + 15, hoop.y + hoop.h + 25); ctx.stroke();
+  ctx.lineWidth = 2;
+  for(let i=0; i<=hoop.w; i+=20){
+      ctx.beginPath(); 
+      ctx.moveTo(hoop.x + i, hoop.y + hoop.h); 
+      ctx.lineTo(hoop.x + i - 10, hoop.y + hoop.h + 30); 
+      ctx.stroke();
+  }
 
   // الكرة
   ctx.fillStyle = '#ea580c';
@@ -234,72 +237,43 @@ function draw() {
   ctx.lineWidth = 2;
   ctx.stroke();
 
-  // مؤشر القوة
-  if (isCharging) {
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.fillRect(W/4 - 40, H - 60, 80, 15);
+  // السهم اللي بيتحرك (تحت الكرة)
+  if (!ball.isShot && running) {
     ctx.fillStyle = '#fff';
-    ctx.fillRect(W/4 - 40, H - 60, power, 15);
+    ctx.font = 'bold 30px Arial';
+    ctx.textAlign = 'center';
+    // بنرسم سهم فوق الكرة شوية
+    let displayX = W/2 + (arrowX * (W/2 - 30));
+    ctx.fillText('⬆️', displayX, H - 80);
+  }
+
+  // تأثير التسجيل
+  if (ball.isShot) {
+      // الكرة بتطير لفوق
+      ctx.fillStyle = '#22c55e';
+      ctx.font = 'bold 40px Arial';
+      ctx.textAlign = 'center';
+      // لو الهدف في نص السلة
+      let tolerance = 25; 
+      let hoopCenter = hoop.x + hoop.w/2;
+      let ballHitX = W/2 + (arrowX * (W/2 - 30)); // نفس مكان السهم
+
+      if (Math.abs(ballHitX - hoopCenter) < tolerance) {
+          ctx.fillText('✅', W/2, H/2);
+      } else {
+          ctx.fillText('❌', W/2, H/2);
+      }
   }
 }
 
 function update() {
   if (!running) return;
 
-  if (isCharging) {
-    power = (power + 2) % 80; // القوة بتزيد وتقفز لـ 0 لما توصل 80
-  }
-
-  if (ball.isShot) {
-    // فيزياء الكرة
-    ball.vy += 0.35; // جاذبية
-    ball.x += ball.vx;
-    ball.y += ball.vy;
-
-    // ارتداد من الأرض
-    if (ball.y + ball.radius > H) {
-      ball.y = H - ball.radius;
-      ball.vy *= -0.6; 
-      ball.vx *= 0.8;
-      if (Math.abs(ball.vy) < 1) ball.vy = 0;
-      playSound('bounce');
-    }
-
-    // ارتداد من الحوائط
-    if (ball.x + ball.radius > W) {
-      ball.x = W - ball.radius;
-      ball.vx *= -0.6;
-      playSound('bounce');
-    }
-    if (ball.x - ball.radius < 0) {
-      ball.x = ball.radius;
-      ball.vx *= -0.6;
-      playSound('bounce');
-    }
-
-    // التسجيل (منطقة السلة)
-    if (!ball.scored) {
-      // لو الكرة دخلت في نطاق الحلقة
-      let dx = ball.x - (hoop.x + 7.5);
-      let dy = ball.y - (hoop.y + hoop.h);
-      // لازم تكون نازلة (vy > 0) عشان تحسب
-      if (Math.abs(dx) < 20 && dy > -10 && dy < 25 && ball.vy > 0) {
-        ball.scored = true;
-        score++;
-        scoreEl.textContent = score;
-        playSound('score');
-      }
-    }
-
-    // إعادة تعيين لو الكرة استقرت
-    if (Math.abs(ball.vx) < 0.5 && ball.vy === 0 && ball.y >= H - ball.radius) {
-      setTimeout(() => {
-        if (!ball.scored) {
-           // missed
-        }
-        resetBall();
-      }, 800);
-    }
+  // حركة السهم
+  if (!ball.isShot) {
+    arrowX += arrowDir * 0.04; // سرعة السهم (بطيئة للأطفال)
+    if (arrowX > 1) { arrowX = 1; arrowDir = -1; }
+    if (arrowX < -1) { arrowX = -1; arrowDir = 1; }
   }
 }
 
@@ -309,29 +283,29 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-function handlePointerDown(e) {
+function shoot() {
   if (!running || ball.isShot) return;
-  isCharging = true;
-  power = 0;
-}
-
-function handlePointerUp(e) {
-  if (!running || !isCharging || ball.isShot) return;
-  isCharging = false;
   
   ball.isShot = true;
-  
-  // حساب القوة والزاوية
-  // القوة من 0 لـ 80، بنحولها لسرعة من 8 لـ 22
-  let shootPower = (power / 80) * 14 + 8; 
-  
-  // الزاوية بتتحدد بناءً على المسافة للسلة (زاوية 45 لـ 60 درجة)
-  let angle = -Math.PI / 3; // 60 درجة لفوق عشان تطير
-  
-  ball.vx = shootPower * Math.cos(angle);
-  ball.vy = shootPower * Math.sin(angle);
-  
   playSound('shoot');
+
+  // حساب النتيجة
+  setTimeout(() => {
+    let hoopCenter = hoop.x + hoop.w/2;
+    let ballHitX = W/2 + (arrowX * (W/2 - 30)); // مكان السهم
+    let tolerance = 30; // مسامحة 30 بكسل
+
+    if (Math.abs(ballHitX - hoopCenter) < tolerance) {
+      score++;
+      scoreEl.textContent = score;
+      playSound('score');
+    } else {
+      playSound('miss');
+    }
+
+    // إعادة اللعب بعد ثانية
+    setTimeout(resetShot, 1000);
+  }, 500);
 }
 
 // تشغيل اللعبة
@@ -341,15 +315,13 @@ function startGame() {
   score = 0;
   scoreEl.textContent = score;
   running = true;
-  resetBall();
+  resetShot();
   loop();
 }
 
 // التحكم (ماوس ولمس)
-canvas.addEventListener('mousedown', handlePointerDown);
-canvas.addEventListener('mouseup', handlePointerUp);
-canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handlePointerDown(); }, {passive: false});
-canvas.addEventListener('touchend', (e) => { e.preventDefault(); handlePointerUp(); }, {passive: false});
+canvas.addEventListener('mousedown', shoot);
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); shoot(); }, {passive: false});
 
 startBtn.onclick = startGame;
 
