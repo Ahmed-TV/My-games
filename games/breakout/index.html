@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة تكسير الطوب | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 55px; height: 55px; flex-shrink: 0;
+    background: radial-gradient(circle, #fde047, #f59e0b 55%, #b45309);
+    border: 3px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #111; line-height: 1;
+  }
+  .logo b { font-size: 12px; }
+  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 20px; line-height: 1.2; }
+  h1 small { display: block; font-size: 11px; color: #facc15; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 12px; color: #cbd5e1; margin-bottom: 5px; }
+  .names b { color: #fff; }
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0; flex-wrap: wrap; }
+  .stat {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 5px 15px; min-width: 80px; text-align: center;
+  }
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #wrap {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    background: #1e293b; border: 3px solid #f59e0b; border-radius: 16px;
+    overflow: hidden; position: relative; display: flex;
+    margin-top: 5px; margin-bottom: 5px;
+    touch-action: none;
+  }
+  canvas { width: 100%; height: 100%; display: block; }
+  
+  #overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,.75);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 8px;
+  }
+  #overlay h2 { font-size: 22px; }
+  #overlay p { line-height: 1.6; font-size: 13px; color: #e2e8f0; }
+  .btn-start {
+    background: #f59e0b; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 10px;
+  }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; }
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>🧱 لعبة تكسير الطوب<small>AHMED TV BREAKOUT</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    </div>
+  </div>
+
+  <div id="wrap">
+    <canvas id="gameCanvas"></canvas>
+    <div id="overlay">
+      <div style="font-size:35px">🧱🏓</div>
+      <h2>لعبة تكسير الطوب</h2>
+      <p>
+        <b>Ahmed TV</b> - كسر كل الطوب!<br>
+        حرك المضرب بصباعك أو بالماوس
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let W = 0, H = 0;
+let running = false;
+let score = 0;
+let best = parseInt(localStorage.getItem('breakoutBest') || '0');
+bestEl.textContent = best;
+
+let audioCtx = null;
+
+// إعدادات اللعبة
+const PADDLE_WIDTH = 100; // مضرب عريض جداً
+const PADDLE_HEIGHT = 15;
+let paddle = { x: 0, y: 0 };
+
+const BALL_RADIUS = 8;
+let ball = { x: 0, y: 0, dx: 3, dy: -3 }; // سرعة بطيئة جداً
+
+// إعدادات الطوب
+const BRICK_ROWS = 4;
+const BRICK_COLS = 6;
+const BRICK_WIDTH = 60;
+const BRICK_HEIGHT = 25;
+const BRICK_PADDING = 5;
+const BRICK_OFFSET_TOP = 40;
+const BRICK_OFFSET_LEFT = 10;
+
+let bricks = [];
+const COLORS = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6'];
+
+function initBricks() {
+  bricks = [];
+  for (let c = 0; c < BRICK_COLS; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < BRICK_ROWS; r++) {
+      bricks[c][r] = { x: 0, y: 0, status: 1, color: COLORS[r] };
+    }
+  }
+}
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  W = canvas.width;
+  H = canvas.height;
+  
+  paddle.y = H - PADDLE_HEIGHT - 20;
+  if(!running) paddle.x = (W - PADDLE_WIDTH) / 2;
+  
+  if(!running) {
+    ball.x = W / 2;
+    ball.y = paddle.y - BALL_RADIUS - 5;
+  }
+}
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'paddle') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'brick') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'wall') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'gameover') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+  } else if (type === 'win') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  }
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  score = 0; scoreEl.textContent = score;
+  paddle.x = (W - PADDLE_WIDTH) / 2;
+  ball.x = W / 2;
+  ball.y = paddle.y - BALL_RADIUS - 5;
+  ball.dx = (Math.random() > 0.5 ? 1 : -1) * 2.5; // سرعة بطيئة
+  ball.dy = -2.5;
+  initBricks();
+  running = true;
+  loop();
+}
+
+function draw() {
+  // خلفية
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, W, H);
+
+  // المضرب
+  ctx.fillStyle = '#f59e0b';
+  ctx.fillRect(paddle.x, paddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+  // الكرة
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, BALL_RADIUS, 0, Math.PI * 2);
+  ctx.fill();
+
+  // الطوب
+  for (let c = 0; c < BRICK_COLS; c++) {
+    for (let r = 0; r < BRICK_ROWS; r++) {
+      if (bricks[c][r].status === 1) {
+        const brickX = (c * (BRICK_WIDTH + BRICK_PADDING)) + BRICK_OFFSET_LEFT;
+        const brickY = (r * (BRICK_HEIGHT + BRICK_PADDING)) + BRICK_OFFSET_TOP;
+        bricks[c][r].x = brickX;
+        bricks[c][r].y = brickY;
+        ctx.fillStyle = bricks[c][r].color;
+        ctx.fillRect(brickX, brickY, BRICK_WIDTH, BRICK_HEIGHT);
+      }
+    }
+  }
+}
+
+function update() {
+  if (!running) return;
+
+  // حركة الكرة
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // الاصطدام بالحوائط
+  if (ball.x + BALL_RADIUS > W || ball.x - BALL_RADIUS < 0) {
+    ball.dx = -ball.dx;
+    playSound('wall');
+  }
+  if (ball.y - BALL_RADIUS < 0) {
+    ball.dy = -ball.dy;
+    playSound('wall');
+  }
+
+  // الاصطدام بالمضرب
+  if (ball.y + BALL_RADIUS > paddle.y && ball.y + BALL_RADIUS < paddle.y + PADDLE_HEIGHT) {
+    if (ball.x > paddle.x && ball.x < paddle.x + PADDLE_WIDTH) {
+      // حساب زاوية الارتداد بناءً على مكان الاصطدام
+      let hitPos = (ball.x - paddle.x) / PADDLE_WIDTH;
+      let angle = (hitPos - 0.5) * Math.PI / 1.5; // زاوية واسعة
+      let speed = Math.sqrt(ball.dx*ball.dx + ball.dy*ball.dy);
+      ball.dx = speed * Math.sin(angle);
+      ball.dy = -speed * Math.cos(angle);
+      ball.y = paddle.y - BALL_RADIUS; // تعديل مكان الكرة
+      playSound('paddle');
+    }
+  }
+
+  // الاصطدام بالقاع
+  if (ball.y + BALL_RADIUS > H) {
+    return endGame();
+  }
+
+  // الاصطدام بالطوب
+  let bricksLeft = 0;
+  for (let c = 0; c < BRICK_COLS; c++) {
+    for (let r = 0; r < BRICK_ROWS; r++) {
+      let b = bricks[c][r];
+      if (b.status === 1) {
+        bricksLeft++;
+        if (ball.x > b.x && ball.x < b.x + BRICK_WIDTH && ball.y > b.y && ball.y < b.y + BRICK_HEIGHT) {
+          ball.dy = -ball.dy;
+          b.status = 0;
+          score += 10;
+          scoreEl.textContent = score;
+          playSound('brick');
+        }
+      }
+    }
+  }
+  if (bricksLeft === 0) {
+    return endGame(true);
+  }
+}
+
+function loop() {
+  if (!running) return;
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function endGame(isWin = false) {
+  running = false;
+  playSound(isWin ? 'win' : 'gameover');
+  
+  if (score > best) {
+    best = score;
+    localStorage.setItem('breakoutBest', best);
+    bestEl.textContent = best;
+  }
+  
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">${isWin ? '🏆' : '💔'}</div>
+    <h2>${isWin ? 'مبروك! كسرت كل الطوب!' : 'انتهت اللعبة!'}</h2>
+    <p>جبت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
+    أعلى نتيجة: ${best}<br>
+    Ahmed TV بيقولك: ${isWin ? 'إنت بطل!' : 'حاول تاني!'}</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+// التحكم بالماوس واللمس
+function handleMove(e) {
+  if (!running) return;
+  const rect = canvas.getBoundingClientRect();
+  let clientX = e.clientX;
+  if (e.touches && e.touches.length > 0) {
+    clientX = e.touches[0].clientX;
+  }
+  let relativeX = clientX - rect.left;
+  
+  // التأكد إن المضرب في حدود الشاشة
+  if (relativeX > 0 && relativeX < W) {
+    paddle.x = relativeX - PADDLE_WIDTH / 2;
+  }
+  // منع السكرول على الموبايل
+  if (e.cancelable) e.preventDefault();
+}
+
+canvas.addEventListener('mousemove', handleMove);
+canvas.addEventListener('touchmove', handleMove, { passive: false });
+canvas.addEventListener('touchstart', handleMove, { passive: false });
+
+startBtn.onclick = startGame;
+
+window.addEventListener('resize', () => {
+  resize(); if (!running) draw();
+});
+
+resize();
+initBricks();
+draw();
+</script>
+</body>
+</html>
