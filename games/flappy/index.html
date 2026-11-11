@@ -134,16 +134,16 @@ let bird = {
   x: 50, 
   y: 200, 
   vy: 0, 
-  gravity: 0.15, // جاذبية خفيفة جداً
-  jump: -4.5,    // قفزة خفيفة
-  radius: 18,    // حجم أكبر شوية
+  gravity: 0.08, // جاذبية بطيئة جداً جداً
+  jump: -3,      // قفزة خفيفة جداً
+  radius: 20,    // حجم أكبر شوية
   rotation: 0 
 };
 
 let pipes = [];
 const PIPE_WIDTH = 60;
-const GAP = 200; // فتحة واسعة جداً
-const PIPE_SPEED = 1.2; // سرعة بطيئة جداً
+const GAP = 250; // فتحة واسعة جداً جداً
+const PIPE_SPEED = 0.6; // سرعة بطيئة جداً جداً
 let pipeTimer = 0;
 
 function resize() {
@@ -221,14 +221,14 @@ function update() {
   bird.vy += bird.gravity;
   bird.y += bird.vy;
 
-  if (bird.vy < 0) bird.rotation = -0.3;
-  else { bird.rotation += 0.03; if (bird.rotation > 1.2) bird.rotation = 1.2; }
+  if (bird.vy < 0) bird.rotation = -0.2;
+  else { bird.rotation += 0.02; if (bird.rotation > 1.0) bird.rotation = 1.0; }
 
   if (bird.y + bird.radius > H) { bird.y = H - bird.radius; return endGame(); }
   if (bird.y - bird.radius < 0) { bird.y = bird.radius; bird.vy = 0; }
 
   pipeTimer++;
-  if (pipeTimer > 140) { // مسافة كبيرة بين الأنابيب
+  if (pipeTimer > 200) { // وقت طويل جداً بين الأنابيب
     spawnPipe(); 
     pipeTimer = 0; 
   }
