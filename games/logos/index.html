@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ahmed TV - خمن الشعار</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',Tahoma,system-ui;height:100vh;height:100dvh;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:5px}
+.container{width:100%;max-width:450px;height:100%;display:flex;flex-direction:column;background:#111;border-radius:16px;border:2px solid #222;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.8);position:relative;}
+.header{background:linear-gradient(135deg,#8FFF00,#5cb71a 50%,#4CAF50);padding:10px;text-align:center;border-bottom:2px solid #000;flex-shrink:0}
+.logo{width:50px;height:50px;margin:0 auto 5px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;color:#7ED321;font-weight:900;font-size:11px;line-height:1.1;text-align:center}
+.main-title{color:#000;font-weight:900;font-size:16px}
+.sub-title{color:#111;font-weight:800;font-size:11px;margin-top:4px;background:rgba(255,255,255,0.92);display:block;padding:4px 8px;border-radius:8px;line-height:1.3}
+.brand{margin-top:4px;color:#000;font-weight:900;font-size:10px;background:#fff;display:inline-block;padding:2px 10px;border-radius:12px}
+.progress{padding:8px 12px;background:#1a1a1a;display:flex;justify-content:space-between;font-size:14px;color:#7ED321;font-weight:800;border-bottom:1px solid #222;flex-shrink:0}
+.bar{height:6px;background:#333;margin:0 12px;border-radius:4px;overflow:hidden;flex-shrink:0}
+.fill{height:100%;background:#7ED321;width:0%;transition:.4s;border-radius:4px}
+.card{padding:8px 10px;display:flex;flex-direction:column;flex-grow:1;justify-content:space-evenly;overflow:hidden;}
+
+/* تصغير مساحة الصورة عشان تدخل في الشاشة */
+.imgBox{width:100%;height:220px;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border-radius:12px;border:2px solid #333;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:inset 0 0 20px rgba(0,0,0,0.9);padding:10px;flex-shrink:0}
+.club-flag{font-size:60px;line-height:1;filter:drop-shadow(0 5px 10px rgba(0,0,0,0.6));margin-bottom:8px}
+.club-letters{color:#7ED321;font-size:28px;font-weight:900;letter-spacing:5px;text-shadow:0 0 20px rgba(126,211,33,0.5);margin-bottom:8px}
+.club-specs{display:grid;grid-template-columns:1fr 1fr;gap:4px;width:100%;max-width:280px}
+.spec{background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;padding:4px 6px;text-align:center}
+.spec-label{color:#888;font-size:10px;font-weight:700}
+.spec-value{color:#fff;font-size:12px;font-weight:900}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.opt{background:#222;border:1px solid #333;border-radius:8px;padding:10px 4px;text-align:center;font-size:14px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.opt:hover{border-color:#7ED321;background:#2a2a2a}
+.opt:active{transform:scale(0.97)}
+.opt:disabled{opacity:0.3;cursor:default}
+
+.hints{display:flex;gap:4px;margin-top:6px}
+.hbtn{flex:1;background:#1e1e1e;border:1px solid #333;border-radius:6px;padding:8px 2px;font-size:10px;font-weight:800;color:#ccc;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.hbtn:not(:disabled):hover{background:#2a2a2a;color:#fff;border-color:#7ED321}
+.hbtn:disabled{opacity:0.3}
+
+.skipBtn{width:100%;margin-top:6px;background:#2a2a2a;border:1px solid #444;border-radius:8px;padding:10px;font-size:13px;font-weight:800;color:#bbb;cursor:pointer;font-family:inherit;transition:background 0.2s;flex-shrink:0}
+.skipBtn:hover{background:#333}
+
+.hintBox{text-align:center;margin-top:6px;color:#7ED321;font-weight:800;font-size:12px;min-height:20px;background:rgba(126,211,33,0.1);border-radius:6px;padding:4px;border:1px dashed #444}
+.hintBox:empty{background:transparent;border:none}
+
+.footer{text-align:center;padding:6px;font-size:10px;color:#666;flex-shrink:0;background:#111;}
+
+.end-screen{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:16px;z-index:100;text-align:center;padding:20px}
+.end-screen h2{color:#7ED321;font-size:28px;margin-bottom:15px}
+.end-screen p{font-size:18px;font-weight:800;margin-bottom:20px;line-height:1.4}
+.end-btn{background:#7ED321;color:#000;border:none;padding:12px 30px;border-radius:20px;font-size:18px;font-weight:900;font-family:inherit;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="container" id="mainContainer">
+  <div class="header">
+    <div class="logo">TV<br>AHMED</div>
+    <div class="main-title">Ahmed TV - خمن الشعار 🏆</div>
+    <div class="sub-title">🎮 <b>40 نادي مختلف - 80 تحدي</b><br>شوف علم الدولة ومواصفات النادي وخمنه!<br>⚽ فكرة وتقديم: أحمد - Ahmed TV</div>
+    <div class="brand">© تصميم وتقديم: أحمد - Ahmed TV - 2026</div>
+  </div>
+  
+  <div class="progress">
+    <span id="qn">1 / 80</span>
+    <span id="sc">0 نقطة</span>
+  </div>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+  
+  <div class="card">
+    <div class="imgBox" id="logoBox">
+      <div class="club-flag" id="logoFlag">🇪🇸</div>
+      <div class="club-letters" id="logoLetters">RMA</div>
+      <div class="club-specs">
+        <div class="spec"><div class="spec-label">الدولة</div><div class="spec-value" id="specCountry">إسبانيا</div></div>
+        <div class="spec"><div class="spec-label">التأسيس</div><div class="spec-value" id="specYear">1902</div></div>
+        <div class="spec"><div class="spec-label">اللقب</div><div class="spec-value" id="specNick">الملكي</div></div>
+        <div class="spec"><div class="spec-label">البطولات</div><div class="spec-value" id="specTitles">14 أبطال</div></div>
+      </div>
+    </div>
+
+    <div class="hints">
+      <button class="hbtn" id="h1" onclick="hintClear()">خمن أكتر 🔍 -5</button>
+      <button class="hbtn" id="h2" onclick="hintText()">تلميح 💡 -5</button>
+      <button class="hbtn" id="h3" onclick="hintDel()">احذف 2 ❌ -10</button>
+    </div>
+    
+    <div class="hintBox" id="hintBox"></div>
+    
+    <div class="opts" id="opts"></div>
+    
+    <button class="skipBtn" onclick="skipLevel()">تخطي المرحلة ⏭️</button>
+  </div>
+  
+  <div class="footer">Ahmed TV - 40 نادي مختلف - 80 مرحلة</div>
+</div>
+
+<script>
+var clubs = [
+  {name:'ريال مدريد', flag:'🇪🇸', letters:'RMA', country:'إسبانيا', year:'1902', nick:'الملكي', titles:'14 أبطال', extra:'الملعب: سانتياغو برنابيو - مدريد'},
+  {name:'برشلونة', flag:'🇪🇸', letters:'FCB', country:'إسبانيا', year:'1899', nick:'البلوجرانا', titles:'5 أبطال', extra:'الملعب: كامب نو - برشلونة'},
+  {name:'الأهلي', flag:'🇪🇬', letters:'AHLY', country:'مصر', year:'1907', nick:'نادي القرن', titles:'11 أبطال أفريقيا', extra:'الملعب: القاهرة الدولي - القاهرة'},
+  {name:'الزمالك', flag:'🇪🇬', letters:'ZSC', country:'مصر', year:'1911', nick:'القلعة البيضاء', titles:'5 أبطال أفريقيا', extra:'الملعب: القاهرة الدولي - القاهرة'},
+  {name:'ليفربول', flag:'🇬🇧', letters:'LFC', country:'إنجلترا', year:'1892', nick:'الريدز', titles:'6 أبطال', extra:'الملعب: أنفيلد - ليفربول'},
+  {name:'مان يونايتد', flag:'🇬🇧', letters:'MUFC', country:'إنجلترا', year:'1878', nick:'الشياطين الحمر', titles:'3 أبطال', extra:'الملعب: أولد ترافورد - مانشستر'},
+  {name:'أرسنال', flag:'🇬🇧', letters:'AFC', country:'إنجلترا', year:'1886', nick:'المدفعجية', titles:'0 أبطال', extra:'الملعب: الإمارات - لندن'},
+  {name:'تشيلسي', flag:'🇬🇧', letters:'CFC', country:'إنجلترا', year:'1905', nick:'الزرق', titles:'2 أبطال', extra:'الملعب: ستامفورد بريدج - لندن'},
+  {name:'يوفنتوس', flag:'🇮🇹', letters:'JUVE', country:'إيطاليا', year:'1897', nick:'السيدة العجوز', titles:'2 أبطال', extra:'الملعب: أليانز - تورينو'},
+  {name:'بايرن ميونخ', flag:'🇩🇪', letters:'FCB', country:'ألمانيا', year:'1900', nick:'البافاري', titles:'6 أبطال', extra:'الملعب: أليانز أرينا - ميونخ'},
+  {name:'مان سيتي', flag:'🇬🇧', letters:'MCFC', country:'إنجلترا', year:'1880', nick:'السماوي', titles:'1 أبطال', extra:'الملعب: الاتحاد - مانشستر'},
+  {name:'باريس سان جيرمان', flag:'🇫🇷', letters:'PSG', country:'فرنسا', year:'1970', nick:'حديقة الأمراء', titles:'0 أبطال', extra:'الملعب: حديقة الأمراء - باريس'},
+  {name:'إنتر ميلان', flag:'🇮🇹', letters:'INTER', country:'إيطاليا', year:'1908', nick:'النيراتزوري', titles:'3 أبطال', extra:'الملعب: سان سيرو - ميلانو'},
+  {name:'ميلان', flag:'🇮🇹', letters:'ACM', country:'إيطاليا', year:'1899', nick:'الروسونيري', titles:'7 أبطال', extra:'الملعب: سان سيرو - ميلانو'},
+  {name:'دورتموند', flag:'🇩🇪', letters:'BVB', country:'ألمانيا', year:'1909', nick:'النحل الأصفر', titles:'1 أبطال', extra:'الملعب: سيجنال إيدونا - دورتموند'},
+  {name:'الهلال', flag:'🇸🇦', letters:'HILAL', country:'السعودية', year:'1957', nick:'الزعيم', titles:'4 أبطال آسيا', extra:'الملعب: المملكة أرينا - الرياض'},
+  {name:'الاتحاد', flag:'🇸🇦', letters:'ITTIHAD', country:'السعودية', year:'1927', nick:'العميد', titles:'2 أبطال آسيا', extra:'الملعب: الجوهرة - جدة'},
+  {name:'أتلتيكو مدريد', flag:'🇪🇸', letters:'ATM', country:'إسبانيا', year:'1903', nick:'الروخيبلانكوس', titles:'0 أبطال', extra:'الملعب: ميتروبوليتانو - مدريد'},
+  {name:'نابولي', flag:'🇮🇹', letters:'NAP', country:'إيطاليا', year:'1926', nick:'البلاو', titles:'0 أبطال', extra:'الملعب: دييغو مارادونا - نابولي'},
+  {name:'توتنهام', flag:'🇬🇧', letters:'THFC', country:'إنجلترا', year:'1882', nick:'الديوك', titles:'0 أبطال', extra:'الملعب: توتنهام هوتسبير - لندن'},
+  {name:'بورتو', flag:'🇵🇹', letters:'FCP', country:'البرتغال', year:'1893', nick:'التنانين', titles:'2 أبطال', extra:'الملعب: التنين - بورتو'},
+  {name:'بنفيكا', flag:'🇵🇹', letters:'SLB', country:'البرتغال', year:'1904', nick:'النسور', titles:'2 أبطال', extra:'الملعب: النور - لشبونة'},
+  {name:'أياكس', flag:'🇳🇱', letters:'AFC', country:'هولندا', year:'1900', nick:'الأبناء', titles:'4 أبطال', extra:'الملعب: يوهان كرويف - أمستردام'},
+  {name:'فينورد', flag:'🇳🇱', letters:'Feyenoord', country:'هولندا', year:'1908', nick:'الفريق', titles:'1 أبطال', extra:'الملعب: دي كويب - روتردام'},
+  {name:'إشبيلية', flag:'🇪🇸', letters:'SEV', country:'إسبانيا', year:'1890', nick:'النادي الأندلسي', titles:'0 أبطال', extra:'الملعب: رامون سانشيز - إشبيلية'},
+  {name:'فالنسيا', flag:'🇪🇸', letters:'VCF', country:'إسبانيا', year:'1919', nick:'الخفافيش', titles:'0 أبطال', extra:'الملعب: الميستايا - فالنسيا'},
+  {name:'ليون', flag:'🇫🇷', letters:'OL', country:'فرنسا', year:'1950', nick:'الأسود', titles:'0 أبطال', extra:'الملعب: غروباما - ليون'},
+  {name:'مارسيليا', flag:'🇫🇷', letters:'OM', country:'فرنسا', year:'1899', nick:'الأولمبي', titles:'1 أبطال', extra:'الملعب: فيلودروم - مارسيليا'},
+  {name:'النصر', flag:'🇸🇦', letters:'ALNASSR', country:'السعودية', year:'1955', nick:'العالمي', titles:'1 أبطال آسيا', extra:'الملعب: الأول بارك - الرياض'},
+  {name:'الأهلي السعودي', flag:'🇸🇦', letters:'AHS', country:'السعودية', year:'1937', nick:'الراقي', titles:'0 أبطال', extra:'الملعب: الجوهرة - جدة'},
+  {name:'بيراميدز', flag:'🇪🇬', letters:'PYR', country:'مصر', year:'2008', nick:'السماء', titles:'0 أبطال', extra:'الملعب: الدفاع الجوي - القاهرة'},
+  {name:'المصري', flag:'🇪🇬', letters:'MASRY', country:'مصر', year:'1920', nick:'الفلاحين', titles:'1 كأس', extra:'الملعب: بورسعيد - بورسعيد'},
+  {name:'روما', flag:'🇮🇹', letters:'ASR', country:'إيطاليا', year:'1927', nick:'الذئاب', titles:'0 أبطال', extra:'الملعب: الأولمبي - روما'},
+  {name:'لاتسيو', flag:'🇮🇹', letters:'SSL', country:'إيطاليا', year:'1900', nick:'النسور', titles:'0 أبطال', extra:'الملعب: الأولمبي - روما'},
+  {name:'لايبزيج', flag:'🇩🇪', letters:'RBL', country:'ألمانيا', year:'2009', nick:'الثيران', titles:'0 أبطال', extra:'الملعب: ريد بُل - لايبزيج'},
+  {name:'ليفركوزن', flag:'🇩🇪', letters:'B04', country:'ألمانيا', year:'1904', nick:'الصيادلة', titles:'0 أبطال', extra:'الملعب: باي أرينا - ليفركوزن'}
+];
+
+var idx = 0;
+var score = 0;
+var levels = [];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function generateLevels() {
+  levels = [];
+  var pool = shuffle(clubs.slice());
+  
+  for (var i = 0; i < 80; i++) {
+    if (pool.length === 0) {
+      var lastClub = levels.length > 0 ? levels[levels.length - 1].name : '';
+      do {
+        pool = shuffle(clubs.slice());
+      } while (pool[pool.length - 1].name === lastClub);
+    }
+    
+    var club = pool.pop();
+    
+    if (levels.length > 0) {
+      var prev = levels[levels.length - 1];
+      if (club.name === prev.name || club.country === prev.country) {
+        for (var k = pool.length - 1; k >= 0; k--) {
+          if (pool[k].name !== prev.name && pool[k].country !== prev.country) {
+            var temp = pool[k];
+            pool[k] = club;
+            club = temp;
+            break;
+          }
+        }
+      }
+    }
+    
+    var wrongs = clubs.filter(function(c){return c.name !== club.name;});
+    wrongs = shuffle(wrongs).slice(0, 3);
+    var opts = shuffle([club.name].concat(wrongs.map(function(c){return c.name;})));
+    
+    levels.push({
+      name: club.name,
+      flag: club.flag,
+      letters: club.letters,
+      country: club.country,
+      year: club.year,
+      nick: club.nick,
+      titles: club.titles,
+      extra: club.extra,
+      opts: opts
+    });
+  }
+}
+
+generateLevels();
+
+function render() {
+  var cur = levels[idx];
+  document.getElementById('qn').textContent = (idx + 1) + ' / ' + levels.length;
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('fill').style.width = (idx / levels.length * 100) + '%';
+  
+  document.getElementById('logoFlag').textContent = cur.flag;
+  document.getElementById('logoLetters').textContent = cur.letters;
+  document.getElementById('specCountry').textContent = cur.country;
+  document.getElementById('specYear').textContent = cur.year;
+  document.getElementById('specNick').textContent = cur.nick;
+  document.getElementById('specTitles').textContent = cur.titles;
+  
+  document.getElementById('hintBox').textContent = '';
+  document.getElementById('h1').disabled = false;
+  document.getElementById('h2').disabled = false;
+  document.getElementById('h3').disabled = false;
+  
+  var optsEl = document.getElementById('opts');
+  optsEl.innerHTML = '';
+  
+  cur.opts.forEach(function(t) {
+    var b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = t;
+    b.onclick = function() { handleAnswer(t, b); };
+    optsEl.appendChild(b);
+  });
+}
+
+function handleAnswer(selected, btn) {
+  var allBtns = document.querySelectorAll('.opt');
+  allBtns.forEach(function(b) { b.disabled = true; });
+  var cur = levels[idx];
+  
+  if (selected === cur.name) {
+    score += 20;
+    document.getElementById('sc').textContent = score + ' نقطة';
+    btn.style.background = '#7ED321';
+    btn.style.color = '#000';
+    btn.style.borderColor = '#fff';
+    document.getElementById('hintBox').textContent = '✅ إجابة صحيحة! +20';
+    setTimeout(function() { idx++; if (idx < levels.length) render(); else endGame(); }, 800);
+  } else {
+    btn.style.background = '#ff4444';
+    btn.style.color = '#fff';
+    btn.style.borderColor = '#ff4444';
+    allBtns.forEach(function(b) {
+      if (b.textContent === cur.name) {
+        b.style.background = '#7ED321';
+        b.style.color = '#000';
+        b.style.borderColor = '#fff';
+      }
+    });
+    document.getElementById('hintBox').textContent = '❌ خطأ! الصح: ' + cur.name;
+    setTimeout(function() { idx++; if (idx < levels.length) render(); else endGame(); }, 1500);
+  }
+}
+
+function hintClear() {
+  if (document.getElementById('h1').disabled) return;
+  score = Math.max(0, score - 5);
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('h1').disabled = true;
+  document.getElementById('hintBox').textContent = '🔍 ' + levels[idx].extra;
+}
+
+function hintText() {
+  if (document.getElementById('h2').disabled) return;
+  score = Math.max(0, score - 5);
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('h2').disabled = true;
+  document.getElementById('hintBox').textContent = '💡 اللقب: ' + levels[idx].nick + ' - تأسس ' + levels[idx].year;
+}
+
+function hintDel() {
+  if (document.getElementById('h3').disabled) return;
+  score = Math.max(0, score - 10);
+  document.getElementById('sc').textContent = score + ' نقطة';
+  document.getElementById('h3').disabled = true;
+  var cur = levels[idx];
+  var allBtns = Array.from(document.querySelectorAll('.opt'));
+  var removed = 0;
+  allBtns.forEach(function(b) {
+    if (b.textContent !== cur.name && removed < 2) {
+      b.disabled = true;
+      b.style.opacity = '0.2';
+      removed++;
+    }
+  });
+  document.getElementById('hintBox').textContent = '❌ تم حذف إجابتين خاطئتين';
+}
+
+function skipLevel() {
+  idx++;
+  if (idx < levels.length) render(); else endGame();
+}
+
+function endGame() {
+  var container = document.getElementById('mainContainer');
+  var endScreen = document.createElement('div');
+  endScreen.className = 'end-screen';
+  endScreen.innerHTML = `
+    <h2>🏆 انتهت اللعبة!</h2>
+    <p>لقد جمعت <b>${score}</b> نقطة<br>من أصل ${levels.length * 20} نقطة</p>
+    <button class="end-btn" onclick="location.reload()">العب تاني 🔄</button>
+  `;
+  container.appendChild(endScreen);
+}
+
+render();
+</script>
+</body>
+</html>
