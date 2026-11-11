@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ahmed TV - الألعاب</title>
+<title>Ahmed TV - بنك الألعاب</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -11,16 +11,72 @@
     background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
     color: #fff;
     min-height: 100vh;
-    padding: 30px 20px;
+    padding: 20px 20px;
     text-align: center;
   }
-  .profile-section { margin-bottom: 20px; }
-  .profile-section h1 {
-    font-size: 2.5rem; color: #f5a623; margin-bottom: 5px;
-    font-weight: bold; text-shadow: 0 0 10px rgba(245, 166, 35, 0.4);
+
+  /* --- قسم الترحيب --- */
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    animation: fadeIn 1s ease-in-out;
   }
-  .profile-section h2 { font-size: 1.2rem; color: #a0a0b0; font-weight: normal; }
-  
+
+  /* الدائرة (اللوجو) */
+  .logo-circle {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e94560, #f5a623);
+    border: 5px solid #fff;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #fff; line-height: 1.1;
+    font-weight: 900;
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.6);
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  }
+
+  /* العنوان الترحيبي */
+  .hero-section h1 {
+    font-size: 2.2rem;
+    color: #f5a623;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-shadow: 0 0 15px rgba(245, 166, 35, 0.6);
+  }
+
+  /* الجملة الترحيبية */
+  .hero-section p {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    margin-bottom: 5px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  /* اسمك */
+  .hero-section .my-name {
+    font-size: 1rem;
+    color: #a0a0b0;
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- شبكة الألعاب --- */
   .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -52,11 +108,15 @@
 </head>
 <body>
 
-  <div class="profile-section">
-    <h1>Ahmed TV</h1>
-    <h2>أحمد عبدالعزيز</h2>
+  <!-- قسم الترحيب -->
+  <div class="hero-section">
+    <div class="logo-circle">Ahmed<br>TV</div>
+    <h1>مرحباً بك في موقع بنك الألعاب</h1>
+    <p>أهلاً بك يا بطل! استعد لأقوى التحديات والمرح مع Ahmed TV</p>
+    <div class="my-name">أحمد عبدالعزيز • Ahmed Abdelaziz</div>
   </div>
 
+  <!-- شبكة الألعاب -->
   <div class="games-grid">
     
     <!-- 1. خمن علم الدولة -->
@@ -301,16 +361,17 @@
         <p>طابق الأزواج!</p>
       </div>
     </a>
-   <!-- لعبة تحضير البرجر -->
-<a class="game-card" href="games/burger/index.html">
-  <div class="game-thumb">🍔</div>
-  <div class="game-info">
-    <h4>تحضير البرجر</h4>
-    <p>جهز البرجر بالترتيب!</p>
-  </div>
-</a>
 
-    
+    <!-- 28. تحضير البرجر -->
+    <a class="game-card" href="games/burger/index.html">
+      <div class="game-thumb">🍔</div>
+      <div class="game-info">
+        <h4>تحضير البرجر</h4>
+        <p>جهز البرجر بالترتيب!</p>
+      </div>
+    </a>
+
+  </div>
 
   <footer>© 2024 Ahmed TV — جميع الحقوق محفوظة</footer>
 </body>
