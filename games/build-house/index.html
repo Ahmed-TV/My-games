@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>بناء منزل | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 60px; height: 60px; flex-shrink: 0;
+    background: linear-gradient(135deg, #f59e0b, #ef4444); 
+    border: 4px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff; line-height: 1;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+  }
+  .logo b { font-size: 12px; }
+  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 20px; line-height: 1.2; color: #facc15;}
+  h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 14px; color: #cbd5e1; margin-bottom: 5px; font-weight: bold;}
+  .names b { color: #facc15; font-size: 16px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0; flex-wrap: wrap; }
+  .stat {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 5px 15px; min-width: 80px; text-align: center;
+  }
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #38bdf8; 
+    border: 4px solid #f59e0b; border-radius: 16px;
+    overflow: hidden;
+    padding: 10px;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 40px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  /* منطقة البناء */
+  .build-area {
+    flex-grow: 1; position: relative; display: flex; flex-direction: column-reverse;
+    align-items: center; justify-content: flex-start; z-index: 1;
+    padding-bottom: 10px; overflow: hidden;
+  }
+
+  /* الأرضية */
+  .ground {
+    width: 100%; height: 20px; background: #22c55e;
+    border-radius: 4px; position: absolute; bottom: 0;
+    z-index: 2;
+  }
+
+  /* الطوابق */
+  .floor {
+    width: 60%; height: 40px;
+    background: #f59e0b;
+    border: 2px solid #b45309;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 20px;
+    position: relative;
+    animation: dropIn 0.3s ease-out;
+    z-index: 1;
+  }
+  
+  .floor.window::before {
+    content: '🪟'; font-size: 16px;
+  }
+  
+  .floor.door::before {
+    content: '🚪'; font-size: 20px;
+  }
+  
+  .floor.roof {
+    background: #ef4444;
+    border-color: #991b1b;
+    height: 30px;
+    border-radius: 10px 10px 4px 4px;
+  }
+
+  @keyframes dropIn {
+    0% { transform: translateY(-50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  /* الأزرار */
+  .controls {
+    display: flex; gap: 10px; justify-content: center; padding: 10px;
+    background: #1e293b; border-radius: 10px; z-index: 2;
+    flex-shrink: 0;
+  }
+  .btn {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 10px; font-size: 16px; font-weight: 900; cursor: pointer;
+    flex-grow: 1;
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>بناء منزل<small>AHMED TV BUILDER</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+
+    <div class="stats">
+      <div class="stat"><b id="floors">0</b><span>الطوابق</span></div>
+      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    
+    <div class="build-area" id="buildArea">
+      <div class="ground"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="addFloorBtn">➕ أضف طابق</button>
+      <button class="btn" id="resetBtn">🔄 إعادة</button>
+    </div>
+
+    <div id="overlay">
+      <h2>لعبة بناء منزل</h2>
+      <p>
+        <b>Ahmed TV</b> - ابنِ أطول منزل!<br>
+        دوس على "أضف طابق" عشان تبني
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ البناء</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const buildArea = document.getElementById('buildArea');
+const addFloorBtn = document.getElementById('addFloorBtn');
+const resetBtn = document.getElementById('resetBtn');
+const floorsEl = document.getElementById('floors');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let floorCount = 0;
+let running = false;
+let best = parseInt(localStorage.getItem('houseBest') || '0');
+let audioCtx = null;
+const MAX_FLOORS = 10; // الهدف
+
+bestEl.textContent = best;
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'build') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+  } else if (type === 'win') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+  }
+}
+
+function addFloor() {
+  if (!running || floorCount >= MAX_FLOORS) return;
+  
+  playSound('build');
+  floorCount++;
+  floorsEl.textContent = floorCount;
+  
+  let floor = document.createElement('div');
+  floor.className = 'floor';
+  
+  // لو أول طابق، نحط باب
+  if (floorCount === 1) {
+    floor.classList.add('door');
+  } 
+  // لو الطوابق اللي فوق، نحط شبابيك
+  else {
+    floor.classList.add('window');
+  }
+  
+  // لو خلصنا الطوابق، نحط السقف
+  if (floorCount === MAX_FLOORS) {
+    let roof = document.createElement('div');
+    roof.className = 'floor roof';
+    buildArea.appendChild(roof);
+    
+    running = false;
+    addFloorBtn.disabled = true;
+    
+    if (best === 0 || floorCount > best) {
+      best = floorCount;
+      localStorage.setItem('houseBest', best);
+      bestEl.textContent = best;
+    }
+    
+    setTimeout(() => {
+      playSound('win');
+      overlay.style.display = 'flex';
+      overlay.innerHTML = `
+        <div style="font-size:35px">🏠</div>
+        <h2>مبروك! بنيت المنزل!</h2>
+        <p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>
+        Ahmed TV بيقولك: إنت مهندس معمارى بجد!</p>
+        <button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>
+      `;
+      document.getElementById('againBtn').onclick = startGame;
+    }, 500);
+    return;
+  }
+  
+  // إضافة الطابق قبل السقف
+  buildArea.insertBefore(floor, buildArea.firstChild);
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  // إزالة كل الطوابق (ما عدا الأرضية)
+  while (buildArea.children.length > 1) {
+    buildArea.removeChild(buildArea.firstChild);
+  }
+  
+  floorCount = 0;
+  floorsEl.textContent = 0;
+  addFloorBtn.disabled = false;
+  running = true;
+}
+
+addFloorBtn.onclick = addFloor;
+resetBtn.onclick = startGame;
+startBtn.onclick = startGame;
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
