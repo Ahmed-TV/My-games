@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ahmed TV - أعلام من السماء</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #a8e6ff 0%, #6dd5fa 25%, #4facfe 50%, #00c6ff 75%, #48cae4 100%);
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 5px;
+  }
+  
+  .game-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 120, 180, 0.35);
+    border: 2px solid rgba(255,255,255,0.5);
+    width: 100%;
+    max-width: 450px;
+    height: 98vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .top-title {
+    display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 8px; padding: 8px;
+    background: linear-gradient(135deg, #00d4ff, #0096c7, #0077b6);
+    border-radius: 12px; color: #fff; text-align: center; box-shadow: 0 4px 18px rgba(0,120,180,0.5);
+    flex-shrink: 0;
+  }
+  .title-main { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 16px; text-shadow: 1px 1px 3px rgba(0,60,90,0.7); }
+  .mini-logo { width: 32px; height: 32px; border-radius: 50%; background: #fff; color: #0077b6; display: flex; justify-content: center; align-items: center; font-size: 9px; font-weight: 900; line-height: 1; text-align: center; flex-shrink: 0; box-shadow: 0 0 10px rgba(255,255,255,0.8); }
+  
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 0 5px; flex-shrink: 0; }
+  .score-box { background: linear-gradient(135deg, #00d4ff, #0077b6); padding: 6px 18px; border-radius: 10px; box-shadow: 0 3px 12px rgba(0,120,180,0.5); color: #fff; font-size: 18px; font-weight: bold; }
+  
+  .timer-circle { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #48cae4, #00b4d8, #0077b6); display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(72,202,228,0.8); border: 3px solid rgba(255,255,255,0.95); position: relative; flex-shrink: 0; }
+  .timer-circle::before { content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.85); }
+  .timer-circle .timer-num { font-size: 18px; font-weight: 900; color: #fff; line-height: 1; }
+  .timer-circle .timer-label { font-size: 9px; font-weight: 700; color: #e0f7ff; line-height: 1; margin-top: 1px; }
+
+  .game-area { 
+    background: linear-gradient(180deg, #87ceeb 0%, #b8e6f7 50%, #e0f7ff 100%);
+    border-radius: 12px; 
+    flex-grow: 1;
+    position: relative; 
+    overflow: hidden; 
+    border: 2px solid rgba(0,180,216,0.4); 
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.5); 
+    touch-action: manipulation;
+  }
+
+  .falling-flag { position: absolute; display: flex; flex-direction: column; align-items: center; cursor: pointer; user-select: none; transition: transform 0.1s; z-index: 3; touch-action: manipulation; }
+  .falling-flag:active { transform: scale(0.9); }
+  .falling-flag .flag-img{width:50px;height:35px;object-fit:cover;border-radius:6px;box-shadow:0 4px 8px rgba(0,120,180,0.5);background:#fff}
+  .falling-flag .flag-emoji { font-size: 40px; line-height: 1; filter: drop-shadow(0 4px 8px rgba(0,120,180,0.5)); display: none; }
+  .falling-flag .flag-name { background: linear-gradient(135deg, #0077b6, #00b4d8); color: #fff; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 6px; margin-top: 2px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,120,180,0.5); }
+  
+  .pop-effect { position: absolute; font-size: 35px; pointer-events: none; animation: popAnim 0.6s ease-out forwards; z-index: 20; }
+  @keyframes popAnim { 0% { transform: scale(0); opacity: 1; } 50% { transform: scale(1.5); opacity: 1; } 100% { transform: scale(2) translateY(-30px); opacity: 0; } }
+  
+  .sky-star { position: absolute; font-size: 14px; opacity: 0.7; pointer-events: none; z-index: 1; }
+
+  .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(160deg, rgba(0,180,216,0.98), rgba(0,119,182,0.98)); display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; color: #fff; text-align: center; padding: 15px; z-index: 10; }
+  .overlay h1 { font-size: 24px; margin-bottom: 8px; color: #fff; font-weight: 900; }
+  .brand-name { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 8px; letter-spacing: 1px; }
+  .overlay p { font-size: 14px; margin-bottom: 15px; line-height: 1.6; color: #e0f7ff; }
+  .overlay button { padding: 12px 30px; font-size: 18px; font-weight: bold; border: 2px solid #fff; border-radius: 50px; background: linear-gradient(135deg, #00d4ff, #0096c7); color: #fff; cursor: pointer; box-shadow: 0 5px 20px rgba(0,120,180,0.6); font-family: inherit; }
+  .overlay button:active { transform: scale(0.97); }
+  
+  .logo-circle { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #48cae4, #00b4d8, #0077b6); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 12px; color: #fff; text-align: center; line-height: 1.1; box-shadow: 0 0 18px rgba(72,202,228,0.9); border: 2px solid rgba(255,255,255,0.95); margin-bottom: 10px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="game-container">
+  <div class="top-title">
+    <div class="title-main">
+      <div class="mini-logo">Ahmed<br>TV</div>
+      <span>أعلام من السماء</span>
+    </div>
+  </div>
+  
+  <div class="header">
+    <div class="score-box"><span id="score">0</span></div>
+    <div class="timer-circle"><span class="timer-num" id="timer">30</span><span class="timer-label">ثانية</span></div>
+  </div>
+
+  <div class="game-area" id="gameArea"></div>
+
+  <div class="overlay" id="startScreen">
+    <div class="logo-circle">Ahmed<br>TV</div>
+    <div class="brand-name">Ahmed TV</div>
+    <h1>أعلام من السماء</h1>
+    <p>الأعلام بتنزل من فوق<br>اضغط عليها بسرعة قبل ما تختفي<br>كل علم = +10 نقاط</p>
+    <button onclick="startGame()">ابدأ اللعب ▶️</button>
+  </div>
+
+  <div class="overlay hidden" id="endScreen">
+    <div class="logo-circle">Ahmed<br>TV</div>
+    <div class="brand-name">Ahmed TV</div>
+    <h1 id="endTitle">انتهى الوقت!</h1>
+    <p id="endMessage"></p>
+    <button onclick="startGame()">العب مرة أخرى 🔄</button>
+  </div>
+</div>
+
+<script>
+const FLAGS = [
+  { flag: '🇪🇬', name: 'مصر', code:'eg' },{ flag: '🇸🇦', name: 'السعودية', code:'sa' },{ flag: '🇦🇪', name: 'الإمارات', code:'ae' },{ flag: '🇰🇼', name: 'الكويت', code:'kw' },{ flag: '🇶🇦', name: 'قطر', code:'qa' },{ flag: '🇧🇭', name: 'البحرين', code:'bh' },{ flag: '🇴🇲', name: 'عُمان', code:'om' },{ flag: '🇯🇴', name: 'الأردن', code:'jo' },{ flag: '🇱🇧', name: 'لبنان', code:'lb' },{ flag: '🇸🇾', name: 'سوريا', code:'sy' },{ flag: '🇮🇶', name: 'العراق', code:'iq' },{ flag: '🇵🇸', name: 'فلسطين', code:'ps' },{ flag: '🇾🇪', name: 'اليمن', code:'ye' },{ flag: '🇱🇾', name: 'ليبيا', code:'ly' },{ flag: '🇹🇳', name: 'تونس', code:'tn' },{ flag: '🇩🇿', name: 'الجزائر', code:'dz' },{ flag: '🇲🇦', name: 'المغرب', code:'ma' },{ flag: '🇸🇩', name: 'السودان', code:'sd' },{ flag: '🇺🇸', name: 'أمريكا', code:'us' },{ flag: '🇬🇧', name: 'بريطانيا', code:'gb' },{ flag: '🇫🇷', name: 'فرنسا', code:'fr' },{ flag: '🇩🇪', name: 'ألمانيا', code:'de' },{ flag: '🇮🇹', name: 'إيطاليا', code:'it' },{ flag: '🇪🇸', name: 'إسبانيا', code:'es' },{ flag: '🇵🇹', name: 'البرتغال', code:'pt' },{ flag: '🇷🇺', name: 'روسيا', code:'ru' },{ flag: '🇨🇳', name: 'الصين', code:'cn' },{ flag: '🇯🇵', name: 'اليابان', code:'jp' },{ flag: '🇰🇷', name: 'كوريا الجنوبية', code:'kr' },{ flag: '🇮🇳', name: 'الهند', code:'in' },{ flag: '🇧🇷', name: 'البرازيل', code:'br' },{ flag: '🇦🇷', name: 'الأرجنتين', code:'ar' },{ flag: '🇲🇽', name: 'المكسيك', code:'mx' },{ flag: '🇨🇦', name: 'كندا', code:'ca' },{ flag: '🇦🇺', name: 'أستراليا', code:'au' },{ flag: '🇹🇷', name: 'تركيا', code:'tr' },{ flag: '🇮🇷', name: 'إيران', code:'ir' },{ flag: '🇵🇰', name: 'باكستان', code:'pk' },{ flag: '🇮🇩', name: 'إندونيسيا', code:'id' },{ flag: '🇳🇬', name: 'نيجيريا', code:'ng' },{ flag: '🇿🇦', name: 'جنوب أفريقيا', code:'za' },{ flag: '🇬🇷', name: 'اليونان', code:'gr' },{ flag: '🇳🇱', name: 'هولندا', code:'nl' },{ flag: '🇸🇪', name: 'السويد', code:'se' },{ flag: '🇳🇴', name: 'النرويج', code:'no' },{ flag: '🇨🇭', name: 'سويسرا', code:'ch' },{ flag: '🇵🇱', name: 'بولندا', code:'pl' },{ flag: '🇺🇦', name: 'أوكرانيا', code:'ua' },{ flag: '🇹🇭', name: 'تايلاند', code:'th' },{ flag: '🇲🇾', name: 'ماليزيا', code:'my' }
+];
+
+let score = 0; let timeLeft = 30; let playing = false; let timerInterval; let spawnInterval; let animationId; let flags = []; let lastTime = 0;
+
+const scoreEl = document.getElementById('score');
+const timerEl = document.getElementById('timer');
+const gameArea = document.getElementById('gameArea');
+
+// إضافة سحاب في الخلفية
+for (let i = 0; i < 10; i++) { 
+  const star = document.createElement('div');
+  star.className = 'sky-star';
+  star.textContent = '☁️';
+  star.style.left = (Math.random() * 90 + 5) + '%';
+  star.style.top = (Math.random() * 80 + 5) + '%';
+  star.style.opacity = 0.3 + Math.random() * 0.3;
+  gameArea.appendChild(star);
+}
+
+function createFlag() {
+  if (!playing) return;
+  const data = FLAGS[Math.floor(Math.random() * FLAGS.length)];
+  const el = document.createElement('div');
+  el.className = 'falling-flag';
+  el.innerHTML = '<img class="flag-img" src="https://flagcdn.com/w160/'+data.code+'.png" alt="'+data.name+'"><div class="flag-emoji">'+data.flag+'</div><div class="flag-name">'+data.name+'</div>';
+  
+  const img = el.querySelector('.flag-img');
+  const emo = el.querySelector('.flag-emoji');
+  img.onerror = function(){ this.style.display='none'; emo.style.display='block'; };
+  
+  const maxX = gameArea.clientWidth - 60;
+  const startX = Math.random() * maxX + 5;
+  el.style.left = startX + 'px';
+  el.style.top = '-60px';
+  
+  const flagObj = { el: el, x: startX, y: -60, speed: 70 + Math.random() * 60, wobblePhase: Math.random() * Math.PI * 2, caught: false };
+  
+  el.addEventListener('click', () => catchFlag(flagObj));
+  el.addEventListener('touchstart', (e) => { e.preventDefault(); catchFlag(flagObj); }, { passive: false });
+  
+  gameArea.appendChild(el);
+  flags.push(flagObj);
+}
+
+function catchFlag(flagObj) {
+  if (flagObj.caught || !playing) return;
+  flagObj.caught = true;
+  score += 10;
+  scoreEl.textContent = score;
+  
+  const pop = document.createElement('div');
+  pop.className = 'pop-effect';
+  pop.textContent = '✨';
+  pop.style.left = flagObj.x + 'px';
+  pop.style.top = flagObj.y + 'px';
+  gameArea.appendChild(pop);
+  setTimeout(() => pop.remove(), 600);
+  
+  flagObj.el.remove();
+  const idx = flags.indexOf(flagObj);
+  if (idx > -1) flags.splice(idx, 1);
+}
+
+function animate(timestamp) {
+  if (!playing) return;
+  if (!lastTime) lastTime = timestamp;
+  const dt = Math.min((timestamp - lastTime) / 1000, 0.1);
+  lastTime = timestamp;
+  const gameHeight = gameArea.clientHeight;
+  
+  for (let i = flags.length - 1; i >= 0; i--) {
+    const f = flags[i];
+    if (f.caught) continue;
+    f.y += f.speed * dt;
+    f.wobblePhase += dt * 3;
+    const wobbleX = Math.sin(f.wobblePhase) * 10;
+    f.el.style.top = f.y + 'px';
+    f.el.style.left = (f.x + wobbleX) + 'px';
+    f.el.style.transform = 'rotate('+(Math.sin(f.wobblePhase) * 8)+'deg)';
+    if (f.y > gameHeight + 20) { f.el.remove(); flags.splice(i, 1); }
+  }
+  animationId = requestAnimationFrame(animate);
+}
+
+function startGame() {
+  flags.forEach(f => f.el.remove());
+  flags = [];
+  score = 0; timeLeft = 30; playing = true; lastTime = 0;
+  scoreEl.textContent = score;
+  timerEl.textContent = timeLeft;
+  
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  
+  createFlag();
+  if (spawnInterval) clearInterval(spawnInterval);
+  spawnInterval = setInterval(createFlag, 700); // توليد الأعلام كل 0.7 ثانية
+  
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+  
+  if (animationId) cancelAnimationFrame(animationId);
+  animationId = requestAnimationFrame(animate);
+}
+
+function endGame() {
+  playing = false;
+  clearInterval(timerInterval);
+  clearInterval(spawnInterval);
+  cancelAnimationFrame(animationId);
+  
+  flags.forEach(f => f.el.remove());
+  flags = [];
+  
+  let title, msg;
+  if (score >= 200) { title = 'بطل الأعلام! 🏆'; msg = 'رائع يا صاحب Ahmed TV! حصلت على ' + score + ' نقطة'; }
+  else if (score >= 100) { title = 'ممتاز! 🌟'; msg = 'حصلت على ' + score + ' نقطة - أنت سريع جداً'; }
+  else if (score >= 50) { title = 'جيد! 👏'; msg = 'حصلت على ' + score + ' نقطة - استمر'; }
+  else { title = 'حاول مرة أخرى 💪'; msg = 'حصلت على ' + score + ' نقطة فقط'; }
+  
+  document.getElementById('endTitle').textContent = title;
+  document.getElementById('endMessage').textContent = msg;
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
