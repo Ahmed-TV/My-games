@@ -75,31 +75,30 @@
     z-index: 1;
   }
 
+  /* شكل الكارت */
   .card {
-    background: #3b82f6;
-    border-radius: 8px;
+    background: #2563eb;
+    border-radius: 10px;
     display: flex; justify-content: center; align-items: center;
-    font-size: 30px; font-weight: bold; color: #fff;
     cursor: pointer;
-    transition: transform 0.3s, background 0.3s;
     user-select: none;
     position: relative;
-    transform-style: preserve-3d;
+    transition: transform 0.3s, background 0.3s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border: 2px solid #1d4ed8;
   }
 
-  /* الكارت المقلوب */
-  .card.flipped { background: #fff; color: #000; transform: rotateY(180deg); }
-  .card.flipped::before { content: ''; position: absolute; inset: 0; background: #fff; border-radius: 8px; } 
-  
-  /* الكارت اللي اتطابق */
-  .card.matched { background: #22c55e; color: #fff; pointer-events: none; opacity: 0.6; }
-
-  /* رسومات الكوتشينة */
   .card .front { display: none; font-size: 40px; }
-  .card.flipped .front { display: block; }
+  .card .back { font-size: 40px; color: #93c5fd; font-weight: bold; }
+
+  /* لما الكارت يتقلب */
+  .card.flipped { background: #fff; border-color: #cbd5e1; }
   .card.flipped .back { display: none; }
-  .card .back { font-size: 30px; }
+  .card.flipped .front { display: block; color: #000; }
+
+  /* لما الكروت تتطابق */
+  .card.matched { background: #22c55e; border-color: #16a34a; pointer-events: none; }
+  .card.matched .front { color: #fff; }
 
   #overlay {
     position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
@@ -142,7 +141,7 @@
       <h2>لعبة الكوتشينة</h2>
       <p>
         <b>Ahmed TV</b> - طابق الأزواج!<br>
-        افتح كرتين .. لو ليهم نفس القيمة هيفضلوا مفتوحين
+        افتح كرتين .. لو ليهم نفس الرمز هيفضلوا مفتوحين
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
     </div>
@@ -163,15 +162,15 @@ let cards = [];
 let flippedCards = [];
 let moves = 0;
 let matchedPairs = 0;
-let totalPairs = 8; // 16 كارت = 8 أزواج
+let totalPairs = 8;
 let lockBoard = false;
 let running = false;
 let best = parseInt(localStorage.getItem('cardBest') || '0');
 let audioCtx = null;
 bestEl.textContent = best;
 
-// رموز الكوتشينة
-const CARD_SYMBOLS = ['♠', '♥', '♦', '♣', '🃏', '👑', '🎴', '🀄'];
+// رموز الكروت (كلها مدعومة في كل الأجهزة)
+const CARD_SYMBOLS = ['🍎', '🍌', '🍇', '🍓', '🍒', '🥝', '🍑', '🍍'];
 
 function initAudio() {
   if (!audioCtx) {
@@ -227,7 +226,6 @@ function createBoard() {
   lockBoard = false;
   movesEl.textContent = moves;
 
-  // تكرار الرموز عشان يبقى فيه أزواج
   let deck = [...CARD_SYMBOLS, ...CARD_SYMBOLS];
   deck = shuffle(deck);
 
@@ -237,7 +235,7 @@ function createBoard() {
     card.dataset.symbol = symbol;
     card.dataset.index = index;
     card.innerHTML = `
-      <span class="back">🂠</span>
+      <span class="back">؟</span>
       <span class="front">${symbol}</span>
     `;
     card.addEventListener('click', () => flipCard(card));
@@ -267,7 +265,6 @@ function checkMatch() {
   const symbol2 = card2.dataset.symbol;
 
   if (symbol1 === symbol2) {
-    // تطابق
     playSound('match');
     setTimeout(() => {
       card1.classList.add('matched');
@@ -281,7 +278,6 @@ function checkMatch() {
       }
     }, 300);
   } else {
-    // لا يتطابق
     setTimeout(() => {
       card1.classList.remove('flipped');
       card2.classList.remove('flipped');
