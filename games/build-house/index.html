@@ -48,10 +48,9 @@
   #game-container {
     width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
     position: relative; display: flex; flex-direction: column;
-    background: #38bdf8; 
+    background: #38bdf8; /* سما */
     border: 4px solid #f59e0b; border-radius: 16px;
     overflow: hidden;
-    padding: 10px;
   }
 
   .watermark {
@@ -69,57 +68,62 @@
 
   /* منطقة البناء */
   .build-area {
-    flex-grow: 1; position: relative; display: flex; flex-direction: column;
-    justify-content: flex-end; /* يبدأ من تحت */
-    align-items: center; z-index: 1; overflow: hidden;
-    padding-bottom: 20px; /* مساحة للأرضية */
+    flex-grow: 1; position: relative; overflow: hidden;
+    z-index: 1; display: flex; flex-direction: column; justify-content: flex-end;
   }
 
-  /* الارضية */
+  /* الأرضية الثابتة */
   .ground {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 20px;
-    background: #22c55e; z-index: 2;
+    width: 100%; height: 25px; background: #22c55e;
+    border-top: 5px solid #16a34a;
+    z-index: 2;
   }
 
-  /* الطابق الحالي (المتحرك) */
-  .moving-floor {
-    position: absolute;
-    height: 30px;
-    background: #f59e0b;
+  /* الطوابق */
+  .floor {
+    height: 35px;
+    background: linear-gradient(to bottom, #fcd34d, #f59e0b); /* لون خشب/طوب */
     border: 2px solid #b45309;
     border-radius: 4px;
-    z-index: 5;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  }
-
-  /* الطوابق المستقرة */
-  .placed-floor {
-    width: 60%; height: 30px;
-    background: #f59e0b;
-    border: 2px solid #b45309;
-    border-radius: 4px;
-    margin-bottom: 2px;
+    position: absolute; /* بنحدد مكانه بالكود */
     display: flex; justify-content: center; align-items: center;
-    font-size: 16px;
-    position: relative;
+    font-size: 20px;
     z-index: 1;
   }
 
-  .placed-floor.door::before { content: '🚪'; }
-  .placed-floor.window::before { content: '🪟'; font-size: 14px;}
+  /* شكل الطوابق */
+  .floor .window-icon {
+    font-size: 16px;
+    color: #fff;
+  }
   
-  .placed-floor.roof {
-    background: #ef4444;
-    border-color: #991b1b;
-    height: 25px;
+  .floor.roof {
+    background: linear-gradient(to bottom, #ef4444, #b91c1c);
+    border-color: #7f1d1d;
     border-radius: 10px 10px 0 0;
-    width: 65%; /* السقف أعرض شوية */
+    height: 25px;
+  }
+
+  /* الطابق المتحرك */
+  .moving-floor {
+    position: absolute;
+    height: 35px;
+    background: linear-gradient(to bottom, #fcd34d, #f59e0b);
+    border: 2px solid #b45309;
+    border-radius: 4px;
+    z-index: 5;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  .moving-floor .window-icon {
+    font-size: 16px;
+    color: #fff;
   }
 
   /* الأزرار */
   .controls {
     display: flex; gap: 10px; justify-content: center; padding: 10px;
-    background: #1e293b; border-radius: 10px; z-index: 2;
+    background: #1e293b; border-radius: 10px; z-index: 3;
     flex-shrink: 0;
   }
   .btn {
@@ -202,17 +206,16 @@ let running = false;
 let best = parseInt(localStorage.getItem('houseBest') || '0');
 let audioCtx = null;
 
-// المتغيرات بتاعة الحركة
+// المتغيرات بتاعة حركة الطوابق
 let movingFloor = null;
-let floorDirection = 1;
-let floorPosition = 0; // من 0 لـ 100 (نسبة مئوية)
 let moveInterval = null;
-let baseFloorWidth = 60; // عرض الطابق الأساسي
+let posX = 0; // نسبة من 0 لـ 100
+let direction = 1; // 1 يمين، -1 شمال
 
-// إحداثيات الطوابق المستقرة
-let placedFloors = []; 
+// حفظ بيانات الطوابق المستقرة
 let lastFloorLeft = 0;
-let lastFloorWidth = 60;
+let lastFloorWidth = 60; // الطوابق بتصغر شوية كل مرة
+let currentFloorY = 25; // فوق الأرضية (20px)
 
 bestEl.textContent = best;
 
@@ -252,50 +255,54 @@ function playSound(type) {
   }
 }
 
-// إنشاء الطابق المتحرك
 function createMovingFloor() {
   movingFloor = document.createElement('div');
   movingFloor.className = 'moving-floor';
   movingFloor.style.width = lastFloorWidth + '%';
-  movingFloor.style.bottom = (floorCount * 32) + 20 + 'px'; // فوق الطوابق اللي قبلها
-  movingFloor.style.left = '0%';
+  movingFloor.style.left = posX + '%';
+  movingFloor.style.bottom = (currentFloorY) + 'px';
+  
+  // تصميم داخلي (شباك أو باب)
+  if (floorCount === 0) {
+    movingFloor.innerHTML = '🚪'; // الباب في الطابق الأول
+  } else {
+    movingFloor.innerHTML = '<span class="window-icon">🪟</span>';
+  }
+  
   buildArea.appendChild(movingFloor);
   
-  floorPosition = 0;
-  floorDirection = 1;
+  posX = 0;
+  direction = 1;
   
-  // حركة الطابق
   moveInterval = setInterval(() => {
-    floorPosition += floorDirection * 1.5;
+    posX += direction * 1.2; // سرعة الحركة
     
-    // حدود الحركة (من 0 لـ 100 - عرض الطابق)
-    if (floorPosition > (100 - lastFloorWidth)) {
-      floorPosition = 100 - lastFloorWidth;
-      floorDirection = -1;
+    if (posX > (100 - lastFloorWidth)) {
+      posX = 100 - lastFloorWidth;
+      direction = -1;
     }
-    if (floorPosition < 0) {
-      floorPosition = 0;
-      floorDirection = 1;
+    if (posX < 0) {
+      posX = 0;
+      direction = 1;
     }
     
-    movingFloor.style.left = floorPosition + '%';
-  }, 16); // ~60 fps
+    movingFloor.style.left = posX + '%';
+  }, 16);
   
   placeBtn.disabled = false;
 }
 
-// وضع الطابق
 function placeFloor() {
   if (!running || !movingFloor) return;
   
   clearInterval(moveInterval);
   placeBtn.disabled = true;
   
-  // حساب الفرق بين مكان الطابق الجديد والطابق اللي تحته
-  let diff = Math.abs(floorPosition - lastFloorLeft);
+  // حساب دقة التركيب (الفرق بين مكان الطابق الجديد ومكان الطابق اللي تحته)
+  let diff = Math.abs(posX - lastFloorLeft);
   
-  // لو الفرق كبير، اللعبة بتخلص
-  if (diff > (lastFloorWidth / 2)) {
+  // مسامحة 25% من العرض
+  if (diff > (lastFloorWidth * 0.5)) {
     // خسر
     playSound('fail');
     movingFloor.style.background = '#ef4444';
@@ -308,7 +315,7 @@ function placeFloor() {
         <h2>البناء وقع!</h2>
         <p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>
         أعلى نتيجة: ${best}<br>
-        Ahmed TV بيقولك: حاول تاني، ركز في النص!</p>
+        أحمد TV بيقولك: حاول تاني، ركز في النص!</p>
         <button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>
       `;
       document.getElementById('againBtn').onclick = startGame;
@@ -320,22 +327,21 @@ function placeFloor() {
   playSound('build');
   
   // نحوله لطابق ثابت
-  movingFloor.className = 'placed-floor';
-  movingFloor.style.left = floorPosition + '%'; // تثبيت المكان
-  movingFloor.style.bottom = (floorCount * 32) + 20 + 'px';
+  movingFloor.className = 'floor';
   
-  // نحسب المكان الجديد للطابق اللي بعده
-  lastFloorLeft = floorPosition;
+  // تحديث المكان الجديد للطابق اللي بعده
+  lastFloorLeft = posX;
   
-  // لو الطابق الجديد أوسع شوية، بنخليه يبقى فيه شباك
+  // لو الطابق أوسع شوية، بنخليه يبقى فيه شباك
   if (floorCount === 0) {
-    movingFloor.classList.add('door');
+    movingFloor.innerHTML = '🚪';
   } else {
-    movingFloor.classList.add('window');
+    movingFloor.innerHTML = '<span class="window-icon">🪟</span>';
   }
   
   floorCount++;
   floorsEl.textContent = floorCount;
+  currentFloorY += 35; // الطابق اللي بعده بيبقى فوقه
   
   // لو وصلنا لعدد طوابق كبير، نفوز
   if (floorCount >= 10) {
@@ -349,11 +355,14 @@ function placeFloor() {
     }
     
     // نحط السقف
-    let roof = document.createElement('div');
-    roof.className = 'placed-floor roof';
-    roof.style.bottom = (floorCount * 32) + 20 + 'px';
-    roof.style.left = (lastFloorLeft + (lastFloorWidth - 65) / 2) + '%'; // في النص
-    buildArea.appendChild(roof);
+    setTimeout(() => {
+      let roof = document.createElement('div');
+      roof.className = 'floor roof';
+      roof.style.width = lastFloorWidth + '%';
+      roof.style.left = lastFloorLeft + '%';
+      roof.style.bottom = currentFloorY + 'px';
+      buildArea.appendChild(roof);
+    }, 200);
     
     setTimeout(() => {
       overlay.style.display = 'flex';
@@ -361,11 +370,11 @@ function placeFloor() {
         <div style="font-size:35px">🏠</div>
         <h2>مبروك! بنيت المنزل!</h2>
         <p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>
-        Ahmed TV بيقولك: إنت مهندس معماري!</p>
+        أحمد TV بيقولك: إنت مهندس معماري!</p>
         <button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>
       `;
       document.getElementById('againBtn').onclick = startGame;
-    }, 500);
+    }, 600);
     
     return;
   }
@@ -378,16 +387,16 @@ function startGame() {
   initAudio();
   overlay.style.display = 'none';
   
-  // تنظيف الساحة
+  // تنظيف الساحة من أي طوابق قديمة
   buildArea.innerHTML = '<div class="ground"></div>';
   
   floorCount = 0;
   floorsEl.textContent = 0;
   lastFloorLeft = 0;
-  lastFloorWidth = baseFloorWidth;
+  lastFloorWidth = 60;
+  currentFloorY = 25;
   running = true;
   
-  // نبدأ الطابق الأول
   createMovingFloor();
 }
 
