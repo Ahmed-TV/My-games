@@ -105,7 +105,7 @@
     border-radius: 20px;
   }
   .overlay h2 { color: #ff0055; font-size: 30px; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255,0,85,0.6); }
-  .overlay p { color: #fff; font-size: 18px; margin-bottom: 20px; }
+  .overlay p { color: #fff; font-size: 18px; margin-bottom: 20px; text-align: center; padding: 0 10px; }
   .hide { display: none !important; }
 </style>
 </head>
@@ -122,7 +122,7 @@
     
     <div class="overlay" id="startScreen">
       <h2>🐍 ثعبان أحمد TV</h2>
-      <p>استخدم الأسهم أو اسحب للعب</p>
+      <p>استخدم الأسهم أو اسحب للعب<br>حرك الثعبان عشان يبدأ</p>
       <button class="btn" onclick="startGame()">ابدأ اللعب ▶️</button>
     </div>
 
@@ -152,7 +152,7 @@ let food = {};
 let dx = 0, dy = 0;
 let score = 0;
 let highScore = localStorage.getItem('snakeProHighScore') || 0;
-let speed = 250; // سرعة البداية أبطأ للأطفال (كل ما تقل، اللعبة تبقى أسرع)
+let speed = 200; // سرعة مريحة جداً
 let gameLoop;
 let isPlaying = false;
 let changingDirection = false;
@@ -160,16 +160,15 @@ let changingDirection = false;
 highScoreEl.textContent = highScore;
 
 function startGame() {
-  // بدء الثعبان بـ 4 مربعات عشان يبقى أطول
+  // بدء الثعبان بـ 3 مربعات
   snake = [
     {x: 10, y: 10},
     {x: 9, y: 10},
-    {x: 8, y: 10},
-    {x: 7, y: 10}
+    {x: 8, y: 10}
   ];
   dx = 0; dy = 0;
   score = 0;
-  speed = 250; // تصفير السرعة عند البداية
+  speed = 200; 
   scoreEl.textContent = score;
   changingDirection = false;
   isPlaying = true;
@@ -179,7 +178,8 @@ function startGame() {
   
   generateFood();
   clearInterval(gameLoop);
-  gameLoop = setInterval(drawGame, speed);
+  // اللعبة مش هتبدأ تتحرك غير لما يدوس على سهم
+  gameLoop = setInterval(drawGame, speed); 
 }
 
 function generateFood() {
@@ -194,13 +194,16 @@ function generateFood() {
 function drawGame() {
   if (!isPlaying) return;
   
+  // الثعبان مش هيتحرك غير لو اللاعب داس على سهم
   if (dx !== 0 || dy !== 0) {
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
     
+    // الاصطدام بالحوائط
     if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
       return endGame();
     }
     
+    // الاصطدام بنفسه
     if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
       return endGame();
     }
@@ -212,9 +215,9 @@ function drawGame() {
       scoreEl.textContent = score;
       generateFood();
       
-      // تسريع اللعبة كل 10 نقاط (عشان تفضل سهلة فترة أطول)
-      if (score % 10 === 0 && speed > 100) {
-        speed -= 15;
+      // تسريع بسيط جداً كل 5 نقاط
+      if (score % 5 === 0 && speed > 120) {
+        speed -= 10;
         clearInterval(gameLoop);
         gameLoop = setInterval(drawGame, speed);
       }
