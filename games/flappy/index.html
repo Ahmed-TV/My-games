@@ -43,35 +43,37 @@
   }
   .stat b { display: block; font-size: 18px; color: #facc15; }
   .stat span { font-size: 10px; color: #94a3b8; }
-  
-  #soundBtn {
-    background: #22c55e; color: #022c22; border: none;
-    padding: 8px 15px; border-radius: 20px;
-    font-weight: 900; font-size: 12px; cursor: pointer;
-  }
 
   #wrap {
     width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
     background: #38bdf8; border: 3px solid #f59e0b; border-radius: 16px;
-    overflow: hidden; position: relative; display: flex; cursor: pointer;
+    overflow: hidden; position: relative; display: flex;
     margin-top: 5px; margin-bottom: 5px;
   }
-  canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+  canvas { width: 100%; height: 100%; display: block; }
   
   #overlay {
     position: absolute; inset: 0; background: rgba(0,0,0,.75);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 8px; pointer-events: none; /* عشان نمنع تداخل الزراير */
+    text-align: center; padding: 15px; gap: 8px;
   }
-  #overlay > * { pointer-events: auto; } /* نرجع الزراير تشتغل */
-  
   #overlay h2 { font-size: 22px; }
   #overlay p { line-height: 1.6; font-size: 13px; color: #e2e8f0; }
   .btn-start {
     background: #f59e0b; border: none; padding: 12px 25px;
     border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 10px;
-    color: #000;
   }
+
+  /* الزرار الكبير الجديد */
+  #jumpBtn {
+    width: 100%; max-width: 500px;
+    background: #22c55e; color: #000;
+    border: none; border-radius: 12px;
+    padding: 15px; font-size: 20px; font-weight: 900;
+    cursor: pointer; margin-bottom: 5px;
+    flex-shrink: 0;
+  }
+  #jumpBtn:active { background: #16a34a; }
 
   .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; }
   .footer a { color: #facc15; text-decoration: none; }
@@ -89,7 +91,6 @@
     <div class="stats">
       <div class="stat"><b id="score">0</b><span>النقاط</span></div>
       <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
-      <button id="soundBtn">🔊 الصوت</button>
     </div>
   </div>
 
@@ -100,11 +101,14 @@
       <h2>لعبة الطائر</h2>
       <p>
         <b>Ahmed TV</b> - طير بين الأنابيب!<br>
-        دوس على الشاشة عشان تطير
+        دوس على الزرار الأخضر عشان تطير
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
     </div>
   </div>
+
+  <!-- الزرار الجديد -->
+  <button id="jumpBtn" style="display:none;">🚀 اطير</button>
 
   <div class="footer">
     <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
@@ -117,18 +121,15 @@ const scoreEl = document.getElementById('score');
 const bestEl = document.getElementById('best');
 const overlay = document.getElementById('overlay');
 const startBtn = document.getElementById('startBtn');
-const soundBtn = document.getElementById('soundBtn');
+const jumpBtn = document.getElementById('jumpBtn');
 
 let W = 0, H = 0;
 let running = false;
-let gameStarted = false;
 let score = 0;
 let best = parseInt(localStorage.getItem('flappyBest') || '0');
 bestEl.textContent = best;
 
-let soundOn = true;
 let audioCtx = null;
-
 let bird = { x: 50, y: 200, vy: 0, gravity: 0.5, jump: -8, radius: 15, rotation: 0 };
 let pipes = [];
 const PIPE_WIDTH = 60;
@@ -142,9 +143,7 @@ function resize() {
   canvas.height = rect.height;
   W = canvas.width;
   H = canvas.height;
-  if(!running) {
-    bird.y = H / 2;
-  }
+  if(!running) bird.y = H / 2;
 }
 
 function initAudio() {
@@ -153,15 +152,12 @@ function initAudio() {
   }
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 }
-document.addEventListener('click', initAudio, { once: true });
-document.addEventListener('touchstart', initAudio, { once: true });
 
 function playSound(type) {
-  if (!soundOn || !audioCtx) return;
+  if (!audioCtx) return;
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  osc.connect(gain); gain.connect(audioCtx.destination);
   
   if (type === 'jump') {
     osc.type = 'sine';
@@ -186,19 +182,14 @@ function playSound(type) {
   }
 }
 
-// الدالة دي هي اللي بتشغل اللعبة
 function startGame() {
   initAudio();
   overlay.style.display = 'none';
-  bird.y = H / 2;
-  bird.vy = 0;
-  bird.rotation = 0;
-  score = 0;
-  scoreEl.textContent = score;
-  pipes = [];
-  pipeTimer = 0;
+  jumpBtn.style.display = 'block'; // إظهار الزرار
+  bird.y = H / 2; bird.vy = 0; bird.rotation = 0;
+  score = 0; scoreEl.textContent = score;
+  pipes = []; pipeTimer = 0;
   running = true;
-  gameStarted = true;
   loop();
 }
 
@@ -212,12 +203,7 @@ function spawnPipe() {
   const minHeight = 50;
   const maxHeight = H - GAP - minHeight;
   const topHeight = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
-  pipes.push({
-    x: W,
-    top: topHeight,
-    bottom: H - topHeight - GAP,
-    passed: false
-  });
+  pipes.push({ x: W, top: topHeight, bottom: H - topHeight - GAP, passed: false });
 }
 
 function update() {
@@ -226,125 +212,70 @@ function update() {
   bird.vy += bird.gravity;
   bird.y += bird.vy;
 
-  if (bird.vy < 0) {
-    bird.rotation = -0.5;
-  } else {
-    bird.rotation += 0.05;
-    if (bird.rotation > 1.5) bird.rotation = 1.5;
-  }
+  if (bird.vy < 0) bird.rotation = -0.5;
+  else { bird.rotation += 0.05; if (bird.rotation > 1.5) bird.rotation = 1.5; }
 
-  if (bird.y + bird.radius > H) {
-    bird.y = H - bird.radius;
-    return endGame();
-  }
-  if (bird.y - bird.radius < 0) {
-    bird.y = bird.radius;
-    bird.vy = 0;
-  }
+  if (bird.y + bird.radius > H) { bird.y = H - bird.radius; return endGame(); }
+  if (bird.y - bird.radius < 0) { bird.y = bird.radius; bird.vy = 0; }
 
   pipeTimer++;
-  if (pipeTimer > 90) { 
-    spawnPipe();
-    pipeTimer = 0;
-  }
+  if (pipeTimer > 90) { spawnPipe(); pipeTimer = 0; }
 
   for (let i = pipes.length - 1; i >= 0; i--) {
     let p = pipes[i];
     p.x -= PIPE_SPEED;
 
     if (!p.passed && p.x + PIPE_WIDTH < bird.x) {
-      p.passed = true;
-      score++;
-      scoreEl.textContent = score;
-      playSound('score');
+      p.passed = true; score++; scoreEl.textContent = score; playSound('score');
     }
 
     if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + PIPE_WIDTH) {
-      if (bird.y - bird.radius < p.top || bird.y + bird.radius > H - p.bottom) {
-        return endGame();
-      }
+      if (bird.y - bird.radius < p.top || bird.y + bird.radius > H - p.bottom) return endGame();
     }
 
-    if (p.x + PIPE_WIDTH < 0) {
-      pipes.splice(i, 1);
-    }
+    if (p.x + PIPE_WIDTH < 0) pipes.splice(i, 1);
   }
 }
 
 function draw() {
   const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, '#38bdf8');
-  grad.addColorStop(1, '#0ea5e9');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
+  grad.addColorStop(0, '#38bdf8'); grad.addColorStop(1, '#0ea5e9');
+  ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
 
   ctx.fillStyle = 'rgba(255,255,255,0.4)';
   ctx.beginPath(); ctx.arc(W*0.2, H*0.2, 30, 0, Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(W*0.8, H*0.4, 40, 0, Math.PI*2); ctx.fill();
-  
-  ctx.fillStyle = '#22c55e';
-  ctx.fillRect(0, H - 20, W, 20);
-  ctx.fillStyle = '#16a34a';
-  ctx.fillRect(0, H - 20, W, 5);
+
+  ctx.fillStyle = '#22c55e'; ctx.fillRect(0, H - 20, W, 20);
+  ctx.fillStyle = '#16a34a'; ctx.fillRect(0, H - 20, W, 5);
 
   pipes.forEach(p => {
-    ctx.fillStyle = '#22c55e';
-    ctx.strokeStyle = '#166534';
-    ctx.lineWidth = 3;
-    
-    ctx.fillRect(p.x, 0, PIPE_WIDTH, p.top);
-    ctx.strokeRect(p.x, -3, PIPE_WIDTH, p.top + 3);
-    ctx.fillRect(p.x - 5, p.top - 20, PIPE_WIDTH + 10, 20);
-    ctx.strokeRect(p.x - 5, p.top - 20, PIPE_WIDTH + 10, 20);
-    
-    ctx.fillRect(p.x, H - p.bottom, PIPE_WIDTH, p.bottom);
-    ctx.strokeRect(p.x, H - p.bottom, PIPE_WIDTH, p.bottom + 3);
-    ctx.fillRect(p.x - 5, H - p.bottom, PIPE_WIDTH + 10, 20);
-    ctx.strokeRect(p.x - 5, H - p.bottom, PIPE_WIDTH + 10, 20);
+    ctx.fillStyle = '#22c55e'; ctx.strokeStyle = '#166534'; ctx.lineWidth = 3;
+    ctx.fillRect(p.x, 0, PIPE_WIDTH, p.top); ctx.strokeRect(p.x, -3, PIPE_WIDTH, p.top + 3);
+    ctx.fillRect(p.x - 5, p.top - 20, PIPE_WIDTH + 10, 20); ctx.strokeRect(p.x - 5, p.top - 20, PIPE_WIDTH + 10, 20);
+    ctx.fillRect(p.x, H - p.bottom, PIPE_WIDTH, p.bottom); ctx.strokeRect(p.x, H - p.bottom, PIPE_WIDTH, p.bottom + 3);
+    ctx.fillRect(p.x - 5, H - p.bottom, PIPE_WIDTH + 10, 20); ctx.strokeRect(p.x - 5, H - p.bottom, PIPE_WIDTH + 10, 20);
   });
 
-  ctx.save();
-  ctx.translate(bird.x, bird.y);
-  ctx.rotate(bird.rotation);
-  
-  ctx.fillStyle = '#facc15';
-  ctx.strokeStyle = '#ca8a04';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.arc(0, 0, bird.radius, 0, Math.PI*2);
-  ctx.fill(); ctx.stroke();
-  
-  ctx.fillStyle = '#fff';
-  ctx.beginPath(); ctx.arc(bird.radius/2, -bird.radius/3, bird.radius/2.5, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#000';
-  ctx.beginPath(); ctx.arc(bird.radius/2 + 2, -bird.radius/3, bird.radius/5, 0, Math.PI*2); ctx.fill();
-  
-  ctx.fillStyle = '#f97316';
-  ctx.beginPath();
-  ctx.moveTo(bird.radius - 2, 0);
-  ctx.lineTo(bird.radius + 8, 5);
-  ctx.lineTo(bird.radius - 2, 10);
-  ctx.fill();
-  
+  ctx.save(); ctx.translate(bird.x, bird.y); ctx.rotate(bird.rotation);
+  ctx.fillStyle = '#facc15'; ctx.strokeStyle = '#ca8a04'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(0, 0, bird.radius, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(bird.radius/2, -bird.radius/3, bird.radius/2.5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(bird.radius/2 + 2, -bird.radius/3, bird.radius/5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#f97316'; ctx.beginPath(); ctx.moveTo(bird.radius - 2, 0); ctx.lineTo(bird.radius + 8, 5); ctx.lineTo(bird.radius - 2, 10); ctx.fill();
   ctx.restore();
 }
 
 function loop() {
   if (!running) return;
-  update();
-  draw();
-  requestAnimationFrame(loop);
+  update(); draw(); requestAnimationFrame(loop);
 }
 
 function endGame() {
-  running = false;
-  playSound('hit');
+  running = false; playSound('hit');
+  if (score > best) { best = score; localStorage.setItem('flappyBest', best); bestEl.textContent = best; }
   
-  if (score > best) {
-    best = score;
-    localStorage.setItem('flappyBest', best);
-    bestEl.textContent = best;
-  }
+  jumpBtn.style.display = 'none'; // إخفاء الزرار وقت الخسارة
   
   overlay.style.display = 'flex';
   overlay.innerHTML = `
@@ -358,37 +289,16 @@ function endGame() {
   document.getElementById('againBtn').onclick = startGame;
 }
 
-// هنا السر: الاستماع لأي ضغطة على الشاشة أو الكيبورد
-function handleInput(e) {
-  if(e) e.preventDefault();
-  if (running) {
-    jump();
-  }
-}
-
-canvas.addEventListener('mousedown', handleInput);
-canvas.addEventListener('touchstart', handleInput, { passive: false });
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'Space' || e.code === 'ArrowUp') handleInput(e);
-});
-
+// ربط الزرار الجديد باللعبة
+jumpBtn.addEventListener('click', jump);
+jumpBtn.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, { passive: false });
 startBtn.onclick = startGame;
 
-soundBtn.onclick = function() {
-  soundOn = !soundOn;
-  initAudio();
-  this.textContent = soundOn ? '🔊 الصوت' : '🔇 مقفول';
-  this.style.background = soundOn ? '#22c55e' : '#ef4444';
-  this.style.color = '#fff';
-};
-
 window.addEventListener('resize', () => {
-  resize();
-  if (!running && !gameStarted) draw();
+  resize(); if (!running) draw();
 });
 
-resize();
-draw();
+resize(); draw();
 </script>
 </body>
 </html>
