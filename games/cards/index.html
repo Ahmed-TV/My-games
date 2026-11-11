@@ -52,6 +52,7 @@
     border: 4px solid #f59e0b; border-radius: 16px;
     overflow: hidden;
     padding: 10px;
+    justify-content: center;
   }
 
   .watermark {
@@ -75,9 +76,9 @@
     z-index: 1;
   }
 
-  /* شكل الكارت */
+  /* تصميم الكارت الحقيقي */
   .card {
-    background: #2563eb;
+    background: linear-gradient(135deg, #b91c1c, #7f1d1d); /* ظهر الكارت أحمر */
     border-radius: 10px;
     display: flex; justify-content: center; align-items: center;
     cursor: pointer;
@@ -85,20 +86,40 @@
     position: relative;
     transition: transform 0.3s, background 0.3s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    border: 2px solid #1d4ed8;
+    border: 2px solid #991b1b;
+    perspective: 1000px;
   }
 
-  .card .front { display: none; font-size: 40px; }
-  .card .back { font-size: 40px; color: #93c5fd; font-weight: bold; }
+  /* النقشة على ظهر الكارت */
+  .card .back-design {
+    width: 80%; height: 80%; border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 5px; display: flex; justify-content: center; align-items: center;
+  }
+  .card .back-design::before {
+    content: '🂠'; font-size: 40px; color: rgba(255,255,255,0.3);
+  }
 
-  /* لما الكارت يتقلب */
-  .card.flipped { background: #fff; border-color: #cbd5e1; }
-  .card.flipped .back { display: none; }
-  .card.flipped .front { display: block; color: #000; }
+  .card .front { 
+    display: none; 
+    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0;
+    background: #fff; border-radius: 8px;
+    flex-direction: column; justify-content: space-between;
+    padding: 4px;
+  }
+  .card .front.red { color: #dc2626; }
+  .card .front.black { color: #000; }
 
-  /* لما الكروت تتطابق */
-  .card.matched { background: #22c55e; border-color: #16a34a; pointer-events: none; }
-  .card.matched .front { color: #fff; }
+  .card.flipped { transform: rotateY(180deg); background: #fff; border-color: #cbd5e1; }
+  .card.flipped .back-design { display: none; }
+  .card.flipped .front { display: flex; }
+
+  .card.matched { opacity: 0.4; pointer-events: none; transform: scale(0.95); }
+
+  /* عناصر الكارت الأمامي */
+  .card .top-num { font-size: 16px; font-weight: bold; line-height: 1; }
+  .card .center-symbol { font-size: 30px; text-align: center; }
+  .card .bottom-num { font-size: 16px; font-weight: bold; line-height: 1; text-align: left; transform: rotate(180deg); }
 
   #overlay {
     position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
@@ -138,10 +159,10 @@
     <div id="board"></div>
 
     <div id="overlay">
-      <h2>لعبة الكوتشينة</h2>
+      <h2>لعبة الكوتشينة الحقيقية</h2>
       <p>
         <b>Ahmed TV</b> - طابق الأزواج!<br>
-        افتح كرتين .. لو ليهم نفس الرمز هيفضلوا مفتوحين
+        افتح كرتين .. لو ليهم نفس الرقم والرمز، هيتطابقوا
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
     </div>
@@ -162,15 +183,16 @@ let cards = [];
 let flippedCards = [];
 let moves = 0;
 let matchedPairs = 0;
-let totalPairs = 8;
+let totalPairs = 8; 
 let lockBoard = false;
 let running = false;
 let best = parseInt(localStorage.getItem('cardBest') || '0');
 let audioCtx = null;
 bestEl.textContent = best;
 
-// رموز الكروت (كلها مدعومة في كل الأجهزة)
-const CARD_SYMBOLS = ['🍎', '🍌', '🍇', '🍓', '🍒', '🥝', '🍑', '🍍'];
+// أوراق الكوتشينة الحقيقية (8 كروت مكررة)
+const SUITS = ['♠', '♥', '♦', '♣'];
+const VALUES = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
 function initAudio() {
   if (!audioCtx) {
@@ -226,18 +248,45 @@ function createBoard() {
   lockBoard = false;
   movesEl.textContent = moves;
 
-  let deck = [...CARD_SYMBOLS, ...CARD_SYMBOLS];
+  // اختيار 8 كروت عشوائية ومكررة (الأزواج)
+  let deck = [];
+  let selectedCards = [];
+  
+  // نختار 8 كروت مختلفة
+  let allCards = [];
+  SUITS.forEach(suit => {
+    VALUES.forEach(val => {
+      allCards.push({ suit, val });
+    });
+  });
+  
+  shuffle(allCards);
+  selectedCards = allCards.slice(0, 8); // نختار 8 كروت
+
+  // نكررهم عشان نعمل 16 كارت (8 أزواج)
+  deck = [...selectedCards, ...selectedCards];
   deck = shuffle(deck);
 
-  deck.forEach((symbol, index) => {
+  deck.forEach((cardData, index) => {
     let card = document.createElement('div');
     card.className = 'card';
-    card.dataset.symbol = symbol;
+    card.dataset.val = cardData.val;
+    card.dataset.suit = cardData.suit;
     card.dataset.index = index;
+    
+    // تحديد اللون
+    let isRed = (cardData.suit === '♥' || cardData.suit === '♦');
+    let colorClass = isRed ? 'red' : 'black';
+    
     card.innerHTML = `
-      <span class="back">؟</span>
-      <span class="front">${symbol}</span>
+      <div class="back-design"></div>
+      <div class="front ${colorClass}">
+        <div class="top-num">${cardData.val} ${cardData.suit}</div>
+        <div class="center-symbol">${cardData.suit}</div>
+        <div class="bottom-num">${cardData.val} ${cardData.suit}</div>
+      </div>
     `;
+    
     card.addEventListener('click', () => flipCard(card));
     boardEl.appendChild(card);
     cards.push(card);
@@ -261,10 +310,12 @@ function flipCard(card) {
 
 function checkMatch() {
   const [card1, card2] = flippedCards;
-  const symbol1 = card1.dataset.symbol;
-  const symbol2 = card2.dataset.symbol;
+  const val1 = card1.dataset.val;
+  const suit1 = card1.dataset.suit;
+  const val2 = card2.dataset.val;
+  const suit2 = card2.dataset.suit;
 
-  if (symbol1 === symbol2) {
+  if (val1 === val2 && suit1 === suit2) {
     playSound('match');
     setTimeout(() => {
       card1.classList.add('matched');
