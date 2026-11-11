@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Ahmed TV - أتوبيس كومبليت</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #e0f4ff 0%, #b8e6ff 25%, #6dd5fa 50%, #4facfe 75%, #48cae4 100%);
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .page {
+    width: 100%;
+    height: 100%;
+    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .game-container {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 10px 30px rgba(0, 120, 180, 0.4);
+    border: 3px solid rgba(255,255,255,0.8);
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .top-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 6px;
+    padding: 6px;
+    background: linear-gradient(135deg, #4facfe, #00b4d8, #0077b6);
+    border-radius: 12px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(0,120,180,0.5);
+    flex-shrink: 0;
+  }
+  .title-main {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 900;
+    font-size: 18px;
+    text-shadow: 1px 1px 2px rgba(0,50,90,0.8);
+  }
+  .mini-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    color: #0077b6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(255,255,255,0.9);
+  }
+  .title-names {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,50,90,0.7);
+  }
+  .title-names .name-en { color: #ffd93d; }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    padding: 0 10px;
+    flex-shrink: 0;
+  }
+  .score-box {
+    background: linear-gradient(135deg, #4facfe, #0077b6);
+    padding: 6px 15px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,120,180,0.5);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 900;
+  }
+  .timer-circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #48cae4, #00b4d8, #0077b6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(72,202,228,0.9);
+    border: 3px solid #fff;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .timer-circle::before {
+    content: '';
+    position: absolute;
+    top: -5px; left: -5px; right: -5px; bottom: -5px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255,215,61,0.9);
+  }
+  .timer-circle .timer-num {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+  }
+  .timer-circle .timer-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff3b0;
+    line-height: 1;
+  }
+
+  .game-area {
+    background: linear-gradient(180deg, #d4ecff 0%, #e8f6ff 60%, #f5fbff 100%);
+    border-radius: 12px;
+    padding: 8px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(79,172,254,0.5);
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.7);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #playScreen, #resultScreen {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .letter-display {
+    text-align: center;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+  }
+  .letter-label {
+    color: #0077b6;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 2px;
+  }
+  .letter-box {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4facfe, #0077b6);
+    color: #fff;
+    font-size: 32px;
+    font-weight: 900;
+    box-shadow: 0 5px 15px rgba(0,120,180,0.7);
+    border: 3px solid #fff;
+  }
+
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+    justify-content: space-evenly;
+  }
+  .field-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.9);
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #4facfe;
+  }
+  .field-label {
+    min-width: 65px;
+    font-weight: 900;
+    color: #0077b6;
+    font-size: 13px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    justify-content: center;
+  }
+  .field-label .emoji { font-size: 16px; }
+  .field-input {
+    flex: 1;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 6px;
+    background: #fff;
+    color: #00334d;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    outline: none;
+    border: 1px solid #b8e6ff;
+  }
+  .field-input:focus {
+    border-color: #0077b6;
+    box-shadow: 0 0 5px rgba(0,180,216,0.5);
+  }
+  .field-input::placeholder { color: #9bbdd3; font-size: 12px; }
+
+  .btn-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .finish-btn, .skip-btn {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 900;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .finish-btn { background: linear-gradient(135deg, #4facfe, #0077b6); }
+  .skip-btn { background: linear-gradient(135deg, #ffb347, #ff8c00); }
+
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.92);
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    font-size: 13px;
+    border: 1px solid #b8e6ff;
+    flex-shrink: 0;
+  }
+  .result-item .label { font-weight: 900; color: #0077b6; display: flex; align-items: center; gap: 4px; }
+  .result-item .answer { color: #00334d; font-weight: 700; flex: 1; text-align: center; }
+  .result-item .points { font-weight: 900; color: #0077b6; text-align: left; }
+  .result-item.zero { border-color: #ffb8b8; }
+  .result-item.zero .points { color: #d63031; }
+
+  .overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(160deg, rgba(79,172,254,0.98), rgba(0,119,182,0.98));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    z-index: 10;
+  }
+  .overlay h1 { font-size: 24px; margin-bottom: 8px; color: #fff; font-weight: 900; }
+  .overlay-names { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+  .overlay-names .name-ar { font-size: 16px; font-weight: 900; color: #fff; }
+  .overlay-names .name-en { font-size: 13px; font-weight: 700; color: #ffd93d; }
+  .overlay p {
+    font-size: 13px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    color: #e0f4ff;
+    background: rgba(255,255,255,0.18);
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 90%;
+  }
+  .overlay button {
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: 900;
+    border: 2px solid #fff;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #4facfe, #0077b6);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,80,140,0.65);
+    font-family: inherit;
+  }
+  
+  .logo-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4facfe, #00b4d8, #0077b6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    line-height: 1.1;
+    box-shadow: 0 0 15px rgba(79,172,254,0.9);
+    border: 2px solid rgba(255,255,255,0.95);
+    margin-bottom: 8px;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="page">
+<div class="game-container">
+  <div class="top-title">
+    <div class="title-main">
+      <div class="mini-logo">Ahmed<br>TV</div>
+      <span>🚌 أتوبيس كومبليت 🚌</span>
+    </div>
+    <div class="title-names">
+      أحمد عبدالعزيز • <span class="name-en">Ahmed Abdelaziz</span>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="score-box">🏆 <span id="score">0</span></div>
+    <div class="timer-circle">
+      <span class="timer-num" id="timer">180</span>
+      <span class="timer-label">ثانية</span>
+    </div>
+  </div>
+
+  <div class="game-area" id="gameArea">
+    <div id="playScreen">
+      <div class="letter-display">
+        <div class="letter-label">✨ الحرف ✨</div>
+        <div class="letter-box" id="letterBox">أ</div>
+      </div>
+      <div class="fields" id="fields"></div>
+      <div class="btn-row">
+        <button class="finish-btn" onclick="finishRound()">✅ خلصت</button>
+        <button class="skip-btn" onclick="skipLetter()">⏭️ تخطى</button>
+      </div>
+    </div>
+
+    <div id="resultScreen" class="hidden">
+      <h2 style="color:#0077b6; text-align:center; margin-bottom:8px; font-size:16px;">📊 نتيجتك</h2>
+      <div id="resultList" style="overflow-y:auto; flex-grow:1;"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="startScreen">
+    <div class="logo-circle">Ahmed<br>TV</div>
+    <h1>🚌 أتوبيس كومبليت 🚌</h1>
+    <div class="overlay-names">
+      <span class="name-ar">أحمد عبدالعزيز</span>
+      <span class="name-en">Ahmed Abdelaziz</span>
+    </div>
+    <p>يظهر لك حرف عشوائي 🎲<br>اكتب إجابة تبدأ بالحرف 📝<br>كل إجابة صحيحة = +10 نقاط<br>لديك 3 دقائق!</p>
+    <button onclick="startGame()">🎮 ابدأ اللعب</button>
+  </div>
+
+  <div class="overlay hidden" id="endScreen">
+    <div class="logo-circle">Ahmed<br>TV</div>
+    <h1 id="endTitle">انتهى الوقت!</h1>
+    <div class="overlay-names">
+      <span class="name-ar">أحمد عبدالعزيز</span>
+      <span class="name-en">Ahmed Abdelaziz</span>
+    </div>
+    <p id="endMessage"></p>
+    <button onclick="startGame()">🔄 العب مرة أخرى</button>
+  </div>
+</div>
+</div>
+
+<script>
+const CATEGORIES = [
+  { key: 'boy', label: 'ولد', emoji: '👦' },
+  { key: 'girl', label: 'بنت', emoji: '👧' },
+  { key: 'animal', label: 'حيوان', emoji: '🐾' },
+  { key: 'plant', label: 'نبات', emoji: '🌱' },
+  { key: 'object', label: 'جماد', emoji: '📦' },
+  { key: 'country', label: 'بلد', emoji: '🌍' }
+];
+
+const LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','هـ','و','ي'];
+const TOTAL_TIME = 180;
+
+let score = 0;
+let timeLeft = TOTAL_TIME;
+let playing = false;
+let timerInterval;
+let currentLetter = 'أ';
+let currentAnswers = {};
+
+const scoreEl = document.getElementById('score');
+const timerEl = document.getElementById('timer');
+const letterBox = document.getElementById('letterBox');
+const fieldsEl = document.getElementById('fields');
+
+function buildFields() {
+  fieldsEl.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const row = document.createElement('div');
+    row.className = 'field-row';
+    row.innerHTML = `
+      <div class="field-label"><span class="emoji">${cat.emoji}</span> ${cat.label}</div>
+      <input class="field-input" id="input_${cat.key}" type="text" placeholder="اكتب هنا..." maxlength="20">
+    `;
+    fieldsEl.appendChild(row);
+    currentAnswers[cat.key] = '';
+  });
+  CATEGORIES.forEach(cat => {
+    const inp = document.getElementById('input_' + cat.key);
+    inp.addEventListener('input', () => {
+      currentAnswers[cat.key] = inp.value.trim();
+    });
+  });
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function startGame() {
+  score = 0; timeLeft = TOTAL_TIME; playing = true;
+  scoreEl.textContent = score; timerEl.textContent = timeLeft;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('endScreen').classList.add('hidden');
+  document.getElementById('playScreen').classList.remove('hidden');
+  document.getElementById('resultScreen').classList.add('hidden');
+
+  currentLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+  letterBox.textContent = currentLetter;
+  buildFields();
+  startTimer();
+}
+
+function skipLetter() {
+  if (!playing) return;
+  currentLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+  letterBox.textContent = currentLetter;
+  buildFields();
+}
+
+function finishRound() {
+  if (!playing) return;
+  clearInterval(timerInterval);
+
+  const resultList = document.getElementById('resultList');
+  resultList.innerHTML = '';
+  let roundPoints = 0;
+
+  CATEGORIES.forEach(cat => {
+    const answer = (currentAnswers[cat.key] || '').trim();
+    let pts = 0; let status = ''; let isZero = false;
+
+    if (!answer) {
+      pts = 0; status = '❌ فارغ'; isZero = true;
+    } else if (!answer.startsWith(currentLetter) && !answer.startsWith(currentLetter.replace('هـ','ه'))) {
+      pts = 0; status = '❌ لا يبدأ بالحرف'; isZero = true;
+    } else {
+      pts = 10; status = '✅ +10';
+    }
+
+    roundPoints += pts;
+    const item = document.createElement('div');
+    item.className = 'result-item' + (isZero ? ' zero' : '');
+    item.innerHTML = `
+      <span class="label"><span class="emoji">${cat.emoji}</span> ${cat.label}</span>
+      <span class="answer">${answer || '—'}</span>
+      <span class="points">${status}</span>
+    `;
+    resultList.appendChild(item);
+  });
+
+  score += roundPoints;
+  scoreEl.textContent = score;
+
+  document.getElementById('playScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+
+  setTimeout(() => {
+    if (playing && timeLeft > 0) {
+      currentLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+      letterBox.textContent = currentLetter;
+      document.getElementById('resultScreen').classList.add('hidden');
+      document.getElementById('playScreen').classList.remove('hidden');
+      buildFields();
+      startTimer();
+    }
+  }, 3000);
+}
+
+function endGame() {
+  playing = false; clearInterval(timerInterval);
+  document.getElementById('playScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.add('hidden');
+
+  let title, msg;
+  if (score >= 400) { title = '🏆 بطل!'; msg = `رائع يا صاحب Ahmed TV! حصلت على ${score} نقطة`; }
+  else if (score >= 200) { title = '🌟 ممتاز!'; msg = `حصلت على ${score} نقطة - أنت سريع جداً`; }
+  else if (score >= 80) { title = '👏 جيد!'; msg = `حصلت على ${score} نقطة - استمر`; }
+  else { title = '💪 حاول مرة أخرى'; msg = `حصلت على ${score} نقطة فقط`; }
+
+  document.getElementById('endTitle').textContent = title;
+  document.getElementById('endMessage').textContent = msg;
+  document.getElementById('endScreen').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
