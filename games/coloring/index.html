@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>تلوين الأشكال | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
+  
+  /* اللوجو */
+  .logo {
+    width: 70px; height: 70px; flex-shrink: 0;
+    background: linear-gradient(135deg, #10b981, #3b82f6); 
+    border: 4px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff; line-height: 1;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+  }
+  .logo b { font-size: 14px; }
+  .logo span { font-size: 9px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 22px; line-height: 1.2; color: #facc15;}
+  h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 15px; color: #cbd5e1; margin-bottom: 10px; font-weight: bold;}
+  .names b { color: #facc15; font-size: 17px;}
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #f8fafc; 
+    border: 4px solid #f59e0b; border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(0, 0, 0, 0.05);
+    font-size: 40px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  canvas { width: 100%; height: 100%; display: block; z-index: 1; }
+
+  /* شريط الألوان */
+  .palette {
+    display: flex; justify-content: center; gap: 10px;
+    padding: 10px; background: #1e293b; flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .color-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%; border: 3px solid transparent;
+    cursor: pointer; transition: transform 0.2s, border-color 0.2s;
+  }
+  .color-btn:active { transform: scale(0.9); }
+  .color-btn.active { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>تلوين الأشكال<small>AHMED TV COLORING</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    <canvas id="gameCanvas"></canvas>
+    
+    <!-- شريط الألوان -->
+    <div class="palette" id="palette"></div>
+
+    <div id="overlay">
+      <h2>لعبة تلوين الأشكال</h2>
+      <p>
+        <b>Ahmed TV</b> - لون الرسمة بألوانك المفضلة!<br>
+        اختار لون من تحت، ودوس على أي جزء في الرسمة
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ التلوين</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const paletteEl = document.getElementById('palette');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let W = 0, H = 0;
+let running = false;
+let audioCtx = null;
+
+// الألوان المتاحة
+const COLORS = [
+  '#ef4444', // أحمر
+  '#f59e0b', // برتقالي
+  '#facc15', // أصفر
+  '#22c55e', // أخضر
+  '#3b82f6', // أزرق
+  '#8b5cf6', // بنفسجي
+  '#ec4899', // وردي
+  '#a16207', // بني
+  '#ffffff', // أبيض
+  '#0f172a'  // أسود
+];
+let currentColor = COLORS[0];
+
+// مناطق التلوين (أشكال هندسية متداخلة لتبدو كرسمة)
+// كل شكل له مسار (Path) ولون (Color)
+let shapes = [];
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound() {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.1);
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+  osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+}
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height - paletteEl.offsetHeight; // نطرح مساحة الألوان
+  W = canvas.width;
+  H = canvas.height;
+  
+  buildShapes();
+  draw();
+}
+
+function buildShapes() {
+  shapes = [];
+  const cx = W / 2;
+  const cy = H / 2;
+  const scale = Math.min(W, H) / 500; // مقياس عشان تظبط على أي شاشة
+
+  // 1. خلفية (دائرة كبيرة)
+  shapes.push({
+    type: 'circle', x: cx, y: cy, r: 200 * scale, color: '#fff', border: '#333'
+  });
+  
+  // 2. جسم (مستطيل)
+  shapes.push({
+    type: 'rect', x: cx - 60*scale, y: cy - 100*scale, w: 120*scale, h: 200*scale, color: '#fff', border: '#333'
+  });
+
+  // 3. رأس (دائرة)
+  shapes.push({
+    type: 'circle', x: cx, y: cy - 150*scale, r: 60 * scale, color: '#fff', border: '#333'
+  });
+
+  // 4. عين شممال (دائرة صغيرة)
+  shapes.push({
+    type: 'circle', x: cx - 20*scale, y: cy - 170*scale, r: 10 * scale, color: '#fff', border: '#333'
+  });
+  
+  // 5. عين يمين (دائرة صغيرة)
+  shapes.push({
+    type: 'circle', x: cx + 20*scale, y: cy - 170*scale, r: 10 * scale, color: '#fff', border: '#333'
+  });
+
+  // 6. فم (مستطيل)
+  shapes.push({
+    type: 'rect', x: cx - 20*scale, y: cy - 140*scale, w: 40*scale, h: 10*scale, color: '#fff', border: '#333'
+  });
+
+  // 7. ذراع شمال (مستطيل)
+  shapes.push({
+    type: 'rect', x: cx - 100*scale, y: cy - 80*scale, w: 40*scale, h: 15*scale, color: '#fff', border: '#333'
+  });
+
+  // 8. ذراع يمين (مستطيل)
+  shapes.push({
+    type: 'rect', x: cx + 60*scale, y: cy - 80*scale, w: 40*scale, h: 15*scale, color: '#fff', border: '#333'
+  });
+
+  // 9. رجل شمال
+  shapes.push({
+    type: 'rect', x: cx - 40*scale, y: cy + 100*scale, w: 30*scale, h: 50*scale, color: '#fff', border: '#333'
+  });
+
+  // 10. رجل يمين
+  shapes.push({
+    type: 'rect', x: cx + 10*scale, y: cy + 100*scale, w: 30*scale, h: 50*scale, color: '#fff', border: '#333'
+  });
+}
+
+function draw() {
+  // خلفية الكانفس
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, W, H);
+
+  // رسم الأشكال
+  shapes.forEach(s => {
+    ctx.beginPath();
+    if (s.type === 'circle') {
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    } else if (s.type === 'rect') {
+      ctx.rect(s.x, s.y, s.w, s.h);
+    }
+    ctx.fillStyle = s.color;
+    ctx.fill();
+    ctx.strokeStyle = s.border;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+  });
+}
+
+function initPalette() {
+  paletteEl.innerHTML = '';
+  COLORS.forEach((color, index) => {
+    let btn = document.createElement('div');
+    btn.className = 'color-btn' + (index === 0 ? ' active' : '');
+    btn.style.backgroundColor = color;
+    btn.onclick = () => {
+      currentColor = color;
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    paletteEl.appendChild(btn);
+  });
+}
+
+function handlePaint(e) {
+  if (!running) return;
+  
+  const rect = canvas.getBoundingClientRect();
+  let clientX, clientY;
+  
+  if (e.touches && e.touches.length > 0) {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+  
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+
+  // عكس ترتيب الرسم عشان نلون الأشكال اللي قدام الأول
+  for (let i = shapes.length - 1; i >= 0; i--) {
+    let s = shapes[i];
+    let inside = false;
+
+    if (s.type === 'circle') {
+      let dist = Math.hypot(x - s.x, y - s.y);
+      inside = dist <= s.r;
+    } else if (s.type === 'rect') {
+      inside = (x >= s.x && x <= s.x + s.w && y >= s.y && y <= s.y + s.h);
+    }
+
+    if (inside) {
+      s.color = currentColor;
+      playSound();
+      draw();
+      break; // نلون شكل واحد بس في المرة
+    }
+  }
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  running = true;
+  initPalette();
+  resize();
+}
+
+// ربط الأحداث
+canvas.addEventListener('mousedown', handlePaint);
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handlePaint(e); }, { passive: false });
+
+startBtn.onclick = startGame;
+
+window.addEventListener('resize', () => {
+  if (running) resize();
+});
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+
+</script>
+</body>
+</html>
