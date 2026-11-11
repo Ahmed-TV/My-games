@@ -61,7 +61,6 @@ footer{text-align:center;color:#91b09d;font-size:10px;margin-top:5px;flex-shrink
   </header>
 
   <div class="panel-container">
-    <!-- Start Screen -->
     <section class="panel start" id="start">
       <h2>هل أنت مستعد للتحدي؟</h2>
       <p>اختبر قوة ملاحظتك وذكاءك مع مجموعة من الألغاز والتحديات البصرية والمنطقية.</p>
@@ -74,7 +73,6 @@ footer{text-align:center;color:#91b09d;font-size:10px;margin-top:5px;flex-shrink
       <button class="mainbtn" id="startBtn">ابدأ التحدي</button>
     </section>
 
-    <!-- Play Screen -->
     <section class="panel hidden" id="play">
       <div class="tpline">
         <span class="pill" id="count">السؤال 1 من 15</span>
@@ -90,7 +88,6 @@ footer{text-align:center;color:#91b09d;font-size:10px;margin-top:5px;flex-shrink
       <div class="actions"><button class="mainbtn" id="nextBtn" disabled>السؤال التالي ←</button></div>
     </section>
 
-    <!-- Result Screen -->
     <section class="panel result hidden" id="result">
       <h2 id="resultTitle">أحسنت!</h2>
       <p id="resultText"></p>
@@ -104,9 +101,7 @@ footer{text-align:center;color:#91b09d;font-size:10px;margin-top:5px;flex-shrink
   </div>
 
   <footer>© Ahmed TV — تحدّى عقلك واستمتع</footer>
-</div>
-
-<script>
+</div><script>
 const questions = [
   {level:"المستوى الأول - تسخين العقل", q:"أي شكل يكمل النمط؟", v:"■ ■ ■ □ □ ■ ■", a:["■ ■","□ □","■ □","□ ■"], c:0, e:"النمط يتناوب بين الأحمر والأزرق، لذلك التالي أزرق."},
   {level:"المستوى الأول - تسخين العقل", q:"ما الشيء الذي له أسنان ولا يعض؟", a:["المفتاح","المشط","الساعة","القلم"], c:1, e:"المشط له أسنان كثيرة لكنه لا يعض."},
@@ -216,4 +211,4 @@ $("nextBtn").onclick=next;
 $("againBtn").onclick=startGame;
 </script>
 </body>
-</html>
+  </html>
