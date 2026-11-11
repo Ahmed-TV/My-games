@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>السلم والثعبان | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 5px; }
+  
+  .logo {
+    width: 55px; height: 55px; flex-shrink: 0;
+    background: radial-gradient(circle, #fde047, #f59e0b 55%, #b45309);
+    border: 3px solid #fff; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #111; line-height: 1;
+  }
+  .logo b { font-size: 12px; }
+  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
+  
+  h1 { font-size: 20px; line-height: 1.2; }
+  h1 small { display: block; font-size: 11px; color: #facc15; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 13px; color: #cbd5e1; margin-bottom: 5px; }
+  .names b { color: #fff; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.03);
+    font-size: 40px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .board-container {
+    flex-grow: 1; width: 100%; background: #1e293b;
+    border: 3px solid #f59e0b; border-radius: 16px;
+    position: relative; padding: 5px; overflow: hidden;
+  }
+
+  .board {
+    display: grid; grid-template-columns: repeat(10, 1fr);
+    width: 100%; height: 100%; gap: 2px;
+  }
+
+  .tile {
+    background: #0f172a; border-radius: 4px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 10px; color: #64748b; position: relative;
+  }
+
+  /* الألوان بتاعة الخانات */
+  .tile.alt { background: #162032; }
+  
+  /* السلم والثعبان */
+  .tile.ladder { border: 2px solid #22c55e; color: #22c55e; font-weight: bold; }
+  .tile.snake { border: 2px solid #ef4444; color: #ef4444; font-weight: bold; }
+  
+  /* اللاعب */
+  .player-token {
+    width: 70%; height: 70%; border-radius: 50%;
+    background: #facc15; box-shadow: 0 0 10px #facc15;
+    border: 2px solid #fff;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 14px; font-weight: bold; color: #000; z-index: 5;
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+  }
+
+  .controls {
+    display: flex; flex-direction: column; gap: 10px; align-items: center; flex-shrink: 0;
+    padding-bottom: 5px;
+  }
+
+  .dice-box {
+    display: flex; align-items: center; gap: 15px;
+    background: #1e293b; border: 2px solid #334155;
+    border-radius: 12px; padding: 10px 20px;
+  }
+  .dice {
+    width: 50px; height: 50px;
+    background: #fff; border-radius: 10px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 30px; color: #000; font-weight: bold;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2);
+    transition: transform 0.5s;
+  }
+  .dice.rolling { animation: roll 0.5s infinite; }
+  @keyframes roll {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(90deg); }
+    50% { transform: rotate(180deg); }
+    75% { transform: rotate(270deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  #rollBtn {
+    background: #f59e0b; color: #000; border: none;
+    padding: 12px 30px; border-radius: 12px;
+    font-size: 18px; font-weight: 900; cursor: pointer;
+    width: 100%; max-width: 300px;
+  }
+  #rollBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #rollBtn:active:not(:disabled) { transform: scale(0.95); }
+
+  #message {
+    font-size: 14px; font-weight: bold; height: 20px; color: #facc15;
+  }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.92);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; border-radius: 16px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; }
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 250px;
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn:hover { background: #d97706; }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <h1>السلم والثعبان<small>AHMED TV SNAKES & LADDERS</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">أحمد عبدالعزيز<br>Ahmed TV</div>
+    
+    <div class="board-container">
+      <div class="board" id="board"></div>
+    </div>
+
+    <div class="controls">
+      <div id="message">اضغط على الزرار عشان تبدأ</div>
+      <div class="dice-box">
+        <div class="dice" id="dice">🎲</div>
+      </div>
+      <button id="rollBtn">🎲 ارمي الزهر</button>
+    </div>
+
+    <div id="overlay">
+      <h2>مرحباً بك يا بطل!</h2>
+      <p>
+        <b>Ahmed TV</b> - العب مع نفسك أو صاحبك!<br>
+        وصل للخانة 100 عشان تكسب<br>
+        السلم بيطلعك فوق .. والثعبان بينزلك تحت!
+      </p>
+      <button class="btn" id="startBtn">▶ ابدأ اللعب</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const boardEl = document.getElementById('board');
+const diceEl = document.getElementById('dice');
+const rollBtn = document.getElementById('rollBtn');
+const messageEl = document.getElementById('message');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let playerPos = 1;
+let isRolling = false;
+let gameActive = false;
+let audioCtx = null;
+
+// تحديد السلم والثعبان (المفاتيح: خانة البداية، القيمة: خانة النهاية)
+const LADDERS = {
+  3: 22, 8: 30, 28: 84, 58: 77, 75: 86, 80: 100, 90: 91
+};
+const SNAKES = {
+  17: 7, 54: 34, 62: 19, 64: 60, 87: 24, 93: 73, 95: 75, 98: 79
+};
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'roll') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'ladder') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+  } else if (type === 'snake') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.linearRampToValueAtTime(200, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+  } else if (type === 'win') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  }
+}
+
+// رسم اللوحة
+function buildBoard() {
+  boardEl.innerHTML = '';
+  
+  for (let i = 100; i >= 1; i--) {
+    let tile = document.createElement('div');
+    tile.className = 'tile';
+    // تلوين الخانات بالتبادل
+    if (Math.floor((i - 1) / 10) % 2 === 0) {
+      if (i % 2 === 0) tile.classList.add('alt');
+    } else {
+      if (i % 2 !== 0) tile.classList.add('alt');
+    }
+
+    tile.id = 'tile-' + i;
+    
+    // إضافة السلم والثعبان
+    if (LADDERS[i]) {
+      tile.classList.add('ladder');
+      tile.innerHTML = `<span style="font-size:12px;">🪜</span>`;
+    } else if (SNAKES[i]) {
+      tile.classList.add('snake');
+      tile.innerHTML = `<span style="font-size:12px;">🐍</span>`;
+    } else {
+      tile.innerHTML = i;
+    }
+
+    boardEl.appendChild(tile);
+  }
+  updatePlayerPosition(1);
+}
+
+function updatePlayerPosition(pos) {
+  // مسح اللاعب من كل الخانات
+  document.querySelectorAll('.player-token').forEach(el => el.remove());
+  
+  // إضافة اللاعب في الخانة الجديدة
+  const tile = document.getElementById('tile-' + pos);
+  if (tile) {
+    const token = document.createElement('div');
+    token.className = 'player-token';
+    token.innerHTML = '👤'; // أو أي أيقونة تانية
+    tile.appendChild(token);
+  }
+}
+
+function rollDice() {
+  if (isRolling || !gameActive) return;
+  
+  initAudio();
+  playSound('roll');
+  isRolling = true;
+  rollBtn.disabled = true;
+  messageEl.textContent = "جاري رمي الزهر...";
+  
+  let rollCount = 0;
+  const rollInterval = setInterval(() => {
+    diceEl.textContent = Math.floor(Math.random() * 6) + 1;
+    rollCount++;
+    if (rollCount > 10) {
+      clearInterval(rollInterval);
+      finishRoll(parseInt(diceEl.textContent));
+    }
+  }, 50);
+}
+
+function finishRoll(roll) {
+  let newPos = playerPos + roll;
+  
+  if (newPos > 100) {
+    messageEl.textContent = `رميت ${roll}، محتاج رقم أصغر عشان توصل 100 بالظبط.`;
+    endTurn();
+    return;
+  }
+  
+  playerPos = newPos;
+  updatePlayerPosition(playerPos);
+  
+  // التحقق من السلم والثعبان
+  if (LADDERS[playerPos]) {
+    setTimeout(() => {
+      playSound('ladder');
+      messageEl.textContent = `عاش! طلعت سلم للخانة ${LADDERS[playerPos]}! 🪜`;
+      playerPos = LADDERS[playerPos];
+      updatePlayerPosition(playerPos);
+      checkWin();
+    }, 500);
+  } else if (SNAKES[playerPos]) {
+    setTimeout(() => {
+      playSound('snake');
+      messageEl.textContent = `أوووه! ثعبان نزلك للخانة ${SNAKES[playerPos]}! 🐍`;
+      playerPos = SNAKES[playerPos];
+      updatePlayerPosition(playerPos);
+      endTurn();
+    }, 500);
+  } else {
+    messageEl.textContent = `رميت ${roll}، دلوقتي إنت في خانة ${playerPos}`;
+    checkWin();
+  }
+}
+
+function checkWin() {
+  if (playerPos === 100) {
+    gameActive = false;
+    playSound('win');
+    messageEl.textContent = "مبرووووك! وصلت للـ 100! 🎉";
+    overlay.style.display = 'flex';
+    overlay.innerHTML = `
+      <div style="font-size:35px">🏆</div>
+      <h2 style="color:#10b981">مبروك يا بطل!</h2>
+      <p>وصلت للخانة 100<br>Ahmed TV بيقولك: إنت أسطورة!</p>
+      <button class="btn" id="againBtn">🔄 العب تاني</button>
+    `;
+    document.getElementById('againBtn').onclick = startGame;
+  } else {
+    endTurn();
+  }
+}
+
+function endTurn() {
+  isRolling = false;
+  rollBtn.disabled = false;
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  playerPos = 1;
+  gameActive = true;
+  isRolling = false;
+  rollBtn.disabled = false;
+  messageEl.textContent = "دورك! ارمي الزهر عشان تتحرك.";
+  buildBoard();
+}
+
+// ربط الأزرار
+rollBtn.onclick = rollDice;
+startBtn.onclick = startGame;
+
+// تشغيل الصوت لأول مرة
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+
+// رسم اللوحة عند التحميل
+buildBoard();
+
+</script>
+</body>
+</html>
