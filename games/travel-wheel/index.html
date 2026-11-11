@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Ahmed TV - عجلة السفر</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    color: #fff;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .page {
+    width: 100%;
+    height: 100%;
+    padding: env(safe-area-inset-top, 10px) 10px env(safe-area-inset-bottom, 10px) 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #travel-game {
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    background: linear-gradient(145deg, #0a0a0a, #111);
+    border: 2px solid #333;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+  }
+
+  .header-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    flex-shrink: 0;
+  }
+
+  .logo-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #000;
+    border: 2px solid #e94560;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: #00e5ff;
+    line-height: 1.1;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(233,69,96,0.5);
+  }
+
+  .title-text h2 {
+    font-size: 18px;
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  }
+  .title-text p {
+    font-size: 12px;
+    color: #e94560;
+    margin: 2px 0 0 0;
+    font-weight: bold;
+  }
+
+  .sub-desc {
+    font-size: 14px;
+    color: #a0a0b0;
+    text-align: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+
+  .wheel-wrap {
+    position: relative;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  canvas {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(0,229,255,0.2));
+  }
+
+  .pointer {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 30px solid #e94560;
+    filter: drop-shadow(0 0 10px #e94560);
+    z-index: 2;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  button {
+    background: linear-gradient(135deg, #e94560, #c73650);
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    width: 85%;
+    max-width: 300px;
+    box-shadow: 0 0 20px rgba(233,69,96,0.4);
+    font-family: inherit;
+    transition: transform 0.1s;
+  }
+  button:active { transform: scale(0.95); }
+  button:disabled { opacity: 0.6; }
+
+  #travel-result {
+    min-height: 35px;
+    padding: 8px 5px;
+    color: #00e5ff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0,229,255,0.5);
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+<div id="travel-game" dir="rtl">
+  
+  <div class="header-area">
+    <div class="logo-circle">Ahmed<br>TV</div>
+    <div class="title-text">
+      <h2>🌍 عجلة السفر</h2>
+      <p>أحمد عبدالعزيز</p>
+    </div>
+  </div>
+
+  <div class="sub-desc">يا ترى هتسافر في المستقبل لأنهي دولة؟</div>
+
+  <div class="wheel-wrap">
+    <div class="pointer"></div>
+    <canvas id="travel-wheel" width="700" height="700"></canvas>
+  </div>
+
+  <div class="controls">
+    <button id="travel-spin">اختار وجهتك ✈️</button>
+    <div id="travel-result">لف العجلة واكتشف وجهتك!</div>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function(){
+  const root=document.getElementById("travel-game");
+  const canvas=root.querySelector("#travel-wheel");
+  const ctx=canvas.getContext("2d");
+  const button=root.querySelector("#travel-spin");
+  const result=root.querySelector("#travel-result");
+
+  const countries=[
+    ["🇪🇬","مصر"],["🇸🇦","السعودية"],
+    ["🇦🇪","الإمارات"],["🇶🇦","قطر"],
+    ["🇲🇦","المغرب"],["🇹🇳","تونس"],
+    ["🇹🇷","تركيا"],["🇬🇷","اليونان"],
+    ["🇫🇷","فرنسا"],["🇮🇹","إيطاليا"],
+    ["🇪🇸","إسبانيا"],["🇬🇧","بريطانيا"],
+    ["🇩🇪","ألمانيا"],["🇨🇭","سويسرا"],
+    ["🇳🇱","هولندا"],["🇯🇵","اليابان"],
+    ["🇨🇳","الصين"],["🇰🇷","كوريا الجنوبية"],
+    ["🇹🇭","تايلاند"],["🇮🇩","إندونيسيا"],
+    ["🇲🇾","ماليزيا"],["🇮🇳","الهند"],
+    ["🇺🇸","أمريكا"],["🇨🇦","كندا"],
+    ["🇧🇷","البرازيل"],["🇦🇷","الأرجنتين"],
+    ["🇲🇽","المكسيك"],["🇦🇺","أستراليا"],
+    ["🇳🇿","نيوزيلندا"],["🇿🇦","جنوب أفريقيا"],
+    ["🇰🇪","كينيا"],["🇸🇬","سنغافورة"]
+  ];
+
+  const colors=[
+    "#e53935","#8e24aa","#3949ab","#00897b",
+    "#f9a825","#ef6c00","#00838f","#6d4c41"
+  ];
+
+  const center=350,radius=330;
+  const slice=Math.PI*2/countries.length;
+  let rotation=0,spinning=false;
+
+  function draw(){
+    ctx.clearRect(0,0,700,700);
+
+    countries.forEach((country,i)=>{
+      const start=rotation+i*slice-Math.PI/2;
+
+      ctx.beginPath();
+      ctx.moveTo(center,center);
+      ctx.arc(center,center,radius,start,start+slice);
+      ctx.closePath();
+      ctx.fillStyle=colors[i%colors.length];
+      ctx.fill();
+      ctx.strokeStyle="#fff";
+      ctx.lineWidth=2;
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(center,center);
+      ctx.rotate(start+slice/2);
+      ctx.textAlign="right";
+      ctx.textBaseline="middle";
+
+      ctx.font="23px Arial";
+      ctx.fillStyle="#fff";
+      ctx.fillText(country[0],radius-12,0);
+
+      ctx.font="bold 15px Arial";
+      ctx.fillText(country[1],radius-55,0);
+      ctx.restore();
+    });
+
+    // مركز العجلة
+    ctx.beginPath();
+    ctx.arc(center,center,80,0,Math.PI*2);
+    ctx.fillStyle="#000";
+    ctx.fill();
+    ctx.strokeStyle="#e94560";
+    ctx.lineWidth=5;
+    ctx.stroke();
+
+    ctx.fillStyle="#fff";
+    ctx.textAlign="center";
+    ctx.font="bold 24px Arial";
+    ctx.fillText("TV",center,center-8);
+    ctx.fillText("AHMED",center,center+22);
+  }
+
+  draw();
+
+  button.onclick=function(){
+    if(spinning)return;
+    spinning=true;
+    button.disabled=true;
+    result.textContent="العجلة بتلف حول العالم...";
+
+    const start=rotation;
+    const target=start+Math.PI*2*(6+Math.random()*4);
+    const startTime=performance.now();
+
+    function animate(now){
+      const progress=Math.min((now-startTime)/5000,1);
+      const eased=1-Math.pow(1-progress,4);
+
+      rotation=start+(target-start)*eased;
+      draw();
+
+      if(progress<1){
+        requestAnimationFrame(animate);
+      }else{
+        const angle=((rotation%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+        const index=Math.floor(((Math.PI*2-angle)%(Math.PI*2))/slice);
+        result.textContent="✈️ وجهتك: "+countries[index][0]+" "+countries[index][1];
+        spinning=false;
+        button.disabled=false;
+      }
+    }
+    requestAnimationFrame(animate);
+  };
+})();
+</script>
+</body>
+</html>
