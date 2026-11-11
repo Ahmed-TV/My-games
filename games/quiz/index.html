@@ -2,43 +2,42 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Ahmed TV - تحدي الأذكياء 200 سؤال</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:radial-gradient(ellipse at top,#0a0a0a 0%,#111 50%,#000 100%);color:#fff;font-family:'Segoe UI',Tahoma,system-ui;min-height:100vh;min-height:100dvh;display:flex;justify-content:center;align-items:flex-start;padding:10px;overflow-y:auto;overflow-x:hidden}
-.container{width:100%;max-width:680px;background:linear-gradient(145deg,#111,#0a0a0a);border-radius:24px;border:3px solid #7ED321;box-shadow:0 0 40px rgba(126,211,33,.3);margin:0 auto;overflow:visible}
-.header{background:linear-gradient(135deg,#8FFF00,#00E676,#4CAF50);padding:24px 16px;text-align:center;border-bottom:4px solid #000;border-radius:21px 21px 0 0}
-.logo{width:95px;height:95px;margin:0 auto 12px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;border:4px solid #fff;color:#7ED321;font-weight:900;font-size:14px;line-height:1.1;text-align:center;box-shadow:0 0 20px rgba(126,211,33,.5)}
-.title{color:#000;font-weight:900;font-size:34px;letter-spacing:1px;text-shadow:1px 1px 0 rgba(255,255,255,.5)}
-.subtitle{color:#000;font-weight:900;font-size:24px;margin-top:8px}
-.info-box{background:#fff;color:#111;font-weight:800;padding:10px 18px;border-radius:20px;display:inline-block;margin-top:12px;font-size:16px;line-height:1.5}
-.cats-bar{margin-top:10px;background:rgba(0,0,0,.85);color:#8FFF00;padding:8px 14px;border-radius:18px;font-size:12px;display:inline-block;font-weight:800}
-.progress{padding:14px 18px;background:#1a1a1a;display:flex;justify-content:space-between;color:#aaa;font-weight:800;font-size:15px;border-bottom:2px solid #222}
-.bar{height:14px;background:#000;border-bottom:3px solid #222}
-.fill{height:100%;background:linear-gradient(90deg,#7ED321,#00E676);width:0%;transition:.4s;box-shadow:0 0 15px rgba(126,211,33,.5)}
-.card{padding:20px 16px 24px}
-.cat-badge{display:inline-block;background:linear-gradient(135deg,#7ED321,#00E676);color:#000;padding:6px 16px;border-radius:16px;margin-bottom:14px;font-weight:900;font-size:15px;border:2px solid #fff}
-.q{font-size:24px;font-weight:900;text-align:center;background:linear-gradient(145deg,#1e1e1e,#111);padding:20px 16px;border-radius:18px;border:2px solid #333;margin-bottom:16px;min-height:90px;display:flex;align-items:center;justify-content:center;line-height:1.5;color:#FFF8E1}
-.opts{display:grid;gap:12px}
-.opt{background:linear-gradient(145deg,#222,#1a1a1a);border:2px solid #333;border-radius:16px;padding:16px 12px;text-align:center;font-size:20px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;transition:transform .1s,background .2s}
+body{background:radial-gradient(ellipse at top,#0a0a0a 0%,#111 50%,#000 100%);color:#fff;font-family:'Segoe UI',Tahoma,system-ui;height:100vh;height:100dvh;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:5px}
+.container{width:100%;max-width:450px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#111,#0a0a0a);border-radius:16px;border:2px solid #7ED321;box-shadow:0 0 20px rgba(126,211,33,.3);overflow:hidden;}
+.header{background:linear-gradient(135deg,#8FFF00,#00E676,#4CAF50);padding:10px;text-align:center;border-bottom:2px solid #000;flex-shrink:0}
+.logo{width:50px;height:50px;margin:0 auto 5px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;color:#7ED321;font-weight:900;font-size:11px;line-height:1.1;text-align:center;box-shadow:0 0 10px rgba(126,211,33,.5)}
+.title{color:#000;font-weight:900;font-size:18px;letter-spacing:0;text-shadow:1px 1px 0 rgba(255,255,255,.5)}
+.subtitle{color:#000;font-weight:900;font-size:14px;margin-top:2px}
+.info-box{background:#fff;color:#111;font-weight:800;padding:4px 10px;border-radius:12px;display:inline-block;margin-top:4px;font-size:11px;line-height:1.2}
+.cats-bar{margin-top:4px;background:rgba(0,0,0,.85);color:#8FFF00;padding:3px 8px;border-radius:10px;font-size:10px;display:inline-block;font-weight:800}
+.progress{padding:8px 12px;background:#1a1a1a;display:flex;justify-content:space-between;color:#aaa;font-weight:800;font-size:14px;border-bottom:1px solid #222;flex-shrink:0}
+.bar{height:6px;background:#000;border-bottom:2px solid #222;flex-shrink:0}
+.fill{height:100%;background:linear-gradient(90deg,#7ED321,#00E676);width:0%;transition:.4s;box-shadow:0 0 10px rgba(126,211,33,.5)}
+.card{padding:10px;display:flex;flex-direction:column;flex-grow:1;justify-content:space-evenly;overflow:hidden}
+.cat-badge{display:inline-block;background:linear-gradient(135deg,#7ED321,#00E676);color:#000;padding:4px 12px;border-radius:12px;font-weight:900;font-size:13px;border:1px solid #fff;margin-bottom:5px}
+.q{font-size:18px;font-weight:900;text-align:center;background:linear-gradient(145deg,#1e1e1e,#111);padding:12px;border-radius:12px;border:1px solid #333;margin-bottom:10px;min-height:70px;display:flex;align-items:center;justify-content:center;line-height:1.4;color:#FFF8E1;flex-shrink:0}
+.opts{display:grid;gap:8px}
+.opt{background:linear-gradient(145deg,#222,#1a1a1a);border:1px solid #333;border-radius:10px;padding:12px;text-align:center;font-size:16px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;transition:transform .1s,background .2s}
 .opt:hover{border-color:#7ED321;background:rgba(126,211,33,.1)}
 .opt:active{transform:scale(.97)}
 .opt.correct{background:linear-gradient(135deg,#00C853,#00E676)!important;color:#000!important;border-color:#fff!important;animation:pop .4s}
 .opt.wrong{background:linear-gradient(135deg,#B71C1C,#EF5350)!important;color:#fff!important;border-color:#ff4444!important;animation:shake .4s}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.feedback{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;font-weight:900;pointer-events:none;z-index:999;animation:fbPop .8s ease-out forwards}
-@keyframes fbPop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.4);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
-.skip-wrap{text-align:center;padding:14px;background:rgba(0,0,0,.6)}
-.skip-btn{background:linear-gradient(135deg,#444,#222);color:#ccc;border:2px solid #555;padding:11px 26px;border-radius:24px;font-weight:900;font-size:16px;font-family:inherit;cursor:pointer}
-.footer{text-align:center;padding:10px;font-size:12px;color:#7ED321;background:#000;font-weight:700;border-radius:0 0 21px 21px}
+.feedback{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:70px;font-weight:900;pointer-events:none;z-index:999;animation:fbPop .8s ease-out forwards}
+@keyframes fbPop{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.skip-wrap{text-align:center;padding:8px;background:rgba(0,0,0,.6);flex-shrink:0}
+.skip-btn{background:linear-gradient(135deg,#444,#222);color:#ccc;border:1px solid #555;padding:8px 20px;border-radius:20px;font-weight:900;font-size:14px;font-family:inherit;cursor:pointer}
+.footer{text-align:center;padding:6px;font-size:10px;color:#7ED321;background:#000;font-weight:700;flex-shrink:0}
 .screen{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(160deg,rgba(10,10,10,.98),rgba(0,0,0,.99));display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;z-index:1000;text-align:center;overflow-y:auto}
-.screen h2{color:#7ED321;font-size:32px;margin-bottom:12px;font-weight:900}
-.screen p{font-size:16px;line-height:1.7;background:rgba(255,255,255,.05);padding:14px 20px;border-radius:14px;border:1px solid #333;max-width:92%;margin-bottom:16px;color:#ddd}
-.screen button{background:linear-gradient(135deg,#7ED321,#00E676);color:#000;border:3px solid #fff;padding:14px 38px;border-radius:50px;font-weight:900;font-size:20px;cursor:pointer;font-family:inherit;box-shadow:0 8px 25px rgba(126,211,33,.5)}
+.screen h2{color:#7ED321;font-size:28px;margin-bottom:12px;font-weight:900}
+.screen p{font-size:18px;line-height:1.7;background:rgba(255,255,255,.05);padding:14px 20px;border-radius:14px;border:1px solid #333;max-width:92%;margin-bottom:16px;color:#ddd}
+.screen button{background:linear-gradient(135deg,#7ED321,#00E676);color:#000;border:2px solid #fff;padding:12px 30px;border-radius:50px;font-weight:900;font-size:18px;cursor:pointer;font-family:inherit;box-shadow:0 8px 25px rgba(126,211,33,.5)}
 .hide{display:none!important}
-@media(max-width:500px){.header{padding:18px 12px}.logo{width:80px;height:80px;font-size:12px}.title{font-size:26px}.subtitle{font-size:18px}.info-box{font-size:14px;padding:8px 14px}.cats-bar{font-size:10px}.progress{font-size:13px}.q{font-size:19px;padding:16px 12px}.opt{font-size:17px;padding:14px 10px}.cat-badge{font-size:13px}.screen h2{font-size:24px}.screen p{font-size:13px;padding:10px 14px}.screen button{font-size:16px;padding:12px 30px}}
 </style>
 </head>
 <body>
@@ -225,188 +224,4 @@ var qs=[
 {"q":"ما جنسية نيمار؟","o":["الأرجنتين","البرازيل","البرتغال","فرنسا"],"a":1,"c":"رياضة"},
 {"q":"ما عاصمة فرنسا؟","o":["باريس","ليون","نيس","مارسيليا"],"a":0,"c":"جغرافيا"},
 {"q":"من هو جمال عبد الناصر؟","o":["رئيس العراق","رئيس مصر","رئيس سوريا","ملك السعودية"],"a":1,"c":"تاريخ"},
-{"q":"ما شركة سيارة فيراري؟","o":["إيطاليا","أمريكا","فرنسا","ألمانيا"],"a":0,"c":"سيارات"},
-{"q":"ما هو الهيكل العظمي؟","o":["الهضم","دعم الجسم","ضخ الدم","التنفس"],"a":1,"c":"جسم"},
-{"q":"ما هو النيزك؟","o":["كوكب","قمر","نجم","صخرة فضائية"],"a":3,"c":"علوم"},
-{"q":"ما جنسية حكيمي؟","o":["مصر","المغرب","الجزائر","تونس"],"a":1,"c":"رياضة"},
-{"q":"ما عاصمة إيطاليا؟","o":["روما","نابولي","تورينو","ميلان"],"a":0,"c":"جغرافيا"},
-{"q":"متى حرب أكتوبر؟","o":["1967","1956","1948","1973"],"a":3,"c":"تاريخ"},
-{"q":"ما شعار فيراري؟","o":["حصان","ثور","أسد","نجمة"],"a":0,"c":"سيارات"},
-{"q":"ما هو فيتامين C؟","o":["دم","عظام","مناعة","عضلات"],"a":2,"c":"جسم"},
-{"q":"ما هو المذنب؟","o":["قمر","كرة ثلجية فضائية","كوكب","نجم"],"a":1,"c":"علوم"},
-{"q":"ما جنسية مودريتش؟","o":["البوسنة","كرواتيا","سلوفينيا","صربيا"],"a":1,"c":"رياضة"},
-{"q":"ما عاصمة إسبانيا؟","o":["مدريد","إشبيلية","برشلونة","فالنسيا"],"a":0,"c":"جغرافيا"},
-{"q":"ما هي حرب 1967؟","o":["الاستنزاف","أكتوبر","النكسة","العبور"],"a":2,"c":"تاريخ"},
-{"q":"ما شعار لامبورجيني؟","o":["أسد","ثور","حصان","نجمة"],"a":1,"c":"سيارات"},
-{"q":"ما هو فيتامين A؟","o":["البصر","العظام","الدم","المناعة"],"a":0,"c":"جسم"},
-{"q":"ما هو الكسوف؟","o":["نجم يحجب الشمس","الأرض تحجب القمر","القمر يحجب الشمس","الشمس تحجب القمر"],"a":2,"c":"علوم"},
-{"q":"ما جنسية ليفاندوفسكي؟","o":["بولندا","التشيك","ألمانيا","النمسا"],"a":0,"c":"رياضة"},
-{"q":"ما عاصمة بريطانيا؟","o":["ليفربول","لندن","مانشستر","برمنغهام"],"a":1,"c":"جغرافيا"},
-{"q":"أين تقع بابل المعلقة؟","o":["الصين","مصر","اليونان","العراق"],"a":3,"c":"تاريخ"},
-{"q":"ما شعار مرسيدس؟","o":["حصان","ثور","أربع حلقات","نجمة ثلاثية"],"a":3,"c":"سيارات"},
-{"q":"ما هو الكالسيوم؟","o":["العظام","الدم","الشعر","الجلد"],"a":0,"c":"جسم"},
-{"q":"ما هو الخسوف؟","o":["نجم يحجب القمر","الشمس تحجب الأرض","القمر يحجب الشمس","الأرض تحجب القمر"],"a":3,"c":"علوم"},
-{"q":"ما جنسية بنزيما؟","o":["فرنسا","الجزائر","المغرب","تونس"],"a":0,"c":"رياضة"},
-{"q":"ما عاصمة روسيا؟","o":["موسكو","سان بطرسبرغ","قازان","سوتشي"],"a":0,"c":"جغرافيا"},
-{"q":"من هو حمورابي؟","o":["فرعون مصر","ملك فارس","ملك بابل","قيصر روما"],"a":2,"c":"تاريخ"},
-{"q":"ما شعار أودي؟","o":["أربع حلقات","ثور","حصان","نجمة ثلاثية"],"a":0,"c":"سيارات"},
-{"q":"ما هو الحديد؟","o":["الشعر","الجلد","الدم","العظام"],"a":2,"c":"جسم"},
-{"q":"كم قمر للمشتري؟","o":["0","1","2","79"],"a":3,"c":"علوم"},
-{"q":"كم لاعب في فريق كرة القدم؟","o":["9","10","12","11"],"a":3,"c":"رياضة"},
-{"q":"ما عاصمة الصين؟","o":["شنتشن","قوانغتشو","بكين","شنغهاي"],"a":2,"c":"جغرافيا"},
-{"q":"ما هي الأهرامات؟","o":["قصور ملوك","قلاع","مقابر فرعونية","معابد"],"a":2,"c":"تاريخ"},
-{"q":"ما شعار بي ام دبليو؟","o":["ثور","حصان","نجمة","مروحة زرقاء"],"a":3,"c":"سيارات"},
-{"q":"كم لتر دم في الجسم؟","o":["1 لتر","2 لتر","10 لتر","5 لتر"],"a":3,"c":"جسم"},
-{"q":"كم قمر لزحل؟","o":["2","0","82","1"],"a":2,"c":"علوم"},
-{"q":"كم مدة مباراة كرة القدم؟","o":["45 دقيقة","60 دقيقة","90 دقيقة","120 دقيقة"],"a":2,"c":"رياضة"},
-{"q":"ما عاصمة اليابان؟","o":["أوساكا","طوكيو","كيوتو","هيروشيما"],"a":1,"c":"جغرافيا"},
-{"q":"من بنى أبو الهول؟","o":["الرومان","الفرس","اليونان","الفراعنة"],"a":3,"c":"تاريخ"},
-{"q":"ما بلد شركة تويوتا؟","o":["كوريا","اليابان","ألمانيا","أمريكا"],"a":1,"c":"سيارات"},
-{"q":"ما هو ضغط الدم الطبيعي؟","o":["90/60","200/100","120/80","300/200"],"a":2,"c":"جسم"},
-{"q":"ما هو الزهرة؟","o":["أبعد كوكب","أصغر كوكب","ألمع كوكب","أكبر كوكب"],"a":2,"c":"علوم"},
-{"q":"ما هو كأس العالم؟","o":["بطولة تنس","بطولة كرة قدم","بطولة يد","بطولة سلة"],"a":1,"c":"رياضة"},
-{"q":"ما عاصمة الهند؟","o":["كلكتا","بنغالور","مومباي","نيودلهي"],"a":3,"c":"جغرافيا"},
-{"q":"ما هي قناة السويس؟","o":["بنما","تركيا","إيران","مصر"],"a":3,"c":"تاريخ"},
-{"q":"ما بلد شركة مرسيدس؟","o":["أمريكا","اليابان","إيطاليا","ألمانيا"],"a":3,"c":"سيارات"},
-{"q":"ما هي فصيلة الدم المستقبل العام؟","o":["B","AB","A","O"],"a":1,"c":"جسم"},
-{"q":"ما هو عطارد؟","o":["أسرع كوكب","أكبر كوكب","أبعد كوكب","أبطأ كوكب"],"a":0,"c":"علوم"},
-{"q":"أين أقيم كأس العالم 2022؟","o":["ألمانيا","روسيا","البرازيل","قطر"],"a":3,"c":"رياضة"},
-{"q":"ما عاصمة أستراليا؟","o":["كانبرا","سيدني","ملبورن","بريسبان"],"a":0,"c":"جغرافيا"},
-{"q":"متى افتتحت قناة السويس؟","o":["1956","1973","1869","1900"],"a":2,"c":"تاريخ"},
-{"q":"ما بلد شركة فورد؟","o":["اليابان","إيطاليا","أمريكا","ألمانيا"],"a":2,"c":"سيارات"},
-{"q":"ما هو العصب؟","o":["ضخ الدم","التنفس","هضم الطعام","نقل الإشارات"],"a":3,"c":"جسم"},
-{"q":"ما هي الجاذبية؟","o":["حرارة","قوة جذب","ضوء","صوت"],"a":1,"c":"علوم"},
-{"q":"من فاز بكأس العالم 2022؟","o":["البرازيل","الأرجنتين","فرنسا","ألمانيا"],"a":1,"c":"رياضة"},
-{"q":"ما عاصمة تركيا؟","o":["أنقرة","إزمير","إسطنبول","أنطاليا"],"a":0,"c":"جغرافيا"},
-{"q":"من أمم قناة السويس؟","o":["فاروق","السادات","مبارك","جمال عبد الناصر"],"a":3,"c":"تاريخ"},
-{"q":"ما بلد شركة هيونداي؟","o":["اليابان","كوريا الجنوبية","أمريكا","ألمانيا"],"a":1,"c":"سيارات"},
-{"q":"ما هو الشريان؟","o":["التنفس","نقل الدم للقلب","نقل الدم من القلب","هضم الطعام"],"a":2,"c":"جسم"},
-{"q":"ما هي الكهرباء؟","o":["تراب","هواء","ماء","طاقة"],"a":3,"c":"علوم"},
-{"q":"ما أشهر رياضة في العالم؟","o":["كرة السلة","الكريكيت","التنس","كرة القدم"],"a":3,"c":"رياضة"},
-{"q":"ما عاصمة إيران؟","o":["تبريز","طهران","شيراز","أصفهان"],"a":1,"c":"جغرافيا"},
-{"q":"ما هي حرب الاستنزاف؟","o":["مصر وفرنسا","مصر وبريطانيا","مصر وإسرائيل","مصر وتركيا"],"a":2,"c":"تاريخ"},
-{"q":"ما هي أسرع سيارة؟","o":["بوجاتي شيرون","كورولا","سيفيك","صني"],"a":0,"c":"سيارات"},
-{"q":"ما هو الوريد؟","o":["نقل الدم للقلب","هضم الطعام","نقل الدم من القلب","التنفس"],"a":0,"c":"جسم"},
-{"q":"ما هو المغناطيس؟","o":["يجذب البلاستيك","يجذب الحديد","يجذب الزجاج","يجذب الخشب"],"a":1,"c":"علوم"},
-{"q":"ما رياضة مايكل جوردان؟","o":["التنس","الملاكمة","كرة السلة","كرة القدم"],"a":2,"c":"رياضة"},
-{"q":"ما عاصمة اليونان؟","o":["هيراكليون","سالونيك","باتراس","أثينا"],"a":3,"c":"جغرافيا"},
-{"q":"أين تقع تروي؟","o":["مصر","اليونان","تركيا","إيطاليا"],"a":2,"c":"تاريخ"},
-{"q":"ما نوع لاند كروزر؟","o":["SUV","بيك أب","رياضية","سيدان"],"a":0,"c":"سيارات"},
-{"q":"ما هي الرئة اليمنى؟","o":["4 فصوص","1 فص","3 فصوص","2 فصوص"],"a":2,"c":"جسم"},
-{"q":"ما هو الحديد؟","o":["خشب","معدن يجذبه المغناطيس","بلاستيك","زجاج"],"a":1,"c":"علوم"},
-{"q":"كم شوط في كرة السلة؟","o":["4","2","3","5"],"a":0,"c":"رياضة"},
-{"q":"ما عاصمة السويد؟","o":["غوتنبرغ","أوبسالا","ستوكهولم","مالمو"],"a":2,"c":"جغرافيا"},
-{"q":"من هو أرسطو؟","o":["قائد عسكري","ملك روماني","فيلسوف يوناني","طبيب عربي"],"a":2,"c":"تاريخ"},
-{"q":"ما نوع هايلوكس؟","o":["SUV","بيك أب","سيدان","رياضية"],"a":1,"c":"سيارات"},
-{"q":"ما هي الرئة اليسرى؟","o":["2 فصوص","4 فصوص","1 فص","3 فصوص"],"a":0,"c":"جسم"},
-{"q":"ما هو الأكسجين؟","o":["غاز الحياة","صخر","معدن","سائل"],"a":0,"c":"علوم"},
-{"q":"ما رياضة نادال؟","o":["كرة القدم","السلة","الغولف","التنس"],"a":3,"c":"رياضة"},
-{"q":"ما عاصمة النرويج؟","o":["برغن","ستافانغر","تروندهايم","أوسلو"],"a":3,"c":"جغرافيا"},
-{"q":"من هو أفلاطون؟","o":["ملك فارسي","فيلسوف يوناني","قائد روماني","شاعر عربي"],"a":1,"c":"تاريخ"},
-{"q":"ما نوع كورولا؟","o":["رياضية","بيك أب","سيدان","SUV"],"a":2,"c":"سيارات"},
-{"q":"ما هو البنكرياس؟","o":["الجلد","الأنسولين","الدم","العظام"],"a":1,"c":"جسم"},
-{"q":"ما هو ثاني أكسيد الكربون؟","o":["CO2","N2","O2","H2O"],"a":0,"c":"علوم"},
-{"q":"ما رياضة تايسون؟","o":["الكاراتيه","الملاكمة","المصارعة","الجودو"],"a":1,"c":"رياضة"},
-{"q":"ما عاصمة البرتغال؟","o":["براغا","بورتو","لشبونة","كويمبرا"],"a":2,"c":"جغرافيا"},
-{"q":"ما هي الديمقراطية؟","o":["حكم الفرد","حكم الجيش","حكم الشعب","حكم الدين"],"a":2,"c":"تاريخ"},
-{"q":"ما نوع موستنج؟","o":["بيك أب","SUV","سيدان","رياضية"],"a":3,"c":"سيارات"},
-{"q":"ما هو الأنسولين؟","o":["العظام","السكر","القلب","الضغط"],"a":1,"c":"جسم"},
-{"q":"ما هو النيتروجين؟","o":["21% من الهواء","1% من الهواء","0% من الهواء","78% من الهواء"],"a":3,"c":"علوم"},
-{"q":"كم لاعب في كرة الطائرة؟","o":["11","7","6","5"],"a":2,"c":"رياضة"},
-{"q":"ما عاصمة هولندا؟","o":["لاهاي","روتردام","أوتريخت","أمستردام"],"a":3,"c":"جغرافيا"},
-{"q":"أين ولد ابن خلدون؟","o":["مصر","العراق","المغرب","تونس"],"a":3,"c":"تاريخ"},
-{"q":"ما وقود السيارة الكهربائية؟","o":["كهرباء","غاز","ديزل","بنزين"],"a":0,"c":"سيارات"},
-{"q":"ما هو الكوليسترول؟","o":["ضغط الدم","دهون الدم","عظام","سكر الدم"],"a":1,"c":"جسم"},
-{"q":"ما هو الهيدروجين؟","o":["معدن","غاز سام","أثقل غاز","أخف غاز"],"a":3,"c":"علوم"}
-];
-
-var CAT_EMOJI = {"رياضة":"⚽","جغرافيا":"🌍","تاريخ":"📜","سيارات":"🚗","جسم":"🧠","علوم":"🔬"};
-
-var scoreEl = document.getElementById('sc');
-var qnEl = document.getElementById('qn');
-var fillEl = document.getElementById('fill');
-var qEl = document.getElementById('q');
-var optsEl = document.getElementById('opts');
-var catEl = document.getElementById('cat');
-
-function showFeedback(emoji){
-  var fb = document.createElement('div');
-  fb.className = 'feedback';
-  fb.textContent = emoji;
-  document.body.appendChild(fb);
-  setTimeout(function(){ fb.remove(); }, 800);
-}
-
-function render(){
-  var cur = qs[idx];
-  qnEl.textContent = (idx+1) + ' / ' + qs.length;
-  scoreEl.textContent = score + ' نقطة';
-  fillEl.style.width = (idx / qs.length * 100) + '%';
-  catEl.textContent = (CAT_EMOJI[cur.c] || '❓') + ' ' + cur.c;
-  qEl.textContent = cur.q;
-  optsEl.innerHTML = '';
-  canAnswer = true;
-  cur.o.forEach(function(t, i){
-    var b = document.createElement('button');
-    b.className = 'opt';
-    b.textContent = t;
-    b.onclick = function(){ handleAnswer(i, b); };
-    optsEl.appendChild(b);
-  });
-}
-
-function handleAnswer(i, btn){
-  if(!playing || !canAnswer) return;
-  canAnswer = false;
-  var cur = qs[idx];
-  if(i === cur.a){
-    score += 10;
-    correctCount++;
-    scoreEl.textContent = score + ' نقطة';
-    btn.classList.add('correct');
-    showFeedback('✅');
-    setTimeout(function(){ if(playing) nextQuestion(); }, 700);
-  } else {
-    btn.classList.add('wrong');
-    optsEl.children[cur.a].classList.add('correct');
-    showFeedback('❌');
-    setTimeout(function(){ if(playing) nextQuestion(); }, 1100);
-  }
-}
-
-function nextQuestion(){
-  idx++;
-  if(idx >= qs.length){ endGame(); return; }
-  render();
-}
-
-function skip(){
-  if(!playing) return;
-  nextQuestion();
-}
-
-function endGame(){
-  playing = false;
-  var title, msg;
-  if(score >= 1000){
-    title = '🏆 عبقري حقيقي!';
-    msg = 'نقاطك: <b>' + score + '</b><br>إجابات صح: ' + correctCount + '<br>رائع يا صاحب Ahmed TV! 🎉';
-  } else if(score >= 500){
-    title = '🌟 ممتاز!';
-    msg = 'نقاطك: <b>' + score + '</b><br>إجابات صح: ' + correctCount + '<br>أنت شاطر!';
-  } else if(score >= 200){
-    title = '👏 جيد!';
-    msg = 'نقاطك: <b>' + score + '</b><br>إجابات صح: ' + correctCount + '<br>استمر في التدريب!';
-  } else {
-    title = '💪 حاول مرة أخرى';
-    msg = 'نقاطك: <b>' + score + '</b><br>إجابات صح: ' + correctCount + '<br>تقدر توصل لأعلى!';
-  }
-  document.getElementById('endTitle').textContent = title;
-  document.getElementById('endMessage').innerHTML = msg;
-  document.getElementById('endScreen').classList.remove('hide');
-}
-
-render();
-</script>
-</body>
-</html>
+{"q":"ما شركة سيارة فيراري؟","o":["إيطاليا","أمريكا","
