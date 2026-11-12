@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة الفئات | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body { 
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    position: fixed; 
+    width: 100%;
+  }
+  
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
+  }
+
+  .header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
+  .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 18px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
+  .header-text .names b { color: #facc15; font-size: 13px;}
+
+  .stats { display: flex; gap: 8px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 2px 12px; min-width: 70px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 16px; color: #facc15; }
+  .stat span { font-size: 9px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 600px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #1e293b; 
+    border: 3px solid #f59e0b; border-radius: 12px;
+    overflow-y: auto;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .watermark {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 40px; font-weight: 900;
+    pointer-events: none; z-index: 0; white-space: nowrap;
+    letter-spacing: 2px;
+  }
+
+  .letter-box {
+    background: #f59e0b;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 900;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(245,158,11,0.5);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .categories {
+    display: flex; flex-direction: column; gap: 10px;
+    z-index: 1;
+  }
+
+  .category-row {
+    background: #334155;
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .category-row span {
+    font-size: 14px; font-weight: bold; color: #facc15; min-width: 70px;
+  }
+
+  .category-row input {
+    flex: 1; border: none; border-radius: 8px;
+    padding: 10px; font-size: 16px; font-family: inherit;
+    background: #fff; color: #000;
+  }
+  .category-row input:focus { outline: 2px solid #facc15; }
+
+  .btn {
+    background: #10b981; color: #fff; border: none;
+    padding: 12px 25px; border-radius: 12px; font-size: 18px; font-weight: 900;
+    cursor: pointer; width: 100%; margin-top: 5px;
+    box-shadow: 0 4px 0 #047857;
+    z-index: 1;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 0 0 #047857; }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+    <div class="header-text">
+        <h1>لعبة الفئات</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    <div class="stat"><b id="timer">180</b><span>الوقت</span></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    
+    <div class="letter-box" id="letterDisplay">؟</div>
+    
+    <div class="categories" id="categoriesBox"></div>
+    
+    <button class="btn" id="checkBtn">✅ تحقق من إجاباتي</button>
+
+    <div id="overlay">
+      <h2>لعبة الفئات</h2>
+      <p>
+        <b>Ahmed TV</b> - اكتب إجابة تبدأ بالحرف!<br>
+        عندك 3 دقايق .. يلا بينا
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const letterDisplay = document.getElementById('letterDisplay');
+const categoriesBox = document.getElementById('categoriesBox');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const timerEl = document.getElementById('timer');
+const checkBtn = document.getElementById('checkBtn');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let score = 0;
+let best = parseInt(localStorage.getItem('categoriesBest') || '0');
+bestEl.textContent = best;
+let running = false;
+let currentLetter = '';
+let timeLeft = 180;
+let timerInterval = null;
+let audioCtx = null;
+
+// الفئات
+const CATEGORIES = [
+  { label: '🍔 أكل', name: 'أكل' },
+  { label: '🌍 بلد', name: 'بلد' },
+  { label: '🎨 لون', name: 'لون' },
+  { label: '👨‍💼 وظيفة', name: 'وظيفة' },
+  { label: '👕 ملابس', name: 'ملابس' }
+];
+
+// الحروف
+const LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','هـ','و','ي'];
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'check') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  } else if (type === 'win') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+  }
+}
+
+function buildCategories() {
+  categoriesBox.innerHTML = '';
+  CATEGORIES.forEach((cat, index) => {
+    let row = document.createElement('div');
+    row.className = 'category-row';
+    row.innerHTML = `
+      <span>${cat.label}</span>
+      <input type="text" id="cat_${index}" placeholder="اكتب هنا..." autocomplete="off">
+    `;
+    categoriesBox.appendChild(row);
+  });
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  score = 0;
+  scoreEl.textContent = 0;
+  timeLeft = 180;
+  timerEl.textContent = timeLeft;
+  running = true;
+  
+  // اختيار حرف عشوائي
+  currentLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+  letterDisplay.textContent = currentLetter;
+  
+  buildCategories();
+  
+  // عداد الوقت
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function checkAnswers() {
+  if (!running) return;
+  
+  let correctCount = 0;
+  
+  CATEGORIES.forEach((cat, index) => {
+    let input = document.getElementById('cat_' + index);
+    let answer = input.value.trim();
+    
+    // بنشوف لو الإجابة بتبدأ بالحرف
+    if (answer !== '' && answer.startsWith(currentLetter)) {
+      correctCount++;
+    }
+  });
+  
+  score += correctCount * 10;
+  scoreEl.textContent = score;
+  playSound('check');
+  
+  // نغير الحرف والفئات
+  currentLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+  letterDisplay.textContent = currentLetter;
+  buildCategories();
+}
+
+function endGame() {
+  running = false;
+  clearInterval(timerInterval);
+  playSound('win');
+  
+  if (score > best) {
+    best = score;
+    localStorage.setItem('categoriesBest', best);
+    bestEl.textContent = best;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">🏆</div>
+    <h2>خلص الوقت!</h2>
+    <p>جمعت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
+    أعلى نتيجة: ${best}<br>
+    أحمد TV بيقولك: حاول تاني!</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+checkBtn.onclick = checkAnswers;
+startBtn.onclick = startGame;
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
