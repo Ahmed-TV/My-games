@@ -7,6 +7,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
+  /* قفل الشاشة بالكامل */
   html, body { 
     height: 100vh; 
     height: 100dvh; 
@@ -26,17 +27,17 @@
   }
 
   /* الهيدر */
-  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
-  .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #facc15; object-fit: cover;}
+  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 2px;}
+  .logo-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #facc15; object-fit: cover;}
   .header-text { text-align: right; }
-  .header-text h1 { font-size: 16px; color: #facc15; margin: 0;}
-  .header-text .names { font-size: 10px; color: #cbd5e1; font-weight: bold;}
+  .header-text h1 { font-size: 14px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 9px; color: #cbd5e1; font-weight: bold;}
   .header-text .names b { color: #facc15;}
 
   /* الإحصائيات */
-  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
-  .stat { background: #1e293b; border-radius: 6px; padding: 2px 10px; min-width: 60px; text-align: center; border: 1px solid #334155;}
-  .stat b { display: block; font-size: 14px; color: #facc15; }
+  .stats { display: flex; gap: 8px; justify-content: center; margin-bottom: 3px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 1px 8px; min-width: 50px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 12px; color: #facc15; }
   .stat span { font-size: 8px; color: #94a3b8; }
 
   /* الحاوية الرئيسية */
@@ -55,20 +56,27 @@
     pointer-events: none; z-index: 0; white-space: nowrap;
   }
 
-  canvas { width: 100%; height: 100%; display: block; z-index: 1; }
+  /* الكانفس ياخد مساحة مرنة */
+  canvas { 
+    width: 100%; 
+    flex-grow: 1; 
+    display: block; 
+    z-index: 1; 
+    min-height: 0;
+  }
 
-  /* أزرار التحكم (كبيرة وسهلة) */
+  /* أزرار التحكم (كبيرة وثابتة) */
   .controls {
     display: flex; gap: 10px; justify-content: space-between; padding: 5px 0 0 0;
     z-index: 3; flex-shrink: 0;
   }
   .ctrl-btn {
     background: #334155; color: #fff; border: 2px solid #475569; border-radius: 10px;
-    font-size: 40px; width: 48%; height: 70px; display: flex; justify-content: center; align-items: center;
+    font-size: 35px; width: 48%; height: 65px; display: flex; justify-content: center; align-items: center;
     cursor: pointer; user-select: none;
-    box-shadow: 0 5px 0 #1e293b;
+    box-shadow: 0 4px 0 #1e293b;
   }
-  .ctrl-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #1e293b; background: #475569; }
+  .ctrl-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #1e293b; background: #475569; }
 
   #overlay {
     position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
@@ -145,14 +153,12 @@ let best = parseInt(localStorage.getItem('motoBest') || '0');
 bestEl.textContent = best;
 let audioCtx = null;
 
-// المتغيرات
-let player = { x: 0, y: 0, width: 70, height: 40, speed: 10 }; // العرض أكبر من الطول (بالعرض)
+let player = { x: 0, y: 0, width: 60, height: 35, speed: 8 }; // عرض الموتوسيكل
 let enemies = [];
 let roadOffset = 0;
-let baseSpeed = 1.5; // سرعة بطيئة جداً للأطفال
+let baseSpeed = 1.5; 
 let currentSpeed = baseSpeed;
 
-// التحكم المستمر (لو داس ومسك)
 let leftPressed = false;
 let rightPressed = false;
 
@@ -185,10 +191,11 @@ function playSound(type) {
   }
 }
 
+// ضبط أبعاد الكانفس
 function resize() {
-  const rect = canvas.parentElement.getBoundingClientRect();
+  const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width;
-  canvas.height = rect.height - 80; // نطرح مساحة الأزرار
+  canvas.height = rect.height;
   W = canvas.width;
   H = canvas.height;
   
@@ -201,25 +208,23 @@ function resize() {
 
 function createEnemy() {
   const laneWidth = W / 3;
-  const lane = Math.floor(Math.random() * 3); // 0, 1, 2
-  const x = lane * laneWidth + (laneWidth - 70) / 2; // عرض العربية 70
+  const lane = Math.floor(Math.random() * 3); 
+  const x = lane * laneWidth + (laneWidth - 60) / 2;
   
   enemies.push({
     x: x,
     y: -50,
-    width: 70,
-    height: 40,
+    width: 60,
+    height: 35,
     speed: currentSpeed,
     passed: false
   });
 }
 
 function draw() {
-  // خلفية الطريق
   ctx.fillStyle = '#334155';
   ctx.fillRect(0, 0, W, H);
   
-  // خطوط الطريق
   ctx.strokeStyle = '#fff';
   ctx.lineWidth = 4;
   ctx.setLineDash([20, 20]);
@@ -229,27 +234,25 @@ function draw() {
   ctx.beginPath(); ctx.moveTo(W*2/3, 0); ctx.lineTo(W*2/3, H); ctx.stroke();
   ctx.setLineDash([]);
 
-  // اللاعب (موتوسيكل بالعرض)
-  ctx.font = '50px Arial';
+  // اللاعب
+  ctx.font = '40px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 15);
+  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 12);
 
-  // الأعداء (عربيات بالعرض)
+  // الأعداء
   enemies.forEach(e => {
-    ctx.font = '50px Arial';
+    ctx.font = '40px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 15);
+    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 12);
   });
 }
 
 function update() {
   if (!running) return;
 
-  // حركة خطوط الطريق
   roadOffset += currentSpeed * 2;
   if (roadOffset > 40) roadOffset = 0;
 
-  // حركة اللاعب (بناءً على الأزرار اللي ماسك عليها)
   if (leftPressed) {
     player.x -= player.speed;
     if (player.x < 0) player.x = 0;
@@ -259,20 +262,16 @@ function update() {
     if (player.x + player.width > W) player.x = W - player.width;
   }
 
-  // حركة الأعداء
   for (let i = enemies.length - 1; i >= 0; i--) {
     let e = enemies[i];
     e.y += e.speed;
 
-    // لو العربية خرجت من الشاشة
     if (e.y > H) {
       enemies.splice(i, 1);
       if (!e.passed) {
         score++;
         scoreEl.textContent = score;
         playSound('score');
-        
-        // تسريع اللعبة شوية بعد كل 10 نقاط
         if (score % 10 === 0) {
           currentSpeed += 0.2;
           speedEl.textContent = currentSpeed.toFixed(1) + 'x';
@@ -281,7 +280,6 @@ function update() {
       continue;
     }
 
-    // تصادم
     if (
       player.x < e.x + e.width &&
       player.x + player.width > e.x &&
@@ -300,23 +298,19 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-// --- التحكم ---
 function setupControls() {
-  // زر الشمال
   leftBtn.addEventListener('mousedown', () => leftPressed = true);
   leftBtn.addEventListener('touchstart', (e) => { e.preventDefault(); leftPressed = true; }, {passive: false});
   leftBtn.addEventListener('mouseup', () => leftPressed = false);
   leftBtn.addEventListener('touchend', () => leftPressed = false);
   leftBtn.addEventListener('mouseleave', () => leftPressed = false);
   
-  // زر اليمين
   rightBtn.addEventListener('mousedown', () => rightPressed = true);
   rightBtn.addEventListener('touchstart', (e) => { e.preventDefault(); rightPressed = true; }, {passive: false});
   rightBtn.addEventListener('mouseup', () => rightPressed = false);
   rightBtn.addEventListener('touchend', () => rightPressed = false);
   rightBtn.addEventListener('mouseleave', () => rightPressed = false);
   
-  // كيبورد
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') leftPressed = true;
     if (e.key === 'ArrowRight') rightPressed = true;
@@ -339,7 +333,7 @@ function startGame() {
   player.x = W / 2 - player.width / 2;
   running = true;
   
-  // توليد العربيات (بطيء عشان اللعبة تبقى سهلة)
+  // توليد العربيات
   setInterval(() => {
     if (running) createEnemy();
   }, 2000);
