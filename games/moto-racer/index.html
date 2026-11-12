@@ -27,7 +27,7 @@
   }
 
   /* الهيدر */
-  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 2px;}
+  .header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 2px;}
   .logo-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #facc15; object-fit: cover;}
   .header-text { text-align: right; }
   .header-text h1 { font-size: 14px; color: #facc15; margin: 0;}
@@ -42,7 +42,7 @@
 
   /* الحاوية الرئيسية */
   #game-container {
-    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    width: 100%; max-width: 600px; flex-grow: 1; min-height: 0;
     position: relative; display: flex; flex-direction: column;
     background: #1e293b; 
     border: 3px solid #f59e0b; border-radius: 12px;
@@ -56,27 +56,28 @@
     pointer-events: none; z-index: 0; white-space: nowrap;
   }
 
-  /* الكانفس ياخد مساحة مرنة */
   canvas { 
     width: 100%; 
     flex-grow: 1; 
     display: block; 
     z-index: 1; 
     min-height: 0;
+    border-radius: 8px;
+    background: #334155;
   }
 
-  /* أزرار التحكم (كبيرة وثابتة) */
+  /* أزرار التحكم (كبيرة وثابتة تحت الكانفس) */
   .controls {
-    display: flex; gap: 10px; justify-content: space-between; padding: 5px 0 0 0;
-    z-index: 3; flex-shrink: 0;
+    display: flex; gap: 10px; justify-content: center; padding: 8px 0 0 0;
+    z-index: 3; flex-shrink: 0; /* عشان ميطغاش على الكانفس */
   }
   .ctrl-btn {
-    background: #334155; color: #fff; border: 2px solid #475569; border-radius: 10px;
-    font-size: 35px; width: 48%; height: 65px; display: flex; justify-content: center; align-items: center;
+    background: #f59e0b; color: #fff; border: 2px solid #b45309; border-radius: 12px;
+    font-size: 35px; width: 100px; height: 60px; display: flex; justify-content: center; align-items: center;
     cursor: pointer; user-select: none;
-    box-shadow: 0 4px 0 #1e293b;
+    box-shadow: 0 4px 0 #b45309;
   }
-  .ctrl-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #1e293b; background: #475569; }
+  .ctrl-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #b45309; background: #d97706; }
 
   #overlay {
     position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
@@ -116,9 +117,10 @@
     <div class="watermark">Ahmed TV</div>
     <canvas id="gameCanvas"></canvas>
     
+    <!-- أزرار التحكم فوق وتحت -->
     <div class="controls">
-      <button class="ctrl-btn" id="leftBtn">⬅️</button>
-      <button class="ctrl-btn" id="rightBtn">➡️</button>
+      <button class="ctrl-btn" id="upBtn">⬆️</button>
+      <button class="ctrl-btn" id="downBtn">⬇️</button>
     </div>
 
     <div id="overlay">
@@ -143,8 +145,8 @@ const bestEl = document.getElementById('best');
 const speedEl = document.getElementById('speed');
 const overlay = document.getElementById('overlay');
 const startBtn = document.getElementById('startBtn');
-const leftBtn = document.getElementById('leftBtn');
-const rightBtn = document.getElementById('rightBtn');
+const upBtn = document.getElementById('upBtn');
+const downBtn = document.getElementById('downBtn');
 
 let W = 0, H = 0;
 let running = false;
@@ -153,14 +155,15 @@ let best = parseInt(localStorage.getItem('motoBest') || '0');
 bestEl.textContent = best;
 let audioCtx = null;
 
-let player = { x: 0, y: 0, width: 60, height: 35, speed: 8 }; // عرض الموتوسيكل
+// اللاعب (عرض الموتوسيكل أكبر من الطول)
+let player = { x: 0, y: 0, width: 60, height: 35, speed: 8 };
 let enemies = [];
 let roadOffset = 0;
 let baseSpeed = 1.5; 
 let currentSpeed = baseSpeed;
 
-let leftPressed = false;
-let rightPressed = false;
+let upPressed = false;
+let downPressed = false;
 
 function initAudio() {
   if (!audioCtx) {
@@ -200,20 +203,20 @@ function resize() {
   H = canvas.height;
   
   if(!running) {
-    player.x = W / 2 - player.width / 2;
-    player.y = H - player.height - 20;
+    player.x = 50; // اللاعب على الشمال
+    player.y = H / 2 - player.height / 2; // في النص
     draw();
   }
 }
 
 function createEnemy() {
-  const laneWidth = W / 3;
-  const lane = Math.floor(Math.random() * 3); 
-  const x = lane * laneWidth + (laneWidth - 60) / 2;
+  const laneHeight = H / 3; // 3 حارات (لأن الطريق بالعرض)
+  const lane = Math.floor(Math.random() * 3); // 0, 1, 2
+  const y = lane * laneHeight + (laneHeight - player.height) / 2;
   
   enemies.push({
-    x: x,
-    y: -50,
+    x: W + 50, // يبدأ من بره الشاشة (يمين)
+    y: y,
     width: 60,
     height: 35,
     speed: currentSpeed,
@@ -222,51 +225,57 @@ function createEnemy() {
 }
 
 function draw() {
+  // خلفية الطريق
   ctx.fillStyle = '#334155';
   ctx.fillRect(0, 0, W, H);
   
+  // خطوط الطريق (أفقية)
   ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 3;
   ctx.setLineDash([20, 20]);
   ctx.lineDashOffset = -roadOffset;
   
-  ctx.beginPath(); ctx.moveTo(W/3, 0); ctx.lineTo(W/3, H); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*2/3, 0); ctx.lineTo(W*2/3, H); ctx.stroke();
+  // 3 حارات
+  ctx.beginPath(); ctx.moveTo(0, H/3); ctx.lineTo(W, H/3); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, H*2/3); ctx.lineTo(W, H*2/3); ctx.stroke();
   ctx.setLineDash([]);
 
   // اللاعب
   ctx.font = '40px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 12);
+  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 10);
 
   // الأعداء
   enemies.forEach(e => {
     ctx.font = '40px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 12);
+    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 10);
   });
 }
 
 function update() {
   if (!running) return;
 
+  // حركة خطوط الطريق
   roadOffset += currentSpeed * 2;
   if (roadOffset > 40) roadOffset = 0;
 
-  if (leftPressed) {
-    player.x -= player.speed;
-    if (player.x < 0) player.x = 0;
+  // حركة اللاعب
+  if (upPressed) {
+    player.y -= player.speed;
+    if (player.y < 0) player.y = 0;
   }
-  if (rightPressed) {
-    player.x += player.speed;
-    if (player.x + player.width > W) player.x = W - player.width;
+  if (downPressed) {
+    player.y += player.speed;
+    if (player.y + player.height > H) player.y = H - player.height;
   }
 
+  // حركة الأعداء (بتجي من اليمين للشمال)
   for (let i = enemies.length - 1; i >= 0; i--) {
     let e = enemies[i];
-    e.y += e.speed;
+    e.x -= e.speed;
 
-    if (e.y > H) {
+    if (e.x + e.width < 0) {
       enemies.splice(i, 1);
       if (!e.passed) {
         score++;
@@ -280,6 +289,7 @@ function update() {
       continue;
     }
 
+    // تصادم
     if (
       player.x < e.x + e.width &&
       player.x + player.width > e.x &&
@@ -299,25 +309,25 @@ function loop() {
 }
 
 function setupControls() {
-  leftBtn.addEventListener('mousedown', () => leftPressed = true);
-  leftBtn.addEventListener('touchstart', (e) => { e.preventDefault(); leftPressed = true; }, {passive: false});
-  leftBtn.addEventListener('mouseup', () => leftPressed = false);
-  leftBtn.addEventListener('touchend', () => leftPressed = false);
-  leftBtn.addEventListener('mouseleave', () => leftPressed = false);
+  upBtn.addEventListener('mousedown', () => upPressed = true);
+  upBtn.addEventListener('touchstart', (e) => { e.preventDefault(); upPressed = true; }, {passive: false});
+  upBtn.addEventListener('mouseup', () => upPressed = false);
+  upBtn.addEventListener('touchend', () => upPressed = false);
+  upBtn.addEventListener('mouseleave', () => upPressed = false);
   
-  rightBtn.addEventListener('mousedown', () => rightPressed = true);
-  rightBtn.addEventListener('touchstart', (e) => { e.preventDefault(); rightPressed = true; }, {passive: false});
-  rightBtn.addEventListener('mouseup', () => rightPressed = false);
-  rightBtn.addEventListener('touchend', () => rightPressed = false);
-  rightBtn.addEventListener('mouseleave', () => rightPressed = false);
+  downBtn.addEventListener('mousedown', () => downPressed = true);
+  downBtn.addEventListener('touchstart', (e) => { e.preventDefault(); downPressed = true; }, {passive: false});
+  downBtn.addEventListener('mouseup', () => downPressed = false);
+  downBtn.addEventListener('touchend', () => downPressed = false);
+  downBtn.addEventListener('mouseleave', () => downPressed = false);
   
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') leftPressed = true;
-    if (e.key === 'ArrowRight') rightPressed = true;
+    if (e.key === 'ArrowUp') upPressed = true;
+    if (e.key === 'ArrowDown') downPressed = true;
   });
   document.addEventListener('keyup', (e) => {
-    if (e.key === 'ArrowLeft') leftPressed = false;
-    if (e.key === 'ArrowRight') rightPressed = false;
+    if (e.key === 'ArrowUp') upPressed = false;
+    if (e.key === 'ArrowDown') downPressed = false;
   });
 }
 setupControls();
@@ -330,13 +340,12 @@ function startGame() {
   currentSpeed = baseSpeed;
   speedEl.textContent = '1.5x';
   enemies = [];
-  player.x = W / 2 - player.width / 2;
+  player.y = H / 2 - player.height / 2;
   running = true;
   
-  // توليد العربيات
   setInterval(() => {
     if (running) createEnemy();
-  }, 2000);
+  }, 2500); // عربيات قليلة جداً
 
   loop();
 }
