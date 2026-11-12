@@ -27,9 +27,7 @@
 
   /* الهيدر */
   .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
-  
   .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #facc15; object-fit: cover;}
-  
   .header-text { text-align: right; }
   .header-text h1 { font-size: 16px; color: #facc15; margin: 0;}
   .header-text .names { font-size: 10px; color: #cbd5e1; font-weight: bold;}
@@ -59,18 +57,18 @@
 
   canvas { width: 100%; height: 100%; display: block; z-index: 1; }
 
-  /* أزرار التحكم */
+  /* أزرار التحكم (كبيرة وسهلة) */
   .controls {
     display: flex; gap: 10px; justify-content: space-between; padding: 5px 0 0 0;
     z-index: 3; flex-shrink: 0;
   }
   .ctrl-btn {
     background: #334155; color: #fff; border: 2px solid #475569; border-radius: 10px;
-    font-size: 30px; width: 48%; height: 60px; display: flex; justify-content: center; align-items: center;
+    font-size: 40px; width: 48%; height: 70px; display: flex; justify-content: center; align-items: center;
     cursor: pointer; user-select: none;
-    box-shadow: 0 4px 0 #1e293b;
+    box-shadow: 0 5px 0 #1e293b;
   }
-  .ctrl-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #1e293b; background: #475569; }
+  .ctrl-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #1e293b; background: #475569; }
 
   #overlay {
     position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
@@ -119,7 +117,7 @@
       <h2>لعبة الموتوسيكلات</h2>
       <p>
         <b>Ahmed TV</b> - تفادى العربيات!<br>
-        استخدم الأسهم يمين وشمال
+        استخدم الأزرار عشان تتحرك
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ القيادة</button>
     </div>
@@ -148,11 +146,15 @@ bestEl.textContent = best;
 let audioCtx = null;
 
 // المتغيرات
-let player = { x: 0, y: 0, width: 40, height: 70, speed: 7 };
+let player = { x: 0, y: 0, width: 70, height: 40, speed: 10 }; // العرض أكبر من الطول (بالعرض)
 let enemies = [];
 let roadOffset = 0;
-let baseSpeed = 5;
+let baseSpeed = 1.5; // سرعة بطيئة جداً للأطفال
 let currentSpeed = baseSpeed;
+
+// التحكم المستمر (لو داس ومسك)
+let leftPressed = false;
+let rightPressed = false;
 
 function initAudio() {
   if (!audioCtx) {
@@ -186,7 +188,7 @@ function playSound(type) {
 function resize() {
   const rect = canvas.parentElement.getBoundingClientRect();
   canvas.width = rect.width;
-  canvas.height = rect.height; // نطرح مساحة التحكم
+  canvas.height = rect.height - 80; // نطرح مساحة الأزرار
   W = canvas.width;
   H = canvas.height;
   
@@ -200,16 +202,15 @@ function resize() {
 function createEnemy() {
   const laneWidth = W / 3;
   const lane = Math.floor(Math.random() * 3); // 0, 1, 2
-  const x = lane * laneWidth + (laneWidth - 40) / 2;
+  const x = lane * laneWidth + (laneWidth - 70) / 2; // عرض العربية 70
   
   enemies.push({
     x: x,
-    y: -100,
-    width: 40,
-    height: 70,
-    speed: currentSpeed + Math.random() * 2,
-    passed: false,
-    color: ['#ef4444', '#3b82f6', '#f59e0b', '#8b5cf6'][Math.floor(Math.random()*4)]
+    y: -50,
+    width: 70,
+    height: 40,
+    speed: currentSpeed,
+    passed: false
   });
 }
 
@@ -224,21 +225,20 @@ function draw() {
   ctx.setLineDash([20, 20]);
   ctx.lineDashOffset = -roadOffset;
   
-  // خطين الطريق
   ctx.beginPath(); ctx.moveTo(W/3, 0); ctx.lineTo(W/3, H); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(W*2/3, 0); ctx.lineTo(W*2/3, H); ctx.stroke();
-  ctx.setLineDash([]); // إلغاء الشرطات
+  ctx.setLineDash([]);
 
-  // اللاعب (موتوسيكل)
-  ctx.font = '60px Arial';
+  // اللاعب (موتوسيكل بالعرض)
+  ctx.font = '50px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 20);
+  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 15);
 
-  // الأعداء (عربيات)
+  // الأعداء (عربيات بالعرض)
   enemies.forEach(e => {
-    ctx.font = '60px Arial';
+    ctx.font = '50px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 20);
+    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 15);
   });
 }
 
@@ -246,11 +246,18 @@ function update() {
   if (!running) return;
 
   // حركة خطوط الطريق
-  roadOffset += currentSpeed;
+  roadOffset += currentSpeed * 2;
   if (roadOffset > 40) roadOffset = 0;
 
-  // حركة اللاعب
-  // (بيتم التحكم فيها بالأزرار)
+  // حركة اللاعب (بناءً على الأزرار اللي ماسك عليها)
+  if (leftPressed) {
+    player.x -= player.speed;
+    if (player.x < 0) player.x = 0;
+  }
+  if (rightPressed) {
+    player.x += player.speed;
+    if (player.x + player.width > W) player.x = W - player.width;
+  }
 
   // حركة الأعداء
   for (let i = enemies.length - 1; i >= 0; i--) {
@@ -265,10 +272,10 @@ function update() {
         scoreEl.textContent = score;
         playSound('score');
         
-        // تسريع اللعبة شوية
-        if (score % 5 === 0) {
-          currentSpeed += 0.5;
-          speedEl.textContent = Math.floor(currentSpeed) + 'x';
+        // تسريع اللعبة شوية بعد كل 10 نقاط
+        if (score % 10 === 0) {
+          currentSpeed += 0.2;
+          speedEl.textContent = currentSpeed.toFixed(1) + 'x';
         }
       }
       continue;
@@ -293,29 +300,33 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-function moveLeft() {
-  if (!running) return;
-  player.x -= player.speed;
-  if (player.x < 0) player.x = 0;
+// --- التحكم ---
+function setupControls() {
+  // زر الشمال
+  leftBtn.addEventListener('mousedown', () => leftPressed = true);
+  leftBtn.addEventListener('touchstart', (e) => { e.preventDefault(); leftPressed = true; }, {passive: false});
+  leftBtn.addEventListener('mouseup', () => leftPressed = false);
+  leftBtn.addEventListener('touchend', () => leftPressed = false);
+  leftBtn.addEventListener('mouseleave', () => leftPressed = false);
+  
+  // زر اليمين
+  rightBtn.addEventListener('mousedown', () => rightPressed = true);
+  rightBtn.addEventListener('touchstart', (e) => { e.preventDefault(); rightPressed = true; }, {passive: false});
+  rightBtn.addEventListener('mouseup', () => rightPressed = false);
+  rightBtn.addEventListener('touchend', () => rightPressed = false);
+  rightBtn.addEventListener('mouseleave', () => rightPressed = false);
+  
+  // كيبورد
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') leftPressed = true;
+    if (e.key === 'ArrowRight') rightPressed = true;
+  });
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowLeft') leftPressed = false;
+    if (e.key === 'ArrowRight') rightPressed = false;
+  });
 }
-
-function moveRight() {
-  if (!running) return;
-  player.x += player.speed;
-  if (player.x + player.width > W) player.x = W - player.width;
-}
-
-// التحكم (أزرار)
-leftBtn.onmousedown = moveLeft;
-leftBtn.ontouchstart = (e) => { e.preventDefault(); moveLeft(); };
-rightBtn.onmousedown = moveRight;
-rightBtn.ontouchstart = (e) => { e.preventDefault(); moveRight(); };
-
-// التحكم (كيبورد)
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') moveLeft();
-  if (e.key === 'ArrowRight') moveRight();
-});
+setupControls();
 
 function startGame() {
   initAudio();
@@ -323,15 +334,15 @@ function startGame() {
   score = 0;
   scoreEl.textContent = 0;
   currentSpeed = baseSpeed;
-  speedEl.textContent = '1x';
+  speedEl.textContent = '1.5x';
   enemies = [];
   player.x = W / 2 - player.width / 2;
   running = true;
   
-  // توليد العربيات
+  // توليد العربيات (بطيء عشان اللعبة تبقى سهلة)
   setInterval(() => {
     if (running) createEnemy();
-  }, 1200);
+  }, 2000);
 
   loop();
 }
@@ -352,7 +363,7 @@ function endGame() {
     <h2>خبطت!</h2>
     <p>جبت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
     أعلى نتيجة: ${best}<br>
-    أحمد TV بيقولك: ${score > 20 ? 'سواق محترف!' : 'حاول تاني!'}</p>
+    أحمد TV بيقولك: حاول تاني!</p>
     <button class="btn-start" id="againBtn">🔄 العب تاني</button>
   `;
   document.getElementById('againBtn').onclick = startGame;
