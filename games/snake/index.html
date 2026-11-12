@@ -64,13 +64,15 @@
     touch-action: none;
   }
 
+  /* التحكم 4 أزرار */
   .controls {
-    display: flex; gap: 10px; justify-content: center; padding: 8px 0 0 0;
+    display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 5px 0 0 0;
     z-index: 3; flex-shrink: 0;
   }
+  .ctrl-row { display: flex; gap: 60px; justify-content: center;}
   .ctrl-btn {
-    background: #f59e0b; color: #fff; border: 2px solid #b45309; border-radius: 12px;
-    font-size: 35px; width: 100px; height: 60px; display: flex; justify-content: center; align-items: center;
+    background: #f59e0b; color: #fff; border: 2px solid #b45309; border-radius: 10px;
+    font-size: 30px; width: 70px; height: 55px; display: flex; justify-content: center; align-items: center;
     cursor: pointer; user-select: none;
     box-shadow: 0 4px 0 #b45309;
   }
@@ -114,8 +116,16 @@
     <canvas id="gameCanvas"></canvas>
     
     <div class="controls">
-      <button class="ctrl-btn" id="leftBtn">⬅️</button>
-      <button class="ctrl-btn" id="rightBtn">➡️</button>
+      <div class="ctrl-row">
+        <button class="ctrl-btn" id="upBtn">⬆️</button>
+      </div>
+      <div class="ctrl-row">
+        <button class="ctrl-btn" id="leftBtn">⬅️</button>
+        <button class="ctrl-btn" id="rightBtn">➡️</button>
+      </div>
+      <div class="ctrl-row">
+        <button class="ctrl-btn" id="downBtn">⬇️</button>
+      </div>
     </div>
 
     <div id="overlay">
@@ -149,8 +159,7 @@ let audioCtx = null;
 
 let cat = { x: 0, y: 0, size: 50, speed: 5 };
 let fish = { x: 0, y: 0, size: 40 };
-let moveLeft = false;
-let moveRight = false;
+let moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
 let animFrame;
 
 function initAudio() {
@@ -185,14 +194,15 @@ function resize() {
   
   if (!running) {
     cat.x = W / 2 - cat.size / 2;
-    cat.y = H - cat.size - 20;
+    cat.y = H / 2 - cat.size / 2; // في النص
     draw();
   }
 }
 
 function spawnFish() {
+  // السمكة تظهر في أي مكان على الشاشة (بس مش تحت الأزرار)
   fish.x = Math.random() * (W - fish.size);
-  fish.y = Math.random() * (H - fish.size - 50); // فوق شوية عشان القطة توصل
+  fish.y = Math.random() * (H - fish.size - 60); 
   draw();
 }
 
@@ -226,13 +236,17 @@ function draw() {
 function update() {
   if (!running) return;
 
-  // حركة القطة
+  // حركة القطة (كل الاتجاهات)
+  if (moveUp) cat.y -= cat.speed;
+  if (moveDown) cat.y += cat.speed;
   if (moveLeft) cat.x -= cat.speed;
   if (moveRight) cat.x += cat.speed;
   
   // حدود الشاشة
   if (cat.x < 0) cat.x = 0;
   if (cat.x + cat.size > W) cat.x = W - cat.size;
+  if (cat.y < 0) cat.y = 0;
+  if (cat.y + cat.size > H) cat.y = H - cat.size;
 
   // التحقق من أكل السمكة
   let dist = Math.hypot((cat.x + cat.size/2) - (fish.x + fish.size/2), 
@@ -259,11 +273,10 @@ function startGame() {
   score = 0;
   scoreEl.textContent = 0;
   running = true;
-  moveLeft = false;
-  moveRight = false;
+  moveUp = false; moveDown = false; moveLeft = false; moveRight = false;
   
   cat.x = W / 2 - cat.size / 2;
-  cat.y = H - cat.size - 20;
+  cat.y = H / 2 - cat.size / 2;
   
   spawnFish();
   loop();
@@ -290,25 +303,31 @@ function endGame() {
   document.getElementById('againBtn').onclick = startGame;
 }
 
-// تحكم الأزرار
-document.getElementById('leftBtn').addEventListener('mousedown', () => moveLeft = true);
-document.getElementById('leftBtn').addEventListener('mouseup', () => moveLeft = false);
-document.getElementById('leftBtn').addEventListener('mouseleave', () => moveLeft = false);
-document.getElementById('leftBtn').addEventListener('touchstart', (e) => { e.preventDefault(); moveLeft = true; }, {passive: false});
-document.getElementById('leftBtn').addEventListener('touchend', () => moveLeft = false);
+// تحكم الأزرار الأربعة
+function setupControl(btnId, moveVar) {
+  const btn = document.getElementById(btnId);
+  btn.addEventListener('mousedown', () => moveVar = true);
+  btn.addEventListener('mouseup', () => moveVar = false);
+  btn.addEventListener('mouseleave', () => moveVar = false);
+  btn.addEventListener('touchstart', (e) => { e.preventDefault(); moveVar = true; }, {passive: false});
+  btn.addEventListener('touchend', () => moveVar = false);
+}
 
-document.getElementById('rightBtn').addEventListener('mousedown', () => moveRight = true);
-document.getElementById('rightBtn').addEventListener('mouseup', () => moveRight = false);
-document.getElementById('rightBtn').addEventListener('mouseleave', () => moveRight = false);
-document.getElementById('rightBtn').addEventListener('touchstart', (e) => { e.preventDefault(); moveRight = true; }, {passive: false});
-document.getElementById('rightBtn').addEventListener('touchend', () => moveRight = false);
+setupControl('upBtn', moveUp);
+setupControl('downBtn', moveDown);
+setupControl('leftBtn', moveLeft);
+setupControl('rightBtn', moveRight);
 
 // تحكم الكيبورد
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowUp') moveUp = true;
+  if (e.key === 'ArrowDown') moveDown = true;
   if (e.key === 'ArrowLeft') moveLeft = true;
   if (e.key === 'ArrowRight') moveRight = true;
 });
 document.addEventListener('keyup', (e) => {
+  if (e.key === 'ArrowUp') moveUp = false;
+  if (e.key === 'ArrowDown') moveDown = false;
   if (e.key === 'ArrowLeft') moveLeft = false;
   if (e.key === 'ArrowRight') moveRight = false;
 });
