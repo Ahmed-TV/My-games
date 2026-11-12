@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>اختبر سرعتك | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+  }
+
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
+  
+  /* اللوجو */
+  .logo {
+    width: 65px; height: 65px; flex-shrink: 0;
+    border-radius: 50%;
+    border: 3px solid #facc15;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.5);
+  }
+  .logo img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  
+  h1 { font-size: 20px; line-height: 1.2; color: #facc15;}
+  h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
+  
+  .names { font-size: 14px; color: #cbd5e1; margin-bottom: 5px; font-weight: bold;}
+  .names b { color: #facc15; font-size: 16px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0 10px; flex-wrap: wrap; }
+  .stat {
+    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
+    padding: 5px 15px; min-width: 80px; text-align: center;
+  }
+  .stat b { display: block; font-size: 20px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #1e293b; 
+    border: 4px solid #f59e0b; border-radius: 16px;
+    overflow: hidden;
+    justify-content: center; align-items: center;
+  }
+
+  .watermark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.05);
+    font-size: 40px;
+    font-weight: 900;
+    pointer-events: none;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  /* زرار اللعب */
+  #tapBtn {
+    width: 80%; max-width: 300px;
+    aspect-ratio: 1/1; /* زرار دائري */
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    border: 8px solid #fff;
+    box-shadow: 0 10px 0 #7f1d1d, 0 0 30px rgba(239, 68, 68, 0.6);
+    color: #fff;
+    font-size: 30px;
+    font-weight: 900;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer; user-select: none;
+    z-index: 1;
+    transition: transform 0.05s, box-shadow 0.05s;
+  }
+  
+  #tapBtn:active {
+    transform: translateY(10px);
+    box-shadow: 0 0 0 #7f1d1d, 0 0 30px rgba(239, 68, 68, 0.6);
+  }
+
+  #tapBtn:disabled {
+    background: #475569;
+    box-shadow: 0 10px 0 #1e293b, none;
+    border-color: #64748b;
+    cursor: not-allowed;
+  }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="top-row">
+      <!-- اللوجو بتاعك -->
+      <div class="logo">
+        <img src="https://raw.githubusercontent.com/Ahmed-TV/My-games/main/IMG_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A1%D9%A0%D9%A1_%D9%A1%D9%A3%D9%80%D9%A8%D9%A0%D9%A9.png" alt="Ahmed TV Logo">
+      </div>
+      <h1>اختبر سرعتك<small>AHMED TV SPEED TAP</small></h1>
+    </div>
+    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><span>الضغطات</span></div>
+      <div class="stat"><b id="time">10</b><span>ثواني</span></div>
+      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    
+    <button id="tapBtn" disabled>اضغط!</button>
+
+    <div id="overlay">
+      <h2>اختبر سرعتك!</h2>
+      <p>
+        <b>Ahmed TV</b> - عندك 10 ثواني بس!<br>
+        دوس على الزرار أسرع عدد ممكن من المرات
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ التحدي</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const tapBtn = document.getElementById('tapBtn');
+const scoreEl = document.getElementById('score');
+const timeEl = document.getElementById('time');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let score = 0;
+let timeLeft = 10;
+let gameActive = false;
+let timerInterval = null;
+let best = parseInt(localStorage.getItem('speedTapBest') || '0');
+let audioCtx = null;
+bestEl.textContent = best;
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'tap') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+  } else if (type === 'win') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+  }
+}
+
+function handleTap() {
+  if (!gameActive) return;
+  score++;
+  scoreEl.textContent = score;
+  playSound('tap');
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  score = 0;
+  timeLeft = 10;
+  scoreEl.textContent = 0;
+  timeEl.textContent = 10;
+  gameActive = true;
+  tapBtn.disabled = false;
+  tapBtn.textContent = 'اضغط!';
+  
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timeEl.textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function endGame() {
+  gameActive = false;
+  clearInterval(timerInterval);
+  tapBtn.disabled = true;
+  tapBtn.textContent = 'خلص الوقت!';
+  playSound('win');
+  
+  if (score > best) {
+    best = score;
+    localStorage.setItem('speedTapBest', best);
+    bestEl.textContent = best;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">⚡</div>
+    <h2>سرعة خرافية!</h2>
+    <p>ضغطت <b style="color:#facc15;font-size:22px">${score}</b> ضغطة في 10 ثواني<br>
+    أعلى نتيجة: ${best}<br>
+    أحمد TV بيقولك: ${score > 50 ? 'إنت صاروخ!' : 'حاول أسرع المرة الجاية!'}</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+// ربط الأزرار
+tapBtn.addEventListener('mousedown', handleTap);
+tapBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(); }, { passive: false });
+startBtn.onclick = startGame;
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
