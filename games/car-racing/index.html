@@ -213,9 +213,10 @@ pointLight.position.set(0, 2, 5);
 scene.add(pointLight);
 
 let targetX = 0;
-let currentSpeed = 0.2; // سرعة بطيئة جداً
+let currentSpeed = 0.2;
 let roadOffset = 0;
 let spawnTimer = 0;
+let animationId = null; // عشان نقدر نوقف الأنيميشن
 
 function initAudio() {
   if (!audioCtx) {
@@ -265,16 +266,16 @@ document.addEventListener('keyup', (e) => {
 });
 
 function animate() {
+  // لو مش شغالة، بنرسم الشاشة بس
   if (!running) {
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
     return;
   }
 
   player.position.x += (targetX - player.position.x) * 0.15;
   
   roadOffset += currentSpeed;
-  lines.forEach((line, i) => {
+  lines.forEach((line) => {
     line.position.z += currentSpeed;
     if (line.position.z > 10) {
       line.position.z = -80;
@@ -282,7 +283,7 @@ function animate() {
   });
 
   spawnTimer++;
-  if (spawnTimer > 120) { // توليد عربيات قليل
+  if (spawnTimer > 120) {
     spawnEnemy();
     spawnTimer = 0;
   }
@@ -298,7 +299,7 @@ function animate() {
       scoreEl.textContent = score;
       playSound('score');
       
-      if (score % 10 === 0) { // سرعة تزيد كل 10 نقاط
+      if (score % 10 === 0) {
         currentSpeed += 0.1;
         speedEl.textContent = Math.round(currentSpeed * 10) + 'x';
       }
@@ -315,29 +316,45 @@ function animate() {
   }
 
   renderer.render(scene, camera);
-  requestAnimationFrame(animate);
+  animationId = requestAnimationFrame(animate);
 }
 
 function startGame() {
   initAudio();
   overlay.style.display = 'none';
   
+  // إيقاف أي حركة قديمة
+  if (animationId) cancelAnimationFrame(animationId);
+  
+  // تصفير كل حاجة
   score = 0;
   scoreEl.textContent = 0;
-  currentSpeed = 0.2; // بطيئة جداً
+  currentSpeed = 0.2;
   speedEl.textContent = '2x';
   targetX = 0;
   player.position.x = 0;
+  player.position.z = 5;
+  spawnTimer = 0;
+  roadOffset = 0;
   
+  // مسح كل الأعداء القدام
   enemies.forEach(e => scene.remove(e));
   enemies = [];
   
+  // إعادة خطوط الطريق لمكانها
+  lines.forEach((line, i) => {
+    line.position.z = 10 - i * 5;
+  });
+  
   running = true;
+  animate(); // بدء الحركة
 }
 
 function endGame() {
   running = false;
   playSound('crash');
+  
+  if (animationId) cancelAnimationFrame(animationId);
   
   if (score > best) {
     best = score;
@@ -365,7 +382,8 @@ window.addEventListener('resize', () => {
   renderer.setSize(container.clientWidth, container.clientHeight);
 });
 
-animate();
+// رسم أولي (ثابت) قبل ما تبدأ اللعبة
+renderer.render(scene, camera);
 
 document.body.addEventListener('touchstart', initAudio, { once: true });
 document.body.addEventListener('click', initAudio, { once: true });
