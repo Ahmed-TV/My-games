@@ -60,7 +60,7 @@
     z-index: 1; 
     min-height: 0;
     border-radius: 8px;
-    background: #a7f3d0; /* لون نعناعي */
+    background: #a7f3d0;
   }
 
   .controls {
@@ -124,7 +124,7 @@
       <h2>القطط بتجري ورا بعض</h2>
       <p>
         <b>Ahmed TV</b> - اجمع القطط!<br>
-        كل ما تلمس قطة، هتجري وراك
+        كل ما تلمس سمكة، هتجري قطة وراك
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ الجري</button>
     </div>
@@ -150,12 +150,12 @@ bestEl.textContent = best;
 let audioCtx = null;
 
 // إعدادات اللعبة
-const GRID_SIZE = 20;
+const GRID_SIZE = 35; // حجم المربع (أكبر عشان القطط تبان كبيرة)
 let cols, rows;
 let catQueue = []; // الصف
 let dx = 0, dy = 0;
 let food = { x: 0, y: 0 };
-let gameSpeed = 150; // سرعة بطيئة
+let gameSpeed = 350; // سرعة بطيئة جداً
 let gameLoop;
 
 function initAudio() {
@@ -208,7 +208,7 @@ function resetGame() {
   dx = 0; dy = 0;
   score = 0;
   scoreEl.textContent = 0;
-  gameSpeed = 150;
+  gameSpeed = 350; // بطيئة جداً
   generateFood();
   running = true;
   overlay.style.display = 'none';
@@ -223,7 +223,6 @@ function generateFood() {
     y: Math.floor(Math.random() * rows)
   };
   
-  // تأكد إن الأكل مش على القطة
   if (catQueue.some(c => c.x === food.x && c.y === food.y)) {
     generateFood();
   }
@@ -232,33 +231,29 @@ function generateFood() {
 function update() {
   if (!running) return;
   
-  // حركة القطة الأولى
-  if (dx === 0 && dy === 0) return; // واقف لحد ما اللاعب يتحرك
+  if (dx === 0 && dy === 0) return;
   
   let head = { x: catQueue[0].x + dx, y: catQueue[0].y + dy };
   
-  // التحقق من الاصطدام بالحوائط
   if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
     return endGame();
   }
   
-  // التحقق من الاصطدام بنفسه
   if (catQueue.some(c => c.x === head.x && c.y === head.y)) {
     return endGame();
   }
   
   catQueue.unshift(head);
   
-  // لو أكل
   if (head.x === food.x && head.y === food.y) {
     score++;
     scoreEl.textContent = score;
     playSound('eat');
     generateFood();
     
-    // تسريع بسيط جداً
-    if (score % 5 === 0) {
-      gameSpeed = Math.max(70, gameSpeed - 10);
+    // تسريع بسيط جداً بعد كل 10 نقاط
+    if (score % 10 === 0) {
+      gameSpeed = Math.max(200, gameSpeed - 20);
       clearInterval(gameLoop);
       gameLoop = setInterval(update, gameSpeed);
     }
@@ -283,19 +278,16 @@ function draw() {
     ctx.beginPath(); ctx.moveTo(0, j*GRID_SIZE); ctx.lineTo(W, j*GRID_SIZE); ctx.stroke();
   }
 
-  // القطط
+  // القطط (كبيرة)
   catQueue.forEach((c, index) => {
-    ctx.font = '18px Arial';
+    ctx.font = (GRID_SIZE - 5) + 'px Arial'; // حجم القطة مناسب للمربع
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    // القطة الأولى أكبر شوية
-    let size = index === 0 ? 22 : 18;
-    ctx.font = size + 'px Arial';
     ctx.fillText('🐱', c.x * GRID_SIZE + GRID_SIZE/2, c.y * GRID_SIZE + GRID_SIZE/2);
   });
 
-  // الأكل
-  ctx.font = '18px Arial';
+  // السمكة
+  ctx.font = (GRID_SIZE - 5) + 'px Arial';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('🐟', food.x * GRID_SIZE + GRID_SIZE/2, food.y * GRID_SIZE + GRID_SIZE/2);
