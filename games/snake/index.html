@@ -132,7 +132,7 @@
       <h2>القطة والسمكة</h2>
       <p>
         <b>Ahmed TV</b> - اجمع السمك!<br>
-        حرك القطة بصباعك أو بالأزرار
+        كل ضغطة على سهم، القطة بتتحرك خطوة
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
     </div>
@@ -153,14 +153,14 @@ const startBtn = document.getElementById('startBtn');
 let W = 0, H = 0;
 let running = false;
 let score = 0;
-let best = parseInt(localStorage.getItem('catFishBest') || '0');
+let best = parseInt(localStorage.getItem('catFishStepBest') || '0');
 bestEl.textContent = best;
 let audioCtx = null;
 
-let cat = { x: 0, y: 0, size: 50, speed: 5 };
+// إعدادات الحركة (خطوات)
+const STEP_SIZE = 15; // كل ضغطة بتتحرك 15 بكسل
+let cat = { x: 0, y: 0, size: 50 };
 let fish = { x: 0, y: 0, size: 40 };
-let moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
-let gameInterval = null;
 
 function initAudio() {
   if (!audioCtx) {
@@ -231,22 +231,8 @@ function draw() {
   ctx.fillText('🐱', cat.x + cat.size/2, cat.y + cat.size/2);
 }
 
-function update() {
-  if (!running) return;
-
-  // حركة القطة (كل الاتجاهات)
-  if (moveUp) cat.y -= cat.speed;
-  if (moveDown) cat.y += cat.speed;
-  if (moveLeft) cat.x -= cat.speed;
-  if (moveRight) cat.x += cat.speed;
-  
-  // حدود الشاشة
-  if (cat.x < 0) cat.x = 0;
-  if (cat.x + cat.size > W) cat.x = W - cat.size;
-  if (cat.y < 0) cat.y = 0;
-  if (cat.y + cat.size > H) cat.y = H - cat.size;
-
-  // التحقق من أكل السمكة
+// دالة التحقق من أكل السمكة
+function checkEat() {
   let dist = Math.hypot((cat.x + cat.size/2) - (fish.x + fish.size/2), 
                         (cat.y + cat.size/2) - (fish.y + fish.size/2));
   
@@ -256,8 +242,22 @@ function update() {
     playSound('eat');
     spawnFish();
   }
-
   draw();
+}
+
+function moveCat(dx, dy) {
+  if (!running) return;
+  
+  cat.x += dx * STEP_SIZE;
+  cat.y += dy * STEP_SIZE;
+  
+  // حدود الشاشة
+  if (cat.x < 0) cat.x = 0;
+  if (cat.x + cat.size > W) cat.x = W - cat.size;
+  if (cat.y < 0) cat.y = 0;
+  if (cat.y + cat.size > H) cat.y = H - cat.size;
+  
+  checkEat();
 }
 
 function startGame() {
@@ -266,66 +266,27 @@ function startGame() {
   score = 0;
   scoreEl.textContent = 0;
   running = true;
-  moveUp = false; moveDown = false; moveLeft = false; moveRight = false;
   
   cat.x = W / 2 - cat.size / 2;
   cat.y = H / 2 - cat.size / 2;
   
   spawnFish();
-  
-  // بدء الحركة باستخدام setInterval (مضمون)
-  if (gameInterval) clearInterval(gameInterval);
-  gameInterval = setInterval(update, 30);
+  draw();
 }
 
-function endGame() {
-  running = false;
-  if (gameInterval) clearInterval(gameInterval);
-  
-  if (score > best) {
-    best = score;
-    localStorage.setItem('catFishBest', best);
-    bestEl.textContent = best;
-  }
+// التحكم: كل ضغطة بتحرك القطة خطوة
+document.getElementById('upBtn').onclick = () => moveCat(0, -1);
+document.getElementById('downBtn').onclick = () => moveCat(0, 1);
+document.getElementById('leftBtn').onclick = () => moveCat(-1, 0);
+document.getElementById('rightBtn').onclick = () => moveCat(1, 0);
 
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `
-    <div style="font-size:35px">🐱</div>
-    <h2>خلصت اللعبة!</h2>
-    <p>جمعت <b style="color:#facc15;font-size:22px">${score} سمكة</b><br>
-    أعلى نتيجة: ${best}</p>
-    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
-  `;
-  document.getElementById('againBtn').onclick = startGame;
-}
-
-// تحكم الأزرار الأربعة
-function setupControl(btnId, moveVar) {
-  const btn = document.getElementById(btnId);
-  btn.addEventListener('mousedown', () => moveVar = true);
-  btn.addEventListener('mouseup', () => moveVar = false);
-  btn.addEventListener('mouseleave', () => moveVar = false);
-  btn.addEventListener('touchstart', (e) => { e.preventDefault(); moveVar = true; }, {passive: false});
-  btn.addEventListener('touchend', () => moveVar = false);
-}
-
-setupControl('upBtn', moveUp);
-setupControl('downBtn', moveDown);
-setupControl('leftBtn', moveLeft);
-setupControl('rightBtn', moveRight);
-
-// تحكم الكيبورد
+// كيبورد
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowUp') moveUp = true;
-  if (e.key === 'ArrowDown') moveDown = true;
-  if (e.key === 'ArrowLeft') moveLeft = true;
-  if (e.key === 'ArrowRight') moveRight = true;
-});
-document.addEventListener('keyup', (e) => {
-  if (e.key === 'ArrowUp') moveUp = false;
-  if (e.key === 'ArrowDown') moveDown = false;
-  if (e.key === 'ArrowLeft') moveLeft = false;
-  if (e.key === 'ArrowRight') moveRight = false;
+  if (!running) return;
+  if (e.key === 'ArrowUp') moveCat(0, -1);
+  if (e.key === 'ArrowDown') moveCat(0, 1);
+  if (e.key === 'ArrowLeft') moveCat(-1, 0);
+  if (e.key === 'ArrowRight') moveCat(1, 0);
 });
 
 startBtn.onclick = startGame;
