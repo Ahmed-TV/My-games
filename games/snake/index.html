@@ -160,7 +160,7 @@ let audioCtx = null;
 let cat = { x: 0, y: 0, size: 50, speed: 5 };
 let fish = { x: 0, y: 0, size: 40 };
 let moveUp = false, moveDown = false, moveLeft = false, moveRight = false;
-let animFrame;
+let gameInterval = null;
 
 function initAudio() {
   if (!audioCtx) {
@@ -194,16 +194,14 @@ function resize() {
   
   if (!running) {
     cat.x = W / 2 - cat.size / 2;
-    cat.y = H / 2 - cat.size / 2; // في النص
+    cat.y = H / 2 - cat.size / 2;
     draw();
   }
 }
 
 function spawnFish() {
-  // السمكة تظهر في أي مكان على الشاشة (بس مش تحت الأزرار)
   fish.x = Math.random() * (W - fish.size);
-  fish.y = Math.random() * (H - fish.size - 60); 
-  draw();
+  fish.y = Math.random() * (H - fish.size - 40); 
 }
 
 function draw() {
@@ -262,11 +260,6 @@ function update() {
   draw();
 }
 
-function loop() {
-  update();
-  animFrame = requestAnimationFrame(loop);
-}
-
 function startGame() {
   initAudio();
   overlay.style.display = 'none';
@@ -279,12 +272,15 @@ function startGame() {
   cat.y = H / 2 - cat.size / 2;
   
   spawnFish();
-  loop();
+  
+  // بدء الحركة باستخدام setInterval (مضمون)
+  if (gameInterval) clearInterval(gameInterval);
+  gameInterval = setInterval(update, 30);
 }
 
 function endGame() {
   running = false;
-  if (animFrame) cancelAnimationFrame(animFrame);
+  if (gameInterval) clearInterval(gameInterval);
   
   if (score > best) {
     best = score;
