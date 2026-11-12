@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة الموتوسيكلات | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body { 
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    position: fixed; 
+    width: 100%;
+  }
+  
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
+  }
+
+  /* الهيدر */
+  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
+  
+  .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #facc15; object-fit: cover;}
+  
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 16px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 10px; color: #cbd5e1; font-weight: bold;}
+  .header-text .names b { color: #facc15;}
+
+  /* الإحصائيات */
+  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 2px 10px; min-width: 60px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 14px; color: #facc15; }
+  .stat span { font-size: 8px; color: #94a3b8; }
+
+  /* الحاوية الرئيسية */
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #1e293b; 
+    border: 3px solid #f59e0b; border-radius: 12px;
+    overflow: hidden;
+    padding: 5px;
+  }
+
+  .watermark {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 30px; font-weight: 900;
+    pointer-events: none; z-index: 0; white-space: nowrap;
+  }
+
+  canvas { width: 100%; height: 100%; display: block; z-index: 1; }
+
+  /* أزرار التحكم */
+  .controls {
+    display: flex; gap: 10px; justify-content: space-between; padding: 5px 0 0 0;
+    z-index: 3; flex-shrink: 0;
+  }
+  .ctrl-btn {
+    background: #334155; color: #fff; border: 2px solid #475569; border-radius: 10px;
+    font-size: 30px; width: 48%; height: 60px; display: flex; justify-content: center; align-items: center;
+    cursor: pointer; user-select: none;
+    box-shadow: 0 4px 0 #1e293b;
+  }
+  .ctrl-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #1e293b; background: #475569; }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+    <div class="header-text">
+        <h1>لعبة الموتوسيكلات</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    <div class="stat"><b id="speed">1x</b><span>السرعة</span></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="controls">
+      <button class="ctrl-btn" id="leftBtn">⬅️</button>
+      <button class="ctrl-btn" id="rightBtn">➡️</button>
+    </div>
+
+    <div id="overlay">
+      <h2>لعبة الموتوسيكلات</h2>
+      <p>
+        <b>Ahmed TV</b> - تفادى العربيات!<br>
+        استخدم الأسهم يمين وشمال
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ القيادة</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const speedEl = document.getElementById('speed');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
+
+let W = 0, H = 0;
+let running = false;
+let score = 0;
+let best = parseInt(localStorage.getItem('motoBest') || '0');
+bestEl.textContent = best;
+let audioCtx = null;
+
+// المتغيرات
+let player = { x: 0, y: 0, width: 40, height: 70, speed: 7 };
+let enemies = [];
+let roadOffset = 0;
+let baseSpeed = 5;
+let currentSpeed = baseSpeed;
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'score') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  } else if (type === 'crash') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+  }
+}
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height; // نطرح مساحة التحكم
+  W = canvas.width;
+  H = canvas.height;
+  
+  if(!running) {
+    player.x = W / 2 - player.width / 2;
+    player.y = H - player.height - 20;
+    draw();
+  }
+}
+
+function createEnemy() {
+  const laneWidth = W / 3;
+  const lane = Math.floor(Math.random() * 3); // 0, 1, 2
+  const x = lane * laneWidth + (laneWidth - 40) / 2;
+  
+  enemies.push({
+    x: x,
+    y: -100,
+    width: 40,
+    height: 70,
+    speed: currentSpeed + Math.random() * 2,
+    passed: false,
+    color: ['#ef4444', '#3b82f6', '#f59e0b', '#8b5cf6'][Math.floor(Math.random()*4)]
+  });
+}
+
+function draw() {
+  // خلفية الطريق
+  ctx.fillStyle = '#334155';
+  ctx.fillRect(0, 0, W, H);
+  
+  // خطوط الطريق
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 4;
+  ctx.setLineDash([20, 20]);
+  ctx.lineDashOffset = -roadOffset;
+  
+  // خطين الطريق
+  ctx.beginPath(); ctx.moveTo(W/3, 0); ctx.lineTo(W/3, H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W*2/3, 0); ctx.lineTo(W*2/3, H); ctx.stroke();
+  ctx.setLineDash([]); // إلغاء الشرطات
+
+  // اللاعب (موتوسيكل)
+  ctx.font = '60px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 20);
+
+  // الأعداء (عربيات)
+  enemies.forEach(e => {
+    ctx.font = '60px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 20);
+  });
+}
+
+function update() {
+  if (!running) return;
+
+  // حركة خطوط الطريق
+  roadOffset += currentSpeed;
+  if (roadOffset > 40) roadOffset = 0;
+
+  // حركة اللاعب
+  // (بيتم التحكم فيها بالأزرار)
+
+  // حركة الأعداء
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    let e = enemies[i];
+    e.y += e.speed;
+
+    // لو العربية خرجت من الشاشة
+    if (e.y > H) {
+      enemies.splice(i, 1);
+      if (!e.passed) {
+        score++;
+        scoreEl.textContent = score;
+        playSound('score');
+        
+        // تسريع اللعبة شوية
+        if (score % 5 === 0) {
+          currentSpeed += 0.5;
+          speedEl.textContent = Math.floor(currentSpeed) + 'x';
+        }
+      }
+      continue;
+    }
+
+    // تصادم
+    if (
+      player.x < e.x + e.width &&
+      player.x + player.width > e.x &&
+      player.y < e.y + e.height &&
+      player.y + player.height > e.y
+    ) {
+      endGame();
+      return;
+    }
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+function moveLeft() {
+  if (!running) return;
+  player.x -= player.speed;
+  if (player.x < 0) player.x = 0;
+}
+
+function moveRight() {
+  if (!running) return;
+  player.x += player.speed;
+  if (player.x + player.width > W) player.x = W - player.width;
+}
+
+// التحكم (أزرار)
+leftBtn.onmousedown = moveLeft;
+leftBtn.ontouchstart = (e) => { e.preventDefault(); moveLeft(); };
+rightBtn.onmousedown = moveRight;
+rightBtn.ontouchstart = (e) => { e.preventDefault(); moveRight(); };
+
+// التحكم (كيبورد)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') moveLeft();
+  if (e.key === 'ArrowRight') moveRight();
+});
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  score = 0;
+  scoreEl.textContent = 0;
+  currentSpeed = baseSpeed;
+  speedEl.textContent = '1x';
+  enemies = [];
+  player.x = W / 2 - player.width / 2;
+  running = true;
+  
+  // توليد العربيات
+  setInterval(() => {
+    if (running) createEnemy();
+  }, 1200);
+
+  loop();
+}
+
+function endGame() {
+  running = false;
+  playSound('crash');
+  
+  if (score > best) {
+    best = score;
+    localStorage.setItem('motoBest', best);
+    bestEl.textContent = best;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">💥</div>
+    <h2>خبطت!</h2>
+    <p>جبت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
+    أعلى نتيجة: ${best}<br>
+    أحمد TV بيقولك: ${score > 20 ? 'سواق محترف!' : 'حاول تاني!'}</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+startBtn.onclick = startGame;
+
+window.addEventListener('resize', () => { resize(); if(!running) draw(); });
+
+resize();
+draw();
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
