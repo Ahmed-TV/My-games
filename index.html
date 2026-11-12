@@ -11,64 +11,56 @@
     background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
     color: #fff;
     min-height: 100vh;
-    padding: 20px 20px;
     text-align: center;
   }
 
-  .hero-section {
+  /* --- حاوية البنر --- */
+  .banner-container {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    margin-bottom: 40px;
-    animation: fadeIn 1s ease-in-out;
+    background-color: #000;
   }
 
-  /* اللوجو (صورة) */
-  .logo-img {
-    width: 150px; height: 150px;
-    border-radius: 50%;
-    border: 6px solid #fff;
-    object-fit: cover;
-    box-shadow: 0 0 40px rgba(233, 69, 96, 0.8);
-    margin-bottom: 15px;
-    background: #fff;
+  .banner-img {
+    width: 100%;
+    max-width: 600px; /* عشان ميبقاش ضخم على الكمبيوتر */
+    height: auto;
+    display: block;
+    object-fit: contain;
   }
 
-  .my-name {
-    font-size: 1.8rem;
-    color: #facc15;
-    font-weight: bold;
+  /* --- قسم الترحيب (الاسم والكلام) --- */
+  .welcome-section {
+    padding: 20px 15px 10px 15px;
+  }
+
+  .welcome-section h1 {
+    font-size: 2rem;
+    color: #facc15; /* لون ذهبي */
     margin-bottom: 5px;
+    font-weight: bold;
     text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
   }
-  
-  .my-name-en {
+
+  .welcome-section h2 {
     font-size: 1.2rem;
     color: #cbd5e1;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  .hero-section h1 {
-    font-size: 2.2rem;
-    color: #f5a623;
+    font-weight: normal;
     margin-bottom: 10px;
-    font-weight: bold;
-    text-shadow: 0 0 15px rgba(245, 166, 35, 0.6);
   }
 
-  .hero-section p {
-    font-size: 1.1rem;
-    color: #e0e0e0;
-    margin-bottom: 20px;
+  .welcome-section p {
+    font-size: 1rem;
+    color: #a0a0b0;
     max-width: 600px;
-    line-height: 1.6;
+    margin: 0 auto;
+    line-height: 1.5;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* --- شبكة الألعاب --- */
+  .games-container {
+    padding: 10px 20px 20px 20px;
   }
 
   .games-grid {
@@ -97,378 +89,388 @@
   .game-info h4 { font-size: 1.2rem; margin-bottom: 6px; }
   .game-info p { font-size: 0.85rem; color: #a0a0b0; }
   
-  footer { text-align: center; margin-top: 50px; color: #666; font-size: 0.85rem; }
+  footer { text-align: center; margin-top: 30px; padding-bottom: 20px; color: #666; font-size: 0.85rem; }
 </style>
 </head>
 <body>
 
-  <div class="hero-section">
-    <!-- اللوجو بتاعك بالرابط المباشر -->
-    <img src="https://raw.githubusercontent.com/Ahmed-TV/My-games/main/IMG_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A1%D9%A0%D9%A1_%D9%A1%D9%A3%D9%A0%D9%A8%D9%A0%D9%A9.png" alt="Ahmed TV Logo" class="logo-img">
-    
-    <div class="my-name">أحمد عبدالعزيز</div>
-    <div class="my-name-en">Ahmed Abdelaziz</div>
-    
-    <h1>مرحباً بك في موقع بنك الألعاب</h1>
-    <p>أهلاً بك يا بطل! استعد لأقوى التحديات والمرح مع Ahmed TV</p>
+  <!-- البنر الجديد -->
+  <div class="banner-container">
+    <img src="banner.png" alt="Ahmed TV Banner" class="banner-img">
   </div>
 
-  <div class="games-grid">
-    
-    <!-- 1. خمن علم الدولة -->
-    <a class="game-card" href="games/flags/index.html">
-      <div class="game-thumb">🌍</div>
-      <div class="game-info">
-        <h4>خمن علم الدولة</h4>
-        <p>اعرف الدول من أعلامها</p>
-      </div>
-    </a>
-
-    <!-- 2. أعلام من السماء -->
-    <a class="game-card" href="games/sky-flags/index.html">
-      <div class="game-thumb">☁️</div>
-      <div class="game-info">
-        <h4>أعلام من السماء</h4>
-        <p>اضغط على الأعلام بسرعة!</p>
-      </div>
-    </a>
-
-    <!-- 3. لعبة الذاكرة -->
-    <a class="game-card" href="games/memory/index.html">
-      <div class="game-thumb">🧠</div>
-      <div class="game-info">
-        <h4>لعبة الذاكرة</h4>
-        <p>قلّب الكروت وطابق الأزواج</p>
-      </div>
-    </a>
-
-    <!-- 4. ثعبان أحمد TV -->
-    <a class="game-card" href="games/snake/index.html">
-      <div class="game-thumb">🐍</div>
-      <div class="game-info">
-        <h4>ثعبان أحمد TV</h4>
-        <p>لعبة الثعبان المطورة</p>
-      </div>
-    </a>
-
-    <!-- 5. يويو وحازم -->
-    <a class="game-card" href="games/yoyo-hazem/index.html">
-      <div class="game-thumb">⚽</div>
-      <div class="game-info">
-        <h4>لعبة يويو وحازم</h4>
-        <p>لعبة تحدي بين يويو وحازم</p>
-      </div>
-    </a>
-
-    <!-- 6. تحدي الأذكياء -->
-    <a class="game-card" href="games/quiz/index.html">
-      <div class="game-thumb">❓</div>
-      <div class="game-info">
-        <h4>تحدي الأذكياء</h4>
-        <p>200 سؤال في الرياضة والتاريخ</p>
-      </div>
-    </a>
-
-    <!-- 7. حظك اليوم -->
-    <a class="game-card" href="games/lucky/index.html">
-      <div class="game-thumb">🎡</div>
-      <div class="game-info">
-        <h4>حظك اليوم</h4>
-        <p>لف عجلة الحظ واكتشف بختك</p>
-      </div>
-    </a>
-
-    <!-- 8. نجوم مصر 80 -->
-    <a class="game-card" href="games/egypt-stars/index.html">
-      <div class="game-thumb">⚽</div>
-      <div class="game-info">
-        <h4>نجوم مصر 80</h4>
-        <p>حلل شخصية اللاعب وخمن مين هو!</p>
-      </div>
-    </a>
-
-    <!-- 9. خمن الشعار -->
-    <a class="game-card" href="games/logos/index.html">
-      <div class="game-thumb">🏆</div>
-      <div class="game-info">
-        <h4>خمن الشعار</h4>
-        <p>اعرف النادي من علمه ومواصفاته!</p>
-      </div>
-    </a>
-
-    <!-- 10. مشاهير الكرة -->
-    <a class="game-card" href="games/football-stars/index.html">
-      <div class="game-thumb">🕵️</div>
-      <div class="game-info">
-        <h4>مشاهير الكرة</h4>
-        <p>اكشف الصورة وخمن اللاعب!</p>
-      </div>
-    </a>
-
-    <!-- 11. عجلة السفر -->
-    <a class="game-card" href="games/travel-wheel/index.html">
-      <div class="game-thumb">🌍</div>
-      <div class="game-info">
-        <h4>عجلة السفر</h4>
-        <p>اكتشف وجهتك المستقبلية!</p>
-      </div>
-    </a>
-
-    <!-- 12. أتوبيس كومبليت -->
-    <a class="game-card" href="games/autobus/index.html">
-      <div class="game-thumb">🚌</div>
-      <div class="game-info">
-        <h4>أتوبيس كومبليت</h4>
-        <p>اكتب إجابة تبدأ بالحرف!</p>
-      </div>
-    </a>
-
-    <!-- 13. تحدي الذكاء -->
-    <a class="game-card" href="games/iq-challenge/index.html">
-      <div class="game-thumb">🧠</div>
-      <div class="game-info">
-        <h4>تحدي الذكاء</h4>
-        <p>ألغاز وتحديات بصرية ومنطقية!</p>
-      </div>
-    </a>
-
-    <!-- 14. لعبة النيشان -->
-    <a class="game-card" href="games/neshan/index.html">
-      <div class="game-thumb">🎯</div>
-      <div class="game-info">
-        <h4>لعبة النيشان</h4>
-        <p>صوّب ونشّن صح!</p>
-      </div>
-    </a>
-
-    <!-- 15. لعبة الطائر -->
-    <a class="game-card" href="games/flappy/index.html">
-      <div class="game-thumb">🐦</div>
-      <div class="game-info">
-        <h4>لعبة الطائر</h4>
-        <p>طير بين الأنابيب!</p>
-      </div>
-    </a>
-
-    <!-- 16. تكسير الطوب -->
-    <a class="game-card" href="games/breakout/index.html">
-      <div class="game-thumb">🧱</div>
-      <div class="game-info">
-        <h4>تكسير الطوب</h4>
-        <p>كسر كل الطوب بالمضرب!</p>
-      </div>
-    </a>
-
-    <!-- 17. لعبة X-O -->
-    <a class="game-card" href="games/xo/index.html">
-      <div class="game-thumb">❌⭕</div>
-      <div class="game-info">
-        <h4>لعبة X-O</h4>
-        <p>تحدى الكمبيوتر!</p>
-      </div>
-    </a>
-   <!-- لعبة الهليكوبتر -->
-<a class="game-card" href="games/helicopter/index.html">
-  <div class="game-thumb">🚁</div>
-  <div class="game-info">
-    <h4>لعبة الهليكوبتر</h4>
-    <p>طير وتفادى العقبات!</p>
+  <!-- الكلام اللي تحت البنر -->
+  <div class="welcome-section">
+    <h1>Ahmed TV</h1>
+    <h2>أحمد عبدالعزيز</h2>
+    <p>مرحباً بك في موقع بنك الألعاب. استعد لأقوى التحديات والمرح!</p>
   </div>
-</a>
 
-    <!-- 18. الفرق بين الصورتين -->
-    <a class="game-card" href="games/spot-diff/index.html">
-      <div class="game-thumb">🕵️‍♂️</div>
-      <div class="game-info">
-        <h4>الفرق بين الصورتين</h4>
-        <p>ركز واكتشف الاختلافات!</p>
-      </div>
-    </a>
+  <!-- الألعاب -->
+  <div class="games-container">
+    <div class="games-grid">
+      
+      <!-- 1. خمن علم الدولة -->
+      <a class="game-card" href="games/flags/index.html">
+        <div class="game-thumb">🌍</div>
+        <div class="game-info">
+          <h4>خمن علم الدولة</h4>
+          <p>اعرف الدول من أعلامها</p>
+        </div>
+      </a>
 
-    <!-- 19. السلم والثعبان -->
-    <a class="game-card" href="games/snakes-ladders/index.html">
-      <div class="game-thumb">🎲</div>
-      <div class="game-info">
-        <h4>السلم والثعبان</h4>
-        <p>العب ووصل للـ 100!</p>
-      </div>
-    </a>
+      <!-- 2. أعلام من السماء -->
+      <a class="game-card" href="games/sky-flags/index.html">
+        <div class="game-thumb">☁️</div>
+        <div class="game-info">
+          <h4>أعلام من السماء</h4>
+          <p>اضغط على الأعلام بسرعة!</p>
+        </div>
+      </a>
 
-    <!-- 20. لعبة البازل -->
-    <a class="game-card" href="games/puzzle/index.html">
-      <div class="game-thumb">🧩</div>
-      <div class="game-info">
-        <h4>لعبة البازل</h4>
-        <p>رتب الأرقام من 1 لـ 8!</p>
-      </div>
-    </a>
+      <!-- 3. لعبة الذاكرة -->
+      <a class="game-card" href="games/memory/index.html">
+        <div class="game-thumb">🧠</div>
+        <div class="game-info">
+          <h4>لعبة الذاكرة</h4>
+          <p>قلّب الكروت وطابق الأزواج</p>
+        </div>
+      </a>
 
-    <!-- 21. ركلات الترجيح -->
-    <a class="game-card" href="games/penalty/index.html">
-      <div class="game-thumb">⚽</div>
-      <div class="game-info">
-        <h4>ركلات الترجيح</h4>
-        <p>سجل 5 أهداف!</p>
-      </div>
-    </a>
+      <!-- 4. يويو وحازم -->
+      <a class="game-card" href="games/yoyo-hazem/index.html">
+        <div class="game-thumb">⚽</div>
+        <div class="game-info">
+          <h4>لعبة يويو وحازم</h4>
+          <p>لعبة تحدي بين يويو وحازم</p>
+        </div>
+      </a>
 
-    <!-- 22. رمي السلة -->
-    <a class="game-card" href="games/basketball/index.html">
-      <div class="game-thumb">🏀</div>
-      <div class="game-info">
-        <h4>رمي السلة</h4>
-        <p>سجل أكتر عدد من الأهداف!</p>
-      </div>
-    </a>
+      <!-- 5. تحدي الأذكياء -->
+      <a class="game-card" href="games/quiz/index.html">
+        <div class="game-thumb">❓</div>
+        <div class="game-info">
+          <h4>تحدي الأذكياء</h4>
+          <p>200 سؤال في الرياضة والتاريخ</p>
+        </div>
+      </a>
 
-    <!-- 23. الجري والقفز -->
-    <a class="game-card" href="games/runner/index.html">
-      <div class="game-thumb">🏃‍♂️</div>
-      <div class="game-info">
-        <h4>الجري والقفز</h4>
-        <p>اقفز فوق الصبار!</p>
-      </div>
-    </a>
+      <!-- 6. حظك اليوم -->
+      <a class="game-card" href="games/lucky/index.html">
+        <div class="game-thumb">🎡</div>
+        <div class="game-info">
+          <h4>حظك اليوم</h4>
+          <p>لف عجلة الحظ واكتشف بختك</p>
+        </div>
+      </a>
 
-    <!-- 24. التصويب على الأعداء -->
-    <a class="game-card" href="games/target/index.html">
-      <div class="game-thumb">🎯</div>
-      <div class="game-info">
-        <h4>التصويب على الأعداء</h4>
-        <p>دوس على البالونات!</p>
-      </div>
-    </a>
+      <!-- 7. نجوم مصر 80 -->
+      <a class="game-card" href="games/egypt-stars/index.html">
+        <div class="game-thumb">⚽</div>
+        <div class="game-info">
+          <h4>نجوم مصر 80</h4>
+          <p>حلل شخصية اللاعب وخمن مين هو!</p>
+        </div>
+      </a>
 
-    <!-- 25. تلوين الأشكال -->
-    <a class="game-card" href="games/coloring/index.html">
-      <div class="game-thumb">🎨</div>
-      <div class="game-info">
-        <h4>تلوين الأشكال</h4>
-        <p>لون الرسمة بألوانك!</p>
-      </div>
-    </a>
+      <!-- 8. خمن الشعار -->
+      <a class="game-card" href="games/logos/index.html">
+        <div class="game-thumb">🏆</div>
+        <div class="game-info">
+          <h4>خمن الشعار</h4>
+          <p>اعرف النادي من علمه ومواصفاته!</p>
+        </div>
+      </a>
 
-    <!-- 26. ذاكرة الأرقام -->
-    <a class="game-card" href="games/memory-numbers/index.html">
-      <div class="game-thumb">🔢</div>
-      <div class="game-info">
-        <h4>ذاكرة الأرقام</h4>
-        <p>اختبر قوة ذاكرتك!</p>
-      </div>
-    </a>
+      <!-- 9. مشاهير الكرة -->
+      <a class="game-card" href="games/football-stars/index.html">
+        <div class="game-thumb">🕵️</div>
+        <div class="game-info">
+          <h4>مشاهير الكرة</h4>
+          <p>اكشف الصورة وخمن اللاعب!</p>
+        </div>
+      </a>
 
-    <!-- 27. لعبة الكوتشينة -->
-    <a class="game-card" href="games/cards/index.html">
-      <div class="game-thumb">🃏</div>
-      <div class="game-info">
-        <h4>لعبة الكوتشينة</h4>
-        <p>طابق الأزواج!</p>
-      </div>
-    </a>
+      <!-- 10. عجلة السفر -->
+      <a class="game-card" href="games/travel-wheel/index.html">
+        <div class="game-thumb">🌍</div>
+        <div class="game-info">
+          <h4>عجلة السفر</h4>
+          <p>اكتشف وجهتك المستقبلية!</p>
+        </div>
+      </a>
 
-    <!-- 28. تحضير البرجر -->
-    <a class="game-card" href="games/burger/index.html">
-      <div class="game-thumb">🍔</div>
-      <div class="game-info">
-        <h4>تحضير البرجر</h4>
-        <p>جهز البرجر بالترتيب!</p>
-      </div>
-    </a>
+      <!-- 11. أتوبيس كومبليت -->
+      <a class="game-card" href="games/autobus/index.html">
+        <div class="game-thumb">🚌</div>
+        <div class="game-info">
+          <h4>أتوبيس كومبليت</h4>
+          <p>اكتب إجابة تبدأ بالحرف!</p>
+        </div>
+      </a>
 
-    <!-- 29. ترتيب الكواكب -->
-    <a class="game-card" href="games/planets/index.html">
-      <div class="game-thumb">🪐</div>
-      <div class="game-info">
-        <h4>ترتيب الكواكب</h4>
-        <p>رتب الكواكب من الشمس!</p>
-      </div>
-    </a>
+      <!-- 12. تحدي الذكاء -->
+      <a class="game-card" href="games/iq-challenge/index.html">
+        <div class="game-thumb">🧠</div>
+        <div class="game-info">
+          <h4>تحدي الذكاء</h4>
+          <p>ألغاز وتحديات بصرية ومنطقية!</p>
+        </div>
+      </a>
 
-    <!-- 30. تجميع الصورة -->
-    <a class="game-card" href="games/sliding-puzzle/index.html">
-      <div class="game-thumb">🖼️</div>
-      <div class="game-info">
-        <h4>تجميع الصورة</h4>
-        <p>رتب الصور الفنية!</p>
-      </div>
-    </a>
+      <!-- 13. لعبة النيشان -->
+      <a class="game-card" href="games/neshan/index.html">
+        <div class="game-thumb">🎯</div>
+        <div class="game-info">
+          <h4>لعبة النيشان</h4>
+          <p>صوّب ونشّن صح!</p>
+        </div>
+      </a>
 
-    <!-- 31. بناء منزل -->
-    <a class="game-card" href="games/build-house/index.html">
-      <div class="game-thumb">🏠</div>
-      <div class="game-info">
-        <h4>بناء منزل</h4>
-        <p>ابنِ أطول منزل!</p>
-      </div>
-    </a>
+      <!-- 14. لعبة الطائر -->
+      <a class="game-card" href="games/flappy/index.html">
+        <div class="game-thumb">🐦</div>
+        <div class="game-info">
+          <h4>لعبة الطائر</h4>
+          <p>طير بين الأنابيب!</p>
+        </div>
+      </a>
 
-    <!-- 32. صيد السمك -->
-    <a class="game-card" href="games/fishing/index.html">
-      <div class="game-thumb">🎣</div>
-      <div class="game-info">
-        <h4>صيد السمك</h4>
-        <p>اصطاد أكتر سمك!</p>
-      </div>
-    </a>
-   <!-- لعبة اختبر سرعتك -->
-<a class="game-card" href="games/speed-tap/index.html">
-  <div class="game-thumb">⚡</div>
-  <div class="game-info">
-    <h4>اختبر سرعتك</h4>
-    <p>دوس أسرع عدد من المرات!</p>
-  </div>
-</a>
-   <!-- لعبة الشطرنج -->
-<a class="game-card" href="games/chess/index.html">
-  <div class="game-thumb">♟️</div>
-  <div class="game-info">
-    <h4>لعبة الشطرنج</h4>
-    <p>العب مع صاحبك!</p>
-  </div>
-</a>
-   <!-- لعبة الطبخ -->
-<a class="game-card" href="games/cooking/index.html">
-  <div class="game-thumb">🍳</div>
-  <div class="game-info">
-    <h4>لعبة الطبخ</h4>
-    <p>جهز الأطباق بالترتيب!</p>
-  </div>
-</a>
-   <!-- لعبة الموتوسيكلات -->
-<a class="game-card" href="games/moto-racer/index.html">
-  <div class="game-thumb">🏍️</div>
-  <div class="game-info">
-    <h4>لعبة الموتوسيكلات</h4>
-    <p>تفادى العربيات!</p>
-  </div>
-</a>
-   <!-- لعبة سباق السيارات -->
-<a class="game-card" href="games/car-racing/index.html">
-  <div class="game-thumb">🏎️</div>
-  <div class="game-info">
-    <h4>سباق السيارات</h4>
-    <p>سباق سريع وممتع!</p>
-  </div>
-</a>
-   <!-- لعبة ذاكرة القطط -->
-<a class="game-card" href="games/cats-memory/index.html">
-  <div class="game-thumb">🐱</div>
-  <div class="game-info">
-    <h4>ذاكرة القطط</h4>
-    <p>طابق القطط واسمع المواء!</p>
-  </div>
-</a>
-   <!-- لعبة الفئات -->
-<a class="game-card" href="games/categories/index.html">
-  <div class="game-thumb">📝</div>
-  <div class="game-info">
-    <h4>لعبة الفئات</h4>
-    <p>اكتب إجابة تبدأ بالحرف!</p>
-  </div>
-</a>
-   
-  
-  
+      <!-- 15. تكسير الطوب -->
+      <a class="game-card" href="games/breakout/index.html">
+        <div class="game-thumb">🧱</div>
+        <div class="game-info">
+          <h4>تكسير الطوب</h4>
+          <p>كسر كل الطوب بالمضرب!</p>
+        </div>
+      </a>
+
+      <!-- 16. لعبة X-O -->
+      <a class="game-card" href="games/xo/index.html">
+        <div class="game-thumb">❌⭕</div>
+        <div class="game-info">
+          <h4>لعبة X-O</h4>
+          <p>تحدى الكمبيوتر!</p>
+        </div>
+      </a>
+
+      <!-- 17. الفرق بين الصورتين -->
+      <a class="game-card" href="games/spot-diff/index.html">
+        <div class="game-thumb">🕵️‍♂️</div>
+        <div class="game-info">
+          <h4>الفرق بين الصورتين</h4>
+          <p>ركز واكتشف الاختلافات!</p>
+        </div>
+      </a>
+
+      <!-- 18. السلم والثعبان -->
+      <a class="game-card" href="games/snakes-ladders/index.html">
+        <div class="game-thumb">🎲</div>
+        <div class="game-info">
+          <h4>السلم والثعبان</h4>
+          <p>العب ووصل للـ 100!</p>
+        </div>
+      </a>
+
+      <!-- 19. لعبة البازل -->
+      <a class="game-card" href="games/puzzle/index.html">
+        <div class="game-thumb">🧩</div>
+        <div class="game-info">
+          <h4>لعبة البازل</h4>
+          <p>رتب الأرقام من 1 لـ 8!</p>
+        </div>
+      </a>
+
+      <!-- 20. ركلات الترجيح -->
+      <a class="game-card" href="games/penalty/index.html">
+        <div class="game-thumb">⚽</div>
+        <div class="game-info">
+          <h4>ركلات الترجيح</h4>
+          <p>سجل 5 أهداف!</p>
+        </div>
+      </a>
+
+      <!-- 21. رمي السلة -->
+      <a class="game-card" href="games/basketball/index.html">
+        <div class="game-thumb">🏀</div>
+        <div class="game-info">
+          <h4>رمي السلة</h4>
+          <p>سجل أكتر عدد من الأهداف!</p>
+        </div>
+      </a>
+
+      <!-- 22. الجري والقفز -->
+      <a class="game-card" href="games/runner/index.html">
+        <div class="game-thumb">🏃‍♂️</div>
+        <div class="game-info">
+          <h4>الجري والقفز</h4>
+          <p>اقفز فوق الصبار!</p>
+        </div>
+      </a>
+
+      <!-- 23. التصويب على الأعداء -->
+      <a class="game-card" href="games/target/index.html">
+        <div class="game-thumb">🎯</div>
+        <div class="game-info">
+          <h4>التصويب على الأعداء</h4>
+          <p>دوس على البالونات!</p>
+        </div>
+      </a>
+
+      <!-- 24. تلوين الأشكال -->
+      <a class="game-card" href="games/coloring/index.html">
+        <div class="game-thumb">🎨</div>
+        <div class="game-info">
+          <h4>تلوين الأشكال</h4>
+          <p>لون الرسمة بألوانك!</p>
+        </div>
+      </a>
+
+      <!-- 25. ذاكرة الأرقام -->
+      <a class="game-card" href="games/memory-numbers/index.html">
+        <div class="game-thumb">🔢</div>
+        <div class="game-info">
+          <h4>ذاكرة الأرقام</h4>
+          <p>اختبر قوة ذاكرتك!</p>
+        </div>
+      </a>
+
+      <!-- 26. لعبة الكوتشينة -->
+      <a class="game-card" href="games/cards/index.html">
+        <div class="game-thumb">🃏</div>
+        <div class="game-info">
+          <h4>لعبة الكوتشينة</h4>
+          <p>طابق الأزواج!</p>
+        </div>
+      </a>
+
+      <!-- 27. تحضير البرجر -->
+      <a class="game-card" href="games/burger/index.html">
+        <div class="game-thumb">🍔</div>
+        <div class="game-info">
+          <h4>تحضير البرجر</h4>
+          <p>جهز البرجر بالترتيب!</p>
+        </div>
+      </a>
+
+      <!-- 28. ترتيب الكواكب -->
+      <a class="game-card" href="games/planets/index.html">
+        <div class="game-thumb">🪐</div>
+        <div class="game-info">
+          <h4>ترتيب الكواكب</h4>
+          <p>رتب الكواكب من الشمس!</p>
+        </div>
+      </a>
+
+      <!-- 29. تجميع الصورة -->
+      <a class="game-card" href="games/sliding-puzzle/index.html">
+        <div class="game-thumb">🖼️</div>
+        <div class="game-info">
+          <h4>تجميع الصورة</h4>
+          <p>رتب الصور الفنية!</p>
+        </div>
+      </a>
+
+      <!-- 30. بناء منزل -->
+      <a class="game-card" href="games/build-house/index.html">
+        <div class="game-thumb">🏠</div>
+        <div class="game-info">
+          <h4>بناء منزل</h4>
+          <p>ابنِ أطول منزل!</p>
+        </div>
+      </a>
+
+      <!-- 31. صيد السمك -->
+      <a class="game-card" href="games/fishing/index.html">
+        <div class="game-thumb">🎣</div>
+        <div class="game-info">
+          <h4>صيد السمك</h4>
+          <p>اصطاد أكتر سمك!</p>
+        </div>
+      </a>
+
+      <!-- 32. اختبر سرعتك -->
+      <a class="game-card" href="games/speed-tap/index.html">
+        <div class="game-thumb">⚡</div>
+        <div class="game-info">
+          <h4>اختبر سرعتك</h4>
+          <p>دوس أسرع عدد من المرات!</p>
+        </div>
+      </a>
+
+      <!-- 33. لعبة الشطرنج -->
+      <a class="game-card" href="games/chess/index.html">
+        <div class="game-thumb">♟️</div>
+        <div class="game-info">
+          <h4>لعبة الشطرنج</h4>
+          <p>العب مع صاحبك!</p>
+        </div>
+      </a>
+
+      <!-- 34. لعبة الطبخ -->
+      <a class="game-card" href="games/cooking/index.html">
+        <div class="game-thumb">🍳</div>
+        <div class="game-info">
+          <h4>لعبة الطبخ</h4>
+          <p>جهز الأطباق بالترتيب!</p>
+        </div>
+      </a>
+
+      <!-- 35. لعبة الموتوسيكلات -->
+      <a class="game-card" href="games/moto-racer/index.html">
+        <div class="game-thumb">🏍️</div>
+        <div class="game-info">
+          <h4>لعبة الموتوسيكلات</h4>
+          <p>تفادى العربيات!</p>
+        </div>
+      </a>
+
+      <!-- 36. لعبة الهليكوبتر -->
+      <a class="game-card" href="games/helicopter/index.html">
+        <div class="game-thumb">🚁</div>
+        <div class="game-info">
+          <h4>لعبة الهليكوبتر</h4>
+          <p>طير وتفادى العقبات!</p>
+        </div>
+      </a>
+
+      <!-- 37. سباق السيارات -->
+      <a class="game-card" href="games/car-racing/index.html">
+        <div class="game-thumb">🏎️</div>
+        <div class="game-info">
+          <h4>سباق السيارات</h4>
+          <p>سباق سريع وممتع!</p>
+        </div>
+      </a>
+
+      <!-- 38. فرقعة البالونات -->
+      <a class="game-card" href="games/balloons/index.html">
+        <div class="game-thumb">🎈</div>
+        <div class="game-info">
+          <h4>فرقعة البالونات</h4>
+          <p>فرقع أكتر بالونات!</p>
+        </div>
+      </a>
+
+      <!-- 39. لعبة الفئات -->
+      <a class="game-card" href="games/categories/index.html">
+        <div class="game-thumb">📝</div>
+        <div class="game-info">
+          <h4>لعبة الفئات</h4>
+          <p>اكتب إجابة تبدأ بالحرف!</p>
+        </div>
+      </a>
+
+      <!-- 40. ذاكرة القطط -->
+      <a class="game-card" href="games/cats-memory/index.html">
+        <div class="game-thumb">🐱</div>
+        <div class="game-info">
+          <h4>ذاكرة القطط</h4>
+          <p>طابق القطط!</p>
+        </div>
+      </a>
+
+    </div>
   </div>
 
   <footer>© 2024 Ahmed TV — جميع الحقوق محفوظة</footer>
