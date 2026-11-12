@@ -7,6 +7,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   
+  /* منع أي سكرول في الصفحة */
   html, body { 
     height: 100vh; 
     height: 100dvh; 
@@ -22,97 +23,79 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
   }
 
-  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0; padding-bottom: 2px;}
+  /* الهيدر صغير جداً */
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px; padding-bottom: 5px;}
   
-  /* اللوجو صغرناه شوية */
-  .logo-img {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 2px solid #facc15;
-    object-fit: cover;
-    margin-bottom: 2px;
-  }
+  .logo-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #facc15; object-fit: cover;}
   
-  h1 { font-size: 15px; line-height: 1.2; color: #facc15; margin: 0;}
-  .names { font-size: 10px; color: #cbd5e1; font-weight: bold; margin-top: 1px;}
-  .names b { color: #facc15;}
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 14px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 9px; color: #cbd5e1; font-weight: bold;}
+  .header-text .names b { color: #facc15;}
 
-  .stats { display: flex; gap: 8px; justify-content: center; margin: 2px 0; }
-  .stat {
-    background: #1e293b; border: 1px solid #334155; border-radius: 6px;
-    padding: 1px 8px; min-width: 50px; text-align: center;
-  }
-  .stat b { display: block; font-size: 13px; color: #facc15; }
+  /* الإحصائيات صغيرة */
+  .stats { display: flex; gap: 5px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 1px 8px; min-width: 50px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 12px; color: #facc15; }
   .stat span { font-size: 8px; color: #94a3b8; }
 
+  /* الحاوية الرئيسية */
   #game-container {
     width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
     position: relative; display: flex; flex-direction: column;
     background: #fef3c7; 
     border: 3px solid #f59e0b; border-radius: 12px;
     overflow: hidden;
-    padding: 4px;
+    padding: 5px;
   }
 
   .watermark {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: rgba(0, 0, 0, 0.05);
-    font-size: 30px;
-    font-weight: 900;
-    pointer-events: none;
-    z-index: 0;
-    white-space: nowrap;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: rgba(0, 0, 0, 0.05); font-size: 30px; font-weight: 900;
+    pointer-events: none; z-index: 0; white-space: nowrap;
   }
 
-  /* لوحة الطلب - صغرناها جداً ومفيش سكرول */
+  /* لوحة الطلب صغيرة جداً (نص الشاشة فوق) */
   .order-panel {
     background: #fff; border-radius: 8px; padding: 3px;
     text-align: center; flex-shrink: 0; z-index: 1;
     border: 1px solid #f59e0b;
-    height: 50px; /* ارتفاع ثابت وصغير */
-    display: flex; flex-direction: column; justify-content: center;
+    height: 40px; /* صغيرة جداً */
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
     overflow: hidden;
+    margin-bottom: 5px;
   }
-  .order-title { font-size: 10px; color: #b45309; margin-bottom: 1px; font-weight: bold;}
-  .order-items {
-    display: flex; flex-direction: row-reverse; align-items: center; justify-content: center; gap: 2px; /* خليهم جمب بعض */
-    overflow: hidden;
-  }
-  .order-item { font-size: 18px; line-height: 1;}
+  .order-title { font-size: 9px; color: #b45309; font-weight: bold; display: block;}
+  .order-items { display: flex; flex-direction: row-reverse; justify-content: center; align-items: center; gap: 5px; }
+  .order-item { font-size: 20px; line-height: 1;}
 
-  /* ساحة التجميع - صغرناها شوية */
+  /* ساحة التحضير كبيرة جداً */
   .build-area {
-    flex-grow: 1; background: #fff7ed; border-radius: 8px;
+    flex-grow: 1; /* تاخد كل المساحة الباقية */
+    background: #fff7ed; border-radius: 8px;
     display: flex; flex-direction: column-reverse; justify-content: flex-start; align-items: center;
-    margin: 4px 0; padding: 4px; position: relative; z-index: 1;
-    border: 1px dashed #d97706;
-    overflow-y: auto; 
-    min-height: 60px; /* أقل ارتفاع */
+    margin-bottom: 5px; padding: 5px; position: relative; z-index: 1;
+    border: 2px dashed #d97706;
+    overflow: hidden; /* مفيش سكرول */
   }
-  .build-item { font-size: 26px; line-height: 1; animation: pop 0.2s ease-out; }
+  .build-item { font-size: 40px; line-height: 1; animation: pop 0.2s ease-out; }
   @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 
-  /* المكونات - ثابتة وصغيرة */
+  /* المكونات صغيرة ومظبوطة */
   .ingredients {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
     z-index: 1; flex-shrink: 0;
-    padding-top: 3px;
-    border-top: 1px solid #ccc;
   }
   .ing-btn {
     background: #f59e0b; border-radius: 6px; 
-    font-size: 22px; text-align: center; cursor: pointer;
+    font-size: 24px; text-align: center; cursor: pointer;
     user-select: none;
     border: 2px solid #b45309;
     color: #fff;
-    height: 40px; /* ارتفاع ثابت للزرار */
+    height: 45px;
     display: flex; justify-content: center; align-items: center;
   }
   .ing-btn:active { transform: scale(0.9); background: #d97706; }
@@ -131,39 +114,44 @@
   }
   .btn-start:active { transform: scale(0.95); }
 
-  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 1px;}
+  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; }
   .footer a { color: #facc15; text-decoration: none; }
 </style>
 </head>
 <body>
 
+  <!-- الهيدر -->
   <div class="header">
     <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
-    <h1>لعبة الطبخ</h1>
-    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
-    <div class="stats">
-      <div class="stat"><b id="score">0</b><span>الأطباق</span></div>
-      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+    <div class="header-text">
+        <h1>لعبة الطبخ</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
     </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>الأطباق</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
   </div>
 
   <div id="game-container">
     <div class="watermark">Ahmed TV</div>
     
+    <!-- لوحة الطلب الصغيرة -->
     <div class="order-panel">
       <div class="order-title">جهز الطبق ده:</div>
       <div class="order-items" id="orderItems"></div>
     </div>
 
+    <!-- ساحة التحضير الكبيرة -->
     <div class="build-area" id="buildArea"></div>
 
+    <!-- المكونات -->
     <div class="ingredients" id="ingredients"></div>
 
     <div id="overlay">
       <h2>لعبة الطبخ</h2>
-      <p>
-        <b>Ahmed TV</b> - جهز الأطباق بالترتيب!
-      </p>
+      <p><b>Ahmed TV</b> - جهز الأطباق بالترتيب!</p>
       <button class="btn-start" id="startBtn">▶ ابدأ الطبخ</button>
     </div>
   </div>
@@ -191,20 +179,12 @@ let isRunning = false;
 let audioCtx = null;
 
 const INGREDIENTS = {
-  'مكرونة': '🍝',
-  'صوص': '🍅',
-  'جبنة': '🧀',
-  'لحمة': '🥩',
-  'خضار': '🥦',
-  'بيض': '🥚',
-  'خبز': '🍞',
-  'طبق': '🍽️'
+  'مكرونة': '🍝', 'صوص': '🍅', 'جبنة': '🧀', 'لحمة': '🥩',
+  'خضار': '🥦', 'بيض': '🥚', 'خبز': '🍞', 'طبق': '🍽️'
 };
 
 function initAudio() {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
+  if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} }
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 }
 
@@ -215,21 +195,18 @@ function playSound(type) {
   osc.connect(gain); gain.connect(audioCtx.destination);
   
   if (type === 'click') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+    osc.type = 'sine'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
     osc.start(); osc.stop(audioCtx.currentTime + 0.1);
   } else if (type === 'success') {
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.type = 'triangle'; osc.frequency.setValueAtTime(600, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
     osc.start(); osc.stop(audioCtx.currentTime + 0.3);
   } else if (type === 'fail') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
     osc.start(); osc.stop(audioCtx.currentTime + 0.2);
@@ -251,7 +228,6 @@ function newOrder() {
   currentOrder = [];
   let keys = Object.keys(INGREDIENTS).filter(k => k !== 'طبق');
   let count = 2 + Math.floor(Math.random() * 2); 
-  
   for(let i=0; i<count; i++) {
     currentOrder.push(keys[Math.floor(Math.random() * keys.length)]);
   }
@@ -271,7 +247,6 @@ function newOrder() {
 
 function addIngredient(key) {
   if (!isRunning) return;
-  
   playSound('click');
   
   currentBuild.push(key);
@@ -279,16 +254,12 @@ function addIngredient(key) {
   item.className = 'build-item';
   item.textContent = INGREDIENTS[key];
   buildArea.appendChild(item);
-  
-  buildArea.scrollTop = buildArea.scrollHeight;
 
   let currentIndex = currentBuild.length - 1;
   if (currentBuild[currentIndex] !== currentOrder[currentIndex]) {
     playSound('fail');
     isRunning = false;
-    setTimeout(() => {
-      endGame("غلط! الترتيب مش صح");
-    }, 500);
+    setTimeout(() => { endGame("غلط! الترتيب مش صح"); }, 500);
     return;
   }
 
@@ -302,10 +273,7 @@ function addIngredient(key) {
       bestEl.textContent = best;
     }
     isRunning = false;
-    setTimeout(() => {
-      isRunning = true;
-      newOrder();
-    }, 800);
+    setTimeout(() => { isRunning = true; newOrder(); }, 800);
   }
 }
 
@@ -315,8 +283,7 @@ function endGame(msg) {
   overlay.innerHTML = `
     <div style="font-size:35px">🍳</div>
     <h2>${msg}</h2>
-    <p>جهزت <b style="color:#facc15;font-size:22px">${score}</b> طبق<br>
-    أعلى نتيجة: ${best}</p>
+    <p>جهزت <b style="color:#facc15;font-size:22px">${score}</b> طبق<br>أعلى نتيجة: ${best}</p>
     <button class="btn-start" id="againBtn">🔄 اطبخ تاني</button>
   `;
   document.getElementById('againBtn').onclick = startGame;
