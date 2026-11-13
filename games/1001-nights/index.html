@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>فوازير ألف ليلة وليلة | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body { 
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    position: fixed; 
+    width: 100%;
+  }
+  
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
+  }
+
+  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
+  .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 18px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
+  .header-text .names b { color: #facc15; font-size: 13px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 2px 15px; min-width: 80px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: radial-gradient(circle at center, #1e1b4b 0%, #0a0a0a 100%); /* ألوان ليلية سحرية */
+    border: 3px solid #c084fc; 
+    border-radius: 12px;
+    overflow-y: auto;
+    padding: 15px;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .watermark {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 40px; font-weight: 900;
+    pointer-events: none; z-index: 0; white-space: nowrap;
+    letter-spacing: 2px;
+  }
+
+  .title-box {
+    text-align: center;
+    background: linear-gradient(135deg, #c084fc, #8b5cf6); /* تدرج بنفسجي سحري */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    z-index: 1;
+    text-shadow: 0 0 20px rgba(192, 132, 252, 0.5);
+  }
+
+  .question-box {
+    background: #2e1065;
+    border: 2px solid #c084fc;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.6;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
+    z-index: 1;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    z-index: 1;
+  }
+
+  .opt-btn {
+    background: #4c1d95;
+    border: 2px solid #c084fc;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .opt-btn:hover { background: #5b21b6; }
+  .opt-btn:active { transform: scale(0.98); }
+
+  .opt-btn.correct { background: #22c55e; border-color: #16a34a; }
+  .opt-btn.wrong { background: #ef4444; border-color: #b91c1c; }
+
+  .feedback {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    height: 25px;
+    z-index: 1;
+  }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+    border-radius: 10px;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #c084fc;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #c084fc; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+    <div class="header-text">
+        <h1>فوازير ألف ليلة وليلة</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="round">1</b><span>الحلقة</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    <div class="title-box">🪄 فوازير ألف ليلة وليلة 🪄</div>
+    
+    <div class="question-box" id="question">...</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div id="overlay">
+      <h2>🪄 فوازير ألف ليلة وليلة 🪄</h2>
+      <p>
+        <b>Ahmed TV</b> - 30 فزورة عن عالم الخيال!<br>
+        رحلة سحرية مع شهرزاد
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ الرحلة</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const feedbackEl = document.getElementById('feedback');
+const scoreEl = document.getElementById('score');
+const roundEl = document.getElementById('round');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let score = 0;
+let currentRound = 0;
+let best = parseInt(localStorage.getItem('nights1001Best') || '0');
+bestEl.textContent = best;
+let isLocked = false;
+
+// 30 فزورة عن الخيال وألف ليلة وليلة
+const QUESTIONS = [
+  { q: "من هي راوية قصص ألف ليلة وليلة؟", o: ["شهرزاد", "دنيازاد", "زنوبيا", "بلقيس"], a: 0 },
+  { q: "ما اسم الملك الذي كان يتزوج كل يوم امرأة جديدة؟", o: ["شهريار", "السندباد", "علاء الدين", "حسن البصري"], a: 0 },
+  { q: "من هو البحار المغامر الشهير في القصص؟", o: ["السندباد", "علاء الدين", "علي بابا", "أبو نواس"], a: 0 },
+  { q: "ما هو الشيء السحري الذي وجده علاء الدين؟", o: ["سجادة", "مصباح", "عصا", "خاتم"], a: 1 },
+  { q: "ما هي العبارة السحرية التي تفتح باب الكهف؟", o: ["افتح يا سمسم", "كن فيكون", "أبجد هوز", "يا مغارة"], a: 0 },
+  { q: "من هو الشخص الذي عرف سر الكهف في قصة علي بابا؟", o: ["علي بابا", "قاسم", "مرجانة", "اللص"], a: 0 },
+  { q: "من هي الجارية الذكية التي ساعدت علي بابا؟", o: ["مرجانة", "شهرزاد", "دنيازاد", "ست الحسن"], a: 0 },
+  { q: "ما هو نوع الكائن الذي يخرج من المصباح السحري؟", o: ["جني", "فأر", "طائر", "سمكة"], a: 0 },
+  { q: "ماذا كان يركب السندباد في رحلاته؟", o: ["حصان", "سفينة", "بساط", "عربة"], a: 1 },
+  { q: "ما اسم الطائر الأسطوري الضخم في قصص السندباد؟", o: ["الرخ", "العنقاء", "الغراب", "النسر"], a: 0 },
+  { q: "ما هو الشيء الذي كان يطير في الهواء في القصص؟", o: ["السجادة", "الكرسي", "السرير", "الطاولة"], a: 0 },
+  { q: "من هو الخليفة الشهير في قصص ألف ليلة وليلة؟", o: ["هارون الرشيد", "المأمون", "المنصور", "المعتصم"], a: 0 },
+  { q: "ما اسم وزير هارون الرشيد الذكي؟", o: ["جعفر البرمكي", "أبو نواس", "ابن سينا", "الكسائي"], a: 0 },
+  { q: "من هو الشاعر المضحك في بلاط هارون الرشيد؟", o: ["أبو نواس", "المتنبي", "أحمد شوقي", "حافظ إبراهيم"], a: 0 },
+  { q: "ما هو الحيوان الذي يتكلم في القصص الخيالية؟", o: ["الحيوانات كلها", "القطط فقط", "الكلاب فقط", "الطيور فقط"], a: 0 },
+  { q: "ما هي الأداة التي يستخدمها الساحر؟", o: ["العصا السحرية", "السيف", "القلم", "المرآة"], a: 0 },
+  { q: "ما هو الكنز الذي يبحث عنه القراصنة عادةً؟", o: ["الذهب والجواهر", "الكتب", "الأطعمة", "الملابس"], a: 0 },
+  { q: "من هو الشخص الذي يروي القصص للملك؟", o: ["شهرزاد", "مرجانة", "الملكة", "الوزير"], a: 0 },
+  { q: "كم ليلة استمرت شهرزاد في سرد القصص؟", o: ["100 ليلة", "500 ليلة", "1001 ليلة", "2000 ليلة"], a: 2 },
+  { q: "ما هي نهاية قصة ألف ليلة وليلة؟", o: ["الملك يقتل شهرزاد", "الملك يعفو عن شهرزاد", "شهرزاد تهرب", "شهرزاد تموت"], a: 1 },
+  { q: "ما هو الشيء الذي يحقق الأمنيات في القصص؟", o: ["الخاتم السحري", "الحذاء", "القبعة", "المفتاح"], a: 0 },
+  { q: "من هو البطل الذي يقتل الوحش في القصص؟", o: ["الفارس الشجاع", "التاجر", "الفلاح", "الطبيب"], a: 0 },
+  { q: "ما هي المدينة الشهيرة في قصص ألف ليلة وليلة؟", o: ["بغداد", "القاهرة", "دمشق", "بيروت"], a: 0 },
+  { q: "من هو الملك الذي كان يستمع للقصص كل ليلة؟", o: ["شهريار", "هارون الرشيد", "السندباد", "علاء الدين"], a: 0 },
+  { q: "ما هي الحيلة التي استخدمتها شهرزاد لتبقى على قيد الحياة؟", o: ["القصص المشوقة", "السحر", "الهروب", "القتال"], a: 0 },
+  { q: "ماذا يحدث لمن يفرك المصباح السحري؟", o: ["يظهر الجني", "يتحول إلى ذهب", "يطير", "يختفي"], a: 0 },
+  { q: "ما هو الشيء الذي يخاف منه الجني في القصص؟", o: ["الخاتم السحري", "الماء", "النار", "الملح"], a: 0 },
+  { q: "من هو الشخص الذي يملك السجادة الطائرة؟", o: ["علاء الدين", "السندباد", "علي بابا", "شهريار"], a: 0 },
+  { q: "ما هو اسم الكهف الذي يخفي الكنز في قصة علي بابا؟", o: ["كهف علي بابا", "كهف السحر", "كهف الكنز", "كهف اللصوص"], a: 0 },
+  { q: "ماذا كان يفعل الملك شهريار قبل أن تقص عليه شهرزاد القصص؟", o: ["يتزوج ويقتل", "ينام", "يصطاد", "يسافر"], a: 0 }
+];
+
+function renderQuestion() {
+  isLocked = false;
+  const q = QUESTIONS[currentRound];
+  
+  roundEl.textContent = currentRound + 1;
+  questionEl.textContent = q.q;
+  feedbackEl.textContent = '';
+  optionsEl.innerHTML = '';
+
+  q.o.forEach((option, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = option;
+    btn.onclick = () => checkAnswer(index, btn);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected, btn) {
+  if (isLocked) return;
+  isLocked = true;
+
+  const q = QUESTIONS[currentRound];
+  const allBtns = optionsEl.querySelectorAll('.opt-btn');
+
+  if (selected === q.a) {
+    btn.classList.add('correct');
+    score += 10;
+    scoreEl.textContent = score;
+    feedbackEl.textContent = "✅ إجابة صحيحة!";
+    feedbackEl.style.color = "#22c55e";
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.a].classList.add('correct');
+    feedbackEl.textContent = "❌ الإجابة الصحيحة: " + q.o[q.a];
+    feedbackEl.style.color = "#ef4444";
+  }
+
+  setTimeout(() => {
+    currentRound++;
+    if (currentRound < QUESTIONS.length) {
+      renderQuestion();
+    } else {
+      endGame();
+    }
+  }, 1500);
+}
+
+function endGame() {
+  if (score > best) {
+    best = score;
+    localStorage.setItem('nights1001Best', best);
+    bestEl.textContent = best;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">🪄</div>
+    <h2>انتهت الرحلة!</h2>
+    <p>جمعت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
+    أعلى نتيجة: ${best}<br>
+    أحمد TV بيقولك: حكواتي زمانك!</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+function startGame() {
+  overlay.style.display = 'none';
+  score = 0;
+  currentRound = 0;
+  scoreEl.textContent = 0;
+  renderQuestion();
+}
+
+startBtn.onclick = startGame;
+</script>
+</body>
+</html>
