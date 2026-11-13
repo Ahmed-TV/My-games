@@ -121,7 +121,7 @@
     <div id="overlay">
       <h2>🐭 الفأر والجبنة</h2>
       <p>
-        <b>Ahmed TV</b> - اجمع الجبنة وابعد عن القطط!<br>
+        <b>Ahmed TV</b> - اجمع الجبنة اللي بتنزل!<br>
         استخدم الأزرار عشان تتحرك
       </p>
       <button class="btn-start" id="startBtn">▶ ابدأ الجري</button>
@@ -150,8 +150,7 @@ bestEl.textContent = best;
 let audioCtx = null;
 
 let mouse = { x: 0, y: 0, size: 40, speed: 8 };
-let cheese = { x: 0, y: 0, size: 35 };
-let cats = [];
+let fallingCheeses = []; // الجبنة اللي بتنزل
 let moveLeft = false;
 let moveRight = false;
 let spawnTimer = 0;
@@ -177,13 +176,6 @@ function playSound(type) {
     gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
     osc.start(); osc.stop(audioCtx.currentTime + 0.15);
-  } else if (type === 'crash') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
   }
 }
 
@@ -196,26 +188,18 @@ function resize() {
   
   if (!running) {
     mouse.x = W / 2 - mouse.size / 2;
-    mouse.y = H - mouse.size - 20; // الفأر في الأسفل
+    mouse.y = H - mouse.size - 10; // الفأر تحت خالص
     draw();
   }
 }
 
 function spawnCheese() {
-  // هنا التعديل: الجبنة بتظهر على نفس ارتفاع الفأر (عشان يسهل عليه يوصلها)
-  cheese.x = Math.random() * (W - cheese.size);
-  cheese.y = mouse.y + (mouse.size/2) - (cheese.size/2); // نفس المستوى
-  draw();
-}
-
-function spawnCat() {
-  const size = 40;
-  const x = Math.random() * (W - size);
-  cats.push({
-    x: x,
+  // الجبنة بتنزل من فوق في مكان عشوائي
+  fallingCheeses.push({
+    x: Math.random() * (W - 40),
     y: -50,
-    size: size,
-    speed: 1.5 + Math.random() * 1.5 // سرعة القطط
+    size: 35,
+    speed: 1.5 + Math.random() * 1.5
   });
 }
 
@@ -223,6 +207,7 @@ function draw() {
   ctx.fillStyle = '#fef3c7'; 
   ctx.fillRect(0, 0, W, H);
   
+  // شبكة
   ctx.strokeStyle = 'rgba(180, 83, 9, 0.2)';
   for(let i = 0; i < W; i += 40) {
     ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke();
@@ -231,18 +216,12 @@ function draw() {
     ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke();
   }
 
-  // الجبنة
-  ctx.font = cheese.size + 'px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('🧀', cheese.x + cheese.size/2, cheese.y + cheese.size/2);
-
-  // القطط
-  cats.forEach(c => {
+  // الجبنة النازلة
+  fallingCheeses.forEach(c => {
     ctx.font = c.size + 'px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('🐱', c.x + c.size/2, c.y + c.size/2);
+    ctx.fillText('🧀', c.x + c.size/2, c.y + c.size/2);
   });
 
   // الفأر
@@ -255,45 +234,46 @@ function draw() {
 function update() {
   if (!running) return;
 
+  // حركة الفأر
   if (moveLeft) mouse.x -= mouse.speed;
   if (moveRight) mouse.x += mouse.speed;
   
+  // حدود الشاشة
   if (mouse.x < 0) mouse.x = 0;
   if (mouse.x + mouse.size > W) mouse.x = W - mouse.size;
 
-  // التحقق من أكل الجبنة
-  let dist = Math.hypot((mouse.x + mouse.size/2) - (cheese.x + cheese.size/2), 
-                        (mouse.y + mouse.size/2) - (cheese.y + cheese.size/2));
-  
-  if (dist < (mouse.size + cheese.size) / 2) {
-    score++;
-    scoreEl.textContent = score;
-    playSound('eat');
-    spawnCheese();
-  }
-
-  // حركة القطط
-  for (let i = cats.length - 1; i >= 0; i--) {
-    let c = cats[i];
+  // حركة الجبنة النازلة
+  for (let i = fallingCheeses.length - 1; i >= 0; i--) {
+    let c = fallingCheeses[i];
     c.y += c.speed;
 
-    if (c.y > H) {
-      cats.splice(i, 1);
+    // التحقق من أكل الجبنة (لو لمست الفأر)
+    let dist = Math.hypot((mouse.x + mouse.size/2) - (c.x + c.size/2), 
+                          (mouse.y + mouse.size/2) - (c.y + c.size/2));
+    
+    if (dist < (mouse.size + c.size) / 2) {
+      score++;
+      scoreEl.textContent = score;
+      playSound('eat');
+      fallingCheeses.splice(i, 1);
+      if (score > best) {
+        best = score;
+        localStorage.setItem('cheeseBest', best);
+        bestEl.textContent = best;
+      }
       continue;
     }
 
-    // تصادم
-    let catDist = Math.hypot((mouse.x + mouse.size/2) - (c.x + c.size/2), 
-                             (mouse.y + mouse.size/2) - (c.y + c.size/2));
-    if (catDist < (mouse.size + c.size) / 2) {
-      endGame();
-      return;
+    // لو الجبنة خرجت من الشاشة
+    if (c.y > H) {
+      fallingCheeses.splice(i, 1);
     }
   }
 
+  // توليد الجبنة
   spawnTimer++;
-  if (spawnTimer > 120) {
-    spawnCat();
+  if (spawnTimer > 80) { // كل 80 فريم تنزل جبنة
+    spawnCheese();
     spawnTimer = 0;
   }
 
@@ -310,38 +290,16 @@ function startGame() {
   overlay.style.display = 'none';
   score = 0;
   scoreEl.textContent = 0;
-  cats = [];
+  fallingCheeses = [];
   mouse.x = W / 2 - mouse.size / 2;
-  mouse.y = H - mouse.size - 20;
+  mouse.y = H - mouse.size - 10;
   running = true;
   spawnTimer = 0;
   
-  spawnCheese();
   loop();
 }
 
-function endGame() {
-  running = false;
-  if (animFrame) cancelAnimationFrame(animFrame);
-  playSound('crash');
-  
-  if (score > best) {
-    best = score;
-    localStorage.setItem('cheeseBest', best);
-    bestEl.textContent = best;
-  }
-
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `
-    <div style="font-size:35px">🐱</div>
-    <h2>القطة مسكتك!</h2>
-    <p>جمعت <b style="color:#facc15;font-size:22px">${score} جبنة</b><br>
-    أعلى نتيجة: ${best}</p>
-    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
-  `;
-  document.getElementById('againBtn').onclick = startGame;
-}
-
+// التحكم بالزرار
 leftBtn.addEventListener('mousedown', () => moveLeft = true);
 leftBtn.addEventListener('mouseup', () => moveLeft = false);
 leftBtn.addEventListener('mouseleave', () => moveLeft = false);
@@ -353,15 +311,6 @@ rightBtn.addEventListener('mouseup', () => moveRight = false);
 rightBtn.addEventListener('mouseleave', () => moveRight = false);
 rightBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveRight = true; }, {passive: false});
 rightBtn.addEventListener('touchend', () => moveRight = false);
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') moveLeft = true;
-  if (e.key === 'ArrowRight') moveRight = true;
-});
-document.addEventListener('keyup', (e) => {
-  if (e.key === 'ArrowLeft') moveLeft = false;
-  if (e.key === 'ArrowRight') moveRight = false;
-});
 
 startBtn.onclick = startGame;
 
