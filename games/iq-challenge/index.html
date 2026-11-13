@@ -1,243 +1,264 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Ahmed TV - تحدي الذكاء</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - تحدي الذكاء</title>
 <style>
-  :root{--bg:#07130f;--panel:#10251c;--green:#18a66a;--lime:#9ee6b7;--gold:#e8c66a;--white:#f5fff8;--muted:#b8cfc1;--red:#ff7777}
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  html, body { height: 100%; overflow: hidden; }
-  body{background:radial-gradient(circle at 50% -10%,#1d563b 0,#0b2117 38%,#050c09 100%);font-family:Tahoma,Arial,sans-serif;color:var(--white);height:100vh;height:100dvh;display:flex;justify-content:center;padding:env(safe-area-inset-top, 10px) 10px env(safe-area-inset-bottom, 10px) 10px}
-  
-  .game{width:100%;max-width:450px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#153627f2,#0c1d15f5);border:1px solid #4b956c66;border-radius:20px;padding:10px;box-shadow:0 18px 50px #0008,inset 0 1px #ffffff12;position:relative}
-  
-  /* الهيدر واللوجو */
-  header{text-align:center;padding:5px 0 10px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;}
-  .logo-circle {
-    width: 65px; height: 65px; border-radius: 50%;
-    background: linear-gradient(135deg, #18a66a, #07130f);
-    border: 3px solid var(--gold);
-    display: flex; justify-content: center; align-items: center;
-    font-size: 13px; font-weight: 900; color: #fff; line-height: 1.1;
-    text-align: center; margin-bottom: 8px;
-    box-shadow: 0 0 15px rgba(232, 198, 106, 0.4);
-  }
-  .brand{font-size:22px;font-weight:900;margin:2px 0;color:#fff;text-shadow:0 2px 10px #16a76588}
-  .names{font-size: 13px; color: var(--gold); font-weight: bold; margin-bottom: 3px;}
-  .sub{color:var(--lime);font-size:12px}
-  
-  /* الحاويات */
-  .panel-container{flex-grow:1; position:relative; overflow:hidden; display:flex; flex-direction:column;}
-  .panel{width:100%; height:100%; display:flex; flex-direction:column; justify-content:space-evenly; overflow-y:auto; padding:5px;}
-  
-  .tpline{display:flex;justify-content:space-between;gap:5px;color:var(--muted);font-size:12px;margin-bottom:5px}
-  .pill{background:#07160f;border:1px solid #4b956c88;padding:4px 8px;border-radius:20px}
-  .progress{height:6px;background:#06110b;border-radius:20px;overflow:hidden;margin:5px 0 10px}
-  .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#13a366,#b4ed8a);transition:width .3s}
-  
-  .level{color:var(--gold);font-weight:bold;font-size:12px;margin-bottom:5px}
-  .question{font-size:16px;line-height:1.4;margin:5px 0 10px;font-weight:800}
-  .visual{font-size:24px;letter-spacing:2px;text-align:center;padding:10px;margin:5px 0 10px;background:#06150e;border:1px solid #477d5d;border-radius:10px;direction:ltr}
-  
-  .answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .answer{font:inherit;font-size:13px;font-weight:bold;color:#f4fff7;background:linear-gradient(135deg,#1b7049,#10452f);border:1px solid #65bd87;border-radius:10px;padding:10px 5px;min-height:45px;cursor:pointer}
-  .answer.correct{background:#176b43;border-color:#9df0b5}
-  .answer.wrong{background:#762f35;border-color:#ff9b9b}
-  
-  .feedback{min-height:25px;margin:5px 0;line-height:1.4;color:var(--lime);font-weight:bold;font-size:12px}
-  .actions{display:flex;justify-content:center}
-  .mainbtn{font:inherit;font-weight:bold;border:0;border-radius:20px;padding:10px 20px;background:linear-gradient(135deg,#f0d77e,#c49a36);color:#1c210f;cursor:pointer;font-size:14px;width:100%}
-  .mainbtn:disabled{opacity:.4;cursor:default}
-  
-  .start, .result {text-align:center; justify-content:center; gap:10px;}
-  .start h2, .result h2{font-size:22px;color:var(--gold)}
-  .start p, .result p{color:var(--muted);line-height:1.5;font-size:12px}
-  
-  .stats{display:flex;justify-content:center;gap:8px;margin:10px 0}
-  .stat{background:#07160f;border:1px solid #477d5d;border-radius:10px;padding:8px 12px;min-width:70px; flex:1}
-  .stat strong{display:block;color:var(--gold);font-size:18px;margin-bottom:2px}
-  .stat span{font-size:10px;}
-  
-  .hidden{display:none !important}
-  footer{text-align:center;color:#91b09d;font-size:10px;margin-top:5px;flex-shrink:0}
-</style>
-</head>
-<body>
-<div class="game">
-  <header>
-    <!-- اللوجو هنا -->
-    <div class="logo-circle">Ahmed<br>TV</div>
-    <div class="brand">تحدي الذكاء</div>
-    <div class="names">أحمد عبدالعزيز • Ahmed Abdelaziz</div>
-    <div class="sub">فكر بسرعة واختبر قدراتك</div>
-  </header>
-
-  <div class="panel-container">
-    <!-- شاشة البداية -->
-    <section class="panel start" id="start">
-      <h2>هل أنت مستعد للتحدي؟</h2>
-      <p>اختبر قوة ملاحظتك وذكاءك مع مجموعة من الألغاز والتحديات البصرية والمنطقية.</p>
-      <p>إجابة صحيحة تقربك من لقب بطل الذكاء!</p>
-      <div class="stats">
-        <div class="stat"><strong>25</strong><span>سؤال</span></div>
-        <div class="stat"><strong>20</strong><span>ثانية للسؤال</span></div>
-        <div class="stat"><strong>3</strong><span>مستويات</span></div>
-      </div>
-      <button class="mainbtn" id="startBtn">ابدأ التحدي</button>
-    </section>
-
-    <!-- شاشة اللعب -->
-    <section class="panel hidden" id="play">
-      <div class="tpline">
-        <span class="pill" id="count">السؤال 1 من 25</span>
-        <span class="pill">النقاط: <b id="score">0</b></span>
-        <span class="pill"><b id="timer">20</b> ثانية</span>
-      </div>
-      <div class="progress"><span id="bar"></span></div>
-      <div class="level" id="level"></div>
-      <div class="question" id="question"></div>
-      <div class="visual hidden" id="visual"></div>
-      <div class="answers" id="answers"></div>
-      <div class="feedback" id="feedback" aria-live="polite"></div>
-      <div class="actions"><button class="mainbtn" id="nextBtn" disabled>السؤال التالي ←</button></div>
-    </section>
-
-    <!-- شاشة النتيجة -->
-    <section class="panel result hidden" id="result">
-      <h2 id="resultTitle">أحسنت!</h2>
-      <p id="resultText"></p>
-      <div class="stats">
-        <div class="stat"><strong id="finalScore">0</strong><span>النقاط</span></div>
-        <div class="stat"><strong id="rightCount">0</strong><span>إجابات صحيحة</span></div>
-        <div class="stat"><strong>25</strong><span>إجمالي التحديات</span></div>
-      </div>
-      <button class="mainbtn" id="againBtn">العب من جديد</button>
-    </section>
-  </div>
-
-  <footer>© Ahmed TV — تحدّى عقلك واستمتع</footer>
-</div>
-
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f0f0f;color:#fff;height:100vh;height:100dvh;display:flex;justify-content:center;padding:env(safe-area-inset-top,8px) 10px env(safe-area-inset-bottom,8px) 10px}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border:1px solid #333;border-radius:20px;padding:10px;box-shadow:0 18px 50px #0008;position:relative;overflow:hidden}
+header{text-align:center;padding:6px 0 8px;flex-shrink:0;display:flex;flex-direction:column;align-items:center}
+.logo-img{width:68px;height:68px;border-radius:50%;border:3px solid #e8c66a;object-fit:cover;background:#fff;box-shadow:0 0 15px rgba(232,198,106,.4);margin-bottom:6px}
+.brand{font-size:23px;font-weight:900;margin:2px 0;color:#fff}
+.names{font-size:13px;color:#e8c66a;font-weight:700;margin-bottom:2px}
+.sub{color:#9ee6b7;font-size:12px}
+.panel-container{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.panel{width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-evenly;overflow:hidden;padding:4px}
+.tpline{display:flex;justify-content:space-between;gap:6px;color:#b8cfc1;font-size:12px;margin-bottom:6px}
+.pill{background:#111;border:1px solid #444;padding:5px 9px;border-radius:20px}
+.progress{height:6px;background:#111;border-radius:20px;overflow:hidden;margin:4px 0 8px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#18a66a,#b4ed8a);transition:width .3s}
+.cat{color:#e8c66a;font-weight:800;font-size:12px;margin-bottom:4px;text-align:center}
+.question{font-size:17px;line-height:1.5;margin:6px 0 10px;font-weight:800;text-align:center;min-height:52px;display:flex;align-items:center;justify-content:center}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.answer{font-family:inherit;font-size:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,#1b7049,#10452f);border:1px solid #65bd87;border-radius:12px;padding:12px 6px;min-height:48px;cursor:pointer}
+.answer.correct{background:#176b43;border-color:#9df0b5}
+.answer.wrong{background:#762f35;border-color:#ff9b9b}
+.feedback{min-height:24px;margin:6px 0;line-height:1.4;color:#9ee6b7;font-weight:700;font-size:12px;text-align:center}
+.mainbtn{font-family:inherit;font-weight:800;border:0;border-radius:20px;padding:11px 18px;background:linear-gradient(135deg,#f0d77e,#c49a36);color:#1c210f;cursor:pointer;font-size:14px;width:100%}
+.mainbtn:disabled{opacity:.4}
+.start,.result{text-align:center;justify-content:center;gap:10px}
+.start h2,.result h2{font-size:22px;color:#e8c66a}
+.start p,.result p{color:#b8cfc1;line-height:1.6;font-size:13px}
+.stats{display:flex;justify-content:center;gap:8px;margin:10px 0}
+.stat{background:#111;border:1px solid #444;border-radius:12px;padding:9px 10px;min-width:70px;flex:1}
+.stat strong{display:block;color:#e8c66a;font-size:18px;margin-bottom:2px}
+.stat span{font-size:11px}
+.hidden{display:none!important}
+footer{text-align:center;color:#91b09d;font-size:11px;margin-top:4px;flex-shrink:0}
+footer a{color:#e8c66a;text-decoration:none;font-weight:700}
+.watermark{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);font-size:10px;color:#ffffff22;font-weight:900;letter-spacing:2px;pointer-events:none;white-space:nowrap}
+</style></head>
+<body><div class="game">
+<header>
+<img src="../../logo.png" alt="Ahmed TV" class="logo-img">
+<div class="brand">تحدي الذكاء</div>
+<div class="names">أحمد عبدالعزيز • Ahmed TV</div>
+<div class="sub">200 سؤال من غير تكرار • اختبر معلوماتك</div>
+</header>
+<div class="panel-container">
+<section class="panel start" id="start"><h2>هل أنت مستعد للتحدي؟</h2><p>200 سؤال مختلف تماما - من غير أي تكرار<br>رياضة • جغرافيا • تاريخ • سيارات • جسم • علوم</p><div class="stats"><div class="stat"><strong>200</strong><span>سؤال</span></div><div class="stat"><strong>6</strong><span>تصنيفات</span></div><div class="stat"><strong id="bestStart">0</strong><span>أفضل نتيجة</span></div></div><button class="mainbtn" id="startBtn">ابدأ التحدي</button></section>
+<section class="panel hidden" id="play"><div class="tpline"><span class="pill" id="count">السؤال 1 من 200</span><span class="pill">النقاط: <b id="score">0</b></span><span class="pill">الأفضل: <b id="best">0</b></span></div><div class="progress"><span id="bar"></span></div><div class="cat" id="cat"></div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><button class="mainbtn" id="nextBtn" disabled>السؤال التالي ←</button></section>
+<section class="panel result hidden" id="result"><h2 id="resultTitle">أحسنت!</h2><p id="resultText"></p><div class="stats"><div class="stat"><strong id="finalScore">0</strong><span>النقاط</span></div><div class="stat"><strong id="rightCount">0</strong><span>إجابات صحيحة</span></div><div class="stat"><strong>200</strong><span>إجمالي</span></div></div><button class="mainbtn" id="againBtn">العب من جديد</button></section>
+</div><div class="watermark">AHMED TV</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
-const questions = [
-  {level:"المستوى الأول - تسخين العقل", q:"أي شكل يكمل النمط؟", v:"■ ■ ■ □ □ ■ ■", a:["■ ■","□ □","■ □","□ ■"], c:0, e:"النمط يتناوب بين الأحمر والأزرق، لذلك التالي أزرق."},
-  {level:"المستوى الأول - تسخين العقل", q:"ما الشيء الذي له أسنان ولا يعض؟", a:["المفتاح","المشط","الساعة","القلم"], c:1, e:"المشط له أسنان كثيرة لكنه لا يعض."},
-  {level:"المستوى الأول - تسخين العقل", q:"أي كلمة لا تنتمي للمجموعة؟", a:["تفاح","موز","جزر","عنب"], c:2, e:"الجزر من الخضروات، والباقي فواكه."},
-  {level:"المستوى الأول - تسخين العقل", q:"رتب الحروف لتعرف اسم شيء نراه في السماء؟ ( م - ق - ر )", a:["قمر","برق","غيم","شمس"], c:0, e:"الحروف تكون كلمة قمر."},
-  {level:"المستوى الأول - تسخين العقل", q:"ما الذي تستطيع كسره دون أن تلمسه؟", a:["الزجاج","الوعد","الحجر","الخشب"], c:1, e:"يمكنك أن تكسر وعدًا دون لمس أي شيء."},
-  {level:"المستوى الثاني - عين الصقر", q:"لاحظ الرموز ... ما الرمز التالي؟", v:"★ ▲ ★ ▲", a:["★","▲","●","◆"], c:0, e:"النجمة والقمر يتبادلان الظهور."},
-  {level:"المستوى الثاني - عين الصقر", q:"أي حيوان يختلف عن الباقي؟", a:["دولفين","حوت","قرش","نسر"], c:3, e:"النسر طائر والبقية كائنات بحرية."},
-  {level:"المستوى الثاني - عين الصقر", q:"شيء كلما أخذت منه كبر، فما هو؟", a:["الحفرة","الكتاب","البالون","الظل"], c:0, e:"كلما أزلت التراب من الحفرة اتسعت."},
-  {level:"المستوى الثاني - عين الصقر", q:"أي كلمة تُقرأ من اليمين واليسار بالشكل نفسه؟", a:["باب","كتاب","مدرسة","نافذة"], c:0, e:"كلمة باب متناظرة عند قراءتها من الاتجاهين."},
-  {level:"المستوى الثاني - عين الصقر", q:"أمامك ثلاثة أبواب: خلف الأول نار، وخلف الثاني أسد جائع، وخلف الثالث بحر عميق. أيها أكثر أمانًا؟", a:["الأول","الثاني","الثالث","كلها"], c:1, e:"الأسد الذي لم يأكل منذ سنة لن يكون حيًا غالبًا؛ هذا لغز يعتمد على المنطق."},
-  {level:"المستوى الثالث - العبقري", q:"ما الشيء الذي يكتب ولا يقرأ؟", a:["الكتاب","القلم","المعلم","الطالب"], c:1, e:"القلم يكتب لكنه لا يقرأ."},
-  {level:"المستوى الثالث - العبقري", q:"في سباق، تجاوزت المتسابق صاحب المركز الثاني. أصبحت في أي مركز؟", a:["الأول","الثاني","الثالث","الرابع"], c:1, e:"عندما تتجاوز صاحب المركز الثاني تأخذ مكانه، فتصبح ثانيًا."},
-  {level:"المستوى الثالث - العبقري", q:"أي رمز مختلف عن البقية؟", v:"▲ ▲ ▲ ●", a:["▲","●","■","◆"], c:1, e:"الرمز الثالث مثلثات والرابع دائرة مختلفة عن البقية المتطابقة."},
-  {level:"المستوى الثالث - العبقري", q:"له رقبة وليس له رأس، فما هو؟", a:["الزجاجة","الإنسان","الحصان","الشجرة"], c:0, e:"للزجاجة عنق أو رقبة، وليس لها رأس."},
-  {level:"المستوى الثالث - العبقري", q:"ما الشيء الذي يملأ الغرفة ولا يشغل مكانًا؟", a:["الآلات","الهواء","الضوء","الماء"], c:2, e:"الضوء يملأ المكان ولا يشغل حيزًا ماديًا مثل الأجسام."},
-  // الأسئلة الإضافية
-  {level:"المستوى الأول - تسخين العقل", q:"ما الشيء الذي يطير بلا أجنحة؟", a:["الطائرة","الوقت","الطائر","الفراشة"], c:1, e:"الوقت يمر ويطير بلا أجنحة."},
-  {level:"المستوى الأول - تسخين العقل", q:"له عين ولا يرى، فما هو؟", a:["الإبرة","الباب","الإنسان","القطة"], c:0, e:"الإبرة لها عين صغيرة ولا ترى."},
-  {level:"المستوى الثاني - عين الصقر", q:"أين يوجد البحر الذي لا يوجد فيه ماء؟", a:["على الخريطة","في الصحراء","على القمر","في الفضاء"], c:0, e:"البحر على الخريطة أو الورق."},
-  {level:"المستوى الثاني - عين الصقر", q:"ما الشيء الذي إذا دخل الماء لم يبتل؟", a:["الورق","الملح","الضوء","الحجر"], c:2, e:"الضوء يمر في الماء ولا يبتل."},
-  {level:"المستوى الثالث - العبقري", q:"ما هو الشيء الذي يقرصك ولا تراه؟", a:["الجوع","الناموس","البرد","التعب"], c:0, e:"الجوع يقرص المعدة ولا يُرى."},
-  {level:"المستوى الثالث - العبقري", q:"ما الشيء الذي يسمع بلا أذن ويتكلم بلا لسان؟", a:["الهاتف","التلفاز","الراديو","الكمبيوتر"], c:0, e:"الهاتف يسمع صوتك وينقله."},
-  {level:"المستوى الثاني - عين الصقر", q:"أي شهر لو أضفت له حرفًا أصبح اسم فاكهة؟", a:["أيار","حزيران","آب","أيلول"], c:2, e:"شهر آب + حرف = عنب."},
-  {level:"المستوى الأول - تسخين العقل", q:"كم مرة يمكنك طرح 5 من 25؟", a:["4 مرات","5 مرات","مرة واحدة","مرتين"], c:2, e:"لأنك بعد الطرح الأول تصبح 20 وليس 25."},
-  {level:"المستوى الثالث - العبقري", q:"ما الشيء الذي إذا كسرته لم تسمع صوته؟", a:["الزجاج","الوعد","الخشب","الطبق"], c:1, e:"كسر الوعد ليس له صوت مسموع."},
-  {level:"المستوى الثاني - عين الصقر", q:"ما هو الشيء الذي لا يمكن حصره في مكان؟", a:["الضوء","الظل","الهواء","كل ما سبق"], c:3, e:"الضوء والظل والهواء لا يمكن حصرهم بسهولة."}
-];
-
-let order=[], idx=0, score=0, correct=0, time=20, tick=null, locked=false;
-const $ = id => document.getElementById(id);
-
-function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
-function show(section){["start","play","result"].forEach(x=>$(x).classList.toggle("hidden",x!==section))}
-
-function startGame(){
-  order=shuffle(questions); idx=0; score=0; correct=0; show("play"); loadQuestion();
-}
-
-function loadQuestion(){
-  clearInterval(tick); locked=false; time=20;
-  const item=order[idx];
-  $("count").textContent=`السؤال ${idx+1} من ${order.length}`;
-  $("score").textContent=score; $("timer").textContent=time;
-  $("bar").style.width=`${(idx/order.length)*100}%`;
-  $("level").textContent=item.level; $("question").textContent=item.q;
-  
-  if(item.v){
-    $("visual").textContent=item.v; $("visual").classList.remove("hidden");
-  } else {
-    $("visual").classList.add("hidden");
-  }
-  
-  $("feedback").textContent="اختر إجابتك قبل انتهاء الوقت!";
-  $("answers").innerHTML="";
-  
-  item.a.forEach((answer,i)=>{
-    const b=document.createElement("button");
-    b.className="answer"; b.textContent=answer;
-    b.onclick=()=>choose(i);
-    $("answers").appendChild(b);
-  });
-  
-  $("nextBtn").disabled=true;
-  $("nextBtn").textContent=idx===order.length-1?"عرض النتيجة ←":"السؤال التالي ←";
-  
-  tick=setInterval(()=>{
-    time--; $("timer").textContent=time;
-    if(time<=0){clearInterval(tick); choose(-1);}
-  },1000);
-}
-
-function choose(choice){
-  if(locked) return;
-  locked=true; clearInterval(tick);
-  const item=order[idx]; buttons=[...$("answers").children];
-  
-  buttons.forEach((b,i)=>{
-    b.disabled=true;
-    if(i===item.c) b.classList.add("correct");
-    else if(i===choice) b.classList.add("wrong");
-  });
-  
-  if(choice===item.c){
-    score+=10; correct++;
-    $("feedback").textContent="إجابة صحيحة! "+item.e;
-  } else {
-    $("feedback").textContent=(choice===-1?"انتهى الوقت! ":"إجابة خاطئة. ")+"الصحيحة: "+item.e;
-  }
-  
-  $("score").textContent=score; $("nextBtn").disabled=false;
-}
-
-function next(){
-  if(locked === false) return;
-  idx++;
-  if(idx>=order.length){ finish(); return; }
-  loadQuestion();
-}
-
-function finish(){
-  clearInterval(tick); show("result");
-  $("finalScore").textContent=score;
-  $("rightCount").textContent=correct;
-  
-  let title, msg;
-  if(correct>=20){title="أسطورة الذكاء!"; msg="مستوى رائع جدًا! عينك حادة وتفكيرك سريع. تستحق لقب بطل Ahmed TV.";}
-  else if(correct>=15){title="عبقري التحديات!"; msg="أداء ممتاز! اقتربت من القمة، جرّب مرة أخرى لتحقيق العلامة الكاملة.";}
-  else if(correct>=8){title="بداية قوية!"; msg="عندك أساس جيد. ركّز في تفاصيل الأسئلة وحاول تحطم نتيجتك.";}
-  else {title="التحدي مستمر!"; msg="كل محاولة تقوّي ملاحظتك. ابدأ جولة جديدة وحاول من جديد.";}
-  
-  $("resultTitle").textContent=title;
-  $("resultText").textContent=msg;
-}
-
-$("startBtn").onclick=startGame;
-$("nextBtn").onclick=next;
-$("againBtn").onclick=startGame;
-</script>
-</body>
-</html>
+const questions=[
+{cat:"رياضة ⚽", q:"نادي 【entity-الأهلي¦canonical_name=الأهلي】 المصري من أي بلد؟", a:["المغرب", "السعودية", "مصر", "تونس"], c:2},
+{cat:"رياضة ⚽", q:"كم عدد لاعبي فريق كرة القدم داخل الملعب؟", a:["9", "10", "11", "12"], c:2},
+{cat:"رياضة ⚽", q:"في أي دولة أقيمت أول كأس عالم؟", a:["البرازيل", "أوروجواي", "إيطاليا", "إنجلترا"], c:1},
+{cat:"رياضة ⚽", q:"كم مدة مباراة كرة القدم؟", a:["80 دقيقة", "90 دقيقة", "100 دقيقة", "120 دقيقة"], c:1},
+{cat:"رياضة ⚽", q:"ما هو لون الكارت الذي يعني الطرد؟", a:["الأصفر", "الأحمر", "الأخضر", "الأزرق"], c:1},
+{cat:"رياضة ⚽", q:"كم عدد حلقات الشعار الأولمبي؟", a:["4", "5", "6", "7"], c:1},
+{cat:"رياضة ⚽", q:"أين يلعب نادي 【entity-ريال مدريد¦canonical_name=ريال مدريد】؟", a:["【entity-برشلونة¦canonical_name=برشلونة】", "مدريد", "فالنسيا", "إشبيلية"], c:1},
+{cat:"رياضة ⚽", q:"ما هي الرياضة التي تسمى أم الألعاب؟", a:["السباحة", "ألعاب القوى", "الملاكمة", "التنس"], c:1},
+{cat:"رياضة ⚽", q:"كم عدد أشواط مباراة كرة الطائرة؟", a:["3", "4", "5", "6"], c:2},
+{cat:"رياضة ⚽", q:"من هو اللاعب الملقب بالفرعون المصري في 【entity-ليفربول¦canonical_name=ليفربول】؟", a:["【entity-محمد صلاح¦canonical_name=محمد صلاح】", "تريزيجيه", "النني", "مرموش"], c:0},
+{cat:"رياضة ⚽", q:"في أي لعبة نستخدم المضرب والريشة؟", a:["التنس", "الريشة الطائرة", "الاسكواش", "البينج بونج"], c:1},
+{cat:"رياضة ⚽", q:"كم نقطة تساوي الرمية الثلاثية في السلة؟", a:["1", "2", "3", "4"], c:2},
+{cat:"رياضة ⚽", q:"ما هي الدولة التي اخترعت كرة القدم؟", a:["البرازيل", "إنجلترا", "ألمانيا", "فرنسا"], c:1},
+{cat:"رياضة ⚽", q:"كم طول ماراثون الجري تقريبا؟", a:["26 كم", "42 كم", "50 كم", "10 كم"], c:1},
+{cat:"رياضة ⚽", q:"ما هو النادي الملقب بالشياطين الحمر؟", a:["【entity-مانشستر يونايتد¦canonical_name=مانشستر يونايتد】", "【entity-تشيلسي¦canonical_name=تشيلسي】", "أرسنال", "【entity-ليفربول¦canonical_name=ليفربول】"], c:0},
+{cat:"رياضة ⚽", q:"في أي رياضة يقال كلمة شطرنج؟", a:["الشطرنج", "الكاراتيه", "الجودو", "الملاكمة"], c:0},
+{cat:"رياضة ⚽", q:"كم عدد لاعبي فريق كرة السلة في الملعب؟", a:["4", "5", "6", "7"], c:1},
+{cat:"رياضة ⚽", q:"ما هي عاصمة الرياضة في مصر؟", a:["القاهرة", "الإسكندرية", "الجيزة", "أسوان"], c:0},
+{cat:"رياضة ⚽", q:"من فاز بكأس العالم 2022؟", a:["فرنسا", "الأرجنتين", "البرازيل", "ألمانيا"], c:1},
+{cat:"رياضة ⚽", q:"ما هو اسم ملعب 【entity-الأهلي¦canonical_name=الأهلي】 الجديد؟", a:["السلام", "القاهرة", "برج العرب", "المقاولين"], c:0},
+{cat:"رياضة ⚽", q:"كم عدد دقائق الشوط الواحد في كرة اليد؟", a:["20", "30", "40", "45"], c:1},
+{cat:"رياضة ⚽", q:"أي منتخب يلقب بالسامبا؟", a:["الأرجنتين", "البرازيل", "إسبانيا", "إيطاليا"], c:1},
+{cat:"رياضة ⚽", q:"في أي شهر تقام الأولمبياد عادة؟", a:["يناير", "يوليو", "ديسمبر", "مارس"], c:1},
+{cat:"رياضة ⚽", q:"ما هي رياضة محمد علي كلاي؟", a:["الملاكمة", "المصارعة", "الجودو", "الكاراتيه"], c:0},
+{cat:"رياضة ⚽", q:"كم عدد الحكام في مباراة كرة القدم؟", a:["1", "2", "3", "4"], c:0},
+{cat:"رياضة ⚽", q:"ما هو أطول سباق سباحة أولمبي؟", a:["1500 متر", "800 متر", "100 متر", "400 متر"], c:0},
+{cat:"رياضة ⚽", q:"أي نادي يلقب بالملكي؟", a:["【entity-برشلونة¦canonical_name=برشلونة】", "ريال مدريد", "【entity-بايرن¦canonical_name=بايرن】", "【entity-يوفنتوس¦canonical_name=يوفنتوس】"], c:1},
+{cat:"رياضة ⚽", q:"كم مرة فازت مصر بكأس أمم أفريقيا؟", a:["5", "6", "7", "8"], c:2},
+{cat:"رياضة ⚽", q:"ما هي الدولة التي فازت بأكثر كؤوس عالم؟", a:["ألمانيا", "البرازيل", "إيطاليا", "الأرجنتين"], c:1},
+{cat:"رياضة ⚽", q:"في أي لعبة نستخدم القفاز؟", a:["الملاكمة", "التنس", "الجولف", "كل ما سبق"], c:3},
+{cat:"رياضة ⚽", q:"ما هو اسم كرة التنس الأرضي؟", a:["الكرة الصفراء", "الكرة البيضاء", "الكرة الحمراء", "الكرة الخضراء"], c:0},
+{cat:"رياضة ⚽", q:"كم عدد ألوان علم الأولمبياد؟", a:["5", "6", "4", "3"], c:0},
+{cat:"رياضة ⚽", q:"من هو أسرع رجل في العالم؟", a:["بولت", "تايسون", "【entity-محمد صلاح¦canonical_name=محمد صلاح】", "【entity-رونالدو¦canonical_name=رونالدو】"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة مصر؟", a:["الإسكندرية", "القاهرة", "الجيزة", "أسوان"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي أكبر دولة في العالم مساحة؟", a:["الصين", "روسيا", "أمريكا", "كندا"], c:1},
+{cat:"جغرافيا 🌍", q:"أين يقع برج إيفل؟", a:["لندن", "باريس", "روما", "مدريد"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هو أطول نهر في العالم؟", a:["النيل", "الأمازون", "الدانوب", "الفرات"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة اليابان؟", a:["سيول", "بكين", "طوكيو", "بانكوك"], c:2},
+{cat:"جغرافيا 🌍", q:"في أي قارة تقع مصر؟", a:["آسيا", "أفريقيا", "أوروبا", "أمريكا"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي أكبر صحراء حارة في العالم؟", a:["الصحراء الكبرى", "الربع الخالي", "جوبي", "كالاهاري"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة السعودية؟", a:["جدة", "الرياض", "مكة", "الدمام"], c:1},
+{cat:"جغرافيا 🌍", q:"أين تقع جبال الألب؟", a:["آسيا", "أوروبا", "أفريقيا", "أمريكا"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هو البحر الذي يفصل مصر والسعودية؟", a:["البحر الأحمر", "البحر المتوسط", "بحر العرب", "البحر الأسود"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة فرنسا؟", a:["باريس", "لندن", "روما", "برلين"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي أصغر دولة في العالم؟", a:["الفاتيكان", "موناكو", "قطر", "البحرين"], c:0},
+{cat:"جغرافيا 🌍", q:"في أي دولة يقع سور الصين العظيم؟", a:["اليابان", "الصين", "كوريا", "الهند"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هو المحيط الأكبر في العالم؟", a:["الأطلسي", "الهندي", "الهادئ", "المتجمد"], c:2},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة العراق؟", a:["بغداد", "دمشق", "بيروت", "عمان"], c:0},
+{cat:"جغرافيا 🌍", q:"أين يقع نهر الدانوب؟", a:["أوروبا", "آسيا", "أفريقيا", "أمريكا"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي الدولة التي فيها أهرامات الجيزة؟", a:["السودان", "مصر", "المكسيك", "الهند"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة إيطاليا؟", a:["ميلان", "روما", "نابولي", "فينيسيا"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هو أطول جبل في العالم؟", a:["إفرست", "كيلمنجارو", "الألب", "أطلس"], c:0},
+{cat:"جغرافيا 🌍", q:"في أي دولة تقع مدينة دبي؟", a:["السعودية", "قطر", "الإمارات", "الكويت"], c:2},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة المغرب؟", a:["الدار البيضاء", "الرباط", "فاس", "مراكش"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هو النهر الذي يمر في لندن؟", a:["السين", "التايمز", "الدانوب", "الراين"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي أكبر جزيرة في العالم؟", a:["جرينلاند", "مدغشقر", "بورنيو", "سومطرة"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة كندا؟", a:["تورنتو", "أوتاوا", "فانكوفر", "مونتريال"], c:1},
+{cat:"جغرافيا 🌍", q:"في أي دولة يقع تمثال الحرية؟", a:["فرنسا", "أمريكا", "بريطانيا", "ألمانيا"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي الدولة التي تسمى بلاد الشمس المشرقة؟", a:["الصين", "اليابان", "كوريا", "تايلاند"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة أستراليا؟", a:["سيدني", "كانبرا", "ملبورن", "بيرث"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هو البحر الذي يقع بين أوروبا وأفريقيا؟", a:["الأحمر", "المتوسط", "الأسود", "قزوين"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي الدولة التي فيها برج خليفة؟", a:["قطر", "الإمارات", "السعودية", "الكويت"], c:1},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة الجزائر؟", a:["وهران", "الجزائر", "قسنطينة", "عنابة"], c:1},
+{cat:"جغرافيا 🌍", q:"أين تقع مدينة مكة المكرمة؟", a:["السعودية", "اليمن", "الأردن", "العراق"], c:0},
+{cat:"جغرافيا 🌍", q:"ما هي أكبر دولة عربية مساحة؟", a:["مصر", "السعودية", "الجزائر", "السودان"], c:2},
+{cat:"جغرافيا 🌍", q:"ما هي عاصمة تركيا؟", a:["إسطنبول", "أنقرة", "أنطاليا", "إزمير"], c:1},
+{cat:"تاريخ 📜", q:"من هو أول رئيس للولايات المتحدة؟", a:["لينكولن", "واشنطن", "جيفرسون", "روزفلت"], c:1},
+{cat:"تاريخ 📜", q:"في أي عام قامت ثورة 1919 في مصر؟", a:["1919", "1920", "1918", "1922"], c:0},
+{cat:"تاريخ 📜", q:"من هو قائد ثورة 1919؟", a:["سعد زغلول", "جمال عبد الناصر", "أنور السادات", "مصطفى النحاس"], c:0},
+{cat:"تاريخ 📜", q:"من بنى الأهرامات؟", a:["الرومان", "الفراعنة", "الإغريق", "الفرس"], c:1},
+{cat:"تاريخ 📜", q:"من هو أول من هبط على القمر؟", a:["نيل أرمسترونج", "يوري جاجارين", "باز ألدرين", "مايكل كولينز"], c:0},
+{cat:"تاريخ 📜", q:"في أي عام كانت الحرب العالمية الثانية؟", a:["1914", "1939", "1945", "1950"], c:1},
+{cat:"تاريخ 📜", q:"من هو مؤسس الدولة العباسية؟", a:["أبو العباس السفاح", "هارون الرشيد", "عمر بن الخطاب", "صلاح الدين"], c:0},
+{cat:"تاريخ 📜", q:"من هو قائد معركة حطين؟", a:["صلاح الدين الأيوبي", "نور الدين", "قطز", "بيبرس"], c:0},
+{cat:"تاريخ 📜", q:"من هو أول فرعون وحد القطرين؟", a:["خوفو", "مينا", "توت عنخ آمون", "رمسيس"], c:1},
+{cat:"تاريخ 📜", q:"في أي عام تم افتتاح قناة السويس؟", a:["1869", "1859", "1879", "1889"], c:0},
+{cat:"تاريخ 📜", q:"من هو أول رئيس لمصر بعد الثورة؟", a:["جمال عبد الناصر", "محمد نجيب", "أنور السادات", "حسني مبارك"], c:1},
+{cat:"تاريخ 📜", q:"من هو مؤسس الدولة الأيوبية؟", a:["صلاح الدين", "نور الدين", "عماد الدين", "قطز"], c:0},
+{cat:"تاريخ 📜", q:"في أي عام كانت حرب أكتوبر؟", a:["1967", "1973", "1956", "1948"], c:1},
+{cat:"تاريخ 📜", q:"من هو صاحب فكرة قناة السويس؟", a:["ديليسبس", "محمد علي", "الخديوي إسماعيل", "عرابي"], c:0},
+{cat:"تاريخ 📜", q:"من هو أول من أسلم من الرجال؟", a:["علي بن أبي طالب", "أبو بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان"], c:1},
+{cat:"تاريخ 📜", q:"في أي مدينة ولد الرسول محمد؟", a:["المدينة", "مكة", "الطائف", "يثرب"], c:1},
+{cat:"تاريخ 📜", q:"من هو أول الخلفاء الراشدين؟", a:["عمر", "أبو بكر", "عثمان", "علي"], c:1},
+{cat:"تاريخ 📜", q:"من هو قائد معركة عين جالوت؟", a:["قطز", "بيبرس", "صلاح الدين", "نور الدين"], c:0},
+{cat:"تاريخ 📜", q:"في أي عام سقطت الدولة العثمانية؟", a:["1924", "1914", "1930", "1900"], c:0},
+{cat:"تاريخ 📜", q:"من هو أول من صنع الطائرة؟", a:["الأخوان رايت", "إديسون", "أينشتاين", "نيوتن"], c:0},
+{cat:"تاريخ 📜", q:"من هو مؤسس علم الجبر؟", a:["الخوارزمي", "ابن سينا", "ابن خلدون", "البيروني"], c:0},
+{cat:"تاريخ 📜", q:"في أي دولة قامت الثورة الفرنسية؟", a:["إيطاليا", "فرنسا", "ألمانيا", "إنجلترا"], c:1},
+{cat:"تاريخ 📜", q:"من هو أول ملك لمصر الفرعونية؟", a:["مينا", "خوفو", "خفرع", "منقرع"], c:0},
+{cat:"تاريخ 📜", q:"من هو الذي بنى السد العالي؟", a:["جمال عبد الناصر", "السادات", "مبارك", "الملك فاروق"], c:0},
+{cat:"تاريخ 📜", q:"في أي عام تم اكتشاف مقبرة توت عنخ آمون؟", a:["1922", "1912", "1932", "1902"], c:0},
+{cat:"تاريخ 📜", q:"من هو مكتشف أمريكا؟", a:["كولومبوس", "ماجلان", "فاسكو دي جاما", "كوك"], c:0},
+{cat:"تاريخ 📜", q:"من هو أول من اخترع المصباح الكهربائي؟", a:["إديسون", "【entity-تسلا¦canonical_name=تسلا】", "بل", "نيوتن"], c:0},
+{cat:"تاريخ 📜", q:"في أي عام تم بناء برج القاهرة؟", a:["1961", "1951", "1971", "1941"], c:0},
+{cat:"تاريخ 📜", q:"من هو القائد الذي فتح الأندلس؟", a:["طارق بن زياد", "موسى بن نصير", "عبد الرحمن الداخل", "صلاح الدين"], c:0},
+{cat:"تاريخ 📜", q:"من هو أول من وضع علم النحو؟", a:["أبو الأسود الدؤلي", "سيبويه", "الخليل", "ابن خلدون"], c:0},
+{cat:"تاريخ 📜", q:"في أي عام كانت معركة بدر الكبرى؟", a:["624 م", "622 م", "630 م", "632 م"], c:0},
+{cat:"تاريخ 📜", q:"من هو أول من أذن في الإسلام؟", a:["بلال بن رباح", "عمار بن ياسر", "زيد بن حارثة", "حمزة"], c:0},
+{cat:"تاريخ 📜", q:"من هو الخليفة الملقب بالفاروق؟", a:["أبو بكر", "عمر بن الخطاب", "عثمان", "علي"], c:1},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت سيارة 【entity-مرسيدس¦canonical_name=مرسيدس】؟", a:["فرنسا", "ألمانيا", "إيطاليا", "اليابان"], c:1},
+{cat:"سيارات 🚗", q:"ما هو لون إشارة المرور التي تعني قف؟", a:["الأخضر", "الأصفر", "الأحمر", "الأزرق"], c:2},
+{cat:"سيارات 🚗", q:"كم عدد عجلات السيارة العادية؟", a:["3", "4", "5", "6"], c:1},
+{cat:"سيارات 🚗", q:"ما هي أسرع سيارة في العالم؟", a:["【entity-فيراري¦canonical_name=فيراري】", "بوجاتي", "لامبورجيني", "【entity-مرسيدس¦canonical_name=مرسيدس】"], c:1},
+{cat:"سيارات 🚗", q:"ما هو الوقود الذي تستخدمه السيارة؟", a:["الماء", "البنزين", "الزيت", "الهواء"], c:1},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت 【entity-تويوتا¦canonical_name=تويوتا】؟", a:["الصين", "اليابان", "كوريا", "ألمانيا"], c:1},
+{cat:"سيارات 🚗", q:"ما هو اسم السيارة الكهربائية الشهيرة؟", a:["【entity-تسلا¦canonical_name=تسلا】", "فورد", "هوندا", "كيا"], c:0},
+{cat:"سيارات 🚗", q:"كم عدد أبواب السيارة السيدان عادة؟", a:["2", "3", "4", "5"], c:2},
+{cat:"سيارات 🚗", q:"ما هي وظيفة الفرامل؟", a:["زيادة السرعة", "إيقاف السيارة", "تشغيل النور", "فتح الباب"], c:1},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت بيجو؟", a:["ألمانيا", "فرنسا", "إيطاليا", "إسبانيا"], c:1},
+{cat:"سيارات 🚗", q:"ما هو لون لوحة السيارة في مصر؟", a:["أبيض", "أزرق", "أصفر", "أحمر"], c:0},
+{cat:"سيارات 🚗", q:"ما هي السيارة الملقبة بالجمل؟", a:["اللاندكروزر", "الكورولا", "السيراتو", "الفيرنا"], c:0},
+{cat:"سيارات 🚗", q:"كم عدد مقاعد السيارة الملاكي عادة؟", a:["4", "5", "6", "7"], c:1},
+{cat:"سيارات 🚗", q:"ما هي وظيفة المرايا الجانبية؟", a:["الزينة", "رؤية الطريق خلفك", "تشغيل الراديو", "فتح الشنطة"], c:1},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت 【entity-فيات¦canonical_name=فيات】؟", a:["ألمانيا", "إيطاليا", "فرنسا", "إنجلترا"], c:1},
+{cat:"سيارات 🚗", q:"ما هو اسم سيارة الشرطة في مصر؟", a:["الدورية", "التاكسي", "الميكروباص", "الأتوبيس"], c:0},
+{cat:"سيارات 🚗", q:"ما هي أغلى سيارة؟", a:["رولز رويس", "【entity-هيونداي¦canonical_name=هيونداي】", "كيا", "شيفروليه"], c:0},
+{cat:"سيارات 🚗", q:"ما هو معنى كلمة أوتوماتيك؟", a:["يدوي", "تلقائي", "سريع", "بطيء"], c:1},
+{cat:"سيارات 🚗", q:"كم عدد إشارات المرور؟", a:["2", "3", "4", "5"], c:1},
+{cat:"سيارات 🚗", q:"ما هي السيارة التي تعمل بالشمس؟", a:["السيارة الشمسية", "السيارة الكهربائية", "السيارة الهجينة", "كل ما سبق"], c:0},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت 【entity-BMW¦canonical_name=BMW】؟", a:["فرنسا", "ألمانيا", "أمريكا", "اليابان"], c:1},
+{cat:"سيارات 🚗", q:"ما هو اسم أول سيارة في العالم؟", a:["بنز باتنت", "فورد", "【entity-تويوتا¦canonical_name=تويوتا】", "【entity-مرسيدس¦canonical_name=مرسيدس】"], c:0},
+{cat:"سيارات 🚗", q:"ما هي وظيفة حزام الأمان؟", a:["الزينة", "حمايتك عند الحادث", "تشغيل السيارة", "فتح الباب"], c:1},
+{cat:"سيارات 🚗", q:"ما هو لون إشارة المرور التي تعني امشي؟", a:["الأحمر", "الأخضر", "الأصفر", "الأزرق"], c:1},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت 【entity-هيونداي¦canonical_name=هيونداي】؟", a:["اليابان", "كوريا", "الصين", "الهند"], c:1},
+{cat:"سيارات 🚗", q:"ما هو اسم سيارة الأجرة في مصر؟", a:["التاكسي", "الميكروباص", "المترو", "القطار"], c:0},
+{cat:"سيارات 🚗", q:"كم عدد عجلات الموتوسيكل؟", a:["2", "3", "4", "5"], c:0},
+{cat:"سيارات 🚗", q:"ما هي السيارة الملقبة بالوحش؟", a:["جيب رانجلر", "كورولا", "【entity-فيرنا¦canonical_name=فيراري】", "سيراتو"], c:0},
+{cat:"سيارات 🚗", q:"ما هو الوقود الذي تستخدمه السيارة الكهربائية؟", a:["البنزين", "الكهرباء", "الديزل", "الغاز"], c:1},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت لامبورجيني؟", a:["ألمانيا", "إيطاليا", "فرنسا", "إسبانيا"], c:1},
+{cat:"سيارات 🚗", q:"ما هي وظيفة الكشافات الأمامية؟", a:["إضاءة الطريق", "الزينة", "تشغيل الراديو", "فتح الباب"], c:0},
+{cat:"سيارات 🚗", q:"ما هو اسم سيارة نقل الركاب الكبيرة؟", a:["الأتوبيس", "التاكسي", "الملاكي", "الموتوسيكل"], c:0},
+{cat:"سيارات 🚗", q:"ما هي الدولة التي صنعت نيسان؟", a:["الصين", "اليابان", "كوريا", "ألمانيا"], c:1},
+{cat:"جسم 🧠", q:"كم عدد عظام جسم الإنسان البالغ؟", a:["106", "206", "306", "406"], c:1},
+{cat:"جسم 🧠", q:"ما هو أكبر عضو في جسم الإنسان؟", a:["القلب", "الجلد", "الكبد", "الرئة"], c:1},
+{cat:"جسم 🧠", q:"كم عدد أسنان الإنسان البالغ؟", a:["28", "30", "32", "34"], c:2},
+{cat:"جسم 🧠", q:"ما هو العضو المسؤول عن التفكير؟", a:["القلب", "المخ", "الكبد", "الرئة"], c:1},
+{cat:"جسم 🧠", q:"كم عدد أصابع اليد الواحدة؟", a:["4", "5", "6", "10"], c:1},
+{cat:"جسم 🧠", q:"ما هو لون الدم؟", a:["أزرق", "أحمر", "أخضر", "أصفر"], c:1},
+{cat:"جسم 🧠", q:"ما هو العضو الذي نتنفس به؟", a:["القلب", "الرئة", "الكبد", "المعدة"], c:1},
+{cat:"جسم 🧠", q:"كم عدد عيون الإنسان؟", a:["1", "2", "3", "4"], c:1},
+{cat:"جسم 🧠", q:"ما هو أقوى عظمة في الجسم؟", a:["عظمة الفخذ", "عظمة الذراع", "عظمة الفك", "عظمة الساق"], c:0},
+{cat:"جسم 🧠", q:"ما هو العضو الذي يضخ الدم؟", a:["الرئة", "القلب", "الكبد", "المخ"], c:1},
+{cat:"جسم 🧠", q:"كم عدد ألوان العين الشائعة؟", a:["2", "3", "4", "5"], c:1},
+{cat:"جسم 🧠", q:"ما هو الشيء الذي يساعدك على الشم؟", a:["الفم", "الأنف", "الأذن", "العين"], c:1},
+{cat:"جسم 🧠", q:"ما هو عدد ساعات النوم الصحية للطفل؟", a:["4", "6", "8", "10"], c:3},
+{cat:"جسم 🧠", q:"ما هو الفيتامين الذي نحصل عليه من الشمس؟", a:["فيتامين A", "فيتامين D", "فيتامين C", "فيتامين B"], c:1},
+{cat:"جسم 🧠", q:"ما هو العضو الذي يهضم الطعام؟", a:["القلب", "المعدة", "الرئة", "المخ"], c:1},
+{cat:"جسم 🧠", q:"كم عدد أرجل الإنسان؟", a:["1", "2", "3", "4"], c:1},
+{cat:"جسم 🧠", q:"ما هو الشيء الذي يغطي جسمك؟", a:["الشعر", "الجلد", "العظام", "العضلات"], c:1},
+{cat:"جسم 🧠", q:"ما هو العضو المسؤول عن الرؤية؟", a:["الأنف", "العين", "الأذن", "الفم"], c:1},
+{cat:"جسم 🧠", q:"ما هو أسرع عضو في الجسم؟", a:["العين", "اليد", "اللسان", "القلب"], c:0},
+{cat:"جسم 🧠", q:"كم عدد حواس الإنسان؟", a:["3", "4", "5", "6"], c:2},
+{cat:"جسم 🧠", q:"ما هو لون الشعر الطبيعي؟", a:["أسود", "بني", "أشقر", "كل ما سبق"], c:3},
+{cat:"جسم 🧠", q:"ما هو العضو الذي نسمع به؟", a:["العين", "الأذن", "الأنف", "الفم"], c:1},
+{cat:"جسم 🧠", q:"ما هو الشيء الذي يقوي العظام؟", a:["الحليب", "السكر", "الشيبسي", "البيبسي"], c:0},
+{cat:"جسم 🧠", q:"ما هو عدد ضربات القلب الطبيعية في الدقيقة؟", a:["60-100", "20-30", "150-200", "10-20"], c:0},
+{cat:"جسم 🧠", q:"ما هو العضو الذي يخزن الذكريات؟", a:["القلب", "المخ", "الكبد", "الرئة"], c:1},
+{cat:"جسم 🧠", q:"ما هو الشيء الذي نأكله ليقوي جسمنا؟", a:["الخضار", "الحلويات", "الشيبسي", "المياه الغازية"], c:0},
+{cat:"جسم 🧠", q:"كم عدد ألوان الأسنان الطبيعية؟", a:["1", "2", "3", "4"], c:0},
+{cat:"جسم 🧠", q:"ما هو العضو الذي يساعدك على التذوق؟", a:["الأنف", "اللسان", "العين", "الأذن"], c:1},
+{cat:"جسم 🧠", q:"ما هو الشيء الذي يسبب التسوس؟", a:["السكر", "الحليب", "الخضار", "الماء"], c:0},
+{cat:"جسم 🧠", q:"ما هو عدد أرجل العنكبوت؟", a:["6", "8", "10", "4"], c:1},
+{cat:"جسم 🧠", q:"ما هو العضو الذي ينتج الأنسولين؟", a:["البنكرياس", "الكبد", "القلب", "الرئة"], c:0},
+{cat:"جسم 🧠", q:"ما هو الشيء الذي يسبب العطش؟", a:["نقص الماء", "زيادة الماء", "النوم", "الأكل"], c:0},
+{cat:"جسم 🧠", q:"ما هو أقوى عضلة في الجسم؟", a:["عضلة الفك", "عضلة الذراع", "عضلة الساق", "عضلة الظهر"], c:0},
+{cat:"علوم 🔬", q:"ما هو الكوكب الأقرب للشمس؟", a:["الزهرة", "عطارد", "الأرض", "المريخ"], c:1},
+{cat:"علوم 🔬", q:"ما هو الغاز الذي نتنفسه؟", a:["ثاني أكسيد الكربون", "الأكسجين", "النيتروجين", "الهيدروجين"], c:1},
+{cat:"علوم 🔬", q:"ما هو أكبر كوكب في المجموعة الشمسية؟", a:["زحل", "المشتري", "الأرض", "نبتون"], c:1},
+{cat:"علوم 🔬", q:"كم عدد كواكب المجموعة الشمسية؟", a:["7", "8", "9", "10"], c:1},
+{cat:"علوم 🔬", q:"ما هو لون السماء في النهار؟", a:["أحمر", "أزرق", "أخضر", "أصفر"], c:1},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يسقط من السماء في الشتاء؟", a:["المطر", "الثلج", "البرد", "كل ما سبق"], c:3},
+{cat:"علوم 🔬", q:"ما هو مصدر الضوء على الأرض؟", a:["القمر", "الشمس", "النجوم", "المصباح"], c:1},
+{cat:"علوم 🔬", q:"ما هو الحيوان الذي يبيض؟", a:["الدجاجة", "البقرة", "الكلب", "القطة"], c:0},
+{cat:"علوم 🔬", q:"ما هو أكبر حيوان بري؟", a:["الفيل", "الأسد", "الزرافة", "الحصان"], c:0},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يطير في السماء؟", a:["الطائرة", "السيارة", "القطار", "السفينة"], c:0},
+{cat:"علوم 🔬", q:"ما هو لون ورق الشجر؟", a:["أحمر", "أخضر", "أزرق", "أصفر"], c:1},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يذوب في الماء؟", a:["السكر", "الحجر", "الحديد", "الخشب"], c:0},
+{cat:"علوم 🔬", q:"ما هو عدد أيام السنة؟", a:["360", "365", "366", "300"], c:1},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يسبب الزلازل؟", a:["حركة الأرض", "الرياح", "المطر", "الشمس"], c:0},
+{cat:"علوم 🔬", q:"ما هو أسرع شيء في الكون؟", a:["الصوت", "الضوء", "الطائرة", "الصاروخ"], c:1},
+{cat:"علوم 🔬", q:"ما هو الحيوان الذي يسمى ملك الغابة؟", a:["النمر", "الأسد", "الفيل", "الدب"], c:1},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي نستخدمه لقياس الحرارة؟", a:["الميزان", "الترمومتر", "المسطرة", "الساعة"], c:1},
+{cat:"علوم 🔬", q:"ما هو لون قوس قزح الأول؟", a:["الأحمر", "الأزرق", "الأخضر", "الأصفر"], c:0},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يعيش في الماء؟", a:["السمك", "الكلب", "القطة", "الحصان"], c:0},
+{cat:"علوم 🔬", q:"ما هو عدد أرجل النحلة؟", a:["4", "6", "8", "2"], c:1},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يتحول إلى فراشة؟", a:["النحلة", "اليرقة", "النملة", "الذبابة"], c:1},
+{cat:"علوم 🔬", q:"ما هو الغاز الذي تطلقه النباتات؟", a:["الأكسجين", "ثاني أكسيد الكربون", "النيتروجين", "الهيدروجين"], c:0},
+{cat:"علوم 🔬", q:"ما هو أكبر محيط في العالم؟", a:["الأطلسي", "الهادئ", "الهندي", "المتجمد"], c:1},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يسبب الليل والنهار؟", a:["دوران الأرض", "دوران القمر", "دوران الشمس", "الرياح"], c:0},
+{cat:"علوم 🔬", q:"ما هو الحيوان الذي ينام في الشتاء؟", a:["الدب", "الكلب", "القطة", "الحصان"], c:0},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يصنع العسل؟", a:["الفراشة", "النحلة", "النملة", "الذبابة"], c:1},
+{cat:"علوم 🔬", q:"ما هو عدد ألوان قوس قزح؟", a:["5", "6", "7", "8"], c:2},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يطير بلا أجنحة؟", a:["الوقت", "الطائرة", "الطائر", "الفراشة"], c:0},
+{cat:"علوم 🔬", q:"ما هو أكبر طائر في العالم؟", a:["النعامة", "النسر", "البطريق", "البومة"], c:0},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يسبب المد والجزر؟", a:["القمر", "الشمس", "الرياح", "الأرض"], c:0},
+{cat:"علوم 🔬", q:"ما هو الحيوان الذي يبيض ولا يطير؟", a:["النعامة", "الدجاجة", "البطريق", "كل ما سبق"], c:3},
+{cat:"علوم 🔬", q:"ما هو الشيء الذي يسبب البرق؟", a:["السحاب", "المطر", "الشمس", "الرياح"], c:0},
+{cat:"علوم 🔬", q:"ما هو لون الدم في الوريد؟", a:["أحمر غامق", "أزرق", "أخضر", "أصفر"], c:0},
+{cat:"رياضة ⚽", q:"ما هو اسم ملعب برشلونة؟", a:["سانتياجو برنابيو","كامب نو","أولد ترافورد","سان سيرو"], c:1},
+{cat:"علوم 🔬", q:"ما هو أسرع حيوان في الماء؟", a:["الدولفين","سمكة التونة","القرش","الحوت"], c:1}];
+let order=[],idx=0,score=0,correct=0,locked=false;const $=id=>document.getElementById(id);
+let best=parseInt(localStorage.getItem("iq_best")||"0");$("best").textContent=best;$("bestStart").textContent=best;
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
+function show(s){["start","play","result"].forEach(x=>$(x).classList.toggle("hidden",x!==s))}
+function startGame(){order=shuffle(questions);idx=0;score=0;correct=0;show("play");loadQ()}
+function loadQ(){locked=false;const it=order[idx];$("count").textContent=`السؤال ${idx+1} من ${order.length}`;$("score").textContent=score;$("bar").style.width=(idx/order.length*100)+"%";$("cat").textContent=it.cat;$("question").textContent=it.q;$("feedback").textContent="اختر إجابتك!";$("answers").innerHTML="";it.a.forEach((ans,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=ans;b.onclick=()=>choose(i);$("answers").appendChild(b)});$("nextBtn").disabled=true;$("nextBtn").textContent=idx===order.length-1?"عرض النتيجة ←":"السؤال التالي ←"}
+function choose(ch){if(locked)return;locked=true;const it=order[idx];const btns=[...$("answers").children];btns.forEach((b,i)=>{b.disabled=true;if(i===it.c)b.classList.add("correct");else if(i===ch)b.classList.add("wrong")});if(ch===it.c){score+=10;correct++;$("feedback").textContent="إجابة صحيحة! برافو 👏"}else{$("feedback").textContent="إجابة خاطئة - الصح: "+it.a[it.c]};$("score").textContent=score;$("nextBtn").disabled=false}
+function next(){if(!locked)return;idx++;if(idx>=order.length){finish();return}loadQ()}
+function finish(){show("result");$("finalScore").textContent=score;$("rightCount").textContent=correct;if(score>best){best=score;localStorage.setItem("iq_best",String(best));$("best").textContent=best}let t,m;if(correct>=160){t="أسطورة الذكاء! 🏆";m="مستوى رائع جدا! انت بطل Ahmed TV."}else if(correct>=120){t="عبقري التحديات! 🧠";m="أداء ممتاز! قربت من القمة."}else if(correct>=60){t="بداية قوية! 💪";m="عندك أساس كويس، حاول تاني وحطم رقمك."}else{t="التحدي مستمر! 🔥";m="كل محاولة بتقوي معلوماتك، العب تاني."}$("resultTitle").textContent=t;$("resultText").textContent=m}
+$("startBtn").onclick=startGame;$("nextBtn").onclick=next;$("againBtn").onclick=startGame;
+</script></body></html>
