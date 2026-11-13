@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes,viewport-fit=cover">
+<title>Ahmed TV - لعبة السلام العالمي</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:linear-gradient(180deg,#E8F5E9 0%,#C8E6C9 50%,#A5D6A7 100%);color:#1B5E20;font-family:system-ui;min-height:100vh;display:flex;justify-content:center;padding:12px;}
+.container{width:100%;max-width:700px;background:linear-gradient(145deg,rgba(255,255,255,0.95),rgba(232,245,233,0.95));border-radius:24px;border:3px solid #4CAF50;overflow:hidden;box-shadow:0 0 40px rgba(76,175,80,0.25), 0 8px 32px rgba(0,0,0,0.1);}
+.header{background:linear-gradient(135deg,#1B5E20,#2E7D32,#4CAF50);padding:28px 16px;text-align:center;border-bottom:4px solid #81C784;position:relative;}
+.logo-img{width:110px;height:110px;border-radius:50%;border:4px solid #fff;object-fit:cover;background:#fff;margin:0 auto 14px;display:block;box-shadow:0 0 25px rgba(255,255,255,0.4);}
+.main-title{color:#fff;font-weight:900;font-size:34px;text-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.sub-title{color:#E8F5E9;font-weight:800;font-size:15px;margin-top:10px;background:rgba(255,255,255,0.2);display:inline-block;padding:8px 18px;border-radius:18px;border:2px solid #fff;}
+.big-cta{color:#1B5E20;font-size:21px;margin-top:14px;font-weight:900;background:linear-gradient(90deg,#fff,#C8E6C9);padding:12px 26px;border-radius:24px;display:inline-block;border:3px solid #fff;box-shadow:0 4px 15px rgba(0,0,0,0.15);}
+.progress{padding:14px 18px;background:rgba(76,175,80,0.15);display:flex;justify-content:space-between;font-size:15px;color:#2E7D32;font-weight:900;border-bottom:3px solid #4CAF50;}
+.bar{height:18px;background:#fff;border-radius:9px;overflow:hidden;border:2px solid #4CAF50;box-shadow:inset 0 2px 4px rgba(0,0,0,0.1);}
+.fill{height:100%;background:linear-gradient(90deg,#4CAF50,#81C784,#4CAF50);width:0%;transition:.4s;}
+.card{padding:24px 18px;background:transparent;}
+.q-box{background:linear-gradient(145deg,#fff,rgba(232,245,233,0.9));padding:22px;border-radius:20px;border:3px solid #4CAF50;margin-bottom:22px;box-shadow:0 4px 20px rgba(76,175,80,0.15);min-height:90px;display:flex;align-items:center;justify-content:center;text-align:center;}
+.q-text{font-size:24px;font-weight:900;color:#1B5E20;line-height:1.6;}
+.opts{display:grid;gap:16px;}
+.opt{background:linear-gradient(145deg,#fff,#E8F5E9);border:3px solid #A5D6A7;border-radius:16px;padding:20px 14px;text-align:center;font-size:20px;font-weight:900;color:#2E7D32;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+.opt:hover{border-color:#4CAF50;background:linear-gradient(145deg,#E8F5E9,#C8E6C9);color:#1B5E20;transform:translateY(-2px);box-shadow:0 6px 20px rgba(76,175,80,0.25);}
+@media(min-width:768px){ .opts{grid-template-columns:1fr 1fr;} }
+.badge{display:inline-block;background:linear-gradient(90deg,#4CAF50,#2E7D32);color:#fff;font-size:15px;padding:8px 20px;border-radius:16px;margin-bottom:16px;font-weight:900;border:2px solid #fff;box-shadow:0 2px 10px rgba(76,175,80,0.3);}
+.correct{background:linear-gradient(90deg,#4CAF50,#81C784) !important;color:#fff !important;border-color:#1B5E20 !important;box-shadow:0 0 20px rgba(76,175,80,0.5) !important;}
+.wrong{background:linear-gradient(90deg,#b71c1c,#ef5350) !important;color:#fff !important;border-color:#ff4444 !important;}
+.deco{position:absolute;font-size:44px;pointer-events:none;opacity:0.95;}
+html,body{height:100%;overflow:hidden}
+body{background:linear-gradient(180deg,#E8F5E9 0%,#C8E6C9 50%,#A5D6A7 100%);display:block;padding:0}
+.page{height:100vh;height:100dvh;height:-webkit-fill-available;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:12px;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom);display:flex;justify-content:center;align-items:flex-start;overscroll-behavior-y:contain}
+.page::-webkit-scrollbar{width:10px}.page::-webkit-scrollbar-track{background:#C8E6C9}.page::-webkit-scrollbar-thumb{background:#4CAF50;border-radius:10px}
+.container{flex-shrink:0}
+.main-title{font-size:clamp(22px,6vw,34px)}
+.q-text{font-size:clamp(18px,5vw,24px)}
+.opt{font-size:clamp(15px,4.4vw,20px)}
+.big-cta{font-size:clamp(14px,4.4vw,21px)}
+@media(max-width:500px){.page{padding:6px}}
+@media(min-width:769px) and (max-width:1024px){.container{max-width:680px}}
+@media(min-width:1025px){.container{max-width:720px}}
+</style>
+</head>
+<body>
+<div class="page" id="page">
+<div class="container">
+<div class="header">
+<span class="deco" style="top:10px;right:16px;">🕊️</span>
+<span class="deco" style="top:10px;left:16px;">☮️</span>
+<span class="deco" style="bottom:6px;right:28px;font-size:32px;">🌿</span>
+<span class="deco" style="bottom:6px;left:28px;font-size:32px;">🤝</span>
+<img src="../../logo.png" alt="Ahmed TV" class="logo-img">
+<div class="main-title">🕊️ لعبة السلام العالمي ☮️</div>
+<div class="main-title" style="font-size:22px;margin-top:6px;color:#E8F5E9;">100 سؤال عن السلام بين الشعوب</div>
+<div class="sub-title">🕊️ حمامة • ☮️ سلام • 🌿 زيتون • 🤝 تعايش • 🌍 عالم واحد</div>
+<div style="margin-top:14px;"><span class="big-cta">🌍 هل أنت صانع سلام؟ اختبر نفسك</span></div>
+<div style="color:#fff;font-weight:800;margin-top:10px;font-size:14px;">أحمد عبدالعزيز • Ahmed TV</div>
+</div>
+<div class="progress"><span id="qn">1 / 100</span><span id="sc">0 نقطة</span></div>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<div class="card">
+<div style="text-align:center;position:relative;">
+<span style="position:absolute;right:0;top:0;font-size:36px;">🌍</span>
+<span style="position:absolute;left:0;top:0;font-size:36px;">💚</span>
+<span class="badge">🕊️ سؤال رقم <span id="num">1</span> من 100</span>
+</div>
+<div class="q-box"><div class="q-text" id="qtext"></div></div>
+<div class="opts" id="opts"></div>
+</div>
+<div style="text-align:center;padding:14px;background:rgba(76,175,80,0.1);"><button onclick="skip()" style="background:linear-gradient(90deg,#4CAF50,#2E7D32);color:#fff;border:3px solid #fff;padding:12px 30px;border-radius:22px;font-weight:900;font-size:18px;box-shadow:0 4px 15px rgba(76,175,80,0.3);">تخطي ⏭️</button></div>
+<div style="text-align:center;padding:10px;font-size:12px;color:#2E7D32;background:#E8F5E9;">Ahmed TV - لعبة السلام العالمي - 100 سؤال عن السلام والمحبة</div>
+</div>
+</div>
+<script>
+const qs=[{"q": "ما هو رمز السلام العالمي؟", "o": ["الحمامة البيضاء", "السيف", "البندقية", "القنبلة"], "a": 0}, {"q": "من رسم حمامة السلام؟", "o": ["فان جوخ", "مايكل أنجلو", "بيكاسو", "دافنشي"], "a": 2}, {"q": "متى رسم بيكاسو حمامة السلام؟", "o": ["1800", "2000", "1949", "1900"], "a": 2}, {"q": "ما هي جائزة نوبل للسلام؟", "o": ["جائزة لأفضل صانع سلام", "جائزة حرب", "جائزة كرة", "جائزة مال"], "a": 0}, {"q": "من أسس جائزة نوبل؟", "o": ["ألفريد نوبل", "أينشتاين", "نيوتن", "غاندي"], "a": 0}, {"q": "متى بدأت جائزة نوبل للسلام؟", "o": ["1901", "1950", "1800", "2000"], "a": 0}, {"q": "من أول فائز بنوبل سلام؟", "o": ["أوباما", "مانديلا", "غاندي", "جان هنري دونان وفريدريك باسي"], "a": 3}, {"q": "ما هي 【entity-الأمم المتحدة¦canonical_name=الأمم المتحدة】؟", "o": ["شركة سيارات", "شركة حرب", "منظمة سلام عالمية", "شركة طيران"], "a": 2}, {"q": "متى تأسست 【entity-الأمم المتحدة¦canonical_name=الأمم المتحدة】؟", "o": ["1800", "1900", "1945", "2000"], "a": 2}, {"q": "أين مقر 【entity-الأمم المتحدة¦canonical_name=الأمم المتحدة】؟", "o": ["القاهرة", "نيويورك", "باريس", "لندن"], "a": 1}, {"q": "كم دولة في 【entity-الأمم المتحدة¦canonical_name=الأمم المتحدة】؟", "o": ["100", "50", "10", "193 دولة"], "a": 3}, {"q": "ما هو مجلس الأمن؟", "o": ["مجلس كرة", "مجلس مال", "مجلس يحافظ على السلام", "مجلس حرب"], "a": 2}, {"q": "كم عضو دائم في مجلس الأمن؟", "o": ["3", "10", "15", "5"], "a": 3}, {"q": "ما الدول الدائمة في مجلس الأمن؟", "o": ["البرازيل", "الهند", "مصر السعودية", "أمريكا روسيا الصين فرنسا بريطانيا"], "a": 3}, {"q": "ما هي 【entity-اليونسكو¦canonical_name=اليونسكو】؟", "o": ["منظمة تعليم وثقافة وسلام", "منظمة حرب", "شركة سيارات", "شركة طيران"], "a": 0}, {"q": "ما هي 【entity-اليونيسيف¦canonical_name=اليونسكو】؟", "o": ["منظمة حرب", "شركة سيارات", "شركة طيران", "منظمة أطفال"], "a": 3}, {"q": "من هو المهاتما غاندي؟", "o": ["زعيم حرب", "لاعب كرة", "زعيم سلام هندي لا عنف", "مغني"], "a": 2}, {"q": "ما هو مبدأ غاندي؟", "o": ["العنف", "الحرب", "اللاعنف", "السلاح"], "a": 2}, {"q": "كيف مات غاندي؟", "o": ["مرض", "حادث", "مات طبيعي", "اغتيل 1948"], "a": 3}, {"q": "من هو نيلسون مانديلا؟", "o": ["زعيم سلام جنوب أفريقي", "ممثل", "مغني", "لاعب كرة"], "a": 0}, {"q": "كم سنة سجن مانديلا؟", "o": ["1 سنة", "10 سنوات", "27 سنة", "5 سنوات"], "a": 2}, {"q": "متى فاز مانديلا بنوبل سلام؟", "o": ["1970", "2000", "1993", "1980"], "a": 2}, {"q": "من هو مارتن لوثر كينج؟", "o": ["ممثل", "لاعب كرة", "مغني", "زعيم سلام أمريكي للحقوق"], "a": 3}, {"q": "ما خطاب مارتن لوثر كينج الشهير؟", "o": ["عندي حلم", "عندي حرب", "عندي مال", "عندي سلاح"], "a": 0}, {"q": "متى اغتيل مارتن لوثر كينج؟", "o": ["1968", "2000", "1948", "1990"], "a": 0}, {"q": "من هي الأم تيريزا؟", "o": ["راهبة سلام فازت بنوبل", "ممثلة", "مغنية", "لاعبة كرة"], "a": 0}, {"q": "متى فازت الأم تيريزا بنوبل؟", "o": ["1990", "1980", "1979", "2000"], "a": 2}, {"q": "من هو أنور السادات؟", "o": ["لاعب كرة", "ممثل", "مغني", "رئيس مصري فاز بنوبل سلام"], "a": 3}, {"q": "مع من فاز السادات نوبل سلام؟", "o": ["أوباما", "مانديلا", "مناحم بيجن 1978", "غاندي"], "a": 2}, {"q": "ما هي اتفاقية كامب ديفيد؟", "o": ["مال", "حرب", "سلام مصر إسرائيل", "كرة"], "a": 2}, {"q": "متى كامب ديفيد؟", "o": ["1990", "2000", "1978", "1960"], "a": 2}, {"q": "من هو ياسر عرفات فاز بنوبل سلام؟", "o": ["لا", "1980", "2000", "نعم 1994 مع رابين وبيريز"], "a": 3}, {"q": "من هو إسحاق رابين؟", "o": ["رئيس وزراء إسرائيل فاز بنوبل سلام", "مغني", "لاعب كرة", "ممثل"], "a": 0}, {"q": "من هو باراك أوباما فاز بنوبل سلام؟", "o": ["2010", "2000", "نعم 2009", "لا"], "a": 2}, {"q": "من هي ملالا يوسفزاي؟", "o": ["لاعبة كرة", "مغنية", "ممثلة", "أصغر فائزة بنوبل سلام تعليم بنات"], "a": 3}, {"q": "كم عمر ملالا لما فازت؟", "o": ["30", "50", "10", "17 سنة"], "a": 3}, {"q": "ما هو يوم السلام العالمي؟", "o": ["10 أكتوبر", "21 سبتمبر", "1 يناير", "5 يونيو"], "a": 1}, {"q": "من أعلن يوم السلام العالمي؟", "o": ["أمريكا", "مصر", "روسيا", "【entity-الأمم المتحدة¦canonical_name=الأمم المتحدة】"], "a": 3}, {"q": "ما هو السلام الداخلي؟", "o": ["هدوء النفس", "مال", "سلاح", "حرب"], "a": 0}, {"q": "ما هو السلام بين الشعوب؟", "o": ["عنف", "حرب", "كراهية", "تعايش واحترام"], "a": 3}, {"q": "ما هو التعايش؟", "o": ["كراهية", "عنف", "عيش مع بعض بسلام", "حرب"], "a": 2}, {"q": "ما هو التسامح؟", "o": ["كراهية", "عنف", "حرب", "قبول الآخر"], "a": 3}, {"q": "ما هو الحوار؟", "o": ["سلاح", "ضرب", "حرب", "كلام لحل المشاكل"], "a": 3}, {"q": "ما هو العنف يدمر السلام؟", "o": ["يساعد", "لا علاقة", "نعم", "لا"], "a": 2}, {"q": "ما هو التعليم ينشر السلام؟", "o": ["لا علاقة", "نعم", "يدمر", "لا"], "a": 1}, {"q": "ما هي الحرب ضد السلام؟", "o": ["لا", "نعم", "لا علاقة", "تساعد"], "a": 1}, {"q": "ما هو الفقر يهدد السلام؟", "o": ["يساعد", "لا", "لا علاقة", "نعم"], "a": 3}, {"q": "ما هو العدل أساس السلام؟", "o": ["نعم", "ضد السلام", "لا", "لا علاقة"], "a": 0}, {"q": "ما هي المساواة تساعد السلام؟", "o": ["ضد السلام", "لا", "نعم", "لا علاقة"], "a": 2}, {"q": "ما هي الحرية جزء من السلام؟", "o": ["نعم", "لا علاقة", "لا", "ضد السلام"], "a": 0}, {"q": "ما هي حقوق الإنسان تحمي السلام؟", "o": ["لا", "ضد السلام", "لا علاقة", "نعم"], "a": 3}, {"q": "ما هو التنمر ضد السلام؟", "o": ["لا علاقة", "لا", "نعم", "يساعد"], "a": 2}, {"q": "ما هو الصلح؟", "o": ["عنف", "بدء حرب", "كراهية", "إنهاء خلاف بسلام"], "a": 3}, {"q": "ما هو الوسيط في السلام؟", "o": ["شخص يحارب", "شخص يحل نزاع", "شخص يضرب", "شخص يكره"], "a": 1}, {"q": "ما هي الهدنة؟", "o": ["وقف حرب مؤقت", "بدء حرب", "عنف", "كراهية"], "a": 0}, {"q": "ما هي معاهدة سلام؟", "o": ["اتفاق ينهي حرب", "اتفاق حرب", "اتفاق كرة", "اتفاق مال"], "a": 0}, {"q": "ما هو الاستسلام للسلام؟", "o": ["حرب", "ترك سلاح", "أخذ سلاح", "كراهية"], "a": 1}, {"q": "ما هو نزع السلاح يساعد السلام؟", "o": ["نعم", "لا", "لا علاقة", "يضر"], "a": 0}, {"q": "ما هي الأسلحة النووية تهدد السلام؟", "o": ["نعم", "تساعد", "لا علاقة", "لا"], "a": 0}, {"q": "كم دولة عندها سلاح نووي؟", "o": ["9 دول", "50", "100", "1"], "a": 0}, {"q": "ما هي اتفاقية حظر نووي؟", "o": ["كرة", "تسمح به", "تمنع انتشار نووي", "مال"], "a": 2}, {"q": "ما هو الصليب الأحمر؟", "o": ["منظمة إنسانية سلام", "شركة سيارات", "شركة حرب", "شركة طيران"], "a": 0}, {"q": "من أسس الصليب الأحمر؟", "o": ["مانديلا", "أوباما", "هنري دونان", "غاندي"], "a": 2}, {"q": "ما هو الهلال الأحمر؟", "o": ["مثل الصليب الأحمر إسلامي", "شركة طيران", "شركة حرب", "شركة سيارات"], "a": 0}, {"q": "ما هو اللاجئ يحتاج سلام؟", "o": ["نعم هارب من حرب", "لا", "سائح", "لاعب كرة"], "a": 0}, {"q": "كم لاجئ في العالم؟", "o": ["1000", "أكثر من 100 مليون", "1 مليون", "10 مليون"], "a": 1}, {"q": "ما هي منظمة اللاجئين؟", "o": ["【entity-UNHCR¦canonical_name=UNHCR】", "ناسا", "فيفا", "يوتيوب"], "a": 0}, {"q": "ما هو الطفل في الحرب ضحية؟", "o": ["لا", "لا علاقة", "مستفيد", "نعم"], "a": 3}, {"q": "ما هو السلام في الإسلام؟", "o": ["كراهية", "حرب", "السلام اسم الله وتحية الإسلام", "عنف"], "a": 2}, {"q": "ما معنى الإسلام من السلام؟", "o": ["من حرب", "نعم من سلم", "من كراهية", "لا"], "a": 1}, {"q": "ما هو السلام في المسيحية؟", "o": ["كراهية", "طوبى لصانعي السلام", "حرب", "عنف"], "a": 1}, {"q": "ما هو السلام في البوذية؟", "o": ["عنف", "حرب", "اللاعنف والرحمة", "كراهية"], "a": 2}, {"q": "ما هي الألعاب الأولمبية رمز سلام؟", "o": ["حرب", "لا", "نعم هدنة أولمبية قديمة", "كراهية"], "a": 2}, {"q": "ما هي الهدنة الأولمبية؟", "o": ["بدء حرب", "عنف", "كراهية", "وقف حرب وقت الألعاب"], "a": 3}, {"q": "من هو كوفي عنان فاز بنوبل سلام؟", "o": ["نعم أمين أمم متحدة 2001", "مغني", "لاعب كرة", "لا"], "a": 0}, {"q": "من هو بان كي مون؟", "o": ["ممثل", "أمين أمم متحدة", "مغني", "لاعب كرة"], "a": 1}, {"q": "من هو أنطونيو جوتيريش؟", "o": ["أمين أمم متحدة حالي", "لاعب كرة", "ممثل", "مغني"], "a": 0}, {"q": "ما هو الجيش الأزرق؟", "o": ["قبعات زرقاء حفظ سلام", "جيش مال", "جيش كرة", "جيش حرب"], "a": 0}, {"q": "ما هي قبعات زرقاء؟", "o": ["جنود حرب", "لاعبو كرة", "جنود سلام أمم متحدة", "مغنيون"], "a": 2}, {"q": "ما هو السلام يحتاج شجاعة؟", "o": ["الحرب أشجع", "لا", "لا علاقة", "نعم أشجع من الحرب"], "a": 3}, {"q": "ما هو الكره ضد السلام؟", "o": ["لا علاقة", "لا", "يساعد", "نعم"], "a": 3}, {"q": "ما هو الحب أساس السلام؟", "o": ["ضد السلام", "لا علاقة", "لا", "نعم"], "a": 3}, {"q": "ما هو احترام الثقافات سلام؟", "o": ["لا", "ضد السلام", "نعم", "لا علاقة"], "a": 2}, {"q": "ما هو التنوع ثراء للسلام؟", "o": ["لا", "نعم", "لا علاقة", "ضد السلام"], "a": 1}, {"q": "ما هو السلام في المدرسة؟", "o": ["حرب", "لا تنمر لا عنف", "كراهية", "ضرب"], "a": 1}, {"q": "ما هو السلام في البيت؟", "o": ["حرب", "حب واحترام", "ضرب", "كراهية"], "a": 1}, {"q": "ما هو السلام مع الطبيعة؟", "o": ["حافظ على البيئة", "اقطع شجر", "احرقها", "دمرها"], "a": 0}, {"q": "ما هو تلوث يهدد السلام؟", "o": ["يساعد", "لا علاقة", "لا", "نعم"], "a": 3}, {"q": "ما هو تغير مناخ يهدد سلام؟", "o": ["نعم حروب على ماء وغذاء", "يساعد", "لا علاقة", "لا"], "a": 0}, {"q": "ما هي الشجرة رمز سلام؟", "o": ["السلاح", "الحرب", "الزيتون", "الصبار"], "a": 2}, {"q": "ما هي حمامة بزيتونة رمز؟", "o": ["سلام", "كراهية", "حرب", "عنف"], "a": 0}, {"q": "ما هو غصن الزيتون رمز سلام؟", "o": ["نعم", "رمز حرب", "لا", "رمز كراهية"], "a": 0}, {"q": "ما هي كلمة سلام بالعربي؟", "o": ["سلام", "حرب", "عنف", "كراهية"], "a": 0}, {"q": "ما كلمة سلام بالإنجليزي؟", "o": ["Fight", "Hate", "Peace", "War"], "a": 2}, {"q": "ما كلمة سلام بالفرنسي؟", "o": ["Haine", "Paix", "Guerre", "Combat"], "a": 1}, {"q": "ما كلمة شالوم؟", "o": ["عنف", "سلام عبري", "حرب", "كراهية"], "a": 1}, {"q": "ما هو السلام يبدأ منك؟", "o": ["من الحكومة فقط", "من الجيش فقط", "لا", "نعم كل واحد يبدأ بنفسه"], "a": 3}, {"q": "ما هو ابتسامة سلام؟", "o": ["لا علاقة", "ضد السلام", "لا", "نعم"], "a": 3}, {"q": "ما هو كلمة طيبة سلام؟", "o": ["لا علاقة", "نعم", "ضد السلام", "لا"], "a": 1}, {"q": "ما هو مساعدة الآخر سلام؟", "o": ["نعم", "ضد السلام", "لا", "لا علاقة"], "a": 0}];
+let idx=0,score=0,lock=false;
+function render(){
+ const cur=qs[idx];
+ document.getElementById('qtext').textContent=cur.q;
+ document.getElementById('num').textContent=idx+1;
+ document.getElementById('qn').textContent=(idx+1)+' / '+qs.length;
+ document.getElementById('sc').textContent=score+' نقطة';
+ document.getElementById('fill').style.width=(idx/qs.length*100)+'%'; document.getElementById('page').scrollTo({top:0,behavior:'smooth'});
+ const optsEl=document.getElementById('opts');
+ optsEl.innerHTML=''; lock=false;
+ cur.o.forEach((t,i)=>{
+  const b=document.createElement('button'); b.className='opt'; b.textContent=t;
+  b.onclick=()=>{
+    if(lock) return; lock=true;
+    if(i===cur.a){ b.classList.add('correct'); score+=10; }
+    else{ b.classList.add('wrong'); optsEl.children[cur.a].classList.add('correct'); }
+    setTimeout(()=>{ idx++; if(idx<qs.length) render(); else endGame(); },900);
+  };
+  optsEl.appendChild(b);
+ });
+}
+function skip(){ idx++; if(idx<qs.length) render(); else endGame(); }
+function endGame(){
+ document.getElementById('qtext').innerHTML='انتهى! 🕊️<br>جبت '+score+' من '+(qs.length*10)+'<br>انت صانع سلام عظيم! ☮️🌍💚';
+ document.getElementById('opts').innerHTML='<button class="opt" style="background:linear-gradient(90deg,#4CAF50,#2E7D32);color:#fff;" onclick="location.reload()">العب تاني 🔄</button>';
+}
+render();
+</script>
+</body></html>
