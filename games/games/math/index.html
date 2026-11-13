@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - الرياضيات</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f0f0f;color:#fff;height:100vh;height:100dvh;display:flex;justify-content:center;padding:env(safe-area-inset-top,8px) 10px env(safe-area-inset-bottom,8px) 10px}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border:1px solid #333;border-radius:20px;padding:10px;box-shadow:0 18px 50px #0008;position:relative;overflow:hidden}
+header{text-align:center;padding:6px 0 8px;flex-shrink:0;display:flex;flex-direction:column;align-items:center}
+.logo-img{width:68px;height:68px;border-radius:50%;border:3px solid #e8c66a;object-fit:cover;background:#fff;box-shadow:0 0 15px rgba(232,198,106,.4);margin-bottom:6px}
+.brand{font-size:23px;font-weight:900;margin:2px 0;color:#fff}
+.names{font-size:13px;color:#e8c66a;font-weight:700;margin-bottom:2px}
+.sub{color:#9ee6b7;font-size:12px}
+.panel-container{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.panel{width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-evenly;overflow:hidden;padding:4px}
+.tpline{display:flex;justify-content:space-between;gap:6px;color:#b8cfc1;font-size:12px;margin-bottom:6px}
+.pill{background:#111;border:1px solid #444;padding:5px 9px;border-radius:20px}
+.progress{height:6px;background:#111;border-radius:20px;overflow:hidden;margin:4px 0 8px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#18a66a,#b4ed8a);transition:width .3s}
+.question{font-size:17px;line-height:1.5;margin:6px 0 10px;font-weight:800;text-align:center;min-height:52px;display:flex;align-items:center;justify-content:center}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.answer{font-family:inherit;font-size:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,#1b7049,#10452f);border:1px solid #65bd87;border-radius:12px;padding:12px 6px;min-height:48px;cursor:pointer}
+.answer.correct{background:#176b43;border-color:#9df0b5}
+.answer.wrong{background:#762f35;border-color:#ff9b9b}
+.feedback{min-height:24px;margin:6px 0;line-height:1.4;color:#9ee6b7;font-weight:700;font-size:12px;text-align:center}
+.mainbtn{font-family:inherit;font-weight:800;border:0;border-radius:20px;padding:11px 18px;background:linear-gradient(135deg,#f0d77e,#c49a36);color:#1c210f;cursor:pointer;font-size:14px;width:100%}
+.mainbtn:disabled{opacity:.4}
+.btn-row{display:flex;gap:8px;margin-top:6px}
+.skipbtn{font-family:inherit;font-weight:800;border:1px solid #e8c66a;border-radius:20px;padding:11px 10px;background:#222;color:#e8c66a;cursor:pointer;font-size:14px;flex:1}
+.soundbtn{font-family:inherit;font-weight:800;border:1px solid #444;border-radius:20px;padding:6px 12px;background:#111;color:#fff;cursor:pointer;font-size:12px;margin-top:6px}
+.soundbtn.off{opacity:.5}
+.start,.result{text-align:center;justify-content:center;gap:10px}
+.start h2,.result h2{font-size:22px;color:#e8c66a}
+.start p,.result p{color:#b8cfc1;line-height:1.6;font-size:13px}
+.stats{display:flex;justify-content:center;gap:8px;margin:10px 0}
+.stat{background:#111;border:1px solid #444;border-radius:12px;padding:9px 10px;min-width:70px;flex:1}
+.stat strong{display:block;color:#e8c66a;font-size:18px;margin-bottom:2px}
+.stat span{font-size:11px}
+.hidden{display:none!important}
+footer{text-align:center;color:#91b09d;font-size:11px;margin-top:4px;flex-shrink:0}
+footer a{color:#e8c66a;text-decoration:none;font-weight:700}
+.watermark{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);font-size:10px;color:#ffffff22;font-weight:900;letter-spacing:2px;pointer-events:none;white-space:nowrap}
+</style></head>
+<body><div class="game">
+<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">لعبة الرياضيات</div><div class="names">أحمد عبدالعزيز • Ahmed TV</div><div class="sub">تحدي الرياضيات • من الخوارزمي لفيثاغورس</div><button class="soundbtn" id="soundBtn">🔊 الصوت: شغال</button></header>
+<div class="panel-container">
+<section class="panel start" id="start"><h2>هل أنت مستعد؟</h2><p>200 سؤال في الرياضيات<br>جمع • طرح • ضرب • قسمة • هندسة • جبر</p><div class="stats"><div class="stat"><strong>200</strong><span>سؤال</span></div><div class="stat"><strong>10</strong><span>نقاط للسؤال</span></div><div class="stat"><strong id="bestStart">0</strong><span>أفضل نتيجة</span></div></div><button class="mainbtn" id="startBtn">ابدأ التحدي</button></section>
+<section class="panel hidden" id="play"><div class="tpline"><span class="pill" id="count">السؤال 1 من 200</span><span class="pill">النقاط: <b id="score">0</b></span><span class="pill">الأفضل: <b id="best">0</b></span></div><div class="progress"><span id="bar"></span></div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><div class="btn-row"><button class="skipbtn" id="skipBtn">تخطي ⏭️</button><button class="mainbtn" id="nextBtn" disabled style="flex:2">السؤال التالي ←</button></div></section>
+<section class="panel result hidden" id="result"><h2 id="resultTitle">أحسنت!</h2><p id="resultText"></p><div class="stats"><div class="stat"><strong id="finalScore">0</strong><span>النقاط</span></div><div class="stat"><strong id="rightCount">0</strong><span>إجابات صحيحة</span></div><div class="stat"><strong>200</strong><span>إجمالي</span></div></div><button class="mainbtn" id="againBtn">العب من جديد</button></section>
+</div><div class="watermark">AHMED TV</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
+<script>
+const questions=[
+{q:"ما هو 1/2 + 1/2 = ؟", a:["1","0","2","1/4"], c:0},
+{q:"ما هو 1/4 + 3/4 = ؟", a:["1","0","2","1/2"], c:0},
+{q:"ما هو 0.5 + 0.5 = ؟", a:["1","0","2","0.25"], c:0},
+{q:"ما هو 2.5 × 4 = ؟", a:["10","8","12","9"], c:0},
+{q:"ما هو 10% من 500 = ؟", a:["50","5","100","25"], c:0},
+{q:"ما هو العدد الأولي من بين هذه الأعداد؟", a:["7","4","6","8"], c:0},
+{q:"ما هو العدد الأولي من بين هذه الأعداد؟", a:["13","12","14","15"], c:0},
+{q:"ما هو العدد الزوجي؟", a:["8","7","9","11"], c:0},
+{q:"ما هو العدد الفردي؟", a:["9","8","10","12"], c:0},
+{q:"ما هو مضاعف العدد 5؟", a:["25","23","27","29"], c:0},
+{q:"ما هو ناتج 5! (مضروب 5)؟", a:["120","100","60","25"], c:0},
+{q:"ما هو ناتج 3! ؟", a:["6","9","12","3"], c:0},
+{q:"ما هو ناتج 0! ؟", a:["1","0","2","10"], c:0},
+{q:"ما هي قيمة π (باي) تقريباً؟", a:["3.14","3","2.14","4.14"], c:0},
+{q:"ما هي قيمة 2³ ؟", a:["8","6","9","12"], c:0},
+{q:"ما هي قيمة 3³ ؟", a:["27","9","18","12"], c:0},
+{q:"ما هي قيمة 10³ ؟", a:["1000","100","300","10000"], c:0},
+{q:"ما هي قيمة 5² + 3² ؟", a:["34","25","30","28"], c:0},
+{q:"ما هو محيط المربع طول ضلعه 5؟", a:["20","25","15","10"], c:0},
+{q:"ما هي مساحة المربع طول ضلعه 6؟", a:["36","24","12","18"], c:0},
+{q:"ما هي مساحة المستطيل 4 × 7 ؟", a:["28","24","22","11"], c:0},
+{q:"ما هو محيط المستطيل 4 × 7 ؟", a:["22","28","11","24"], c:0},
+{q:"ما هي مساحة المثلث قاعدته 10 وارتفاعه 6؟", a:["30","60","20","15"], c:0},
+{q:"ما هو محيط الدائرة نصف قطرها 7؟ (π=22/7)", a:["44","22","14","28"], c:0},
+{q:"ما هي مساحة الدائرة نصف قطرها 7؟ (π=22/7)", a:["154","44","22","77"], c:0},
+{q:"ما هو حجم المكعب طول حرفه 3؟", a:["27","9","18","12"], c:0},
+{q:"ما هو حجم المكعب طول حرفه 4؟", a:["64","16","32","12"], c:0},
+{q:"كم عدد أضلاع المثلث؟", a:["3","4","5","6"], c:0},
+{q:"كم عدد أضلاع المربع؟", a:["4","3","5","6"], c:0},
+{q:"كم عدد أضلاع الخماسي؟", a:["5","4","6","7"], c:0},
+{q:"كم عدد أضلاع السداسي؟", a:["6","5","7","8"], c:0},
+{q:"كم عدد أضلاع الثماني؟", a:["8","6","7","9"], c:0},
+{q:"مجموع زوايا المثلث = ؟", a:["180°","90°","360°","270°"], c:0},
+{q:"مجموع زوايا المربع = ؟", a:["360°","180°","90°","270°"], c:0},
+{q:"ما هي الزاوية القائمة؟", a:["90°","45°","180°","60°"], c:0},
+{q:"ما هي الزاوية الحادة؟", a:["أقل من 90°","أكبر من 90°","90°","180°"], c:0},
+{q:"ما هي الزاوية المنفرجة؟", a:["أكبر من 90°","أقل من 90°","90°","180°"], c:0},
+{q:"ما هي الزاوية المستقيمة؟", a:["180°","90°","360°","45°"], c:0},
+{q:"ما هو العدد الذي إذا ضربته في نفسه أعطى 144؟", a:["12","11","13","14"], c:0},
+{q:"ما هو العدد الذي إذا ضربته في نفسه أعطى 169؟", a:["13","12","14","15"], c:0},
+{q:"ما هو العدد التالي في النمط 2, 4, 6, 8, ... ؟", a:["10","9","12","7"], c:0},
+{q:"ما هو العدد التالي في النمط 1, 4, 9, 16, ... ؟", a:["25","20","24","18"], c:0},
+{q:"ما هو العدد التالي في النمط 3, 6, 12, 24, ... ؟", a:["48","36","30","40"], c:0},
+{q:"ما هو العدد التالي في النمط 5, 10, 15, 20, ... ؟", a:["25","22","30","24"], c:0},
+{q:"ما هو العدد التالي في النمط 100, 90, 80, ... ؟", a:["70","60","75","85"], c:0},
+{q:"ما هو ناتج 15 + 15 + 15 ؟", a:["45","30","50","40"], c:0},
+{q:"ما هو ناتج 100 - 37 ؟", a:["63","67","73","60"], c:0},
+{q:"ما هو ناتج 99 + 1 ؟", a:["100","99","101","98"], c:0},
+{q:"ما هو ناتج 1000 - 999 ؟", a:["1","0","2","10"], c:0},
+{q:"ما هو ناتج 7 × 8 ؟", a:["56","54","48","64"], c:0},
+{q:"ما هو ناتج 9 × 9 ؟", a:["81","72","90","79"], c:0},
+{q:"ما هو ناتج 12 × 12 ؟", a:["144","132","124","148"], c:0},
+{q:"ما هو ناتج 25 × 4 ؟", a:["100","90","110","80"], c:0},
+{q:"ما هو ناتج 50 × 6 ؟", a:["300","250","350","200"], c:0},
+{q:"ما هو ناتج 125 ÷ 5 ؟", a:["25","20","30","15"], c:0},
+{q:"ما هو ناتج 144 ÷ 12 ؟", a:["12","11","13","14"], c:0},
+{q:"ما هو ناتج 200 ÷ 4 ؟", a:["50","40","60","25"], c:0},
+{q:"ما هو ناتج 1000 ÷ 10 ؟", a:["100","10","1000","50"], c:0},
+{q:"ما هو باقي قسمة 10 ÷ 3 ؟", a:["1","0","2","3"], c:0},
+{q:"ما هو باقي قسمة 17 ÷ 5 ؟", a:["2","1","3","0"], c:0},
+{q:"ما هو العامل المشترك الأكبر للعددين 12 و 18 ؟", a:["6","3","9","12"], c:0},
+{q:"ما هو المضاعف المشترك الأصغر للعددين 4 و 6 ؟", a:["12","6","24","8"], c:0},
+{q:"ما هو العدد الصحيح الأقرب لـ 3.7 ؟", a:["4","3","5","2"], c:0},
+{q:"ما هو العدد الصحيح الأقرب لـ 2.3 ؟", a:["2","3","1","4"], c:0},
+{q:"ما هو 1/2 بالكسر العشري؟", a:["0.5","0.25","0.2","0.75"], c:0},
+{q:"ما هو 1/4 بالكسر العشري؟", a:["0.25","0.5","0.4","0.2"], c:0},
+{q:"ما هو 3/4 بالكسر العشري؟", a:["0.75","0.5","0.25","0.8"], c:0},
+{q:"ما هو 0.75 بالكسر؟", a:["3/4","1/2","1/4","2/3"], c:0},
+{q:"ما هو ناتج 1.5 + 2.5 ؟", a:["4","3","5","3.5"], c:0},
+{q:"ما هو ناتج 3.2 + 1.8 ؟", a:["5","4","6","4.5"], c:0},
+{q:"ما هو ناتج 10 - 2.5 ؟", a:["7.5","7","8","6.5"], c:0},
+{q:"ما هو ناتج 2 × 0.5 ؟", a:["1","0","2","0.25"], c:0},
+{q:"ما هو ناتج 10 × 0.1 ؟", a:["1","0","10","0.1"], c:0},
+{q:"كم ثانية في الدقيقة؟", a:["60","100","30","120"], c:0},
+{q:"كم دقيقة في الساعة؟", a:["60","100","30","90"], c:0},
+{q:"كم ساعة في اليوم؟", a:["24","12","20","48"], c:0},
+{q:"كم يوم في الأسبوع؟", a:["7","5","6","10"], c:0},
+{q:"كم شهر في السنة؟", a:["12","10","11","13"], c:0},
+{q:"كم يوم في السنة العادية؟", a:["365","360","366","300"], c:0},
+{q:"كم سنتيمتر في المتر؟", a:["100","10","1000","50"], c:0},
+{q:"كم مليمتر في السنتيمتر؟", a:["10","100","1000","1"], c:0},
+{q:"كم جرام في الكيلوجرام؟", a:["1000","100","10","500"], c:0},
+{q:"كم مليلتر في اللتر؟", a:["1000","100","10","500"], c:0},
+{q:"إذا كان مع أحمد 20 جنيه وصرف 7، كم بقي معه؟", a:["13","12","14","27"], c:0},
+{q:"إذا كان ثمن القلم 5 جنيه، كم ثمن 4 أقلام؟", a:["20 جنيه","15","25","10"], c:0},
+{q:"إذا كان ثمن الكتاب 12 جنيه، كم ثمن 3 كتب؟", a:["36 جنيه","24","30","48"], c:0},
+{q:"عمر أحمد 10 سنوات وعمر أخيه ضعف عمره، كم عمر أخيه؟", a:["20","15","5","30"], c:0},
+{q:"إذا كان لديك 3 صناديق في كل صندوق 10 كرات، كم كرة؟", a:["30","13","20","40"], c:0},
+{q:"ما هو ناتج 2 + 3 × 4 ؟", a:["14","20","10","12"], c:0},
+{q:"ما هو ناتج (2 + 3) × 4 ؟", a:["20","14","10","12"], c:0},
+{q:"ما هو ناتج 10 - 2 × 3 ؟", a:["4","24","8","10"], c:0},
+{q:"ما هو ناتج 18 ÷ 2 + 3 ؟", a:["12","9","6","15"], c:0},
+{q:"ما هو ناتج 5² - 5 ؟", a:["20","25","15","10"], c:0},
+{q:"ما هو ناتج 100 ÷ 5 × 2 ؟", a:["40","10","20","50"], c:0},
+{q:"ما هو متوسط الأعداد 4, 6, 8 ؟", a:["6","5","7","18"], c:0},
+{q:"ما هو متوسط الأعداد 10, 20, 30 ؟", a:["20","15","25","60"], c:0},
+{q:"ما هو وسيط الأعداد 1, 3, 9 ؟", a:["3","1","9","5"], c:0},
+{q:"ما هو منوال الأعداد 2, 2, 5, 7 ؟", a:["2","5","7","1"], c:0},
+{q:"ما هو المدى للأعداد 5, 10, 15 ؟", a:["10","5","15","20"], c:0},
+{q:"ما هو العدد السالب الأكبر؟", a:["-1","-5","-10","-100"], c:0},
+{q:"ما هو ناتج (-5) + 5 ؟", a:["0","10","-10","5"], c:0},
+{q:"ما هو ناتج (-3) × (-4) ؟", a:["12","-12","-7","7"], c:0},
+{q:"ما هو ناتج (-8) + (-2) ؟", a:["-10","-6","10","6"], c:0},
+{q:"ما هو ناتج 5 - (-3) ؟", a:["8","2","-8","-2"], c:0},
+{q:"إذا كانت س = 5، ما قيمة 2س + 3 ؟", a:["13","10","12","15"], c:0},
+{q:"إذا كانت س = 3، ما قيمة س² ؟", a:["9","6","12","3"], c:0},
+{q:"إذا كانت س = 4، ما قيمة 3س - 2 ؟", a:["10","12","14","8"], c:0},
+{q:"حل المعادلة: س + 5 = 12، س = ؟", a:["7","5","17","6"], c:0},
+{q:"حل المعادلة: س - 3 = 10، س = ؟", a:["13","7","10","16"], c:0},
+{q:"حل المعادلة: 2س = 16، س = ؟", a:["8","32","14","6"], c:0},
+{q:"حل المعادلة: س ÷ 2 = 9، س = ؟", a:["18","7","11","4.5"], c:0},
+{q:"ما هو ميل الخط المستقيم الأفقي؟", a:["0","1","-1","غير معرف"], c:0},
+{q:"ما هو عدد محاور التماثل للمربع؟", a:["4","2","3","1"], c:0},
+{q:"ما هو عدد محاور التماثل للمثلث المتساوي الأضلاع؟", a:["3","1","2","0"], c:0},
+{q:"ما هو عدد محاور التماثل للدائرة؟", a:["عدد لا نهائي","1","2","4"], c:0},
+{q:"ما هو الشكل الذي له 4 أضلاع متساوية؟", a:["المربع","المستطيل","المثلث","الدائرة"], c:0},
+{q:"ما هو الشكل الذي له 3 أضلاع؟", a:["المثلث","المربع","الدائرة","المستطيل"], c:0},
+{q:"ما هو قطر الدائرة إذا كان نصف قطرها 5؟", a:["10","5","15","20"], c:0},
+{q:"ما هو نصف قطر الدائرة إذا كان قطرها 20؟", a:["10","20","5","40"], c:0},
+{q:"ما هو ناتج 1 + 2 + 3 + 4 + 5 ؟", a:["15","10","14","20"], c:0},
+{q:"ما هو ناتج 10 + 20 + 30 ؟", a:["60","50","70","40"], c:0},
+{q:"ما هو ناتج 100 + 200 + 300 ؟", a:["600","500","700","400"], c:0},
+{q:"ما هو ناتج 50 - 25 - 10 ؟", a:["15","10","20","25"], c:0},
+{q:"ما هو العدد الذي يقبل القسمة على 2 و 3؟", a:["6","5","7","11"], c:0},
+{q:"ما هو العدد الذي يقبل القسمة على 5؟", a:["25","23","27","29"], c:0},
+{q:"ما هو العدد الذي يقبل القسمة على 10؟", a:["100","15","25","35"], c:0},
+{q:"ما هو أصغر عدد أولي؟", a:["2","1","3","0"], c:0},
+{q:"ما هو أكبر عدد أولي أقل من 10؟", a:["7","9","8","5"], c:0},
+{q:"كم عدد الأعداد الأولية أقل من 10؟", a:["4","3","5","6"], c:0},
+{q:"ما هو ناتج 11 × 11 ؟", a:["121","111","110","122"], c:0},
+{q:"ما هو ناتج 13 × 13 ؟", a:["169","139","159","149"], c:0},
+{q:"ما هو ناتج 15 × 15 ؟", a:["225","215","235","200"], c:0},
+{q:"ما هو ناتج 20 × 20 ؟", a:["400","200","300","440"], c:0},
+{q:"ما هو ناتج 2 × 2 × 2 ؟", a:["8","6","4","12"], c:0},
+{q:"ما هو ناتج 5 × 5 × 5 ؟", a:["125","75","100","150"], c:0},
+{q:"ما هو ناتج 100 ÷ 25 ؟", a:["4","5","20","2"], c:0},
+{q:"ما هو ناتج 90 ÷ 9 ؟", a:["10","9","11","8"], c:0},
+{q:"ما هو ناتج 81 ÷ 9 ؟", a:["9","8","10","7"], c:0},
+{q:"ما هو ناتج 72 ÷ 8 ؟", a:["9","8","10","7"], c:0},
+{q:"ما هو ناتج 63 ÷ 7 ؟", a:["9","8","10","7"], c:0},
+{q:"ما هو ناتج 48 ÷ 6 ؟", a:["8","6","7","9"], c:0},
+{q:"ما هو ناتج 7 + 8 ؟", a:["15","14","16","13"], c:0},
+{q:"ما هو ناتج 12 + 18 ؟", a:["30","28","32","29"], c:0},
+{q:"ما هو ناتج 25 + 35 ؟", a:["60","50","70","55"], c:0},
+{q:"ما هو ناتج 45 + 55 ؟", a:["100","90","110","95"], c:0},
+{q:"ما هو ناتج 33 + 27 ؟", a:["60","50","70","55"], c:0},
+{q:"ما هو ناتج 84 - 19 ؟", a:["65","63","67","66"], c:0},
+{q:"ما هو ناتج 90 - 45 ؟", a:["45","40","50","35"], c:0},
+{q:"ما هو ناتج 100 - 64 ؟", a:["36","34","38","40"], c:0},
+{q:"ما هو ناتج 6 × 7 ؟", a:["42","40","44","41"], c:0},
+{q:"ما هو ناتج 8 × 9 ؟", a:["72","70","74","71"], c:0},
+{q:"ما هو ناتج 11 × 6 ؟", a:["66","60","65","68"], c:0},
+{q:"ما هو ناتج 14 × 3 ؟", a:["42","40","44","41"], c:0},
+{q:"ما هو ناتج 16 × 4 ؟", a:["64","60","66","62"], c:0},
+{q:"ما هو ناتج 200 ÷ 5 ؟", a:["40","35","45","50"], c:0},
+{q:"ما هو ناتج 150 ÷ 3 ؟", a:["50","45","55","60"], c:0},
+{q:"ما هو ناتج 120 ÷ 4 ؟", a:["30","25","35","28"], c:0},
+{q:"ما هو ناتج 96 ÷ 8 ؟", a:["12","10","14","11"], c:0},
+{q:"ما هو ناتج 10² ؟", a:["100","10","20","1000"], c:0},
+{q:"ما هو ناتج 4² ؟", a:["16","8","12","20"], c:0},
+{q:"ما هو ناتج 6² ؟", a:["36","30","32","40"], c:0},
+{q:"ما هو ناتج 8² ؟", a:["64","60","66","62"], c:0},
+{q:"ما هو ناتج 9² ؟", a:["81","80","82","79"], c:0},
+{q:"ما هو ناتج √64 ؟", a:["8","6","7","9"], c:0},
+{q:"ما هو ناتج √81 ؟", a:["9","8","10","7"], c:0},
+{q:"ما هو ناتج √100 ؟", a:["10","9","11","8"], c:0},
+{q:"ما هو 20% من 200 ؟", a:["40","30","50","20"], c:0},
+{q:"ما هو 25% من 400 ؟", a:["100","90","110","80"], c:0},
+{q:"ما هو 50% من 90 ؟", a:["45","40","50","35"], c:0},
+{q:"ما هو 75% من 100 ؟", a:["75","70","80","65"], c:0},
+{q:"ما هو ناتج 30 + 40 + 50 ؟", a:["120","110","130","100"], c:0},
+{q:"ما هو ناتج 500 - 250 ؟", a:["250","200","300","150"], c:0},
+{q:"ما هو ناتج 3 × 3 × 3 ؟", a:["27","18","24","30"], c:0},
+{q:"ما هو ناتج 4 × 4 × 4 ؟", a:["64","48","56","60"], c:0}
+];
+let soundOn=true;
+function playCorrect(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o1=ctx.createOscillator(), o2=ctx.createOscillator(), g=ctx.createGain(); o1.type='sine'; o1.frequency.value=523; o2.type='sine'; o2.frequency.value=784; g.gain.value=0.18; o1.connect(g); o2.connect(g); g.connect(ctx.destination); o1.start(); o2.start(ctx.currentTime+0.12); o1.stop(ctx.currentTime+0.15); o2.stop(ctx.currentTime+0.35);}catch(e){} }
+function playWrong(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sawtooth'; o.frequency.value=180; g.gain.value=0.15; o.connect(g); g.connect(ctx.destination); o.start(); o.frequency.setValueAtTime(180,ctx.currentTime); o.frequency.linearRampToValueAtTime(90,ctx.currentTime+0.3); o.stop(ctx.currentTime+0.32);}catch(e){} }
+let order=[],idx=0,score=0,correct=0,locked=false;const $=id=>document.getElementById(id);
+let best=parseInt(localStorage.getItem("math_best")||"0");$("best").textContent=best;$("bestStart").textContent=best;
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
+function show(s){["start","play","result"].forEach(x=>$(x).classList.toggle("hidden",x!==s))}
+function startGame(){order=shuffle(questions);idx=0;score=0;correct=0;show("play");loadQ()}
+function loadQ(){locked=false;const it=order[idx];$("count").textContent=`السؤال ${idx+1} من ${order.length}`;$("score").textContent=score;$("bar").style.width=(idx/order.length*100)+"%";$("question").textContent=it.q;$("feedback").textContent="اختبر معلوماتك! اختر إجابتك!";$("answers").innerHTML="";it.a.forEach((ans,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=ans;b.onclick=()=>choose(i);$("answers").appendChild(b)});$("nextBtn").disabled=true;$("nextBtn").textContent=idx===order.length-1?"عرض النتيجة ←":"السؤال التالي ←"}
+function choose(ch){if(locked)return;locked=true;const it=order[idx];const btns=[...$("answers").children];btns.forEach((b,i)=>{b.disabled=true;if(i===it.c)b.classList.add("correct");else if(i===ch)b.classList.add("wrong")});if(ch===it.c){score+=10;correct++;playCorrect();$("feedback").textContent="✅ إجابة صحيحة! برافو 👏 🔊"}else{playWrong();$("feedback").textContent="❌ إجابة خاطئة 🔊 - الصح: "+it.a[it.c]};$("score").textContent=score;$("nextBtn").disabled=false}
+function next(){if(!locked)return;idx++;if(idx>=order.length){finish();return}loadQ()}
+function finish(){show("result");$("finalScore").textContent=score;$("rightCount").textContent=correct;if(score>best){best=score;localStorage.setItem("math_best",String(best));$("best").textContent=best}let t,m;if(correct>=160){t="عبقري الرياضيات! 🏆";m="انت موسوعة رياضيات! تستحق لقب بطل Ahmed TV."}else if(correct>=120){t="عالم الرياضيات! 🧠";m="أداء ممتاز! قربت من القمة."}else if(correct>=60){t="بداية قوية! 💪";m="عندك أساس كويس، حاول تاني وحطم رقمك."}else{t="التحدي مستمر! 🔥";m="كل محاولة بتزود معلوماتك، العب تاني."}$("resultTitle").textContent=t;$("resultText").textContent=m}
+$("startBtn").onclick=startGame;$("nextBtn").onclick=next;$("againBtn").onclick=startGame;
+$("skipBtn").onclick=function(){ if(idx>=order.length) return; $("feedback").textContent="⏭️ تم التخطي - الصح: "+order[idx].a[order[idx].c]; idx++; if(idx>=order.length){finish();return} setTimeout(loadQ,350); };
+$("soundBtn").onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?"🔊 الصوت: شغال":"🔇 الصوت: مطفي"; this.classList.toggle("off",!soundOn); };
+</script></body></html>
