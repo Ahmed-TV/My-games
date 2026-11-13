@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - الطبيخ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f0f0f;color:#fff;height:100vh;height:100dvh;display:flex;justify-content:center;padding:env(safe-area-inset-top,8px) 10px env(safe-area-inset-bottom,8px) 10px}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border:1px solid #333;border-radius:20px;padding:10px;box-shadow:0 18px 50px #0008;position:relative;overflow:hidden}
+header{text-align:center;padding:6px 0 8px;flex-shrink:0;display:flex;flex-direction:column;align-items:center}
+.logo-img{width:68px;height:68px;border-radius:50%;border:3px solid #e8c66a;object-fit:cover;background:#fff;box-shadow:0 0 15px rgba(232,198,106,.4);margin-bottom:6px}
+.brand{font-size:23px;font-weight:900;margin:2px 0;color:#fff}
+.names{font-size:13px;color:#e8c66a;font-weight:700;margin-bottom:2px}
+.sub{color:#9ee6b7;font-size:12px}
+.panel-container{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.panel{width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-evenly;overflow:hidden;padding:4px}
+.tpline{display:flex;justify-content:space-between;gap:6px;color:#b8cfc1;font-size:12px;margin-bottom:6px}
+.pill{background:#111;border:1px solid #444;padding:5px 9px;border-radius:20px}
+.progress{height:6px;background:#111;border-radius:20px;overflow:hidden;margin:4px 0 8px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#18a66a,#b4ed8a);transition:width .3s}
+.cat{color:#e8c66a;font-weight:800;font-size:12px;margin-bottom:4px;text-align:center}
+.question{font-size:17px;line-height:1.5;margin:6px 0 10px;font-weight:800;text-align:center;min-height:52px;display:flex;align-items:center;justify-content:center}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.answer{font-family:inherit;font-size:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,#1b7049,#10452f);border:1px solid #65bd87;border-radius:12px;padding:12px 6px;min-height:48px;cursor:pointer}
+.answer.correct{background:#176b43;border-color:#9df0b5}
+.answer.wrong{background:#762f35;border-color:#ff9b9b}
+.feedback{min-height:24px;margin:6px 0;line-height:1.4;color:#9ee6b7;font-weight:700;font-size:12px;text-align:center}
+.mainbtn{font-family:inherit;font-weight:800;border:0;border-radius:20px;padding:11px 18px;background:linear-gradient(135deg,#f0d77e,#c49a36);color:#1c210f;cursor:pointer;font-size:14px;width:100%}
+.mainbtn:disabled{opacity:.4}
+.btn-row{display:flex;gap:8px;margin-top:6px}
+.skipbtn{font-family:inherit;font-weight:800;border:1px solid #e8c66a;border-radius:20px;padding:11px 10px;background:#222;color:#e8c66a;cursor:pointer;font-size:14px;flex:1}
+.soundbtn{font-family:inherit;font-weight:800;border:1px solid #444;border-radius:20px;padding:11px 10px;background:#111;color:#fff;cursor:pointer;font-size:14px}
+.soundbtn.off{opacity:.5}
+.start,.result{text-align:center;justify-content:center;gap:10px}
+.start h2,.result h2{font-size:22px;color:#e8c66a}
+.start p,.result p{color:#b8cfc1;line-height:1.6;font-size:13px}
+.stats{display:flex;justify-content:center;gap:8px;margin:10px 0}
+.stat{background:#111;border:1px solid #444;border-radius:12px;padding:9px 10px;min-width:70px;flex:1}
+.stat strong{display:block;color:#e8c66a;font-size:18px;margin-bottom:2px}
+.stat span{font-size:11px}
+.hidden{display:none!important}
+footer{text-align:center;color:#91b09d;font-size:11px;margin-top:4px;flex-shrink:0}
+footer a{color:#e8c66a;text-decoration:none;font-weight:700}
+.watermark{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);font-size:10px;color:#ffffff22;font-weight:900;letter-spacing:2px;pointer-events:none;white-space:nowrap}
+</style></head>
+<body><div class="game">
+<header>
+<img src="../../logo.png" alt="Ahmed TV" class="logo-img">
+<div class="brand">الطبيخ</div>
+<div class="names">أحمد عبدالعزيز • Ahmed TV</div>
+<div class="sub">تحدي الطبيخ • أكلات مصرية وحلويات</div><button class="soundbtn" id="soundBtn" style="margin-top:6px">🔊 الصوت: شغال</button>
+</header>
+<div class="panel-container">
+<section class="panel start" id="start"><h2>هل أنت مستعد للتحدي؟</h2><p>200 سؤال في الطبيخ<br>أكلات مصرية • حلويات • بهارات • مشروبات</p><div class="stats"><div class="stat"><strong>200</strong><span>سؤال</span></div><div class="stat"><strong>6</strong><span>تصنيفات</span></div><div class="stat"><strong id="bestStart">0</strong><span>أفضل نتيجة</span></div></div><button class="mainbtn" id="startBtn">ابدأ التحدي</button></section>
+<section class="panel hidden" id="play"><div class="tpline"><span class="pill" id="count">السؤال 1 من 200</span><span class="pill">النقاط: <b id="score">0</b></span><span class="pill">الأفضل: <b id="best">0</b></span></div><div class="progress"><span id="bar"></span></div><div class="cat" id="cat"></div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><div class="btn-row"><button class="skipbtn" id="skipBtn">تخطي ⏭️</button><button class="mainbtn" id="nextBtn" disabled style="flex:2">السؤال التالي ←</button></div></section>
+<section class="panel result hidden" id="result"><h2 id="resultTitle">أحسنت!</h2><p id="resultText"></p><div class="stats"><div class="stat"><strong id="finalScore">0</strong><span>النقاط</span></div><div class="stat"><strong id="rightCount">0</strong><span>إجابات صحيحة</span></div><div class="stat"><strong>200</strong><span>إجمالي</span></div></div><button class="mainbtn" id="againBtn">العب من جديد</button></section>
+</div><div class="watermark">AHMED TV</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
+<script>
+const questions=[{q:"ما هو المكون الأساسي للعيش؟", a:["الزيت", "السكر", "الملح", "الدقيق"], c:3},
+{q:"ما هو المكون الأساسي للكيك؟", a:["الأرز فقط", "الدقيق والبيض والسكر", "الخضار فقط", "اللحم فقط"], c:1},
+{q:"ما هي أشهر أكلة مصرية؟", a:["البيتزا", "السوشي", "الكشري", "البرجر"], c:2},
+{q:"ما هي مكونات الكشري؟", a:["مكرونة وأرز وعدس وبصل", "سمك فقط", "فراخ فقط", "لحمة فقط"], c:0},
+{q:"ما هو الملوخية؟", a:["حلويات", "أكلة خضراء مصرية", "مشروب", "أكلة سمك"], c:1},
+{q:"ما هو الفتة؟", a:["أكلة عيش وأرز ولحمة", "سلطة", "حلويات", "مشروب"], c:0},
+{q:"ما هي المحشي؟", a:["خضار محشي أرز", "سلطة", "مشروب", "حلويات"], c:0},
+{q:"ما هو ورق العنب؟", a:["سمك", "محشي ورق عنب", "حلويات", "فراخ"], c:1},
+{q:"ما هو البامية؟", a:["خضار", "مشروب", "حلويات", "فاكهة"], c:0},
+{q:"ما هو الفول المدمس؟", a:["أكلة فطور مصرية", "حلويات", "مشروب", "سمك"], c:0},
+{q:"ما هو الطعمية؟", a:["أقراص فول مقلية", "سمك", "حلويات", "مشروب"], c:0},
+{q:"ما هو المسقعة؟", a:["حلويات", "فراخ", "سمك", "باذنجان وبطاطس وصلصة"], c:3},
+{q:"ما هو الكوسة؟", a:["مشروب", "حلويات", "فاكهة", "خضار"], c:3},
+{q:"ما هو الباذنجان؟", a:["مشروب", "خضار", "حلويات", "فاكهة"], c:1},
+{q:"ما هو البطاطس؟", a:["مشروب", "فاكهة", "حلويات", "خضار"], c:3},
+{q:"ما هو الجزر؟", a:["مشروب", "خضار برتقالي", "فاكهة", "حلويات"], c:1},
+{q:"ما هو الخيار؟", a:["مشروب", "حلويات", "فاكهة", "خضار أخضر"], c:3},
+{q:"ما هو الطماطم؟", a:["فاكهة", "مشروب", "خضار أحمر", "حلويات"], c:2},
+{q:"ما هو البصل؟", a:["خضار", "حلويات", "مشروب", "فاكهة"], c:0},
+{q:"ما هو الثوم؟", a:["حلويات", "فاكهة", "مشروب", "خضار"], c:3},
+{q:"ما هو الليمون؟", a:["حلويات", "فاكهة حامضة", "خضار", "مشروب غازي"], c:1},
+{q:"ما هو البرتقال؟", a:["مشروب غازي", "فاكهة", "خضار", "حلويات"], c:1},
+{q:"ما هو الموز؟", a:["مشروب غازي", "خضار", "حلويات", "فاكهة"], c:3},
+{q:"ما هو التفاح؟", a:["فاكهة", "خضار", "حلويات", "مشروب غازي"], c:0},
+{q:"ما هو العنب؟", a:["فاكهة", "خضار", "مشروب غازي", "حلويات"], c:0},
+{q:"ما هو المانجو؟", a:["فاكهة", "مشروب غازي", "خضار", "حلويات"], c:0},
+{q:"ما هو الفراولة؟", a:["مشروب غازي", "فاكهة حمراء", "خضار", "حلويات"], c:1},
+{q:"ما هو البطيخ؟", a:["خضار", "حلويات", "فاكهة صيفية", "مشروب غازي"], c:2},
+{q:"ما هو الأناناس؟", a:["حلويات", "مشروب غازي", "خضار", "فاكهة"], c:3},
+{q:"ما هو الخوخ؟", a:["فاكهة", "حلويات", "خضار", "مشروب غازي"], c:0},
+{q:"ما هو المشمش؟", a:["مشروب غازي", "خضار", "حلويات", "فاكهة"], c:3},
+{q:"ما هو التين؟", a:["فاكهة", "خضار", "حلويات", "مشروب غازي"], c:0},
+{q:"ما هو الرمان؟", a:["خضار", "فاكهة", "حلويات", "مشروب غازي"], c:1},
+{q:"ما هو الجوافة؟", a:["فاكهة", "مشروب غازي", "حلويات", "خضار"], c:0},
+{q:"ما هو الكمثرى؟", a:["فاكهة", "حلويات", "خضار", "مشروب غازي"], c:0},
+{q:"ما هي أشهر حلويات مصرية؟", a:["السوشي", "البيتزا", "البرجر", "أم علي"], c:3},
+{q:"ما هي أم علي؟", a:["سلطة", "أكلة سمك", "حلويات بالحليب والرقاق", "مشروب"], c:2},
+{q:"ما هو الكنافة؟", a:["مشروب", "حلويات شرقية", "سلطة", "أكلة سمك"], c:1},
+{q:"ما هو البسبوسة؟", a:["سلطة", "حلويات بالسميد", "أكلة سمك", "مشروب"], c:1},
+{q:"ما هو القطايف؟", a:["مشروب", "حلويات رمضانية", "أكلة سمك", "سلطة"], c:1},
+{q:"ما هو الجلاش؟", a:["حلويات بالرقاق", "سلطة", "مشروب", "أكلة سمك"], c:0},
+{q:"ما هو الرز بلبن؟", a:["حلويات بالأرز والحليب", "سلطة", "أكلة سمك", "مشروب"], c:0},
+{q:"ما هو المهلبية؟", a:["أكلة سمك", "مشروب", "حلويات بالحليب والنشا", "سلطة"], c:2},
+{q:"ما هو الكريم كراميل؟", a:["مشروب", "أكلة سمك", "سلطة", "حلويات بالبيض والحليب"], c:3},
+{q:"ما هو الجيلي؟", a:["حلويات ملونة", "أكلة سمك", "سلطة", "مشروب"], c:0},
+{q:"ما هو الكاسترد؟", a:["أكلة سمك", "سلطة", "حلويات بالحليب", "مشروب"], c:2},
+{q:"ما هو البيض؟", a:["فاكهة", "مشروب", "خضار", "مصدر بروتين"], c:3},
+{q:"كم بيضة في الطبق عادة؟", a:["30 بيضة", "10 بيضات", "100 بيضة", "5 بيضات"], c:0},
+{q:"ما هو البيض المسلوق؟", a:["بيض مشوي", "بيض مقلي", "بيض ني", "بيض في ماء مغلي"], c:3},
+{q:"ما هو البيض المقلي؟", a:["بيض ني", "بيض في زيت أو سمن", "بيض مشوي", "بيض في ماء"], c:1},
+{q:"ما هو الأومليت؟", a:["بيض ني", "بيض مخفوق مقلي", "بيض مسلوق", "بيض مشوي"], c:1},
+{q:"ما هو الشكشوكة؟", a:["بيض مسلوق", "مشروب", "بيض مع طماطم وفلفل", "حلويات"], c:2},
+{q:"ما هو الفول بالبيض؟", a:["حلويات", "فول مع بيض", "مشروب", "سلطة"], c:1},
+{q:"ما هو الجبن؟", a:["مشروب", "خضار", "فاكهة", "منتج ألبان"], c:3},
+{q:"ما هو الجبن القريش؟", a:["جبن فرنسي", "جبن أمريكي", "جبن مصري", "جبن إيطالي"], c:2},
+{q:"ما هو الجبن الرومي؟", a:["جبن مصري أصفر", "جبن أزرق", "جبن أبيض", "جبن سائل"], c:0},
+{q:"ما هو الزبادي؟", a:["خضار", "فاكهة", "منتج ألبان", "مشروب غازي"], c:2},
+{q:"ما هو اللبن؟", a:["حليب", "ماء", "شاي", "عصير"], c:0},
+{q:"ما هو الحليب؟", a:["ماء", "شاي", "لبن", "عصير"], c:2},
+{q:"ما هو القشطة؟", a:["منتج ألبان", "فاكهة", "مشروب", "خضار"], c:0},
+{q:"ما هو السمن؟", a:["فاكهة", "دهن للطبخ", "خضار", "مشروب"], c:1},
+{q:"ما هو الزبدة؟", a:["فاكهة", "منتج ألبان", "خضار", "مشروب"], c:1},
+{q:"ما هو الزيت؟", a:["مشروب", "دهن للطبخ", "خضار", "فاكهة"], c:1},
+{q:"ما هو زيت الزيتون؟", a:["زيت صحي", "عصير", "ماء", "زيت سيارات"], c:0},
+{q:"ما هو زيت الذرة؟", a:["ماء", "زيت سيارات", "عصير", "زيت طبخ"], c:3},
+{q:"ما هو زيت عباد الشمس؟", a:["زيت سيارات", "زيت طبخ", "ماء", "عصير"], c:1},
+{q:"ما هو الملح؟", a:["فاكهة", "بهار أساسي", "سكر", "خضار"], c:1},
+{q:"ما هو الفلفل الأسود؟", a:["فاكهة", "خضار", "بهار", "مشروب"], c:2},
+{q:"ما هو الكمون؟", a:["بهار", "خضار", "فاكهة", "مشروب"], c:0},
+{q:"ما هو الكركم؟", a:["خضار", "فاكهة", "بهار أصفر", "مشروب"], c:2},
+{q:"ما هو الكزبرة؟", a:["مشروب", "حلويات", "بهار وخضار", "فاكهة"], c:2},
+{q:"ما هو البقدونس؟", a:["فاكهة", "خضار ورقي", "حلويات", "مشروب"], c:1},
+{q:"ما هو الشبت؟", a:["خضار ورقي", "فاكهة", "مشروب", "حلويات"], c:0},
+{q:"ما هو النعناع؟", a:["حلويات", "فاكهة", "خضار ورقي عطري", "مشروب غازي"], c:2},
+{q:"ما هو الريحان؟", a:["مشروب", "حلويات", "خضار ورقي", "فاكهة"], c:2},
+{q:"ما هو الزعتر؟", a:["خضار", "بهار", "فاكهة", "مشروب"], c:1},
+{q:"ما هو القرفة؟", a:["بهار", "فاكهة", "مشروب", "خضار"], c:0},
+{q:"ما هو القرنفل؟", a:["فاكهة", "خضار", "بهار", "مشروب"], c:2},
+{q:"ما هو الحبهان؟", a:["بهار", "فاكهة", "خضار", "مشروب"], c:0},
+{q:"ما هو ورق اللورا؟", a:["بهار", "مشروب", "خضار", "فاكهة"], c:0},
+{q:"ما هو الشطة؟", a:["بهار حار", "فاكهة", "مشروب", "خضار"], c:0},
+{q:"ما هو البابريكا؟", a:["خضار", "فاكهة", "بهار أحمر", "مشروب"], c:2},
+{q:"ما هو الكاري؟", a:["فاكهة", "بهار هندي", "خضار", "مشروب"], c:1},
+{q:"ما هو الزنجبيل؟", a:["بهار وجذر", "فاكهة", "حلويات", "مشروب غازي"], c:0},
+{q:"ما هو السكر؟", a:["مكون للحلويات", "بهار حادق", "فاكهة", "خضار"], c:0},
+{q:"ما هو العسل؟", a:["مُحلي طبيعي", "خضار", "فاكهة", "بهار حادق"], c:0},
+{q:"ما هو الدقيق الأبيض؟", a:["دقيق ذرة", "ملح", "دقيق قمح", "سكر"], c:2},
+{q:"ما هو دقيق الذرة؟", a:["ملح", "دقيق قمح", "سكر", "دقيق أصفر"], c:3},
+{q:"ما هو النشا؟", a:["دقيق", "مكون لتكثيف الصلصات", "سكر", "ملح"], c:1},
+{q:"ما هي الخميرة؟", a:["ملح", "بهار", "سكر", "تخمر العجين"], c:3},
+{q:"ما هو البيكنج بودر؟", a:["بهار", "يرفع الكيك", "سكر", "ملح"], c:1},
+{q:"ما هو البيكنج صودا؟", a:["ملح", "يرفع العجين", "سكر", "بهار"], c:1},
+{q:"ما هو الفانيليا؟", a:["نكهة للحلويات", "خضار", "بهار حادق", "فاكهة"], c:0},
+{q:"ما هو الكاكاو؟", a:["مكون الشوكولاتة", "فاكهة", "مشروب غازي", "خضار"], c:0},
+{q:"ما هي الشوكولاتة؟", a:["خضار", "فاكهة", "حلويات من الكاكاو", "مشروب"], c:2},
+{q:"ما هو النوتيلا؟", a:["شوكولاتة قابلة للدهن", "جبن", "زبدة", "مربى"], c:0},
+{q:"ما هو المربى؟", a:["زبدة", "لحم", "فاكهة وسكر", "جبن"], c:2},
+{q:"ما هو العسل الأسود؟", a:["عسل قصب", "عسل نحل", "سكر", "مربى"], c:0},
+{q:"ما هو الطحينة؟", a:["فول", "عدس", "حمص", "سمسم مطحون"], c:3},
+{q:"ما هو الحمص؟", a:["فاكهة", "حلويات", "خضار", "بقوليات"], c:3},
+{q:"ما هو العدس؟", a:["فاكهة", "بقوليات", "حلويات", "خضار"], c:1},
+{q:"ما هو الفاصوليا؟", a:["خضار", "فاكهة", "حلويات", "بقوليات"], c:3},
+{q:"ما هو اللوبيا؟", a:["خضار", "حلويات", "بقوليات", "فاكهة"], c:2},
+{q:"ما هو الترمس؟", a:["بقوليات", "حلويات", "خضار", "فاكهة"], c:0},
+{q:"ما هو الأرز؟", a:["خضار", "فاكهة", "حبوب", "حلويات"], c:2},
+{q:"ما هو الأرز بالشعرية؟", a:["شعرية فقط", "أرز فقط", "مكرونة", "أرز وشعرية محمرة"], c:3},
+{q:"ما هو الأرز باللبن؟", a:["أكلة سمك", "مشروب", "سلطة", "حلويات"], c:3},
+{q:"ما هي المكرونة؟", a:["عجينة", "أرز", "خبز", "لحم"], c:0},
+{q:"ما هي المكرونة بالبشاميل؟", a:["مكرونة وجبن", "مكرونة وصلصة حمراء", "مكرونة وصلصة بيضاء", "مكرونة فقط"], c:2},
+{q:"ما هو البشاميل؟", a:["صلصة خضراء", "صلصة بيضاء بالحليب", "صلصة صفراء", "صلصة حمراء"], c:1},
+{q:"ما هي الصلصة الحمراء؟", a:["خيار", "فلفل", "جزر", "طماطم"], c:3},
+{q:"ما هي صلصة الطحينة؟", a:["فلفل", "خيار", "طماطم", "طحينة وليمون"], c:3},
+{q:"ما هو التومية؟", a:["صلصة ثوم", "صلصة طماطم", "صلصة جزر", "صلصة خيار"], c:0},
+{q:"ما هو المايونيز؟", a:["صلصة خضراء", "صلصة بيضاء", "صلصة حمراء", "صلصة صفراء"], c:1},
+{q:"ما هو الكاتشب؟", a:["صلصة خيار", "صلصة طماطم", "صلصة ثوم", "صلصة جزر"], c:1},
+{q:"ما هو المستردة؟", a:["صلصة حمراء", "صلصة بيضاء", "صلصة خضراء", "صلصة صفراء"], c:3},
+{q:"ما هي السلطة الخضراء؟", a:["فاكهة فقط", "لحم فقط", "حلويات", "خضار متنوع"], c:3},
+{q:"ما هي سلطة الطحينة؟", a:["طماطم", "طحينة", "خيار", "جزر"], c:1},
+{q:"ما هي سلطة الزبادي؟", a:["زبادي وخيار", "طماطم", "لحم", "حلويات"], c:0},
+{q:"ما هي سلطة الفواكه؟", a:["حلويات", "خضار", "لحم", "فواكه متنوعة"], c:3},
+{q:"ما هو التبولة؟", a:["حلويات", "سلطة لحم", "سلطة برغل وبقدونس", "سلطة فواكه"], c:2},
+{q:"ما هو الفتوش؟", a:["حلويات", "سلطة لحم", "سلطة فواكه", "سلطة خبز وخضار"], c:3},
+{q:"ما هو الحمص بالطحينة؟", a:["حمص وطحينة", "عدس", "لحم", "فول"], c:0},
+{q:"ما هو البابا غنوج؟", a:["جزر", "بطاطس", "خيار", "باذنجان مشوي"], c:3},
+{q:"ما هي الشوربة؟", a:["مشروب", "سلطة", "أكلة سائلة", "حلويات"], c:2},
+{q:"ما هي شوربة العدس؟", a:["فول", "لحم", "حمص", "عدس"], c:3},
+{q:"ما هي شوربة الخضار؟", a:["لحم فقط", "خضار متنوع", "حلويات", "فاكهة"], c:1},
+{q:"ما هي شوربة لسان العصفور؟", a:["لحم", "مكرونة صغيرة", "خبز", "أرز"], c:1},
+{q:"ما هي شوربة الفراخ؟", a:["لحم", "خضار", "سمك", "فراخ"], c:3},
+{q:"ما هو اللحم؟", a:["حلويات", "بروتين حيواني", "فاكهة", "خضار"], c:1},
+{q:"ما هي الكفتة؟", a:["لحم مفروم", "فراخ", "لحم قطع", "سمك"], c:0},
+{q:"ما هو الكباب؟", a:["لحم مسلوق", "سمك", "فراخ", "لحم مشوي"], c:3},
+{q:"ما هو الشاورما؟", a:["سمك", "لحم أو فراخ مشوية", "حلويات", "سلطة"], c:1},
+{q:"ما هو البوفتيك؟", a:["فراخ", "سمك", "لحم مقلي", "لحم مسلوق"], c:2},
+{q:"ما هو الاستيك؟", a:["لحم مسلوق", "سمك", "لحم مشوي", "فراخ"], c:2},
+{q:"ما هي الفراخ؟", a:["خضار", "دجاج", "لحم", "سمك"], c:1},
+{q:"ما هي الفراخ المشوية؟", a:["فراخ في الفرن", "فراخ مقلية", "فراخ مسلوقة", "فراخ نية"], c:0},
+{q:"ما هي الفراخ البانيه؟", a:["فراخ نية", "فراخ مقلية بالبقسماط", "فراخ مشوية", "فراخ مسلوقة"], c:1},
+{q:"ما هو البقسماط؟", a:["دقيق", "ملح", "خبز مطحون", "سكر"], c:2},
+{q:"ما هو الحمام المحشي؟", a:["سمك", "فراخ", "حلويات", "حمام محشي أرز"], c:3},
+{q:"ما هو البط؟", a:["لحم", "خضار", "سمك", "طيور"], c:3},
+{q:"ما هو الوز؟", a:["خضار", "طيور", "لحم", "سمك"], c:1},
+{q:"ما هو السمك؟", a:["خضار", "فراخ", "مأكولات بحرية", "لحم"], c:2},
+{q:"ما هو البلطي؟", a:["سمك مصري", "لحم", "فراخ", "خضار"], c:0},
+{q:"ما هو البوري؟", a:["سمك", "لحم", "فراخ", "خضار"], c:0},
+{q:"ما هو الجمبري؟", a:["سمك", "مأكولات بحرية", "فراخ", "لحم"], c:1},
+{q:"ما هو الكابوريا؟", a:["سمك", "لحم", "مأكولات بحرية", "فراخ"], c:2},
+{q:"ما هو السبيط؟", a:["مأكولات بحرية", "سمك", "لحم", "فراخ"], c:0},
+{q:"ما هو الفسيخ؟", a:["سمك مملح مصري", "فراخ", "لحم", "سمك مشوي"], c:0},
+{q:"ما هو الرنجة؟", a:["سمك مشوي", "لحم", "فراخ", "سمك مدخن"], c:3},
+{q:"ما هو السردين؟", a:["فراخ", "لحم", "سمك صغير", "سمك كبير"], c:2},
+{q:"ما هو التونة؟", a:["فراخ", "لحم", "سمك مشوي", "سمك معلب"], c:3},
+{q:"ما هو السلمون؟", a:["فراخ", "لحم", "خضار", "سمك"], c:3},
+{q:"ما هو صينية البطاطس؟", a:["بطاطس فقط", "بطاطس ولحم وصلصة", "لحم فقط", "صلصة فقط"], c:1},
+{q:"ما هو طاجن البامية؟", a:["بامية فقط", "بطاطس", "بامية ولحم", "لحم فقط"], c:2},
+{q:"ما هو طاجن الفريك؟", a:["خبز", "مكرونة", "فريك ولحم", "أرز"], c:2},
+{q:"ما هو الفريك؟", a:["مكرونة", "أرز", "قمح أخضر", "خبز"], c:2},
+{q:"ما هو البرغل؟", a:["مكرونة", "خبز", "أرز", "قمح مجروش"], c:3},
+{q:"ما هو الكسكسي؟", a:["خبز", "مكرونة", "حبوب", "أرز"], c:2},
+{q:"ما هو العيش البلدي؟", a:["عيش مصري", "عيش فرنسي", "عيش إيطالي", "عيش أمريكي"], c:0},
+{q:"ما هو العيش الفينو؟", a:["عيش طويل", "عيش مصري", "عيش سوري", "عيش مدور"], c:0},
+{q:"ما هو العيش الشامي؟", a:["عيش فرنسي", "عيش مصري", "عيش إيطالي", "عيش أبيض"], c:3},
+{q:"ما هو التوست؟", a:["عيش محمص", "عيش طري", "عيش سوري", "عيش مصري"], c:0},
+{q:"ما هو الفطير المشلتت؟", a:["مشروب", "فطير مصري", "سلطة", "حلويات"], c:1},
+{q:"ما هو القرص؟", a:["سلطة", "حلويات", "مشروب", "مخبوزات"], c:3},
+{q:"ما هو الكحك؟", a:["مشروب", "حلويات رمضان", "حلويات عادية", "حلويات العيد"], c:3},
+{q:"ما هو البيتي فور؟", a:["حلويات العيد", "مشروب", "حلويات عادية", "حلويات رمضان"], c:0},
+{q:"ما هو الغريبة؟", a:["حلويات العيد", "حلويات عادية", "حلويات رمضان", "مشروب"], c:0},
+{q:"ما هو البسكويت؟", a:["حلويات مخبوزة", "سلطة", "أكلة سمك", "مشروب"], c:0},
+{q:"ما هو الكوكيز؟", a:["بسكويت عادي", "مشروب", "حلويات شرقية", "بسكويت بالشوكولاتة"], c:3},
+{q:"ما هو الدونات؟", a:["حلويات مقلية", "حلويات مخبوزة", "حلويات شرقية", "مشروب"], c:0},
+{q:"ما هو الكريب؟", a:["أرز", "خبز", "مكرونة", "عجينة رقيقة"], c:3},
+{q:"ما هو الوافل؟", a:["مشروب", "حلويات مقلية", "حلويات مخبوزة", "حلويات شرقية"], c:2},
+{q:"ما هو البان كيك؟", a:["خبز", "أرز", "فطائر حلوة", "مكرونة"], c:2},
+{q:"ما هو التشيز كيك؟", a:["كيك بالخضار", "كيك بالشوكولاتة", "كيك بالجبن", "كيك بالفواكه"], c:2},
+{q:"ما هو الجاتوه؟", a:["أرز", "كيك", "خبز", "مكرونة"], c:1},
+{q:"ما هو التورتة؟", a:["كيك كبير", "أرز", "خبز", "مكرونة"], c:0},
+{q:"ما هو السويسرول؟", a:["كيك ملفوف", "كيك عادي", "خبز", "مكرونة"], c:0},
+{q:"ما هو الإكلير؟", a:["حلويات فرنسية", "حلويات شرقية", "مشروب", "حلويات مصرية"], c:0},
+{q:"ما هو الميلفيه؟", a:["حلويات فرنسية", "حلويات مصرية", "حلويات شرقية", "مشروب"], c:0},
+{q:"ما هو البودينج؟", a:["حلويات بالفواكه", "حلويات بالشوكولاتة", "حلويات بالحليب", "مشروب"], c:2},
+{q:"ما هو الأيس كريم؟", a:["مثلجات", "مشروب ساخن", "حلويات ساخنة", "سلطة"], c:0},
+{q:"ما هو العصير؟", a:["فاكهة معصورة", "شاي", "ماء", "قهوة"], c:0},
+{q:"ما هو عصير البرتقال؟", a:["موز", "برتقال معصور", "تفاح", "عنب"], c:1},
+{q:"ما هو عصير المانجو؟", a:["تفاح", "موز", "مانجو معصورة", "برتقال"], c:2},
+{q:"ما هو عصير الفراولة؟", a:["فراولة معصورة", "برتقال", "تفاح", "موز"], c:0},
+{q:"ما هو السموذي؟", a:["فواكه مخلوطة", "شاي", "ماء", "قهوة"], c:0},
+{q:"ما هو الشاي؟", a:["مشروب بارد", "حليب", "عصير", "مشروب ساخن"], c:3},
+{q:"ما هو الشاي الأخضر؟", a:["شاي أحمر", "شاي صحي", "قهوة", "عصير"], c:1},
+{q:"ما هو النعناع بالشاي؟", a:["شاي فقط", "نعناع فقط", "شاي ونعناع", "قهوة"], c:2},
+{q:"ما هي القهوة؟", a:["مشروب بارد", "مشروب ساخن", "عصير", "حليب"], c:1},
+{q:"ما هي القهوة التركي؟", a:["قهوة", "حليب", "عصير", "شاي"], c:0},
+{q:"ما هو النسكافيه؟", a:["قهوة سريعة", "شاي", "حليب", "عصير"], c:0},
+{q:"ما هو الكابتشينو؟", a:["عصير", "شاي", "قهوة فقط", "قهوة بالحليب"], c:3},
+{q:"ما هو اللاتيه؟", a:["عصير", "قهوة بالحليب", "قهوة فقط", "شاي"], c:1},
+{q:"ما هو الحلبة؟", a:["قهوة", "شاي", "مشروب مصري", "عصير"], c:2},
+{q:"ما هو اليانسون؟", a:["شاي", "قهوة", "مشروب أعشاب", "عصير"], c:2},
+{q:"ما هو الكركديه؟", a:["عصير", "مشروب أحمر", "شاي", "قهوة"], c:1},
+{q:"ما هو العرقسوس؟", a:["مشروب مصري", "عصير", "قهوة", "شاي"], c:0},
+{q:"ما هو السوبيا؟", a:["عصير", "قهوة", "شاي", "مشروب مصري"], c:3}];
+let soundOn=true;
+function playCorrect(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o1=ctx.createOscillator(), o2=ctx.createOscillator(), g=ctx.createGain(); o1.type='sine'; o1.frequency.value=523; o2.type='sine'; o2.frequency.value=784; g.gain.value=0.18; o1.connect(g); o2.connect(g); g.connect(ctx.destination); o1.start(); o2.start(ctx.currentTime+0.12); o1.stop(ctx.currentTime+0.15); o2.stop(ctx.currentTime+0.35);}catch(e){} }
+function playWrong(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sawtooth'; o.frequency.value=180; g.gain.value=0.15; o.connect(g); g.connect(ctx.destination); o.start(); o.frequency.setValueAtTime(180,ctx.currentTime); o.frequency.linearRampToValueAtTime(90,ctx.currentTime+0.3); o.stop(ctx.currentTime+0.32);}catch(e){} }
+let order=[],idx=0,score=0,correct=0,locked=false;const $=id=>document.getElementById(id);
+let best=parseInt(localStorage.getItem("cooking_best")||"0");$("best").textContent=best;$("bestStart").textContent=best;
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
+function show(s){["start","play","result"].forEach(x=>$(x).classList.toggle("hidden",x!==s))}
+function startGame(){order=shuffle(questions);idx=0;score=0;correct=0;show("play");loadQ()}
+function loadQ(){locked=false;const it=order[idx];$("count").textContent=`السؤال ${idx+1} من ${order.length}`;$("score").textContent=score;$("bar").style.width=(idx/order.length*100)+"%";$("cat").textContent=it.cat;$("question").textContent=it.q;$("feedback").textContent="اختبر معلوماتك! اختر إجابتك!";$("answers").innerHTML="";it.a.forEach((ans,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=ans;b.onclick=()=>choose(i);$("answers").appendChild(b)});$("nextBtn").disabled=true;$("nextBtn").textContent=idx===order.length-1?"عرض النتيجة ←":"السؤال التالي ←"}
+function choose(ch){if(locked)return;locked=true;const it=order[idx];const btns=[...$("answers").children];btns.forEach((b,i)=>{b.disabled=true;if(i===it.c)b.classList.add("correct");else if(i===ch)b.classList.add("wrong")});if(ch===it.c){score+=10;correct++;playCorrect();$("feedback").textContent="✅ إجابة صحيحة! برافو 👏 🔊"}else{playWrong();$("feedback").textContent="❌ إجابة خاطئة 🔊 - الصح: "+it.a[it.c]};$("score").textContent=score;$("nextBtn").disabled=false}
+function next(){if(!locked)return;idx++;if(idx>=order.length){finish();return}loadQ()}
+function finish(){show("result");$("finalScore").textContent=score;$("rightCount").textContent=correct;if(score>best){best=score;localStorage.setItem("cooking_best",String(best));$("best").textContent=best}let t,m;if(correct>=160){t="ست بيت شاطرة! 🏆";m="مستوى رائع جدا! انت بطل Ahmed TV."}else if(correct>=120){t="شيف ممتازة! 🧠";m="أداء ممتاز! قربت من القمة."}else if(correct>=60){t="بداية قوية! 💪";m="عندك أساس كويس، حاول تاني وحطم رقمك."}else{t="التحدي مستمر! 🔥";m="كل محاولة بتقوي معلوماتك، العب تاني."}$("resultTitle").textContent=t;$("resultText").textContent=m}
+$("startBtn").onclick=startGame;$("nextBtn").onclick=next;$("againBtn").onclick=startGame; $("skipBtn").onclick=function(){ if(idx>=order.length) return; $("feedback").textContent="⏭️ تم التخطي - الصح: "+order[idx].a[order[idx].c]; idx++; if(idx>=order.length){finish();return} setTimeout(loadQ,350); }; $("soundBtn").onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?"🔊 الصوت: شغال":"🔇 الصوت: مطفي"; this.classList.toggle("off",!soundOn); };
+</script></body></html>
