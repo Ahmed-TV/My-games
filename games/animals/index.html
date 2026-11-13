@@ -156,12 +156,11 @@ const startBtn = document.getElementById('startBtn');
 let score = 0;
 let best = parseInt(localStorage.getItem('animalsBest') || '0');
 bestEl.textContent = best;
-let audioCtx = null;
-let currentQuestion = 0;
-let isLocked = false;
 let currentAnimal = null;
+let isLocked = false;
+let audioCtx = null;
 
-// قائمة الحيوانات (بيانات)
+// قائمة الحيوانات وروابط الأصوات
 const ANIMALS = [
   { name: 'كلب', emoji: '🐶', sound: 'https://www.soundjay.com/animals/dog-bark-1.mp3' },
   { name: 'قطة', emoji: '🐱', sound: 'https://www.soundjay.com/animals/cat-meow-8.mp3' },
@@ -171,23 +170,23 @@ const ANIMALS = [
   { name: 'ديك', emoji: '🐓', sound: 'https://www.soundjay.com/animals/rooster-crow-1.mp3' }
 ];
 
-// الأصوات
+// دالة تشغيل الصوت
 function playAudio(url) {
   if (!url) return;
   const audio = new Audio(url);
   audio.volume = 0.8;
-  audio.play().catch(e => console.log("الصوت محتاج تفاعل"));
+  audio.play().catch(e => console.log("الصوت محتاج تفاعل من المستخدم"));
 }
 
-// توليد الاختيارات
+// توليد سؤال جديد
 function generateQuestion() {
   isLocked = false;
   optionsBox.innerHTML = '';
   
-  // اختيار حيوان عشوائي يكون هو الصح
+  // اختيار حيوان عشوائي
   currentAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
   
-  // تجهيز الاختيارات (الحيوان الصح + 3 عشوائيين)
+  // تجهيز 4 اختيارات
   let choices = [currentAnimal];
   while(choices.length < 4) {
     let randomAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
@@ -196,10 +195,8 @@ function generateQuestion() {
     }
   }
   
-  // خلط الاختيارات
   choices.sort(() => Math.random() - 0.5);
   
-  // عرض الاختيارات
   choices.forEach(animal => {
     let btn = document.createElement('div');
     btn.className = 'opt-btn';
@@ -211,7 +208,7 @@ function generateQuestion() {
     optionsBox.appendChild(btn);
   });
   
-  // تشغيل صوت الحيوان تلقائياً
+  // هنا بنشغل الصوت
   playAudio(currentAnimal.sound);
 }
 
@@ -221,7 +218,6 @@ function checkAnswer(selectedAnimal, btn) {
   isLocked = true;
   
   if (selectedAnimal.name === currentAnimal.name) {
-    // صح
     btn.classList.add('correct');
     score += 10;
     scoreEl.textContent = score;
@@ -232,23 +228,28 @@ function checkAnswer(selectedAnimal, btn) {
     }
     setTimeout(generateQuestion, 1000);
   } else {
-    // غلط
     btn.classList.add('wrong');
     setTimeout(generateQuestion, 1000);
   }
 }
 
+// بدء اللعبة
 function startGame() {
   score = 0;
   scoreEl.textContent = 0;
   overlay.style.display = 'none';
-  generateQuestion();
+  
+  // تشغيل صوت وهمي عشان المتصفح يسمح بالصوت (حيلة بسيطة)
+  const silentAudio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
+  silentAudio.play().catch(e => {});
+  
+  // تأخير بسيط عشان نضمن إن الصوت اتشغل
+  setTimeout(generateQuestion, 300);
 }
 
+// زرار إعادة الصوت
 playSoundBtn.onclick = () => {
-  if (currentAnimal) {
-    playAudio(currentAnimal.sound);
-  }
+  if (currentAnimal) playAudio(currentAnimal.sound);
 };
 
 startBtn.onclick = startGame;
