@@ -28,6 +28,9 @@
   .opt-btn:active { transform: scale(0.98); }
   .opt-btn.correct { background: #22c55e; border-color: #16a34a; }
   .opt-btn.wrong { background: #ef4444; border-color: #b91c1c; }
+  .skip-wrap { text-align:center; z-index:1; }
+  #skipBtn { background:#334155; color:#fff; border:2px solid #94a3b8; border-radius:10px; padding:10px 20px; font-size:16px; font-weight:900; cursor:pointer; }
+  #skipBtn:active { transform: scale(0.97); }
   .feedback { text-align: center; font-size: 18px; font-weight: bold; height: 25px; z-index: 1; }
   #overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; gap: 10px; z-index: 10; border-radius: 10px; }
   #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
@@ -57,6 +60,7 @@
     <div class="question-box" id="question">...</div>
     <div class="options" id="options"></div>
     <div class="feedback" id="feedback"></div>
+    <div class="skip-wrap"><button id="skipBtn">⏭ تخطي السؤال</button></div>
     <div id="overlay">
       <h2>🏺 أسئلة الفراعنة 🏺</h2>
       <p><b>Ahmed TV</b> - 100 سؤال عن الحضارة الفرعونية!<br>اختبر معرفتك بالفراعنة</p>
@@ -176,6 +180,8 @@ const QUESTIONS = [
   { q: "ما هو اسم الملك الذي بنى معبد الأقصر؟", o: ["أمنحتب الثالث", "خوفو", "رمسيس الثاني", "توت عنخ آمون"], a: 0 },
   { q: "ما هي أول عاصمة لمصر بعد التوحيد؟", o: ["منف", "طيبة", "الإسكندرية", "تل العمارنة"], a: 0 }
 ];
+let currentCorrect = 0;
+function shuffleArray(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function renderQuestion() {
   isLocked = false;
   const q = QUESTIONS[currentRound];
@@ -183,11 +189,13 @@ function renderQuestion() {
   questionEl.textContent = q.q;
   feedbackEl.textContent = '';
   optionsEl.innerHTML = '';
-  q.o.forEach((option, index) => {
+  const order = shuffleArray([0,1,2,3]);
+  currentCorrect = order.indexOf(q.a);
+  order.forEach((origIndex, displayIndex) => {
     const btn = document.createElement('button');
     btn.className = 'opt-btn';
-    btn.textContent = option;
-    btn.onclick = () => checkAnswer(index, btn);
+    btn.textContent = q.o[origIndex];
+    btn.onclick = () => checkAnswer(displayIndex, btn);
     optionsEl.appendChild(btn);
   });
 }
@@ -195,10 +203,17 @@ function checkAnswer(selected, btn) {
   if (isLocked) return; isLocked = true;
   const q = QUESTIONS[currentRound];
   const allBtns = optionsEl.querySelectorAll('.opt-btn');
-  if (selected === q.a) { btn.classList.add('correct'); score += 10; scoreEl.textContent = score; feedbackEl.textContent = "✅ إجابة صحيحة!"; feedbackEl.style.color = "#22c55e"; }
-  else { btn.classList.add('wrong'); allBtns[q.a].classList.add('correct'); feedbackEl.textContent = "❌ الإجابة الصحيحة: " + q.o[q.a]; feedbackEl.style.color = "#ef4444"; }
+  if (selected === currentCorrect) { btn.classList.add('correct'); score += 10; scoreEl.textContent = score; feedbackEl.textContent = "✅ إجابة صحيحة!"; feedbackEl.style.color = "#22c55e"; }
+  else { btn.classList.add('wrong'); allBtns[currentCorrect].classList.add('correct'); feedbackEl.textContent = "❌ الإجابة الصحيحة: " + q.o[QUESTIONS[currentRound].a]; feedbackEl.style.color = "#ef4444"; }
   setTimeout(() => { currentRound++; if (currentRound < QUESTIONS.length) { renderQuestion(); } else { endGame(); } }, 1500);
 }
+function skipQuestion() {
+  if (isLocked) return; isLocked = true;
+  feedbackEl.textContent = "⏭ تم التخطي!";
+  feedbackEl.style.color = "#facc15";
+  setTimeout(() => { currentRound++; if (currentRound < QUESTIONS.length) { renderQuestion(); } else { endGame(); } }, 800);
+}
+document.getElementById('skipBtn').onclick = skipQuestion;
 function endGame() {
   if (score > best) { best = score; localStorage.setItem('pharaohsBest', best); bestEl.textContent = best; }
   overlay.style.display = 'flex';
