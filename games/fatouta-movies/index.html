@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>فوازير فطوطة - أفلام وممثلين | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body { 
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    position: fixed; 
+    width: 100%;
+  }
+  
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
+  }
+
+  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
+  .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 18px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
+  .header-text .names b { color: #facc15; font-size: 13px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 2px 15px; min-width: 80px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: radial-gradient(circle at center, #111827 0%, #000000 100%); /* خلفية سينما */
+    border: 3px solid #facc15; 
+    border-radius: 12px;
+    overflow-y: auto;
+    padding: 15px;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .watermark {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 40px; font-weight: 900;
+    pointer-events: none; z-index: 0; white-space: nowrap;
+    letter-spacing: 2px;
+  }
+
+  .title-box {
+    text-align: center;
+    background: linear-gradient(135deg, #facc15, #f59e0b); /* تدرج ذهبي */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    z-index: 1;
+    text-shadow: 0 0 20px rgba(250, 204, 21, 0.5);
+  }
+
+  .question-box {
+    background: #1f2937;
+    border: 2px solid #facc15;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.6;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+    z-index: 1;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    z-index: 1;
+  }
+
+  .opt-btn {
+    background: #374151;
+    border: 2px solid #facc15;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .opt-btn:hover { background: #4b5563; }
+  .opt-btn:active { transform: scale(0.98); }
+
+  .opt-btn.correct { background: #22c55e; border-color: #16a34a; }
+  .opt-btn.wrong { background: #ef4444; border-color: #b91c1c; }
+
+  .feedback {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    height: 25px;
+    z-index: 1;
+  }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+    border-radius: 10px;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #facc15; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+    <div class="header-text">
+        <h1>فوازير فطوطة - أفلام وممثلين</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="round">1</b><span>الحلقة</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    <div class="title-box">🎬 فوازير فطوطة 🎬</div>
+    
+    <div class="question-box" id="question">...</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div id="overlay">
+      <h2>🎬 فوازير فطوطة 🎬</h2>
+      <p>
+        <b>Ahmed TV</b> - 30 فزورة عن الأفلام والممثلين!<br>
+        اختبر معلوماتك السينمائية
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ الفوازير</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const feedbackEl = document.getElementById('feedback');
+const scoreEl = document.getElementById('score');
+const roundEl = document.getElementById('round');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let score = 0;
+let currentRound = 0;
+let best = parseInt(localStorage.getItem('fatoutaMoviesBest') || '0');
+bestEl.textContent = best;
+let isLocked = false;
+
+// 30 فزورة عن الأفلام والممثلين (بعيد عن الدين)
+const QUESTIONS = [
+  { q: "من هو بطل سلسلة أفلام 'المهمة المستحيلة'؟", o: ["ليوناردو دي كابريو", "توم كروز", "براد بيت", "جوني ديب"], a: 1 },
+  { q: "ما اسم الفيلم الذي فاز بجائزة الأوسكار لأفضل فيلم عام 2020؟", o: ["Joker", "1917", "Parasite", "Once Upon a Time"], a: 2 },
+  { q: "من هو الممثل الذي أدى دور 'الجوكر' في فيلم The Dark Knight؟", o: ["خواكين فينيكس", "هيث ليدجر", "جاريد ليتو", "جاك نيكلسون"], a: 1 },
+  { q: "في أي فيلم قال الممثل 'أنا ملك العالم'؟", o: ["Titanic", "The Wolf of Wall Street", "Inception", "The Revenant"], a: 0 },
+  { q: "من هي الممثلة التي لعبت دور 'هيرميون' في سلسلة هاري بوتر؟", o: ["إيما واتسون", "إيما ستون", "جينيفر لورانس", "سكارليت جوهانسون"], a: 0 },
+  { q: "ما هو الفيلم الذي تدور أحداثه حول حلم الدخول إلى العقول؟", o: ["Interstellar", "Inception", "The Matrix", "Tenet"], a: 1 },
+  { q: "من هو الممثل المصري الملقب بـ 'الزعيم'؟", o: ["أحمد زكي", "عادل إمام", "نور الشريف", "محمود عبد العزيز"], a: 1 },
+  { q: "من هي الممثلة المصرية التي لقبت بـ 'سندريلا الشاشة'؟", o: ["فاتن حمامة", "سعاد حسني", "شادية", "ماجدة"], a: 1 },
+  { q: "ما هو اسم الفيلم المصري الذي تدور قصته حول عائلة تعيش في حي شعبي؟", o: ["الكيت كات", "عسل أسود", "إبراهيم الأبيض", "الجزيرة"], a: 0 },
+  { q: "من هو الممثل الذي جسد شخصية 'توني ستارك' في أفلام مارفل؟", o: ["كريس إيفانز", "روبرت داوني جونيور", "كريس هيمسورث", "مارك رافالو"], a: 1 },
+  { q: "ما هو اسم الفيلم الكرتوني الذي يحكي عن أسد صغير يصبح ملكاً؟", o: ["Aladdin", "Frozen", "The Lion King", "Mulan"], a: 2 },
+  { q: "من هي الممثلة التي لعبت دور 'كابتن مارفل'؟", o: ["بري لارسون", "سكارليت جوهانسون", "غال غادوت", "مارجوت روبي"], a: 0 },
+  { q: "ما هو الفيلم الذي يحكي قصة سفينة غرقت في المحيط؟", o: ["The Perfect Storm", "Titanic", "Life of Pi", "Jaws"], a: 1 },
+  { q: "من هو الممثل المصري الذي اشتهر بأدوار 'الأكشن'؟", o: ["أحمد السقا", "أحمد عز", "كريم عبد العزيز", "كل ما سبق"], a: 3 },
+  { q: "ما هو اسم المسلسل الشهير الذي يحكي عن صراع العروش؟", o: ["Vikings", "Game of Thrones", "The Witcher", "The Crown"], a: 1 },
+  { q: "من هو الممثل الذي لعب دور 'جاك سبارو' في أفلام قراصنة الكاريبي؟", o: ["جوني ديب", "أورلاندو بلوم", "براد بيت", "توم هاردي"], a: 0 },
+  { q: "ما هو الفيلم الذي يحكي قصة عالم رياضيات عبقري؟", o: ["A Beautiful Mind", "Good Will Hunting", "The Imitation Game", "كل ما سبق"], a: 3 },
+  { q: "من هي الممثلة المصرية التي اشتهرت بأدوار 'المرأة القوية'؟", o: ["يسرا", "ليلى علوي", "إلهام شاهين", "كل ما سبق"], a: 3 },
+  { q: "ما هو اسم الفيلم الذي يحكي عن حرب عالمية في المستقبل؟", o: ["Terminator", "The Matrix", "Mad Max", "كل ما سبق"], a: 3 },
+  { q: "من هو المخرج الشهير لفيلم 'Titanic'؟", o: ["ستيفن سبيلبرغ", "جيمس كاميرون", "كريستوفر نولان", "مارتن سكورسيزي"], a: 1 },
+  { q: "ما هو اسم فيلم الأنيميشن الياباني الشهير الذي يحكي عن فتاة تتحول إلى سمكة؟", o: ["Spirited Away", "Ponyo", "My Neighbor Totoro", "Howl's Moving Castle"], a: 1 },
+  { q: "من هو الممثل الذي لعب دور 'الأب' في فيلم The Godfather؟", o: ["أل باتشينو", "مارلون براندو", "روبرت دي نيرو", "جيمس كان"], a: 1 },
+  { q: "ما هو اسم الفيلم الذي يحكي قصة بطل خارق يطير ويرتدي عباءة حمراء؟", o: ["Batman", "Spider-Man", "Superman", "Iron Man"], a: 2 },
+  { q: "من هي الممثلة التي لعبت دور 'ووندر وومان'؟", o: ["غال غادوت", "سكارليت جوهانسون", "بري لارسون", "مارجوت روبي"], a: 0 },
+  { q: "ما هو اسم المسلسل الشهير الذي يحكي عن عصابة تخطط لسرقة؟", o: ["Money Heist", "Breaking Bad", "Peaky Blinders", "Narcos"], a: 0 },
+  { q: "من هو الممثل المصري الذي لعب دور 'الرجل العنكبوت' في النسخة العربية؟", o: ["أحمد حلمي", "محمد هنيدي", "أحمد السقا", "هاني رمزي"], a: 0 },
+  { q: "ما هو اسم الفيلم الذي يحكي عن رحلة إلى الفضاء للبحث عن كوكب جديد؟", o: ["Interstellar", "Gravity", "The Martian", "كل ما سبق"], a: 3 },
+  { q: "من هو الممثل الذي لعب دور 'شارلوك هولمز' في السلسلة الحديثة؟", o: ["روبرت داوني جونيور", "بينديكت كامبرباتش", "جود لو", "كل ما سبق"], a: 3 },
+  { q: "ما هو اسم الفيلم الكرتوني الذي يحكي عن فتاة تعيش في عالم من الثلج؟", o: ["Frozen", "Moana", "Tangled", "Brave"], a: 0 },
+  { q: "من هي الممثلة المصرية التي اشتهرت بأدوار 'الكوميديا'؟", o: ["دنيا سمير غانم", "أمينة خليل", "هند صبري", "منة شلبي"], a: 0 },
+  { q: "ما هو اسم الفيلم الذي يحكي عن حياة عالم فيزياء مشهور؟", o: ["The Theory of Everything", "A Beautiful Mind", "The Imitation Game", "كل ما سبق"], a: 3 }
+];
+
+function renderQuestion() {
+  isLocked = false;
+  const q = QUESTIONS[currentRound];
+  
+  roundEl.textContent = currentRound + 1;
+  questionEl.textContent = q.q;
+  feedbackEl.textContent = '';
+  optionsEl.innerHTML = '';
+
+  q.o.forEach((option, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = option;
+    btn.onclick = () => checkAnswer(index, btn);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected, btn) {
+  if (isLocked) return;
+  isLocked = true;
+
+  const q = QUESTIONS[currentRound];
+  const allBtns = optionsEl.querySelectorAll('.opt-btn');
+
+  if (selected === q.a) {
+    btn.classList.add('correct');
+    score += 10;
+    scoreEl.textContent = score;
+    feedbackEl.textContent = "✅ إجابة صحيحة!";
+    feedbackEl.style.color = "#22c55e";
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.a].classList.add('correct');
+    feedbackEl.textContent = "❌ الإجابة الصحيحة: " + q.o[q.a];
+    feedbackEl.style.color = "#ef4444";
+  }
+
+  setTimeout(() => {
+    currentRound++;
+    if (currentRound < QUESTIONS.length) {
+      renderQuestion();
+    } else {
+      endGame();
+    }
+  }, 1500);
+}
+
+function endGame() {
+  if (score > best) {
+    best = score;
+    localStorage.setItem('fatoutaMoviesBest', best);
+    bestEl.textContent = best;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">🎬</div>
+    <h2>انتهت الفوازير!</h2>
+    <p>جمعت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
+    أعلى نتيجة: ${best}<br>
+    أحمد TV بيقولك: نجم سينما!</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+function startGame() {
+  overlay.style.display = 'none';
+  score = 0;
+  currentRound = 0;
+  scoreEl.textContent = 0;
+  renderQuestion();
+}
+
+startBtn.onclick = startGame;
+</script>
+</body>
+</html>
