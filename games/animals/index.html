@@ -53,7 +53,6 @@
     pointer-events: none; z-index: 0; white-space: nowrap;
   }
 
-  /* صندوق السؤال */
   .question-box {
     background: #0f172a; border-radius: 16px; padding: 20px;
     text-align: center; width: 100%; margin-bottom: 20px;
@@ -69,7 +68,6 @@
   }
   .play-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #1d4ed8; }
 
-  /* الأختيارات */
   .options {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
     width: 100%; z-index: 1;
@@ -160,22 +158,77 @@ let currentAnimal = null;
 let isLocked = false;
 let audioCtx = null;
 
-// قائمة الحيوانات وروابط الأصوات
+// قائمة الحيوانات
 const ANIMALS = [
-  { name: 'كلب', emoji: '🐶', sound: 'https://www.soundjay.com/animals/dog-bark-1.mp3' },
-  { name: 'قطة', emoji: '🐱', sound: 'https://www.soundjay.com/animals/cat-meow-8.mp3' },
-  { name: 'أسد', emoji: '🦁', sound: 'https://www.soundjay.com/animals/lion-roar-1.mp3' },
-  { name: 'بقرة', emoji: '🐮', sound: 'https://www.soundjay.com/animals/cow-moo-1.mp3' },
-  { name: 'خروف', emoji: '🐑', sound: 'https://www.soundjay.com/animals/sheep-baa-1.mp3' },
-  { name: 'ديك', emoji: '🐓', sound: 'https://www.soundjay.com/animals/rooster-crow-1.mp3' }
+  { name: 'كلب', emoji: '🐶', type: 'dog' },
+  { name: 'قطة', emoji: '🐱', type: 'cat' },
+  { name: 'أسد', emoji: '🦁', type: 'lion' },
+  { name: 'بقرة', emoji: '🐮', type: 'cow' },
+  { name: 'خروف', emoji: '🐑', type: 'sheep' },
+  { name: 'ديك', emoji: '🐓', type: 'rooster' }
 ];
 
-// دالة تشغيل الصوت
-function playAudio(url) {
-  if (!url) return;
-  const audio = new Audio(url);
-  audio.volume = 0.8;
-  audio.play().catch(e => console.log("الصوت محتاج تفاعل من المستخدم"));
+// دالة تشغيل الأصوات الداخلية
+function playAnimalSound(type) {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return; }
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+
+  let now = audioCtx.currentTime;
+
+  if (type === 'cat') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, now);
+    osc.frequency.linearRampToValueAtTime(900, now + 0.2);
+    osc.frequency.linearRampToValueAtTime(500, now + 0.4);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.15, now + 0.05);
+    gain.gain.linearRampToValueAtTime(0.1, now + 0.2);
+    gain.gain.linearRampToValueAtTime(0, now + 0.4);
+    osc.start(now); osc.stop(now + 0.4);
+  } else if (type === 'dog') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, now);
+    osc.frequency.exponentialRampToValueAtTime(100, now + 0.2);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+    osc.start(now); osc.stop(now + 0.2);
+  } else if (type === 'lion') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(100, now);
+    osc.frequency.linearRampToValueAtTime(80, now + 0.6);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+    osc.start(now); osc.stop(now + 0.6);
+  } else if (type === 'cow') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(150, now);
+    osc.frequency.linearRampToValueAtTime(130, now + 0.4);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+    osc.start(now); osc.stop(now + 0.4);
+  } else if (type === 'sheep') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(400, now);
+    osc.frequency.linearRampToValueAtTime(500, now + 0.15);
+    osc.frequency.linearRampToValueAtTime(400, now + 0.3);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+    osc.start(now); osc.stop(now + 0.3);
+  } else if (type === 'rooster') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(500, now);
+    osc.frequency.linearRampToValueAtTime(700, now + 0.2);
+    osc.frequency.linearRampToValueAtTime(600, now + 0.4);
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+    osc.start(now); osc.stop(now + 0.4);
+  }
 }
 
 // توليد سؤال جديد
@@ -183,10 +236,8 @@ function generateQuestion() {
   isLocked = false;
   optionsBox.innerHTML = '';
   
-  // اختيار حيوان عشوائي
   currentAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
   
-  // تجهيز 4 اختيارات
   let choices = [currentAnimal];
   while(choices.length < 4) {
     let randomAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
@@ -208,11 +259,10 @@ function generateQuestion() {
     optionsBox.appendChild(btn);
   });
   
-  // هنا بنشغل الصوت
-  playAudio(currentAnimal.sound);
+  // تشغيل الصوت الداخلي
+  playAnimalSound(currentAnimal.type);
 }
 
-// التحقق من الإجابة
 function checkAnswer(selectedAnimal, btn) {
   if (isLocked) return;
   isLocked = true;
@@ -233,23 +283,22 @@ function checkAnswer(selectedAnimal, btn) {
   }
 }
 
-// بدء اللعبة
 function startGame() {
   score = 0;
   scoreEl.textContent = 0;
   overlay.style.display = 'none';
   
-  // تشغيل صوت وهمي عشان المتصفح يسمح بالصوت (حيلة بسيطة)
-  const silentAudio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
-  silentAudio.play().catch(e => {});
+  // تشغيل سياق الصوت
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
   
-  // تأخير بسيط عشان نضمن إن الصوت اتشغل
-  setTimeout(generateQuestion, 300);
+  generateQuestion();
 }
 
-// زرار إعادة الصوت
 playSoundBtn.onclick = () => {
-  if (currentAnimal) playAudio(currentAnimal.sound);
+  if (currentAnimal) playAnimalSound(currentAnimal.type);
 };
 
 startBtn.onclick = startGame;
