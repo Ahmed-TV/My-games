@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>فوازير رمضان - شيريهان | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body { 
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    position: fixed; 
+    width: 100%;
+  }
+  
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
+  }
+
+  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
+  .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 18px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
+  .header-text .names b { color: #facc15; font-size: 13px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 2px 15px; min-width: 80px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: radial-gradient(circle at center, #2a1b10 0%, #0a0a0a 100%);
+    border: 3px solid #f59e0b; border-radius: 12px;
+    overflow-y: auto;
+    padding: 15px;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .watermark {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 40px; font-weight: 900;
+    pointer-events: none; z-index: 0; white-space: nowrap;
+    letter-spacing: 2px;
+  }
+
+  .title-box {
+    text-align: center;
+    background: linear-gradient(135deg, #b45309, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    z-index: 1;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+  }
+
+  .question-box {
+    background: #1e1b4b;
+    border: 2px solid #8b5cf6;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.6;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    z-index: 1;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    z-index: 1;
+  }
+
+  .opt-btn {
+    background: #312e81;
+    border: 2px solid #6366f1;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .opt-btn:hover { background: #4338ca; }
+  .opt-btn:active { transform: scale(0.98); }
+
+  .opt-btn.correct { background: #22c55e; border-color: #16a34a; }
+  .opt-btn.wrong { background: #ef4444; border-color: #b91c1c; }
+
+  .feedback {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    height: 25px;
+    z-index: 1;
+  }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+    border-radius: 10px;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+  }
+  .btn-start:active { transform: scale(0.95); }
+
+  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+    <div class="header-text">
+        <h1>فوازير رمضان - شيريهان</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="round">1</b><span>الحلقة</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    <div class="title-box">🌙 فوازير رمضان 🌙</div>
+    
+    <div class="question-box" id="question">...</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div id="overlay">
+      <h2>🌙 فوازير رمضان 🌙</h2>
+      <p>
+        <b>Ahmed TV</b> - 30 فزورة رمضانية!<br>
+        فزورة كل يوم .. اختبر معلوماتك
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ الفوازير</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const feedbackEl = document.getElementById('feedback');
+const scoreEl = document.getElementById('score');
+const roundEl = document.getElementById('round');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let score = 0;
+let currentRound = 0;
+let best = parseInt(localStorage.getItem('ramadanBest') || '0');
+bestEl.textContent = best;
+let isLocked = false;
+
+// 30 فزورة رمضانية
+const QUESTIONS = [
+  { q: "ما هو الشهر الذي نصوم فيه؟", o: ["شعبان", "رمضان", "محرم", "رجب"], a: 1 },
+  { q: "كم عدد أيام شهر رمضان؟", o: ["28", "29 أو 30", "31", "27"], a: 1 },
+  { q: "ما اسم الوجبة التي نتناولها عند غروب الشمس؟", o: ["السحور", "الإفطار", "الغداء", "العشاء"], a: 1 },
+  { q: "ما اسم الوجبة التي نتناولها قبل الفجر؟", o: ["الإفطار", "الغداء", "السحور", "العشاء"], a: 2 },
+  { q: "كم مرة ذكر شهر رمضان في القرآن الكريم؟", o: ["مرة واحدة", "مرتين", "ثلاث مرات", "لم يذكر"], a: 0 },
+  { q: "ما اسم الليلة التي هي خير من ألف شهر؟", o: ["ليلة القدر", "ليلة الإسراء", "ليلة النصف", "ليلة العيد"], a: 0 },
+  { q: "ما الشهر الذي يسبق شهر رمضان؟", o: ["محرم", "شعبان", "رجب", "صفر"], a: 1 },
+  { q: "ما اسم صلاة القيام في رمضان؟", o: ["التراويح", "الضحى", "الاستخارة", "الشفع"], a: 0 },
+  { q: "ما هي العبادة التي تُضاعف أجرها في رمضان؟", o: ["الصيام فقط", "الزكاة", "قراءة القرآن", "كل ما سبق"], a: 3 },
+  { q: "ما اسم الشراب التقليدي في رمضان؟", o: ["القهوة", "الشاي", "عصير التمر هندي", "الماء"], a: 2 },
+  { q: "ماذا يقال عند الإفطار؟", o: ["بسم الله", "اللهم إني صائم", "ذهب الظمأ", "الحمد لله"], a: 2 },
+  { q: "من هم الذين لا يجب عليهم الصيام؟", o: ["الأطفال", "المسافرون", "المرضى", "كل ما سبق"], a: 3 },
+  { q: "ماذا يسمى من يصوم عن الكلام في الإسلام؟", o: ["الصمت", "الصوم", "الإمساك", "الاعتكاف"], a: 0 },
+  { q: "كم عدد ركعات صلاة التراويح؟", o: ["8 ركعات", "11 ركعة", "20 ركعة", "8 أو 20 ركعة"], a: 3 },
+  { q: "ما هو الشهر الهجري التالي لرمضان؟", o: ["شوال", "ذو الحجة", "محرم", "ذو القعدة"], a: 0 },
+  { q: "ماذا يسمى اليوم الأول من شوال؟", o: ["يوم عرفة", "عيد الفطر", "عيد الأضحى", "يوم الجمعة"], a: 1 },
+  { q: "ما هي ليلة الإسراء والمعراج؟", o: ["27 رجب", "27 رمضان", "15 شعبان", "10 محرم"], a: 0 },
+  { q: "كم عدد أبواب الجنة؟", o: ["7", "8", "9", "5"], a: 1 },
+  { q: "ما اسم الشخص الذي يؤذن للصلاة؟", o: ["الإمام", "المؤذن", "الخطيب", "المقرئ"], a: 1 },
+  { q: "ما هي أول سورة في القرآن الكريم؟", o: ["البقرة", "الفاتحة", "يس", "الكهف"], a: 1 },
+  { q: "من هم الذين يُعطون زكاة الفطر؟", o: ["الفقراء", "المحتاجون", "المساكين", "كل ما سبق"], a: 3 },
+  { q: "ما هو الشهر الذي وقعت فيه غزوة بدر؟", o: ["رمضان", "شعبان", "شوال", "محرم"], a: 0 },
+  { q: "كم مرة يجب على المسلم الصيام في رمضان؟", o: ["مرة", "مرتين", "ثلاث مرات", "حسب الرغبة"], a: 0 },
+  { q: "ما اسم الاعتكاف في المسجد؟", o: ["التطوع", "الاعتكاف", "القيام", "الذكر"], a: 1 },
+  { q: "ما هي أعظم آية في القرآن؟", o: ["آية الكرسي", "آية النور", "آية المواريث", "آية الصبر"], a: 0 },
+  { q: "ما اسم صوت الأذان؟", o: ["الصيحة", "النداء", "الأذان", "الإقامة"], a: 2 },
+  { q: "ما اسم العلم الذي يرفع لبدء الصلاة؟", o: ["العلم", "الراية", "الإقامة", "اللواء"], a: 0 },
+  { q: "ماذا يُقال قبل الأذان عادةً؟", o: ["الصلاة خير من النوم", "الله أكبر", "بسم الله", "الحمد لله"], a: 1 },
+  { q: "ما هو الشهر الذي ولد فيه النبي محمد ﷺ؟", o: ["رمضان", "رجب", "ربيع الأول", "شعبان"], a: 2 },
+  { q: "ما هو الشهر الذي توفي فيه النبي محمد ﷺ؟", o: ["رمضان", "رجب", "ربيع الأول", "شعبان"], a: 2 }
+];
+
+function renderQuestion() {
+  isLocked = false;
+  const q = QUESTIONS[currentRound];
+  
+  roundEl.textContent = currentRound + 1;
+  questionEl.textContent = q.q;
+  feedbackEl.textContent = '';
+  optionsEl.innerHTML = '';
+
+  q.o.forEach((option, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = option;
+    btn.onclick = () => checkAnswer(index, btn);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected, btn) {
+  if (isLocked) return;
+  isLocked = true;
+
+  const q = QUESTIONS[currentRound];
+  const allBtns = optionsEl.querySelectorAll('.opt-btn');
+
+  if (selected === q.a) {
+    btn.classList.add('correct');
+    score += 10;
+    scoreEl.textContent = score;
+    feedbackEl.textContent = "✅ إجابة صحيحة!";
+    feedbackEl.style.color = "#22c55e";
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.a].classList.add('correct');
+    feedbackEl.textContent = "❌ الإجابة الصحيحة: " + q.o[q.a];
+    feedbackEl.style.color = "#ef4444";
+  }
+
+  setTimeout(() => {
+    currentRound++;
+    if (currentRound < QUESTIONS.length) {
+      renderQuestion();
+    } else {
+      endGame();
+    }
+  }, 1500);
+}
+
+function endGame() {
+  if (score > best) {
+    best = score;
+    localStorage.setItem('ramadanBest', best);
+    bestEl.textContent = best;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">🌙</div>
+    <h2>انتهت الفوازير!</h2>
+    <p>جمعت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
+    أعلى نتيجة: ${best}<br>
+    أحمد TV بيقولك: رمضان كريم!</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+function startGame() {
+  overlay.style.display = 'none';
+  score = 0;
+  currentRound = 0;
+  scoreEl.textContent = 0;
+  renderQuestion();
+}
+
+startBtn.onclick = startGame;
+</script>
+</body>
+</html>
