@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة حرب | Ahmed TV</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body { 
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    position: fixed; 
+    width: 100%;
+  }
+  
+  body {
+    font-family: Tahoma, Arial, sans-serif;
+    background: #0f172a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
+  }
+
+  .header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
+  .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 18px; color: #facc15; margin: 0;}
+  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
+  .header-text .names b { color: #facc15; font-size: 13px;}
+
+  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #1e293b; border-radius: 6px; padding: 2px 15px; min-width: 80px; text-align: center; border: 1px solid #334155;}
+  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat span { font-size: 10px; color: #94a3b8; }
+
+  #game-container {
+    width: 100%; max-width: 600px; flex-grow: 1; min-height: 0;
+    position: relative; display: flex; flex-direction: column;
+    background: #1e293b; 
+    border: 3px solid #f59e0b; border-radius: 12px;
+    overflow: hidden;
+    padding: 5px;
+  }
+
+  .watermark {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center; color: rgba(255, 255, 255, 0.1); font-size: 40px; font-weight: 900;
+    pointer-events: none; z-index: 0; white-space: nowrap;
+    letter-spacing: 2px;
+  }
+
+  canvas { 
+    width: 100%; 
+    flex-grow: 1; 
+    display: block; 
+    z-index: 1; 
+    min-height: 0;
+    border-radius: 8px;
+    background: #0f172a; /* خلفية داكنة للحرب */
+    touch-action: none;
+    cursor: crosshair;
+  }
+
+  #overlay {
+    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 15px; gap: 10px; z-index: 10;
+  }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
+  .btn-start {
+    background: #ef4444; color: #fff; border: none; padding: 12px 25px;
+    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
+    width: 80%; max-width: 200px;
+    box-shadow: 0 4px 0 #b91c1c;
+  }
+  .btn-start:active { transform: translateY(4px); box-shadow: 0 0 0 #b91c1c; }
+
+  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer a { color: #facc15; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+    <div class="header-text">
+        <h1>لعبة حرب</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+  </div>
+
+  <div id="game-container">
+    <div class="watermark">Ahmed TV</div>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="overlay">
+      <h2>⚔️ لعبة حرب</h2>
+      <p>
+        <b>Ahmed TV</b> - دمر الأعداء!<br>
+        دوس على الأعداء عشان تفجرهم
+      </p>
+      <button class="btn-start" id="startBtn">▶ ابدأ الحرب</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
+  </div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+let W = 0, H = 0;
+let running = false;
+let score = 0;
+let best = parseInt(localStorage.getItem('warBest') || '0');
+bestEl.textContent = best;
+let audioCtx = null;
+
+let enemies = [];
+let explosions = [];
+let animFrame;
+let spawnInterval;
+let gameSpeed = 1.5;
+
+function initAudio() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playSound(type) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  
+  if (type === 'explosion') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  } else if (type === 'shoot') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  }
+}
+
+function resize() {
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  W = canvas.width;
+  H = canvas.height;
+  if(!running) draw();
+}
+
+function spawnEnemy() {
+  if (!running) return;
+  const size = 40;
+  const x = Math.random() * (W - size);
+  
+  // أنواع الأعداء
+  const types = ['🚁', '✈️', '🚀', '💣', '🛸'];
+  const emoji = types[Math.floor(Math.random() * types.length)];
+  
+  enemies.push({
+    x: x,
+    y: -50,
+    size: size,
+    speed: 1 + Math.random() * 2, // سرعة بطيئة
+    emoji: emoji
+  });
+}
+
+function draw() {
+  // خلفية
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, W, H);
+  
+  // نجوم
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  for(let i=0; i<30; i++){
+      ctx.beginPath();
+      ctx.arc((i*50)%W, (i*80)%H, 2, 0, Math.PI*2);
+      ctx.fill();
+  }
+
+  // الأعداء
+  enemies.forEach(e => {
+    ctx.font = e.size + 'px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(e.emoji, e.x + e.size/2, e.y + e.size/2);
+  });
+
+  // الانفجارات
+  explosions.forEach(ex => {
+    ctx.font = ex.size + 'px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('💥', ex.x, ex.y);
+  });
+}
+
+function update() {
+  if (!running) return;
+
+  // حركة الأعداء
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    let e = enemies[i];
+    e.y += e.speed;
+    
+    // لو العدو وصل لآخر الشاشة
+    if (e.y > H) {
+      enemies.splice(i, 1);
+      // خسارة نقاط (اختياري)
+    }
+  }
+
+  // تحديث الانفجارات
+  for (let i = explosions.length - 1; i >= 0; i--) {
+    explosions[i].size += 5;
+    explosions[i].life--;
+    if (explosions[i].life <= 0) {
+      explosions.splice(i, 1);
+    }
+  }
+
+  draw();
+}
+
+function loop() {
+  update();
+  animFrame = requestAnimationFrame(loop);
+}
+
+function shoot(x, y) {
+  if (!running) return;
+  
+  // دور على عدو في مكان الدوسة
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    let e = enemies[i];
+    if (x > e.x && x < e.x + e.size && y > e.y && y < e.y + e.size) {
+      // تفجير
+      enemies.splice(i, 1);
+      explosions.push({ x: x, y: y, size: 40, life: 10 });
+      score += 10;
+      scoreEl.textContent = score;
+      playSound('explosion');
+      return;
+    }
+  }
+}
+
+function startGame() {
+  initAudio();
+  overlay.style.display = 'none';
+  score = 0;
+  scoreEl.textContent = 0;
+  running = true;
+  enemies = [];
+  explosions = [];
+  
+  // توليد الأعداء
+  if (spawnInterval) clearInterval(spawnInterval);
+  spawnInterval = setInterval(spawnEnemy, 800); // سرعة التوليد
+  
+  loop();
+}
+
+function endGame() {
+  running = false;
+  if (animFrame) cancelAnimationFrame(animFrame);
+  if (spawnInterval) clearInterval(spawnInterval);
+  
+  if (score > best) {
+    best = score;
+    localStorage.setItem('warBest', best);
+    bestEl.textContent = best;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="font-size:35px">💥</div>
+    <h2>انتهت الحرب!</h2>
+    <p>دمرت <b style="color:#facc15;font-size:22px">${score} عدو</b><br>
+    أعلى نتيجة: ${best}</p>
+    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
+  `;
+  document.getElementById('againBtn').onclick = startGame;
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  shoot(e.clientX - rect.left, e.clientY - rect.top);
+  playSound('shoot');
+});
+
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  shoot(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+  playSound('shoot');
+}, { passive: false });
+
+startBtn.onclick = startGame;
+
+window.addEventListener('resize', () => { resize(); if(!running) draw(); });
+
+resize();
+draw();
+
+document.body.addEventListener('touchstart', initAudio, { once: true });
+document.body.addEventListener('click', initAudio, { once: true });
+</script>
+</body>
+</html>
