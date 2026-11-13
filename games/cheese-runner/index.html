@@ -60,11 +60,10 @@
     z-index: 1; 
     min-height: 0;
     border-radius: 8px;
-    background: #fef3c7; /* لون الجبنة */
+    background: #fef3c7; 
     touch-action: none;
   }
 
-  /* أزرار التحكم */
   .controls {
     display: flex; gap: 10px; justify-content: center; padding: 8px 0 0 0;
     z-index: 3; flex-shrink: 0;
@@ -150,11 +149,9 @@ let best = parseInt(localStorage.getItem('cheeseBest') || '0');
 bestEl.textContent = best;
 let audioCtx = null;
 
-// إعدادات اللعبة
-let mouse = { x: 0, y: 0, size: 40, speed: 7 }; // الفأر
-let cheese = { x: 0, y: 0, size: 35 }; // الجبنة
-let cats = []; // القطط
-let gameSpeed = 1.5; // سرعة اللعبة
+let mouse = { x: 0, y: 0, size: 40, speed: 8 };
+let cheese = { x: 0, y: 0, size: 35 };
+let cats = [];
 let moveLeft = false;
 let moveRight = false;
 let spawnTimer = 0;
@@ -199,14 +196,15 @@ function resize() {
   
   if (!running) {
     mouse.x = W / 2 - mouse.size / 2;
-    mouse.y = H - mouse.size - 20;
+    mouse.y = H - mouse.size - 20; // الفأر في الأسفل
     draw();
   }
 }
 
 function spawnCheese() {
+  // هنا التعديل: الجبنة بتظهر على نفس ارتفاع الفأر (عشان يسهل عليه يوصلها)
   cheese.x = Math.random() * (W - cheese.size);
-  cheese.y = Math.random() * (H - cheese.size - 80); // فوق شوية
+  cheese.y = mouse.y + (mouse.size/2) - (cheese.size/2); // نفس المستوى
   draw();
 }
 
@@ -217,16 +215,14 @@ function spawnCat() {
     x: x,
     y: -50,
     size: size,
-    speed: 1 + Math.random() * 1.5 // سرعة بطيئة
+    speed: 1.5 + Math.random() * 1.5 // سرعة القطط
   });
 }
 
 function draw() {
-  // خلفية
-  ctx.fillStyle = '#fef3c7'; // لون الجبنة
+  ctx.fillStyle = '#fef3c7'; 
   ctx.fillRect(0, 0, W, H);
   
-  // شبكة
   ctx.strokeStyle = 'rgba(180, 83, 9, 0.2)';
   for(let i = 0; i < W; i += 40) {
     ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke();
@@ -259,11 +255,9 @@ function draw() {
 function update() {
   if (!running) return;
 
-  // حركة الفأر
   if (moveLeft) mouse.x -= mouse.speed;
   if (moveRight) mouse.x += mouse.speed;
   
-  // حدود الشاشة
   if (mouse.x < 0) mouse.x = 0;
   if (mouse.x + mouse.size > W) mouse.x = W - mouse.size;
 
@@ -297,7 +291,6 @@ function update() {
     }
   }
 
-  // توليد القطط
   spawnTimer++;
   if (spawnTimer > 120) {
     spawnCat();
@@ -349,7 +342,6 @@ function endGame() {
   document.getElementById('againBtn').onclick = startGame;
 }
 
-// التحكم
 leftBtn.addEventListener('mousedown', () => moveLeft = true);
 leftBtn.addEventListener('mouseup', () => moveLeft = false);
 leftBtn.addEventListener('mouseleave', () => moveLeft = false);
