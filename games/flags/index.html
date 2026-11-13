@@ -1,198 +1,122 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Ahmed TV - خمن علم الدولة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>خمن علم الدولة | Ahmed TV</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#03A9F4;font-family:system-ui,Tahoma,Arial;height:100vh;height:100dvh;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:5px}
-.container{width:100%;max-width:450px;height:100%;background:#29B6F6;border-radius:16px;border:3px solid #01579B;overflow:hidden;box-shadow:0 10px 30px rgba(1,87,155,.5);display:flex;flex-direction:column}
-.header{background:linear-gradient(135deg,#29B6F6,#0288D1 50%,#01579B);padding:10px;text-align:center;flex-shrink:0}
-.logo{width:50px;height:50px;margin:0 auto 5px;background:#4FC3F7;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #000;color:#000;font-weight:900;font-size:13px}
-.main-title{color:#000;font-weight:900;font-size:16px}
-.sub-title{color:#000;font-weight:900;font-size:11px;margin-top:4px;background:#4FC3F7;display:inline-block;padding:4px 10px;border-radius:12px;border:2px solid #000}
-.progress{padding:8px 12px;background:#4FC3F7;display:flex;justify-content:space-between;font-size:14px;color:#000;font-weight:900;border-bottom:2px solid #000;border-top:2px solid #000;flex-shrink:0}
-.bar{height:8px;background:#01579B;border-radius:4px;overflow:hidden;border:1px solid #000;margin:0 10px;flex-shrink:0}
-.fill{height:100%;background:#FFEB3B;width:0%;transition:.4s}
-.card{padding:8px;background:#29B6F6;display:flex;flex-direction:column;flex-grow:1;justify-content:space-evenly;overflow:hidden}
-.flag-box{background:#4FC3F7;padding:8px;border-radius:12px;border:3px solid #000;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
-.flag-img{width:100%;max-width:200px;height:auto;max-height:120px;object-fit:contain;border-radius:4px;background:#fff}
-.badge{display:inline-block;background:#000;color:#4FC3F7;font-size:12px;padding:4px 12px;border-radius:10px;margin-bottom:6px;font-weight:900}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;flex-grow:1;align-content:center}
-.opt{background:#4FC3F7;border:2px solid #000;border-radius:10px;padding:10px 4px;text-align:center;font-size:14px;font-weight:900;color:#000;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
-.opt:active{transform:scale(0.97)}
-.correct{background:#1B5E20 !important;color:#fff !important}
-.wrong{background:#b71c1c !important;color:#fff !important}
-.skip-btn{background:#000;color:#4FC3F7;border:2px solid #4FC3F7;padding:8px 20px;border-radius:20px;font-size:14px;font-weight:900;cursor:pointer;width:100%;flex-shrink:0;margin-top:5px}
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; position: fixed; width: 100%; }
+  body { font-family: Tahoma, Arial, sans-serif; background: #0ea5e9; color: #fff; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px; }
+  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
+  .logo-img { width: 130px; height: auto; max-height: 55px; object-fit: contain; border-radius: 10px; }
+  .header-text { text-align: right; }
+  .header-text h1 { font-size: 18px; color: #fff; margin: 0;}
+  .header-text .names { font-size: 11px; color: #e0f2fe; font-weight: bold; margin-top: 2px;}
+  .header-text .names b { color: #fff; font-size: 13px;}
+  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
+  .stat { background: #0369a1; border-radius: 6px; padding: 2px 15px; min-width: 80px; text-align: center; border: 1px solid #38bdf8;}
+  .stat b { display: block; font-size: 18px; color: #fff; }
+  .stat span { font-size: 10px; color: #bae6fd; }
+  #game-container { width: 100%; max-width: 500px; flex-grow: 1; min-height: 0; position: relative; display: flex; flex-direction: column; background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); border: 3px solid #fff; border-radius: 12px; overflow-y: auto; padding: 15px; gap: 15px; justify-content: center; }
+  .title-box { text-align: center; color: #fff; font-size: 26px; font-weight: 900; margin-bottom: 10px; z-index: 1; }
+  .flag-box { background: #fff; border: 3px solid #e0f2fe; border-radius: 15px; padding: 15px; text-align: center; font-size: 110px; line-height: 1.2; z-index: 1; }
+  .question-box { background: #075985; border: 2px solid #fff; border-radius: 15px; padding: 12px; text-align: center; font-size: 19px; font-weight: bold; color: #fff; z-index: 1; }
+  .options { display: grid; grid-template-columns: 1fr; gap: 10px; z-index: 1; }
+  .opt-btn { background: #fff; border: 2px solid #0ea5e9; border-radius: 10px; padding: 15px; font-size: 18px; font-weight: bold; color: #0c4a6e; cursor: pointer; }
+  .opt-btn.correct { background: #22c55e; border-color: #16a34a; color:#fff; }
+  .opt-btn.wrong { background: #ef4444; border-color: #b91c1c; color:#fff; }
+  .skip-wrap { text-align:center; z-index:1; }
+  #skipBtn { background:#334155; color:#fff; border:2px solid #fff; border-radius:10px; padding:10px 20px; font-size:16px; font-weight:900; cursor:pointer; }
+  .feedback { text-align: center; font-size: 18px; font-weight: bold; height: 25px; z-index: 1; }
+  #overlay { position: absolute; inset: 0; background: rgba(2,132,199,0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; gap: 10px; z-index: 10; border-radius: 10px; }
+  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #fff;}
+  #overlay p { line-height: 1.6; font-size: 14px; color: #e0f2fe; margin-bottom: 10px;}
+  .btn-start { background: #fff; color: #0284c7; border: none; padding: 12px 25px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
+  .footer { font-size: 8px; color: #e0f2fe; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer a { color: #fff; text-decoration: none; font-weight:bold; }
 </style>
 </head>
 <body>
-<div class="container">
   <div class="header">
-    <div class="logo">TV<br>AHMED</div>
-    <div class="main-title">خمن الدولة من العلم</div>
-    <div class="sub-title">195 علم - كل دول العالم</div>
+    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+    <div class="header-text">
+        <h1>خمن علم الدولة</h1>
+        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+    </div>
   </div>
-  <div class="progress">
-    <span id="qn">1 / 195</span>
-    <span id="sc">0 نقطة</span>
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
+    <div class="stat"><b id="round">1</b><span>السؤال</span></div>
+    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
   </div>
-  <div class="bar"><div class="fill" id="fill"></div></div>
-  <div class="card">
-    <div style="text-align:center;"><span class="badge">علم رقم <span id="num">1</span></span></div>
-    <div class="flag-box"><img class="flag-img" id="flagImg" src="" alt=""></div>
-    <div class="opts" id="opts"></div>
-    <button onclick="skip()" class="skip-btn">تخطي ⏭</button>
+  <div id="game-container">
+    <div class="title-box">🌍 خمن علم الدولة 🌍</div>
+    <div class="flag-box" id="flag">🌍</div>
+    <div class="question-box">العلم ده بتاع دولة إيه؟</div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="skip-wrap"><button id="skipBtn">⏭ تخطي السؤال</button></div>
+    <div id="overlay">
+      <h2>🌍 خمن علم الدولة 🌍</h2>
+      <p><b>Ahmed TV</b> - 195 علم دولة!<br>خمن العلم ده بتاع أنهي دولة</p>
+      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
+    </div>
   </div>
-</div>
-
+  <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
 <script>
-const qs=[
-{"emoji":"🇪🇬","code":"eg","o":["تونس","مصر","لبنان","سلوفينيا"],"a":1},
-{"emoji":"🇸🇦","code":"sa","o":["ترينيداد وتوباغو","أذربيجان","السعودية","غينيا بيساو"],"a":2},
-{"emoji":"🇦🇪","code":"ae","o":["ليختنشتاين","الإمارات","العراق","سيراليون"],"a":1},
-{"emoji":"🇶🇦","code":"qa","o":["موناكو","بيلاروسيا","قطر","روسيا"],"a":2},
-{"emoji":"🇰🇼","code":"kw","o":["السويد","الكويت","كرواتيا","فلسطين"],"a":1},
-{"emoji":"🇧🇭","code":"bh","o":["سلوفينيا","ترينيداد وتوباغو","البحرين","الإمارات"],"a":2},
-{"emoji":"🇴🇲","code":"om","o":["سيشل","لاوس","فانواتو","عمان"],"a":3},
-{"emoji":"🇾🇪","code":"ye","o":["النيجر","الفاتيكان","اليمن","سانت لوسيا"],"a":2},
-{"emoji":"🇯🇴","code":"jo","o":["الأردن","المجر","بريطانيا","هندوراس"],"a":0},
-{"emoji":"🇱🇧","code":"lb","o":["لبنان","ليتوانيا","السويد","الفلبين"],"a":0},
-{"emoji":"🇸🇾","code":"sy","o":["ساحل العاج","سوريا","إندونيسيا","الهند"],"a":1},
-{"emoji":"🇮🇶","code":"iq","o":["لاتفيا","ساموا","العراق","آيسلندا"],"a":2},
-{"emoji":"🇵🇸","code":"ps","o":["إيطاليا","فلسطين","أمريكا","سان مارينو"],"a":1},
-{"emoji":"🇲🇦","code":"ma","o":["كيريباتي","بلجيكا","كينيا","المغرب"],"a":3},
-{"emoji":"🇩🇿","code":"dz","o":["تشاد","سيراليون","الجزائر","إندونيسيا"],"a":2},
-{"emoji":"🇹🇳","code":"tn","o":["هندوراس","أوكرانيا","تونس","هايتي"],"a":2},
-{"emoji":"🇱🇾","code":"ly","o":["الفاتيكان","فنزويلا","غيانا","ليبيا"],"a":3},
-{"emoji":"🇸🇩","code":"sd","o":["اليمن","أيرلندا","بوتسوانا","السودان"],"a":3},
-{"emoji":"🇺🇸","code":"us","o":["أمريكا","الغابون","لبنان","إيران"],"a":0},
-{"emoji":"🇨🇦","code":"ca","o":["لبنان","بوركينا فاسو","سان مارينو","كندا"],"a":3},
-{"emoji":"🇧🇷","code":"br","o":["أرمينيا","البرازيل","غامبيا","هندوراس"],"a":1},
-{"emoji":"🇦🇷","code":"ar","o":["جورجيا","بوتان","الأرجنتين","غينيا الاستوائية"],"a":2},
-{"emoji":"🇲🇽","code":"mx","o":["ميكرونيزيا","اليونان","المكسيك","أندورا"],"a":2},
-{"emoji":"🇬🇧","code":"gb","o":["بريطانيا","جزر القمر","بوروندي","تايلاند"],"a":0},
-{"emoji":"🇫🇷","code":"fr","o":["بريطانيا","أيرلندا","الهند","فرنسا"],"a":3},
-{"emoji":"🇩🇪","code":"de","o":["البحرين","جامايكا","الجبل الأسود","ألمانيا"],"a":3},
-{"emoji":"🇮🇹","code":"it","o":["نيبال","قبرص","كيريباتي","إيطاليا"],"a":3},
-{"emoji":"🇪🇸","code":"es","o":["أمريكا","إسبانيا","التشيك","ليختنشتاين"],"a":1},
-{"emoji":"🇹🇷","code":"tr","o":["أستراليا","تركيا","الدنمارك","إيران"],"a":1},
-{"emoji":"🇷🇺","code":"ru","o":["بنين","ساحل العاج","روسيا","ميكرونيزيا"],"a":2},
-{"emoji":"🇯🇵","code":"jp","o":["الهند","اليابان","مقدونيا","الرأس الأخضر"],"a":1},
-{"emoji":"🇨🇳","code":"cn","o":["الصين","تيمور الشرقية","غينيا بيساو","ألبانيا"],"a":0},
-{"emoji":"🇮🇳","code":"in","o":["روسيا","باراغواي","الصين","الهند"],"a":3},
-{"emoji":"🇦🇺","code":"au","o":["الأرجنتين","تشيلي","غيانا","أستراليا"],"a":3},
-{"emoji":"🇵🇹","code":"pt","o":["بيرو","باربادوس","البرتغال","السويد"],"a":2},
-{"emoji":"🇳🇱","code":"nl","o":["السودان","هولندا","ساحل العاج","إستونيا"],"a":1},
-{"emoji":"🇧🇪","code":"be","o":["أستراليا","الباهاما","بلجيكا","أوروغواي"],"a":2},
-{"emoji":"🇨🇭","code":"ch","o":["زيمبابوي","ليبيا","سويسرا","سريلانكا"],"a":2},
-{"emoji":"🇸🇪","code":"se","o":["كينيا","السويد","إيطاليا","الجبل الأسود"],"a":1},
-{"emoji":"🇳🇴","code":"no","o":["النرويج","النيجر","الهند","تنزانيا"],"a":0},
-{"emoji":"🇩🇰","code":"dk","o":["الدنمارك","غينيا الاستوائية","إثيوبيا","الغابون"],"a":0},
-{"emoji":"🇬🇷","code":"gr","o":["الهند","بوتان","الجزائر","اليونان"],"a":3},
-{"emoji":"🇺🇦","code":"ua","o":["ليبيا","الباهاما","اليونان","أوكرانيا"],"a":3},
-{"emoji":"🇨🇱","code":"cl","o":["تشيلي","كوريا الشمالية","السنغال","توغو"],"a":0},
-{"emoji":"🇨🇴","code":"co","o":["كولومبيا","لاوس","أوزبكستان","اليمن"],"a":0},
-{"emoji":"🇵🇪","code":"pe","o":["لبنان","آيسلندا","بيرو","كوبا"],"a":2},
-{"emoji":"🇵🇭","code":"ph","o":["الفلبين","أذربيجان","الكونغو الديمقراطية","سورينام"],"a":0},
-{"emoji":"🇧🇿","code":"bz","o":["بليز","هونج كونج","بوتسوانا","سلوفينيا"],"a":0},
-{"emoji":"🇮🇸","code":"is","o":["الجبل الأسود","سيراليون","الرأس الأخضر","آيسلندا"],"a":3},
-{"emoji":"🇻🇦","code":"va","o":["نيكاراغوا","فانواتو","سيشل","الفاتيكان"],"a":3},
-{"emoji":"🇲🇲","code":"mm","o":["ميانمار","بوليفيا","الرأس الأخضر","سيراليون"],"a":0},
-{"emoji":"🇨🇿","code":"cz","o":["جورجيا","سوريا","التشيك","بولندا"],"a":2},
-{"emoji":"🇵🇼","code":"pw","o":["بالاو","تشاد","سيشل","ليبيريا"],"a":0},
-{"emoji":"🇧🇮","code":"bi","o":["بوروندي","النيجر","ترينيداد وتوباغو","فرنسا"],"a":0},
-{"emoji":"🇹🇲","code":"tm","o":["أوزبكستان","مقدونيا","رومانيا","تركمانستان"],"a":3},
-{"emoji":"🇱🇦","code":"la","o":["لاوس","بيلاروسيا","بنما","نيبال"],"a":0},
-{"emoji":"🇨🇻","code":"cv","o":["الرأس الأخضر","السودان","قطر","سلوفاكيا"],"a":0},
-{"emoji":"🇸🇴","code":"so","o":["ميانمار","السودان","الصومال","ميكرونيزيا"],"a":2},
-{"emoji":"🇵🇦","code":"pa","o":["بنما","ماليزيا","ليختنشتاين","فرنسا"],"a":0},
-{"emoji":"🇲🇩","code":"md","o":["فلسطين","باكستان","مولدوفا","كوبا"],"a":2},
-{"emoji":"🇲🇿","code":"mz","o":["سريلانكا","السنغال","أستراليا","موزمبيق"],"a":3},
-{"emoji":"🇧🇩","code":"bd","o":["آيسلندا","أفريقيا الوسطى","بنما","بنغلاديش"],"a":3},
-{"emoji":"🇦🇫","code":"af","o":["ميكرونيزيا","إسواتيني","قبرص","أفغانستان"],"a":3},
-{"emoji":"🇸🇷","code":"sr","o":["بابوا غينيا الجديدة","موريشيوس","سورينام","تركيا"],"a":2},
-{"emoji":"🇲🇨","code":"mc","o":["السنغال","مالطا","ألمانيا","موناكو"],"a":3},
-{"emoji":"🇫🇲","code":"fm","o":["تايوان","فرنسا","موزمبيق","ميكرونيزيا"],"a":3},
-{"emoji":"🇫🇮","code":"fi","o":["أذربيجان","أندورا","إيران","فنلندا"],"a":3},
-{"emoji":"🇲🇻","code":"mv","o":["إيطاليا","الدومينيكان","المالديف","جزر مارشال"],"a":2},
-{"emoji":"🇪🇷","code":"er","o":["بروناي","ساموا","إريتريا","صربيا"],"a":2},
-{"emoji":"🇩🇯","code":"dj","o":["فنلندا","الصومال","عمان","جيبوتي"],"a":3},
-{"emoji":"🇱🇹","code":"lt","o":["ليتوانيا","الكاميرون","لاتفيا","بوتسوانا"],"a":0},
-{"emoji":"🇯🇲","code":"jm","o":["جامايكا","تشاد","تونغا","أنتيغوا وباربودا"],"a":0},
-{"emoji":"🇸🇰","code":"sk","o":["الإكوادور","أيرلندا","البرتغال","سلوفاكيا"],"a":3},
-{"emoji":"🇿🇼","code":"zw","o":["هندوراس","البرازيل","البوسنة","زيمبابوي"],"a":3},
-{"emoji":"🇬🇹","code":"gt","o":["جزر سليمان","بروناي","فلسطين","غواتيمالا"],"a":3},
-{"emoji":"🇹🇹","code":"tt","o":["الدنمارك","سلوفينيا","الدومينيكان","ترينيداد وتوباغو"],"a":3},
-{"emoji":"🇰🇪","code":"ke","o":["بوتسوانا","رومانيا","كينيا","كولومبيا"],"a":2},
-{"emoji":"🇨🇫","code":"cf","o":["كازاخستان","بابوا غينيا الجديدة","جامايكا","أفريقيا الوسطى"],"a":3},
-{"emoji":"🇧🇳","code":"bn","o":["باكستان","ماليزيا","ناورو","بروناي"],"a":3},
-{"emoji":"🇻🇳","code":"vn","o":["فيتنام","دومينيكا","الدنمارك","غواتيمالا"],"a":0},
-{"emoji":"🇱🇷","code":"lr","o":["جيبوتي","إسواتيني","ليبيريا","تركمانستان"],"a":2},
-{"emoji":"🇳🇦","code":"na","o":["أرمينيا","كوريا الجنوبية","ناميبيا","سريلانكا"],"a":2},
-{"emoji":"🇵🇬","code":"pg","o":["بوليفيا","بابوا غينيا الجديدة","إندونيسيا","بليز"],"a":1},
-{"emoji":"🇸🇧","code":"sb","o":["جزر سليمان","قيرغيزستان","البوسنة","اليونان"],"a":0},
-{"emoji":"🇸🇱","code":"sl","o":["السعودية","بوتان","سيراليون","المالديف"],"a":2},
-{"emoji":"🇨🇬","code":"cg","o":["الكونغو","نيبال","البحرين","آيسلندا"],"a":0},
-{"emoji":"🇰🇵","code":"kp","o":["كوريا الشمالية","تيمور الشرقية","بنغلاديش","أفريقيا الوسطى"],"a":0},
-{"emoji":"🇹🇱","code":"tl","o":["ليتوانيا","نيجيريا","بريطانيا","تيمور الشرقية"],"a":3},
-{"emoji":"🇺🇾","code":"uy","o":["ميكرونيزيا","أوروغواي","قبرص","تشاد"],"a":1},
-{"emoji":"🇵🇾","code":"py","o":["طاجيكستان","بوليفيا","باراغواي","فيجي"],"a":2},
-{"emoji":"🇹🇴","code":"to","o":["بالاو","البوسنة","تونغا","ليختنشتاين"],"a":2},
-{"emoji":"🇧🇬","code":"bg","o":["بلغاريا","ميكرونيزيا","سانت فنسنت","المالديف"],"a":0},
-{"emoji":"🇬🇳","code":"gn","o":["غينيا","ليسوتو","رومانيا","بنين"],"a":0},
-{"emoji":"🇸🇲","code":"sm","o":["سان مارينو","موريشيوس","المكسيك","المالديف"],"a":0},
-{"emoji":"🇷🇴","code":"ro","o":["جامايكا","جزر مارشال","رومانيا","كوريا الجنوبية"],"a":2},
-{"emoji":"🇧🇼","code":"bw","o":["بوليفيا","بوروندي","بوتسوانا","السودان"],"a":2},
-{"emoji":"🇲🇭","code":"mh","o":["الكاميرون","ليبيا","غرينادا","جزر مارشال"],"a":3}
+const flagEl=document.getElementById('flag');
+const optionsEl=document.getElementById('options');
+const feedbackEl=document.getElementById('feedback');
+const scoreEl=document.getElementById('score');
+const roundEl=document.getElementById('round');
+const bestEl=document.getElementById('best');
+const overlay=document.getElementById('overlay');
+const startBtn=document.getElementById('startBtn');
+let score=0; let currentRound=0; let best=parseInt(localStorage.getItem('flagsBest')||'0'); bestEl.textContent=best; let isLocked=false;
+const ALL=[
+  { f: "🇪🇬", n: "مصر" }, { f: "🇸🇦", n: "السعودية" }, { f: "🇦🇪", n: "الإمارات" }, { f: "🇶🇦", n: "قطر" }, { f: "🇰🇼", n: "الكويت" }, { f: "🇧🇭", n: "البحرين" }, { f: "🇴🇲", n: "عمان" }, { f: "🇯🇴", n: "الأردن" }, { f: "🇱🇧", n: "لبنان" }, { f: "🇸🇾", n: "سوريا" }, { f: "🇮🇶", n: "العراق" }, { f: "🇾🇪", n: "اليمن" }, { f: "🇱🇾", n: "ليبيا" }, { f: "🇹🇳", n: "تونس" }, { f: "🇩🇿", n: "الجزائر" }, { f: "🇲🇦", n: "المغرب" }, { f: "🇲🇷", n: "موريتانيا" }, { f: "🇸🇩", n: "السودان" }, { f: "🇸🇸", n: "جنوب السودان" }, { f: "🇸🇴", n: "الصومال" }, { f: "🇩🇯", n: "جيبوتي" }, { f: "🇵🇸", n: "فلسطين" }, { f: "🇹🇷", n: "تركيا" }, { f: "🇮🇷", n: "إيران" }, { f: "🇦🇫", n: "أفغانستان" }, { f: "🇵🇰", n: "باكستان" }, { f: "🇮🇳", n: "الهند" }, { f: "🇧🇩", n: "بنغلاديش" }, { f: "🇳🇵", n: "نيبال" }, { f: "🇱🇰", n: "سريلانكا" }, { f: "🇧🇹", n: "بوتان" }, { f: "🇲🇻", n: "المالديف" }, { f: "🇲🇲", n: "ميانمار" }, { f: "🇹🇭", n: "تايلاند" }, { f: "🇱🇦", n: "لاوس" }, { f: "🇻🇳", n: "فيتنام" }, { f: "🇰🇭", n: "كمبوديا" }, { f: "🇲🇾", n: "ماليزيا" }, { f: "🇸🇬", n: "سنغافورة" }, { f: "🇮🇩", n: "إندونيسيا" }, { f: "🇵🇭", n: "الفلبين" }, { f: "🇧🇳", n: "بروناي" }, { f: "🇹🇱", n: "تيمور الشرقية" }, { f: "🇨🇳", n: "الصين" }, { f: "🇯🇵", n: "اليابان" }, { f: "🇰🇷", n: "كوريا الجنوبية" }, { f: "🇰🇵", n: "كوريا الشمالية" }, { f: "🇲🇳", n: "منغوليا" }, { f: "🇹🇼", n: "تايوان" }, { f: "🇰🇿", n: "كازاخستان" }, { f: "🇺🇿", n: "أوزبكستان" }, { f: "🇹🇲", n: "تركمانستان" }, { f: "🇹🇯", n: "طاجيكستان" }, { f: "🇰🇬", n: "قرغيزستان" }, { f: "🇦🇿", n: "أذربيجان" }, { f: "🇦🇲", n: "أرمينيا" }, { f: "🇬🇪", n: "جورجيا" }, { f: "🇷🇺", n: "روسيا" }, { f: "🇺🇦", n: "أوكرانيا" }, { f: "🇧🇾", n: "بيلاروسيا" }, { f: "🇲🇩", n: "مولدوفا" }, { f: "🇵🇱", n: "بولندا" }, { f: "🇩🇪", n: "ألمانيا" }, { f: "🇫🇷", n: "فرنسا" }, { f: "🇬🇧", n: "بريطانيا" }, { f: "🇮🇪", n: "أيرلندا" }, { f: "🇮🇸", n: "أيسلندا" }, { f: "🇳🇴", n: "النرويج" }, { f: "🇸🇪", n: "السويد" }, { f: "🇫🇮", n: "فنلندا" }, { f: "🇩🇰", n: "الدنمارك" }, { f: "🇳🇱", n: "هولندا" }, { f: "🇧🇪", n: "بلجيكا" }, { f: "🇱🇺", n: "لوكسمبورج" }, { f: "🇨🇭", n: "سويسرا" }, { f: "🇦🇹", n: "النمسا" }, { f: "🇮🇹", n: "إيطاليا" }, { f: "🇪🇸", n: "إسبانيا" }, { f: "🇵🇹", n: "البرتغال" }, { f: "🇬🇷", n: "اليونان" }, { f: "🇨🇾", n: "قبرص" }, { f: "🇲🇹", n: "مالطا" }, { f: "🇨🇿", n: "التشيك" }, { f: "🇸🇰", n: "سلوفاكيا" }, { f: "🇭🇺", n: "المجر" }, { f: "🇷🇴", n: "رومانيا" }, { f: "🇧🇬", n: "بلغاريا" }, { f: "🇭🇷", n: "كرواتيا" }, { f: "🇸🇮", n: "سلوفينيا" }, { f: "🇧🇦", n: "البوسنة" }, { f: "🇷🇸", n: "صربيا" }, { f: "🇲🇪", n: "الجبل الأسود" }, { f: "🇦🇱", n: "ألبانيا" }, { f: "🇲🇰", n: "مقدونيا الشمالية" }, { f: "🇽🇰", n: "كوسوفو" }, { f: "🇱🇹", n: "ليتوانيا" }, { f: "🇱🇻", n: "لاتفيا" }, { f: "🇪🇪", n: "إستونيا" }, { f: "🇺🇸", n: "أمريكا" }, { f: "🇨🇦", n: "كندا" }, { f: "🇲🇽", n: "المكسيك" }, { f: "🇬🇹", n: "جواتيمالا" }, { f: "🇧🇿", n: "بليز" }, { f: "🇭🇳", n: "هندوراس" }, { f: "🇸🇻", n: "السلفادور" }, { f: "🇳🇮", n: "نيكاراجوا" }, { f: "🇨🇷", n: "كوستاريكا" }, { f: "🇵🇦", n: "بنما" }, { f: "🇨🇺", n: "كوبا" }, { f: "🇯🇲", n: "جامايكا" }, { f: "🇭🇹", n: "هايتي" }, { f: "🇩🇴", n: "الدومينيكان" }, { f: "🇧🇸", n: "جزر الباهاما" }, { f: "🇧🇧", n: "بربادوس" }, { f: "🇹🇹", n: "ترينيداد وتوباجو" }, { f: "🇬🇩", n: "جرينادا" }, { f: "🇱🇨", n: "سانت لوسيا" }, { f: "🇻🇨", n: "سانت فنسنت" }, { f: "🇦🇬", n: "أنتيغوا" }, { f: "🇩🇲", n: "دومينيكا" }, { f: "🇰🇳", n: "سانت كيتس" }, { f: "🇧🇷", n: "البرازيل" }, { f: "🇦🇷", n: "الأرجنتين" }, { f: "🇨🇱", n: "تشيلي" }, { f: "🇵🇪", n: "بيرو" }, { f: "🇨🇴", n: "كولومبيا" }, { f: "🇻🇪", n: "فنزويلا" }, { f: "🇪🇨", n: "الإكوادور" }, { f: "🇧🇴", n: "بوليفيا" }, { f: "🇵🇾", n: "باراجواي" }, { f: "🇺🇾", n: "أوروجواي" }, { f: "🇬🇾", n: "جيانا" }, { f: "🇸🇷", n: "سورينام" }, { f: "🇳🇬", n: "نيجيريا" }, { f: "🇬🇭", n: "غانا" }, { f: "🇨🇮", n: "ساحل العاج" }, { f: "🇸🇳", n: "السنغال" }, { f: "🇲🇱", n: "مالي" }, { f: "🇬🇳", n: "غينيا" }, { f: "🇬🇼", n: "غينيا بيساو" }, { f: "🇸🇱", n: "سيراليون" }, { f: "🇱🇷", n: "ليبيريا" }, { f: "🇧🇫", n: "بوركينا فاسو" }, { f: "🇳🇪", n: "النيجر" }, { f: "🇹🇬", n: "توجو" }, { f: "🇧🇯", n: "بنين" }, { f: "🇨🇲", n: "الكاميرون" }, { f: "🇹🇩", n: "تشاد" }, { f: "🇨🇫", n: "أفريقيا الوسطى" }, { f: "🇨🇬", n: "الكونغو" }, { f: "🇨🇩", n: "الكونغو الديمقراطية" }, { f: "🇬🇦", n: "الجابون" }, { f: "🇬🇶", n: "غينيا الاستوائية" }, { f: "🇦🇴", n: "أنجولا" }, { f: "🇿🇲", n: "زامبيا" }, { f: "🇿🇼", n: "زيمبابوي" }, { f: "🇳🇦", n: "ناميبيا" }, { f: "🇧🇼", n: "بوتسوانا" }, { f: "🇿🇦", n: "جنوب أفريقيا" }, { f: "🇱🇸", n: "ليسوتو" }, { f: "🇸🇿", n: "إسواتيني" }, { f: "🇲🇿", n: "موزمبيق" }, { f: "🇲🇬", n: "مدغشقر" }, { f: "🇲🇺", n: "موريشيوس" }, { f: "🇸🇨", n: "سيشل" }, { f: "🇰🇲", n: "جزر القمر" }, { f: "🇹🇿", n: "تنزانيا" }, { f: "🇰🇪", n: "كينيا" }, { f: "🇺🇬", n: "أوغندا" }, { f: "🇷🇼", n: "رواندا" }, { f: "🇧🇮", n: "بوروندي" }, { f: "🇪🇹", n: "إثيوبيا" }, { f: "🇪🇷", n: "إريتريا" }, { f: "🇦🇺", n: "أستراليا" }, { f: "🇳🇿", n: "نيوزيلندا" }, { f: "🇫🇯", n: "فيجي" }, { f: "🇵🇬", n: "بابوا غينيا الجديدة" }, { f: "🇼🇸", n: "ساموا" }, { f: "🇹🇴", n: "تونجا" }, { f: "🇻🇺", n: "فانواتو" }, { f: "🇸🇧", n: "جزر سليمان" }, { f: "🇰🇮", n: "كيريباتي" }, { f: "🇹🇻", n: "توفالو" }, { f: "🇳🇷", n: "ناورو" }, { f: "🇵🇼", n: "بالاو" }, { f: "🇫🇲", n: "ميكرونيسيا" }, { f: "🇲🇭", n: "جزر مارشال" }, { f: "🇻🇦", n: "الفاتيكان" }, { f: "🇸🇲", n: "سان مارينو" }, { f: "🇦🇩", n: "أندورا" }, { f: "🇱🇮", n: "ليختنشتاين" }, { f: "🇲🇨", n: "موناكو" }, { f: "🇭🇰", n: "هونج كونج" }, { f: "🇵🇷", n: "بورتوريكو" }, { f: "🇬🇱", n: "جرينلاند" }
 ];
-
-let idx=0,score=0,lock=false;
-const optsEl=document.getElementById("opts");
-
-function render(){
-  if(idx>=qs.length) return endGame();
-  const cur=qs[idx];
-  document.getElementById("flagImg").src="https://flagcdn.com/w320/"+cur.code+".png";
-  document.getElementById("num").textContent=idx+1;
-  document.getElementById("qn").textContent=(idx+1)+" / "+qs.length;
-  document.getElementById("sc").textContent=score+" نقطة";
-  document.getElementById("fill").style.width=(idx/qs.length*100)+"%";
-  
-  optsEl.innerHTML="";
-  lock=false;
-  
-  cur.o.forEach((t,i)=>{
-    const b=document.createElement("button");
-    b.className="opt";
-    b.textContent=t;
-    b.onclick=()=>{
-      if(lock)return;
-      lock=true;
-      if(i===cur.a){
-        b.classList.add("correct");
-        score+=10;
-      }else{
-        b.classList.add("wrong");
-        optsEl.children[cur.a].classList.add("correct");
-      }
-      setTimeout(()=>{idx++;render();},800);
-    };
-    optsEl.appendChild(b);
+let QUESTIONS=[...ALL];
+function shuffleArray(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+let currentCorrect=0;
+function renderQuestion(){
+  isLocked=false;
+  const q=QUESTIONS[currentRound];
+  roundEl.textContent=currentRound+1;
+  flagEl.textContent=q.f;
+  feedbackEl.textContent='';
+  optionsEl.innerHTML='';
+  let wrongs=shuffleArray(ALL.filter(x=>x.n!==q.n)).slice(0,3);
+  let currentOptions=shuffleArray([q,...wrongs]);
+  currentCorrect=currentOptions.findIndex(x=>x.n===q.n);
+  currentOptions.forEach((opt,idx)=>{
+    const btn=document.createElement('button'); btn.className='opt-btn'; btn.textContent=opt.n;
+    btn.onclick=()=>checkAnswer(idx,btn); optionsEl.appendChild(btn);
   });
 }
-
-function skip(){ idx++; if(idx<qs.length)render(); else endGame(); }
-
-function endGame(){
-  optsEl.innerHTML="<button class='opt' style='grid-column: span 2; background:#000; color:#4FC3F7;' onclick='location.reload()'>العب تاني 🔄</button>";
-  document.getElementById("flagImg").style.display="none";
-  document.querySelector(".badge").style.display="none";
-  document.querySelector(".skip-btn").style.display="none";
-  document.getElementById("sc").textContent="النتيجة: "+score;
+function checkAnswer(selected,btn){
+  if(isLocked) return; isLocked=true;
+  const q=QUESTIONS[currentRound];
+  const allBtns=optionsEl.querySelectorAll('.opt-btn');
+  if(selected===currentCorrect){ btn.classList.add('correct'); score+=10; scoreEl.textContent=score; feedbackEl.textContent="✅ صح! دي "+q.n; feedbackEl.style.color="#fff"; }
+  else{ btn.classList.add('wrong'); allBtns[currentCorrect].classList.add('correct'); feedbackEl.textContent="❌ دي "+q.n; feedbackEl.style.color="#fff"; }
+  setTimeout(()=>{ currentRound++; if(currentRound<QUESTIONS.length) renderQuestion(); else endGame(); },1500);
 }
-render();
+function skipQuestion(){
+  if(isLocked) return; isLocked=true;
+  feedbackEl.textContent="⏭ تم التخطي! دي "+QUESTIONS[currentRound].n;
+  setTimeout(()=>{ currentRound++; if(currentRound<QUESTIONS.length) renderQuestion(); else endGame(); },900);
+}
+document.getElementById('skipBtn').onclick=skipQuestion;
+function endGame(){
+  if(score>best){ best=score; localStorage.setItem('flagsBest',best); bestEl.textContent=best; }
+  overlay.style.display='flex';
+  overlay.innerHTML=`<div style="font-size:50px">🌍</div><h2>خلصت أعلام الدول!</h2><p>جمعت <b style="color:#fff;font-size:22px">${score} نقطة</b><br>أعلى نتيجة: ${best}<br>أحمد TV بيقولك: انت خبير جغرافيا!</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;
+  document.getElementById('againBtn').onclick=startGame;
+}
+function startGame(){ overlay.style.display='none'; score=0; currentRound=0; scoreEl.textContent=0; const seen=new Set(); QUESTIONS=shuffleArray([...ALL]).filter(x=>{ if(seen.has(x.n)) return false; seen.add(x.n); return true; }); renderQuestion(); }
+startBtn.onclick=startGame;
 </script>
 </body>
 </html>
