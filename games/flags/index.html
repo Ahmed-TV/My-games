@@ -6,34 +6,34 @@
 <title>خمن علم الدولة | Ahmed TV</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100vh; height: 100dvh; overflow: hidden; position: fixed; width: 100%; }
-  body { font-family: Tahoma, Arial, sans-serif; background: #0ea5e9; color: #fff; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px; }
-  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
-  .logo-img { width: 130px; height: auto; max-height: 55px; object-fit: contain; border-radius: 10px; }
-  .header-text { text-align: right; }
-  .header-text h1 { font-size: 18px; color: #fff; margin: 0;}
+  html, body { height: 100vh; height: 100dvh; overflow: hidden; position: fixed; width: 100%; background: #38bdf8; }
+  body { font-family: Tahoma, Arial, sans-serif; background: #38bdf8; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px; overflow: hidden; }
+  .header { background: #38bdf8; width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex-shrink: 0; padding-bottom: 5px; text-align:center;}
+  .logo-img { width: 68px; height: 68px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; box-shadow: 0 0 15px rgba(255,255,255,0.6); background:#fff; }
+  .header-text { text-align: center; }
+  .header-text h1 { font-size: 16px; color: #fff; margin: 0;}
   .header-text .names { font-size: 11px; color: #e0f2fe; font-weight: bold; margin-top: 2px;}
   .header-text .names b { color: #fff; font-size: 13px;}
-  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
-  .stat { background: #0369a1; border-radius: 6px; padding: 2px 15px; min-width: 80px; text-align: center; border: 1px solid #38bdf8;}
-  .stat b { display: block; font-size: 18px; color: #fff; }
-  .stat span { font-size: 10px; color: #bae6fd; }
-  #game-container { width: 100%; max-width: 500px; flex-grow: 1; min-height: 0; position: relative; display: flex; flex-direction: column; background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); border: 3px solid #fff; border-radius: 12px; overflow-y: auto; padding: 15px; gap: 15px; justify-content: center; }
-  .title-box { text-align: center; color: #fff; font-size: 26px; font-weight: 900; margin-bottom: 10px; z-index: 1; }
-  .flag-box { background: #fff; border: 3px solid #e0f2fe; border-radius: 15px; padding: 15px; text-align: center; font-size: 110px; line-height: 1.2; z-index: 1; }
-  .question-box { background: #075985; border: 2px solid #fff; border-radius: 15px; padding: 12px; text-align: center; font-size: 19px; font-weight: bold; color: #fff; z-index: 1; }
-  .options { display: grid; grid-template-columns: 1fr; gap: 10px; z-index: 1; }
-  .opt-btn { background: #fff; border: 2px solid #0ea5e9; border-radius: 10px; padding: 15px; font-size: 18px; font-weight: bold; color: #0c4a6e; cursor: pointer; }
+  .progress-wrap { width: 100%; max-width: 500px; margin-bottom: 6px; }
+  .progress-text { text-align: center; font-size: 13px; font-weight: 900; color: #fff; margin-bottom: 3px; }
+  .progress-bar { width: 100%; height: 12px; background: #7dd3fc; border-radius: 20px; overflow: hidden; border: 1px solid #fff; }
+  .progress-fill { height: 100%; width: 0%; background: #fff; border-radius: 20px; transition: width 0.3s; }
+  #game-container { width: 100%; max-width: 500px; flex: 1; min-height: 0; position: relative; display: flex; flex-direction: column; background: #ffffff; border: 3px solid #38bdf8; border-radius: 14px; overflow: hidden; padding: 10px; gap: 8px; justify-content: center; }
+  .title-box { text-align: center; color: #0284c7; font-size: 22px; font-weight: 900; margin-bottom: 10px; z-index: 1; }
+  .flag-box { background: #ffffff; border: 2px solid #e2e8f0; border-radius: 14px; padding: 6px; text-align: center; font-size: 78px; line-height: 1.2; z-index: 1; }
+  .question-box { background: #0284c7; border: 2px solid #0284c7; border-radius: 12px; padding: 8px; text-align: center; font-size: 19px; font-weight: bold; color: #fff; z-index: 1; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; z-index: 1; }
+  .opt-btn { background: #fff; border: 2px solid #0ea5e9; border-radius: 12px; padding: 14px 6px; font-size: 16px; font-weight: bold; color: #0284c7; cursor: pointer; min-height: 55px; }
   .opt-btn.correct { background: #22c55e; border-color: #16a34a; color:#fff; }
   .opt-btn.wrong { background: #ef4444; border-color: #b91c1c; color:#fff; }
   .skip-wrap { text-align:center; z-index:1; }
-  #skipBtn { background:#334155; color:#fff; border:2px solid #fff; border-radius:10px; padding:10px 20px; font-size:16px; font-weight:900; cursor:pointer; }
+  #skipBtn { background:#0284c7; color:#fff; border:2px solid #fff; border-radius:10px; padding:10px 20px; font-size:16px; font-weight:900; cursor:pointer; }
   .feedback { text-align: center; font-size: 18px; font-weight: bold; height: 25px; z-index: 1; }
-  #overlay { position: absolute; inset: 0; background: rgba(2,132,199,0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; gap: 10px; z-index: 10; border-radius: 10px; }
+  #overlay { position: absolute; inset: 0; background: #38bdf8; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; gap: 10px; z-index: 10; border-radius: 10px; }
   #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #fff;}
   #overlay p { line-height: 1.6; font-size: 14px; color: #e0f2fe; margin-bottom: 10px;}
   .btn-start { background: #fff; color: #0284c7; border: none; padding: 12px 25px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
-  .footer { font-size: 8px; color: #e0f2fe; text-align: center; flex-shrink: 0; margin-top: 2px;}
+  .footer { background: #38bdf8; font-size: 8px; color: #e0f2fe; text-align: center; flex-shrink: 0; margin-top: 1px;}
   .footer a { color: #fff; text-decoration: none; font-weight:bold; }
 </style>
 </head>
@@ -45,10 +45,10 @@
         <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
     </div>
   </div>
-  <div class="stats">
-    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
-    <div class="stat"><b id="round">1</b><span>السؤال</span></div>
-    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+  <div style="display:none"><b id="score">0</b><b id="round">1</b><b id="best">0</b></div>
+  <div class="progress-wrap">
+    <div class="progress-text" id="progressText">السؤال 1 من 195</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   </div>
   <div id="game-container">
     <div class="title-box">🌍 خمن علم الدولة 🌍</div>
@@ -75,7 +75,7 @@ const overlay=document.getElementById('overlay');
 const startBtn=document.getElementById('startBtn');
 let score=0; let currentRound=0; let best=parseInt(localStorage.getItem('flagsBest')||'0'); bestEl.textContent=best; let isLocked=false;
 const ALL=[
-  { f: "🇪🇬", n: "مصر" }, { f: "🇸🇦", n: "السعودية" }, { f: "🇦🇪", n: "الإمارات" }, { f: "🇶🇦", n: "قطر" }, { f: "🇰🇼", n: "الكويت" }, { f: "🇧🇭", n: "البحرين" }, { f: "🇴🇲", n: "عمان" }, { f: "🇯🇴", n: "الأردن" }, { f: "🇱🇧", n: "لبنان" }, { f: "🇸🇾", n: "سوريا" }, { f: "🇮🇶", n: "العراق" }, { f: "🇾🇪", n: "اليمن" }, { f: "🇱🇾", n: "ليبيا" }, { f: "🇹🇳", n: "تونس" }, { f: "🇩🇿", n: "الجزائر" }, { f: "🇲🇦", n: "المغرب" }, { f: "🇲🇷", n: "موريتانيا" }, { f: "🇸🇩", n: "السودان" }, { f: "🇸🇸", n: "جنوب السودان" }, { f: "🇸🇴", n: "الصومال" }, { f: "🇩🇯", n: "جيبوتي" }, { f: "🇵🇸", n: "فلسطين" }, { f: "🇹🇷", n: "تركيا" }, { f: "🇮🇷", n: "إيران" }, { f: "🇦🇫", n: "أفغانستان" }, { f: "🇵🇰", n: "باكستان" }, { f: "🇮🇳", n: "الهند" }, { f: "🇧🇩", n: "بنغلاديش" }, { f: "🇳🇵", n: "نيبال" }, { f: "🇱🇰", n: "سريلانكا" }, { f: "🇧🇹", n: "بوتان" }, { f: "🇲🇻", n: "المالديف" }, { f: "🇲🇲", n: "ميانمار" }, { f: "🇹🇭", n: "تايلاند" }, { f: "🇱🇦", n: "لاوس" }, { f: "🇻🇳", n: "فيتنام" }, { f: "🇰🇭", n: "كمبوديا" }, { f: "🇲🇾", n: "ماليزيا" }, { f: "🇸🇬", n: "سنغافورة" }, { f: "🇮🇩", n: "إندونيسيا" }, { f: "🇵🇭", n: "الفلبين" }, { f: "🇧🇳", n: "بروناي" }, { f: "🇹🇱", n: "تيمور الشرقية" }, { f: "🇨🇳", n: "الصين" }, { f: "🇯🇵", n: "اليابان" }, { f: "🇰🇷", n: "كوريا الجنوبية" }, { f: "🇰🇵", n: "كوريا الشمالية" }, { f: "🇲🇳", n: "منغوليا" }, { f: "🇹🇼", n: "تايوان" }, { f: "🇰🇿", n: "كازاخستان" }, { f: "🇺🇿", n: "أوزبكستان" }, { f: "🇹🇲", n: "تركمانستان" }, { f: "🇹🇯", n: "طاجيكستان" }, { f: "🇰🇬", n: "قرغيزستان" }, { f: "🇦🇿", n: "أذربيجان" }, { f: "🇦🇲", n: "أرمينيا" }, { f: "🇬🇪", n: "جورجيا" }, { f: "🇷🇺", n: "روسيا" }, { f: "🇺🇦", n: "أوكرانيا" }, { f: "🇧🇾", n: "بيلاروسيا" }, { f: "🇲🇩", n: "مولدوفا" }, { f: "🇵🇱", n: "بولندا" }, { f: "🇩🇪", n: "ألمانيا" }, { f: "🇫🇷", n: "فرنسا" }, { f: "🇬🇧", n: "بريطانيا" }, { f: "🇮🇪", n: "أيرلندا" }, { f: "🇮🇸", n: "أيسلندا" }, { f: "🇳🇴", n: "النرويج" }, { f: "🇸🇪", n: "السويد" }, { f: "🇫🇮", n: "فنلندا" }, { f: "🇩🇰", n: "الدنمارك" }, { f: "🇳🇱", n: "هولندا" }, { f: "🇧🇪", n: "بلجيكا" }, { f: "🇱🇺", n: "لوكسمبورج" }, { f: "🇨🇭", n: "سويسرا" }, { f: "🇦🇹", n: "النمسا" }, { f: "🇮🇹", n: "إيطاليا" }, { f: "🇪🇸", n: "إسبانيا" }, { f: "🇵🇹", n: "البرتغال" }, { f: "🇬🇷", n: "اليونان" }, { f: "🇨🇾", n: "قبرص" }, { f: "🇲🇹", n: "مالطا" }, { f: "🇨🇿", n: "التشيك" }, { f: "🇸🇰", n: "سلوفاكيا" }, { f: "🇭🇺", n: "المجر" }, { f: "🇷🇴", n: "رومانيا" }, { f: "🇧🇬", n: "بلغاريا" }, { f: "🇭🇷", n: "كرواتيا" }, { f: "🇸🇮", n: "سلوفينيا" }, { f: "🇧🇦", n: "البوسنة" }, { f: "🇷🇸", n: "صربيا" }, { f: "🇲🇪", n: "الجبل الأسود" }, { f: "🇦🇱", n: "ألبانيا" }, { f: "🇲🇰", n: "مقدونيا الشمالية" }, { f: "🇽🇰", n: "كوسوفو" }, { f: "🇱🇹", n: "ليتوانيا" }, { f: "🇱🇻", n: "لاتفيا" }, { f: "🇪🇪", n: "إستونيا" }, { f: "🇺🇸", n: "أمريكا" }, { f: "🇨🇦", n: "كندا" }, { f: "🇲🇽", n: "المكسيك" }, { f: "🇬🇹", n: "جواتيمالا" }, { f: "🇧🇿", n: "بليز" }, { f: "🇭🇳", n: "هندوراس" }, { f: "🇸🇻", n: "السلفادور" }, { f: "🇳🇮", n: "نيكاراجوا" }, { f: "🇨🇷", n: "كوستاريكا" }, { f: "🇵🇦", n: "بنما" }, { f: "🇨🇺", n: "كوبا" }, { f: "🇯🇲", n: "جامايكا" }, { f: "🇭🇹", n: "هايتي" }, { f: "🇩🇴", n: "الدومينيكان" }, { f: "🇧🇸", n: "جزر الباهاما" }, { f: "🇧🇧", n: "بربادوس" }, { f: "🇹🇹", n: "ترينيداد وتوباجو" }, { f: "🇬🇩", n: "جرينادا" }, { f: "🇱🇨", n: "سانت لوسيا" }, { f: "🇻🇨", n: "سانت فنسنت" }, { f: "🇦🇬", n: "أنتيغوا" }, { f: "🇩🇲", n: "دومينيكا" }, { f: "🇰🇳", n: "سانت كيتس" }, { f: "🇧🇷", n: "البرازيل" }, { f: "🇦🇷", n: "الأرجنتين" }, { f: "🇨🇱", n: "تشيلي" }, { f: "🇵🇪", n: "بيرو" }, { f: "🇨🇴", n: "كولومبيا" }, { f: "🇻🇪", n: "فنزويلا" }, { f: "🇪🇨", n: "الإكوادور" }, { f: "🇧🇴", n: "بوليفيا" }, { f: "🇵🇾", n: "باراجواي" }, { f: "🇺🇾", n: "أوروجواي" }, { f: "🇬🇾", n: "جيانا" }, { f: "🇸🇷", n: "سورينام" }, { f: "🇳🇬", n: "نيجيريا" }, { f: "🇬🇭", n: "غانا" }, { f: "🇨🇮", n: "ساحل العاج" }, { f: "🇸🇳", n: "السنغال" }, { f: "🇲🇱", n: "مالي" }, { f: "🇬🇳", n: "غينيا" }, { f: "🇬🇼", n: "غينيا بيساو" }, { f: "🇸🇱", n: "سيراليون" }, { f: "🇱🇷", n: "ليبيريا" }, { f: "🇧🇫", n: "بوركينا فاسو" }, { f: "🇳🇪", n: "النيجر" }, { f: "🇹🇬", n: "توجو" }, { f: "🇧🇯", n: "بنين" }, { f: "🇨🇲", n: "الكاميرون" }, { f: "🇹🇩", n: "تشاد" }, { f: "🇨🇫", n: "أفريقيا الوسطى" }, { f: "🇨🇬", n: "الكونغو" }, { f: "🇨🇩", n: "الكونغو الديمقراطية" }, { f: "🇬🇦", n: "الجابون" }, { f: "🇬🇶", n: "غينيا الاستوائية" }, { f: "🇦🇴", n: "أنجولا" }, { f: "🇿🇲", n: "زامبيا" }, { f: "🇿🇼", n: "زيمبابوي" }, { f: "🇳🇦", n: "ناميبيا" }, { f: "🇧🇼", n: "بوتسوانا" }, { f: "🇿🇦", n: "جنوب أفريقيا" }, { f: "🇱🇸", n: "ليسوتو" }, { f: "🇸🇿", n: "إسواتيني" }, { f: "🇲🇿", n: "موزمبيق" }, { f: "🇲🇬", n: "مدغشقر" }, { f: "🇲🇺", n: "موريشيوس" }, { f: "🇸🇨", n: "سيشل" }, { f: "🇰🇲", n: "جزر القمر" }, { f: "🇹🇿", n: "تنزانيا" }, { f: "🇰🇪", n: "كينيا" }, { f: "🇺🇬", n: "أوغندا" }, { f: "🇷🇼", n: "رواندا" }, { f: "🇧🇮", n: "بوروندي" }, { f: "🇪🇹", n: "إثيوبيا" }, { f: "🇪🇷", n: "إريتريا" }, { f: "🇦🇺", n: "أستراليا" }, { f: "🇳🇿", n: "نيوزيلندا" }, { f: "🇫🇯", n: "فيجي" }, { f: "🇵🇬", n: "بابوا غينيا الجديدة" }, { f: "🇼🇸", n: "ساموا" }, { f: "🇹🇴", n: "تونجا" }, { f: "🇻🇺", n: "فانواتو" }, { f: "🇸🇧", n: "جزر سليمان" }, { f: "🇰🇮", n: "كيريباتي" }, { f: "🇹🇻", n: "توفالو" }, { f: "🇳🇷", n: "ناورو" }, { f: "🇵🇼", n: "بالاو" }, { f: "🇫🇲", n: "ميكرونيسيا" }, { f: "🇲🇭", n: "جزر مارشال" }, { f: "🇻🇦", n: "الفاتيكان" }, { f: "🇸🇲", n: "سان مارينو" }, { f: "🇦🇩", n: "أندورا" }, { f: "🇱🇮", n: "ليختنشتاين" }, { f: "🇲🇨", n: "موناكو" }, { f: "🇭🇰", n: "هونج كونج" }, { f: "🇵🇷", n: "بورتوريكو" }, { f: "🇬🇱", n: "جرينلاند" }
+  { f: "🇪🇬", n: "مصر" }, { f: "🇸🇦", n: "السعودية" }, { f: "🇦🇪", n: "الإمارات" }, { f: "🇶🇦", n: "قطر" }, { f: "🇰🇼", n: "الكويت" }, { f: "🇧🇭", n: "البحرين" }, { f: "🇴🇲", n: "عمان" }, { f: "🇯🇴", n: "الأردن" }, { f: "🇱🇧", n: "لبنان" }, { f: "🇸🇾", n: "سوريا" }, { f: "🇮🇶", n: "العراق" }, { f: "🇾🇪", n: "اليمن" }, { f: "🇱🇾", n: "ليبيا" }, { f: "🇹🇳", n: "تونس" }, { f: "🇩🇿", n: "الجزائر" }, { f: "🇲🇦", n: "المغرب" }, { f: "🇲🇷", n: "موريتانيا" }, { f: "🇸🇩", n: "السودان" }, { f: "🇸🇸", n: "جنوب السودان" }, { f: "🇸🇴", n: "الصومال" }, { f: "🇩🇯", n: "جيبوتي" }, { f: "🇵🇸", n: "فلسطين" }, { f: "🇹🇷", n: "تركيا" }, { f: "🇷🇺", n: "روسيا" }, { f: "🇺🇦", n: "أوكرانيا" }, { f: "🇧🇾", n: "بيلاروسيا" }, { f: "🇲🇩", n: "مولدوفا" }, { f: "🇵🇱", n: "بولندا" }, { f: "🇩🇪", n: "ألمانيا" }, { f: "🇫🇷", n: "فرنسا" }, { f: "🇬🇧", n: "بريطانيا" }, { f: "🇮🇪", n: "أيرلندا" }, { f: "🇮🇸", n: "أيسلندا" }, { f: "🇳🇴", n: "النرويج" }, { f: "🇸🇪", n: "السويد" }, { f: "🇫🇮", n: "فنلندا" }, { f: "🇩🇰", n: "الدنمارك" }, { f: "🇳🇱", n: "هولندا" }, { f: "🇧🇪", n: "بلجيكا" }, { f: "🇱🇺", n: "لوكسمبورج" }, { f: "🇨🇭", n: "سويسرا" }, { f: "🇦🇹", n: "النمسا" }, { f: "🇮🇹", n: "إيطاليا" }, { f: "🇪🇸", n: "إسبانيا" }, { f: "🇵🇹", n: "البرتغال" }, { f: "🇬🇷", n: "اليونان" }, { f: "🇨🇾", n: "قبرص" }, { f: "🇲🇹", n: "مالطا" }, { f: "🇨🇿", n: "التشيك" }, { f: "🇸🇰", n: "سلوفاكيا" }, { f: "🇭🇺", n: "المجر" }, { f: "🇷🇴", n: "رومانيا" }, { f: "🇧🇬", n: "بلغاريا" }, { f: "🇭🇷", n: "كرواتيا" }, { f: "🇸🇮", n: "سلوفينيا" }, { f: "🇧🇦", n: "البوسنة" }, { f: "🇷🇸", n: "صربيا" }, { f: "🇲🇪", n: "الجبل الأسود" }, { f: "🇦🇱", n: "ألبانيا" }, { f: "🇲🇰", n: "مقدونيا الشمالية" }, { f: "🇽🇰", n: "كوسوفو" }, { f: "🇱🇹", n: "ليتوانيا" }, { f: "🇱🇻", n: "لاتفيا" }, { f: "🇪🇪", n: "إستونيا" }, { f: "🇻🇦", n: "الفاتيكان" }, { f: "🇸🇲", n: "سان مارينو" }, { f: "🇦🇩", n: "أندورا" }, { f: "🇱🇮", n: "ليختنشتاين" }, { f: "🇲🇨", n: "موناكو" }, { f: "🇺🇸", n: "أمريكا" }, { f: "🇨🇦", n: "كندا" }, { f: "🇲🇽", n: "المكسيك" }, { f: "🇬🇹", n: "جواتيمالا" }, { f: "🇧🇿", n: "بليز" }, { f: "🇭🇳", n: "هندوراس" }, { f: "🇸🇻", n: "السلفادور" }, { f: "🇳🇮", n: "نيكاراجوا" }, { f: "🇨🇷", n: "كوستاريكا" }, { f: "🇵🇦", n: "بنما" }, { f: "🇨🇺", n: "كوبا" }, { f: "🇯🇲", n: "جامايكا" }, { f: "🇭🇹", n: "هايتي" }, { f: "🇩🇴", n: "الدومينيكان" }, { f: "🇧🇸", n: "جزر الباهاما" }, { f: "🇧🇧", n: "بربادوس" }, { f: "🇹🇹", n: "ترينيداد وتوباجو" }, { f: "🇬🇩", n: "جرينادا" }, { f: "🇱🇨", n: "سانت لوسيا" }, { f: "🇻🇨", n: "سانت فنسنت" }, { f: "🇦🇬", n: "أنتيغوا" }, { f: "🇩🇲", n: "دومينيكا" }, { f: "🇰🇳", n: "سانت كيتس" }, { f: "🇧🇷", n: "البرازيل" }, { f: "🇦🇷", n: "الأرجنتين" }, { f: "🇨🇱", n: "تشيلي" }, { f: "🇵🇪", n: "بيرو" }, { f: "🇨🇴", n: "كولومبيا" }, { f: "🇻🇪", n: "فنزويلا" }, { f: "🇪🇨", n: "الإكوادور" }, { f: "🇧🇴", n: "بوليفيا" }, { f: "🇵🇾", n: "باراجواي" }, { f: "🇺🇾", n: "أوروجواي" }, { f: "🇬🇾", n: "جيانا" }, { f: "🇸🇷", n: "سورينام" }, { f: "🇵🇷", n: "بورتوريكو" }, { f: "🇬🇱", n: "جرينلاند" }, { f: "🇮🇷", n: "إيران" }, { f: "🇦🇫", n: "أفغانستان" }, { f: "🇵🇰", n: "باكستان" }, { f: "🇮🇳", n: "الهند" }, { f: "🇧🇩", n: "بنغلاديش" }, { f: "🇳🇵", n: "نيبال" }, { f: "🇱🇰", n: "سريلانكا" }, { f: "🇧🇹", n: "بوتان" }, { f: "🇲🇻", n: "المالديف" }, { f: "🇲🇲", n: "ميانمار" }, { f: "🇹🇭", n: "تايلاند" }, { f: "🇱🇦", n: "لاوس" }, { f: "🇻🇳", n: "فيتنام" }, { f: "🇰🇭", n: "كمبوديا" }, { f: "🇲🇾", n: "ماليزيا" }, { f: "🇸🇬", n: "سنغافورة" }, { f: "🇮🇩", n: "إندونيسيا" }, { f: "🇵🇭", n: "الفلبين" }, { f: "🇧🇳", n: "بروناي" }, { f: "🇹🇱", n: "تيمور الشرقية" }, { f: "🇨🇳", n: "الصين" }, { f: "🇯🇵", n: "اليابان" }, { f: "🇰🇷", n: "كوريا الجنوبية" }, { f: "🇰🇵", n: "كوريا الشمالية" }, { f: "🇲🇳", n: "منغوليا" }, { f: "🇹🇼", n: "تايوان" }, { f: "🇰🇿", n: "كازاخستان" }, { f: "🇺🇿", n: "أوزبكستان" }, { f: "🇹🇲", n: "تركمانستان" }, { f: "🇹🇯", n: "طاجيكستان" }, { f: "🇰🇬", n: "قرغيزستان" }, { f: "🇦🇿", n: "أذربيجان" }, { f: "🇦🇲", n: "أرمينيا" }, { f: "🇬🇪", n: "جورجيا" }, { f: "🇭🇰", n: "هونج كونج" }, { f: "🇳🇬", n: "نيجيريا" }, { f: "🇬🇭", n: "غانا" }, { f: "🇨🇮", n: "ساحل العاج" }, { f: "🇸🇳", n: "السنغال" }, { f: "🇲🇱", n: "مالي" }, { f: "🇬🇳", n: "غينيا" }, { f: "🇬🇼", n: "غينيا بيساو" }, { f: "🇸🇱", n: "سيراليون" }, { f: "🇱🇷", n: "ليبيريا" }, { f: "🇧🇫", n: "بوركينا فاسو" }, { f: "🇳🇪", n: "النيجر" }, { f: "🇹🇬", n: "توجو" }, { f: "🇧🇯", n: "بنين" }, { f: "🇨🇲", n: "الكاميرون" }, { f: "🇹🇩", n: "تشاد" }, { f: "🇨🇫", n: "أفريقيا الوسطى" }, { f: "🇨🇬", n: "الكونغو" }, { f: "🇨🇩", n: "الكونغو الديمقراطية" }, { f: "🇬🇦", n: "الجابون" }, { f: "🇬🇶", n: "غينيا الاستوائية" }, { f: "🇦🇴", n: "أنجولا" }, { f: "🇿🇲", n: "زامبيا" }, { f: "🇿🇼", n: "زيمبابوي" }, { f: "🇳🇦", n: "ناميبيا" }, { f: "🇧🇼", n: "بوتسوانا" }, { f: "🇿🇦", n: "جنوب أفريقيا" }, { f: "🇱🇸", n: "ليسوتو" }, { f: "🇸🇿", n: "إسواتيني" }, { f: "🇲🇿", n: "موزمبيق" }, { f: "🇲🇬", n: "مدغشقر" }, { f: "🇲🇺", n: "موريشيوس" }, { f: "🇸🇨", n: "سيشل" }, { f: "🇰🇲", n: "جزر القمر" }, { f: "🇹🇿", n: "تنزانيا" }, { f: "🇰🇪", n: "كينيا" }, { f: "🇺🇬", n: "أوغندا" }, { f: "🇷🇼", n: "رواندا" }, { f: "🇧🇮", n: "بوروندي" }, { f: "🇪🇹", n: "إثيوبيا" }, { f: "🇪🇷", n: "إريتريا" }, { f: "🇦🇺", n: "أستراليا" }, { f: "🇳🇿", n: "نيوزيلندا" }, { f: "🇫🇯", n: "فيجي" }, { f: "🇵🇬", n: "بابوا غينيا الجديدة" }, { f: "🇼🇸", n: "ساموا" }, { f: "🇹🇴", n: "تونجا" }, { f: "🇻🇺", n: "فانواتو" }, { f: "🇸🇧", n: "جزر سليمان" }, { f: "🇰🇮", n: "كيريباتي" }, { f: "🇹🇻", n: "توفالو" }, { f: "🇳🇷", n: "ناورو" }, { f: "🇵🇼", n: "بالاو" }, { f: "🇫🇲", n: "ميكرونيسيا" }, { f: "🇲🇭", n: "جزر مارشال" }
 ];
 let QUESTIONS=[...ALL];
 function shuffleArray(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
@@ -84,6 +84,8 @@ function renderQuestion(){
   isLocked=false;
   const q=QUESTIONS[currentRound];
   roundEl.textContent=currentRound+1;
+  document.getElementById('progressText').textContent='السؤال '+(currentRound+1)+' من '+QUESTIONS.length+' • النقاط: '+score;
+  document.getElementById('progressFill').style.width=((currentRound+1)/QUESTIONS.length*100)+'%';
   flagEl.textContent=q.f;
   feedbackEl.textContent='';
   optionsEl.innerHTML='';
@@ -99,8 +101,8 @@ function checkAnswer(selected,btn){
   if(isLocked) return; isLocked=true;
   const q=QUESTIONS[currentRound];
   const allBtns=optionsEl.querySelectorAll('.opt-btn');
-  if(selected===currentCorrect){ btn.classList.add('correct'); score+=10; scoreEl.textContent=score; feedbackEl.textContent="✅ صح! دي "+q.n; feedbackEl.style.color="#fff"; }
-  else{ btn.classList.add('wrong'); allBtns[currentCorrect].classList.add('correct'); feedbackEl.textContent="❌ دي "+q.n; feedbackEl.style.color="#fff"; }
+  if(selected===currentCorrect){ btn.classList.add('correct'); score+=10; scoreEl.textContent=score; feedbackEl.textContent="✅ صح! دي "+q.n; feedbackEl.style.color="#0284c7"; }
+  else{ btn.classList.add('wrong'); allBtns[currentCorrect].classList.add('correct'); feedbackEl.textContent="❌ دي "+q.n; feedbackEl.style.color="#ef4444"; }
   setTimeout(()=>{ currentRound++; if(currentRound<QUESTIONS.length) renderQuestion(); else endGame(); },1500);
 }
 function skipQuestion(){
@@ -115,7 +117,7 @@ function endGame(){
   overlay.innerHTML=`<div style="font-size:50px">🌍</div><h2>خلصت أعلام الدول!</h2><p>جمعت <b style="color:#fff;font-size:22px">${score} نقطة</b><br>أعلى نتيجة: ${best}<br>أحمد TV بيقولك: انت خبير جغرافيا!</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;
   document.getElementById('againBtn').onclick=startGame;
 }
-function startGame(){ overlay.style.display='none'; score=0; currentRound=0; scoreEl.textContent=0; const seen=new Set(); QUESTIONS=shuffleArray([...ALL]).filter(x=>{ if(seen.has(x.n)) return false; seen.add(x.n); return true; }); renderQuestion(); }
+function startGame(){ overlay.style.display='none'; score=0; currentRound=0; scoreEl.textContent=0; QUESTIONS=[...ALL]; renderQuestion(); }
 startBtn.onclick=startGame;
 </script>
 </body>
