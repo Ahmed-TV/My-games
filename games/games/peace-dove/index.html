@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - حمام السلام</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#E8F5E9 0%,#C8E6C9 50%,#A5D6A7 100%);color:#1B5E20;height:100vh;height:100dvh;display:flex;justify-content:center;padding:env(safe-area-inset-top,8px) 10px env(safe-area-inset-bottom,8px) 10px}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#ffffff,#E8F5E9);border:3px solid #4CAF50;border-radius:20px;padding:10px;box-shadow:0 18px 50px #0008;position:relative;overflow:hidden}
+header{text-align:center;padding:6px 0 8px;flex-shrink:0;display:flex;flex-direction:column;align-items:center}
+.logo-img{width:68px;height:68px;border-radius:50%;border:3px solid #4CAF50;object-fit:cover;background:#fff;box-shadow:0 0 15px rgba(76,175,80,.4);margin-bottom:6px}
+.brand{font-size:23px;font-weight:900;margin:2px 0;color:#1B5E20}
+.names{font-size:13px;color:#2E7D32;font-weight:700;margin-bottom:2px}
+.sub{color:#2E7D32;font-size:12px}
+.panel-container{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+footer{text-align:center;color:#2E7D32;font-size:11px;margin-top:4px;flex-shrink:0}
+footer a{color:#2E7D32;text-decoration:none;font-weight:700}
+.watermark{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);font-size:10px;color:#1B5E20;opacity:.25;font-weight:900;letter-spacing:2px;pointer-events:none;white-space:nowrap}
+.top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 6px 8px;flex-shrink:0}
+.score-box{background:linear-gradient(135deg,#4CAF50,#2E7D32);color:#fff;padding:9px 18px;border-radius:12px;font-weight:800;font-size:16px}
+.timer-circle{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#48c9a4,#2eaf8a);display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:0 0 14px rgba(46,175,138,.9);border:3px solid #fff;flex-shrink:0}
+.timer-num{font-size:20px;font-weight:900;color:#fff;line-height:1}
+.timer-label{font-size:9px;font-weight:700;color:#fff3b0}
+.game-area{background:linear-gradient(180deg,#b8f0d8 0%,#d4f5d4 60%,#e8fff0 100%);border-radius:14px;position:relative;overflow:hidden;border:2px solid rgba(72,201,164,.4);flex:1;min-height:0}
+.bg-name{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;z-index:0;width:100%}
+.bg-name .n1{font-size:32px;font-weight:900;color:rgba(46,175,138,.13);letter-spacing:2px}
+.bg-name .n2{font-size:20px;font-weight:900;color:rgba(46,175,138,.13);margin-top:4px}
+.dove{position:absolute;cursor:pointer;user-select:none;z-index:3;filter:drop-shadow(0 4px 8px rgba(0,120,90,.4))}
+.dove-body{position:relative;display:flex;flex-direction:column;align-items:center}
+.dove-emoji{font-size:42px;line-height:1;transform:scaleX(-1)}
+.dove-olive{position:absolute;left:-20px;top:20px;font-size:20px;transform:rotate(-20deg)}
+.pop-effect{position:absolute;font-size:32px;pointer-events:none;animation:popAnim .6s ease-out forwards;z-index:20}
+@keyframes popAnim{0%{transform:scale(0);opacity:1}50%{transform:scale(1.5);opacity:1}100%{transform:scale(2) translateY(-30px);opacity:0}}
+.cloud{position:absolute;font-size:26px;opacity:.5;pointer-events:none;z-index:1}
+.overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(160deg,rgba(72,201,164,.98),rgba(46,175,138,.98));display:flex;flex-direction:column;justify-content:center;align-items:center;border-radius:14px;color:#fff;text-align:center;padding:14px;z-index:10}
+.overlay h1{font-size:23px;margin-bottom:8px;font-weight:900;text-shadow:0 2px 10px rgba(0,60,40,.8)}
+.overlay p{font-size:13px;margin-bottom:12px;line-height:1.6;color:#e0fff0}
+.overlay button{padding:11px 30px;font-size:16px;font-weight:800;border:2px solid #fff;border-radius:50px;background:linear-gradient(135deg,#6dd5a8,#2eaf8a);color:#fff;cursor:pointer;font-family:inherit}
+.hidden{display:none!important}
+</style></head>
+<body><div class="game">
+<header>
+<img src="../../logo.png" alt="Ahmed TV" class="logo-img">
+<div class="brand">حمام السلام</div>
+<div class="names">أحمد عبدالعزيز • Ahmed TV</div>
+<div class="sub">🕊️ اضغط على الحمام اللي بيطير • كل حمامة = +10 نقاط • 60 ثانية!</div><button id="soundBtn" style="margin-top:6px;font-family:inherit;font-weight:800;border:2px solid #4CAF50;border-radius:20px;padding:8px 16px;background:#fff;color:#1B5E20;cursor:pointer;font-size:13px">🔊 الصوت: شغال</button>
+</header>
+<div class="panel-container">
+<div class="top-bar"><div class="score-box">🕊️ <span id="score">0</span></div><div class="timer-circle"><span class="timer-num" id="timer">60</span><span class="timer-label">ثانية</span></div></div>
+<div class="game-area" id="gameArea"><div class="bg-name"><div class="n1">Ahmed TV</div><div class="n2">أحمد عبدالعزيز</div></div></div>
+<div class="overlay" id="startScreen"><h1>🕊️ حمام السلام 🕊️</h1><p>الحمام بيطير في السماء 🌤️<br>اضغط عليه بسرعة قبل ما يهرب<br>كل حمامة = +10 نقاط • لديك 60 ثانية!</p><button onclick="startGame()">ابدأ اللعب</button></div>
+<div class="overlay hidden" id="endScreen"><h1 id="endTitle">انتهى الوقت!</h1><p id="endMessage"></p><button onclick="startGame()">العب مرة أخرى</button></div>
+</div><div class="watermark">AHMED TV</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
+<script>
+let soundOn=true, audioCtx=null, ambientTimer=null;
+function getCtx(){ if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
+function playCoo(){ if(!soundOn) return; const ctx=getCtx(); if(!ctx) return; try{
+  const t0=ctx.currentTime;
+  [0,0.28].forEach((off,i)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(520,t0+off); o.frequency.exponentialRampToValueAtTime(380,t0+off+0.22); g.gain.setValueAtTime(0,t0+off); g.gain.linearRampToValueAtTime(0.12,t0+off+0.05); g.gain.exponentialRampToValueAtTime(0.001,t0+off+0.25); o.connect(g); g.connect(ctx.destination); o.start(t0+off); o.stop(t0+off+0.3); });
+  const o2=ctx.createOscillator(), g2=ctx.createGain(); o2.type='sine'; o2.frequency.value=880; g2.gain.setValueAtTime(0.08,t0); g2.gain.exponentialRampToValueAtTime(0.001,t0+0.6); o2.connect(g2); g2.connect(ctx.destination); o2.start(t0); o2.stop(t0+0.6);
+}catch(e){} }
+const peaceNotes=[523.25,587.33,659.25,783.99,880.00,1046.50];
+let noteIdx=0;
+function playAmbientNote(){ if(!soundOn) return; const ctx=getCtx(); if(!ctx) return; try{ const t0=ctx.currentTime; const f=peaceNotes[noteIdx%peaceNotes.length]; noteIdx++; const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(0.06,t0+0.1); g.gain.exponentialRampToValueAtTime(0.001,t0+1.8); o.connect(g); g.connect(ctx.destination); o.start(t0); o.stop(t0+1.9); }catch(e){} }
+function startAmbient(){ if(ambientTimer) return; playAmbientNote(); ambientTimer=setInterval(playAmbientNote,2200); }
+function stopAmbient(){ if(ambientTimer){ clearInterval(ambientTimer); ambientTimer=null; } }
+function playWin(){ if(!soundOn) return; const ctx=getCtx(); if(!ctx) return; try{ [523,659,784,1046].forEach((f,i)=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sine'; o.frequency.value=f; const t0=ctx.currentTime+i*0.15; g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(0.1,t0+0.05); g.gain.exponentialRampToValueAtTime(0.001,t0+0.7); o.connect(g); g.connect(ctx.destination); o.start(t0); o.stop(t0+0.7); }); }catch(e){} }
+let score=0,timeLeft=60,playing=false,timerInterval,spawnInterval,animationId,doves=[],lastTime=0;
+const scoreEl=document.getElementById('score'),timerEl=document.getElementById('timer'),gameArea=document.getElementById('gameArea');
+function createClouds(){for(let i=0;i<5;i++){const c=document.createElement('div');c.className='cloud';c.textContent='☁️';c.style.left=(Math.random()*85+5)+'%';c.style.top=(Math.random()*70+5)+'%';c.style.opacity=0.3+Math.random()*0.3;gameArea.appendChild(c);}}
+createClouds();
+function createDove(){if(!playing)return;const el=document.createElement('div');el.className='dove';el.innerHTML='<div class="dove-body"><div class="dove-emoji">🕊️</div><div class="dove-olive">🌿</div></div>';const W=gameArea.clientWidth,H=gameArea.clientHeight;const fromLeft=Math.random()<0.5;const startX=fromLeft?-60:W+10;const startY=Math.random()*(H-100)+30;const dir=fromLeft?1:-1;const speedX=(80+Math.random()*60)*dir;el.style.left=startX+'px';el.style.top=startY+'px';const doveObj={el:el,x:startX,y:startY,baseY:startY,speedX:speedX,phase:Math.random()*Math.PI*2,amplitude:15+Math.random()*20,freq:2+Math.random()*2,caught:false,fromLeft:fromLeft};if(!fromLeft){el.querySelector('.dove-emoji').style.transform='scaleX(1)';el.querySelector('.dove-olive').style.left='auto';el.querySelector('.dove-olive').style.right='-20px';el.querySelector('.dove-olive').style.transform='rotate(20deg)';}el.addEventListener('click',()=>catchDove(doveObj));el.addEventListener('touchstart',(e)=>{e.preventDefault();catchDove(doveObj);},{passive:false});gameArea.appendChild(el);doves.push(doveObj);}
+function catchDove(doveObj){if(doveObj.caught||!playing)return;doveObj.caught=true;score+=10;scoreEl.textContent=score;playCoo();const pop=document.createElement('div');pop.className='pop-effect';pop.textContent='✨';pop.style.left=doveObj.x+'px';pop.style.top=doveObj.y+'px';gameArea.appendChild(pop);setTimeout(()=>pop.remove(),600);doveObj.el.remove();const idx=doves.indexOf(doveObj);if(idx>-1)doves.splice(idx,1);}
+function animate(timestamp){if(!playing)return;if(!lastTime)lastTime=timestamp;const dt=Math.min((timestamp-lastTime)/1000,0.1);lastTime=timestamp;const W=gameArea.clientWidth;for(let i=doves.length-1;i>=0;i--){const d=doves[i];if(d.caught)continue;d.x+=d.speedX*dt;d.phase+=d.freq*dt;d.y=d.baseY+Math.sin(d.phase)*d.amplitude;d.el.style.left=d.x+'px';d.el.style.top=d.y+'px';if((d.fromLeft&&d.x>W+60)||(!d.fromLeft&&d.x<-60)){d.el.remove();doves.splice(i,1);}}animationId=requestAnimationFrame(animate);}
+function startGame(){doves.forEach(d=>d.el.remove());doves=[];score=0;timeLeft=60;playing=true;getCtx();startAmbient();lastTime=0;scoreEl.textContent=score;timerEl.textContent=timeLeft;document.getElementById('startScreen').classList.add('hidden');document.getElementById('endScreen').classList.add('hidden');createDove();if(spawnInterval)clearInterval(spawnInterval);spawnInterval=setInterval(createDove,700);if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(()=>{timeLeft--;timerEl.textContent=timeLeft;if(timeLeft<=0)endGame();},1000);if(animationId)cancelAnimationFrame(animationId);animationId=requestAnimationFrame(animate);}
+function endGame(){playing=false;clearInterval(timerInterval);clearInterval(spawnInterval);cancelAnimationFrame(animationId);doves.forEach(d=>d.el.remove());doves=[];let title,msg;if(score>=200){title='🏆 بطل السلام!';msg='رائع! حصلت على '+score+' نقطة';}else if(score>=100){title='🌟 ممتاز!';msg='حصلت على '+score+' نقطة - أنت سريع جداً';}else if(score>=50){title='👏 جيد!';msg='حصلت على '+score+' نقطة - استمر';}else{title='💪 حاول مرة أخرى';msg='حصلت على '+score+' نقطة فقط';}playWin();document.getElementById('endTitle').textContent=title;document.getElementById('endMessage').textContent=msg;document.getElementById('endScreen').classList.remove('hidden');}
+document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?"🔊 الصوت: شغال":"🔇 الصوت: مطفي"; if(soundOn){ getCtx(); if(playing) startAmbient(); } else { stopAmbient(); } };
+</script></body></html>
