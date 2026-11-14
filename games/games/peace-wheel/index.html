@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - عجلة السلام العالمي</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#E8F5E9 0%,#C8E6C9 50%,#A5D6A7 100%);color:#1B5E20;height:100vh;height:100dvh;display:flex;justify-content:center;padding:env(safe-area-inset-top,8px) 10px env(safe-area-inset-bottom,8px) 10px}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#ffffff,#E8F5E9);border:3px solid #4CAF50;border-radius:20px;padding:10px;box-shadow:0 18px 50px #0008;position:relative;overflow:hidden}
+header{text-align:center;padding:6px 0 8px;flex-shrink:0;display:flex;flex-direction:column;align-items:center}
+.logo-img{width:68px;height:68px;border-radius:50%;border:3px solid #4CAF50;object-fit:cover;background:#fff;box-shadow:0 0 15px rgba(76,175,80,.4);margin-bottom:6px}
+.brand{font-size:23px;font-weight:900;margin:2px 0;color:#1B5E20}
+.names{font-size:13px;color:#2E7D32;font-weight:700;margin-bottom:2px}
+.sub{color:#2E7D32;font-size:12px}
+.panel-container{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+footer{text-align:center;color:#2E7D32;font-size:11px;margin-top:4px;flex-shrink:0}
+footer a{color:#2E7D32;text-decoration:none;font-weight:700}
+.watermark{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);font-size:10px;color:#1B5E20;opacity:.25;font-weight:900;letter-spacing:2px;pointer-events:none;white-space:nowrap}
+#peace-game{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;box-sizing:border-box;text-align:center;color:#fff;font-family:Arial,sans-serif;border:3px solid #b5d99c;border-radius:18px;background:radial-gradient(circle,#286b43,#082b1b 80%);box-shadow:inset 0 0 30px #001b0c,0 0 20px #65c985;overflow:hidden;padding:10px 10px 6px}
+#peace-game *{box-sizing:border-box}
+#peace-game h2{font-size:19px;margin:0;color:#e4ffd9;text-shadow:0 0 12px #8affaa;border:2px solid #a5d6a7;border-radius:12px;padding:8px 6px;background:linear-gradient(120deg,#103d25,#367b4b);line-height:1.4}
+#peace-game p{font-size:13px;color:#e1f5e5;line-height:1.5;margin:2px 0}
+#peace-game .dove{font-size:28px;display:block;line-height:1.2}
+#peace-game .ancient{display:block;font-size:16px;line-height:1.2}
+#peace-game .wheel-wrap{position:relative;width:100%;max-width:340px;margin:0 auto;flex-shrink:1;min-height:0}
+#peace-game canvas{width:100%;height:auto;display:block;max-height:100%}
+#peace-game .pointer{position:absolute;top:-2px;left:50%;transform:translateX(-50%);border-left:16px solid transparent;border-right:16px solid transparent;border-top:28px solid #eaffd9;filter:drop-shadow(0 0 8px #7dff9b);z-index:2}
+#peace-game button{background:linear-gradient(#e5ffd8,#82c978);color:#12351e;border:3px solid #326b39;border-radius:24px;padding:10px 28px;font-size:18px;font-weight:bold;box-shadow:0 0 15px #8affaa;cursor:pointer;flex-shrink:0}
+#peace-game button:disabled{opacity:.6}
+#peace-game #peace-result{min-height:48px;padding:6px 4px;font-size:17px;font-weight:bold;color:#e4ffd9;text-shadow:0 0 10px #8affaa;line-height:1.5}
+#peace-game .small-note{font-size:12px;color:#d8f5d5;font-weight:bold}
+</style></head>
+<body><div class="game">
+<header>
+<img src="../../logo.png" alt="Ahmed TV" class="logo-img">
+<div class="brand">عجلة السلام العالمي</div>
+<div class="names">أحمد عبدالعزيز • Ahmed TV</div>
+<div class="sub">🌸 السلام يبدأ بابتسامة .. وقلب أخضر ينبض بالمحبة 🌿</div>
+</header>
+<div class="panel-container">
+<div id="peace-game" dir="rtl">
+<h2>عجلة السلام العالمي<span class="dove">🕊️</span></h2>
+<p>لف العجلة واكتشف رسالة جديدة عن السلام والمحبة <span class="ancient">🕊️ 🌿 🕊️</span></p>
+<div class="wheel-wrap"><div class="pointer"></div><canvas id="peace-wheel" width="800" height="800"></canvas></div>
+<button id="peace-spin">لف العجلة 🕊️</button>
+<div id="peace-result">جاهز؟ يلا بينا! <span class="dove" style="display:inline;font-size:22px">🕊️</span></div>
+<p class="small-note">السلام يبدأ بكلمة طيبة وقلب مليان محبة <span class="ancient">🌿 🕊️ 🌿</span></p>
+</div>
+</div><div class="watermark">AHMED TV</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
+<script>
+(function(){
+const root=document.getElementById("peace-game");
+const canvas=root.querySelector("#peace-wheel");
+const ctx=canvas.getContext("2d");
+const button=root.querySelector("#peace-spin");
+const result=root.querySelector("#peace-result");
+const items=["السلام يبدأ من القلب","انشر المحبة في كل مكان","العالم بيتسع للجميع","التسامح طريق السلام","خلّي الاختلاف سبب للتعارف","الأطفال يستحقون عالمًا آمنًا","كلمة طيبة تصنع فرقًا","معًا نبني مستقبلًا أفضل","لا للعنف.. نعم للحوار","الاحترام يجمع الشعوب","الأمل أقوى من الخوف","السلام مسؤولية كل إنسان"];
+const colors=["#277d4a","#3e965a","#76b85e","#b3d98a","#1d6941","#4ca66a","#a4cc77","#2b8250"];
+const center=400,radius=370;
+const slice=2*Math.PI/items.length;
+let rotation=0,spinning=false;
+function draw(){
+ ctx.clearRect(0,0,800,800);
+ items.forEach((item,i)=>{
+  const start=rotation+i*slice-Math.PI/2;
+  ctx.beginPath();ctx.moveTo(center,center);ctx.arc(center,center,radius,start,start+slice);ctx.closePath();
+  const grad=ctx.createLinearGradient(0,0,800,800);grad.addColorStop(0,colors[i%colors.length]);grad.addColorStop(1,"#103d25");ctx.fillStyle=grad;ctx.fill();
+  ctx.strokeStyle="#d5efb6";ctx.lineWidth=3;ctx.stroke();
+  ctx.save();ctx.translate(center,center);ctx.rotate(start+slice/2);ctx.textAlign="right";ctx.textBaseline="middle";ctx.fillStyle="#f0ffe5";ctx.font="bold 17px Arial";ctx.fillText(item,radius-18,0,260);ctx.restore();
+ });
+ ctx.beginPath();ctx.arc(center,center,382,0,Math.PI*2);ctx.strokeStyle="#d5efb6";ctx.lineWidth=18;ctx.shadowColor="#8affaa";ctx.shadowBlur=20;ctx.stroke();ctx.shadowBlur=0;
+ for(let i=0;i<48;i++){const a=i*Math.PI*2/48;const x=center+380*Math.cos(a);const y=center+380*Math.sin(a);ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.fillStyle=i%2===0?"#e5ffd8":"#77c878";ctx.shadowColor="#8affaa";ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;}
+ ctx.beginPath();ctx.arc(center,center,105,0,Math.PI*2);ctx.fillStyle="#103d25";ctx.fill();ctx.strokeStyle="#d5efb6";ctx.lineWidth=10;ctx.stroke();
+ ctx.fillStyle="#e5ffd8";ctx.textAlign="center";ctx.font="bold 65px Arial";ctx.fillText("🕊️",center,center+20);
+ ctx.font="bold 19px Arial";ctx.fillStyle="#e5ffd8";ctx.fillText("أحمد TV",center,center+75);
+ ctx.strokeStyle="#9bd17c";ctx.lineWidth=5;ctx.lineCap="round";
+ ctx.beginPath();ctx.moveTo(center-75,center+50);ctx.quadraticCurveTo(center-110,center-5,center-70,center-65);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(center+75,center+50);ctx.quadraticCurveTo(center+110,center-5,center+70,center-65);ctx.stroke();
+ for(let i=0;i<5;i++){const y=center+35-i*20;ctx.beginPath();ctx.ellipse(center-80+i*3,y,13,6,-0.6,0,Math.PI*2);ctx.fillStyle="#9bd17c";ctx.fill();ctx.beginPath();ctx.ellipse(center+80-i*3,y,13,6,0.6,0,Math.PI*2);ctx.fill();}
+}
+draw();
+button.onclick=function(){
+ if(spinning)return;spinning=true;button.disabled=true;
+ result.innerHTML="العجلة بتدور.. السلام يجمعنا! 🕊️";
+ const start=rotation;const target=start+Math.PI*2*(8+Math.random()*5);const startTime=performance.now();
+ function animate(now){
+  const progress=Math.min((now-startTime)/5500,1);const eased=1-Math.pow(1-progress,4);rotation=start+(target-start)*eased;draw();
+  if(progress<1){requestAnimationFrame(animate);}else{
+   const angle=((rotation%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+   const index=Math.floor(((Math.PI*2-angle)%(Math.PI*2))/slice);
+   result.innerHTML="رسالتك للسلام: "+items[index]+" 🕊️";
+   spinning=false;button.disabled=false;
+  }
+ }
+ requestAnimationFrame(animate);
+};
+})();
+</script>
+</body></html>
