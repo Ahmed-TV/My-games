@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>اختبر نظرك | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;overflow-x:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#FF006E,#FFBE0B,#00F5D4,#00BBF9,#9B5DE5);background-attachment:fixed;color:#fff;display:flex;flex-direction:column;align-items:center;padding:10px;min-height:100vh}
+.top{width:100%;max-width:580px;background:#fff;border-radius:20px;padding:14px 10px 12px;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+.logo{width:96px;height:96px;border-radius:50%;border:5px solid #FF006E;object-fit:cover;background:#fff;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.top h1{font-size:32px;color:#FF006E;margin:2px 0;line-height:1.1}
+.top .names{font-size:20px;color:#333;font-weight:900}.top .names b{color:#FF006E;font-size:24px}
+.stats{width:100%;max-width:580px;display:flex;gap:8px;margin:10px 0;justify-content:center}
+.stat{flex:1;background:#fff;border-radius:14px;padding:7px 4px;text-align:center;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.stat b{display:block;font-size:18px;color:#FF006E}.stat span{font-size:10px;color:#555;font-weight:bold}
+#box{width:100%;max-width:580px;background:#fff;border-radius:20px;padding:12px;box-shadow:0 6px 0 rgba(0,0,0,.25);color:#222;min-height:340px}
+#timerBar{height:14px;background:#eee;border-radius:10px;overflow:hidden;margin-bottom:10px}
+#timerFill{height:100%;width:100%;background:linear-gradient(90deg,#FF006E,#FFBE0B,#00F5D4,#00BBF9)}
+#q{font-size:18px;text-align:center;margin-bottom:10px;font-weight:900;color:#222;line-height:1.5}
+#q b{color:#FF006E;font-size:20px}
+#q .hint{font-size:12px;color:#777;font-weight:normal;display:block}
+#grid{display:grid;gap:8px;justify-content:center}
+.cell{background:linear-gradient(180deg,#FFFFFF,#FFE66D);border-radius:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;aspect-ratio:1;user-select:none;border:3px solid #FF006E;font-size:38px;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.cell:active{transform:scale(.92)}
+#msg{text-align:center;min-height:26px;font-weight:900;color:#FF006E;margin-top:8px;font-size:15px}
+#overlay{position:fixed;inset:0;background:rgba(255,255,255,.98);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:20px 14px;gap:12px;z-index:99;color:#222;overflow-y:auto}
+#overlay h2{font-size:28px;color:#FF006E}
+#overlay p{line-height:1.7;font-size:15px;color:#555}
+.btn{background:#FF006E;color:#fff;border:none;padding:14px 22px;border-radius:16px;font-size:17px;font-weight:900;cursor:pointer;width:90%;max-width:300px;box-shadow:0 5px 0 #B0004A}
+.modes{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:520px}
+.mode{background:#FFF3CD;border:3px solid #FFBE0B;border-radius:16px;padding:14px;width:47%;cursor:pointer;text-align:center}
+.mode b{display:block;font-size:16px;color:#FF006E}.mode span{font-size:12px;color:#555}
+.footer{font-size:12px;color:#fff;margin:10px 0;text-shadow:1px 1px 0 #000}.footer a{color:#fff;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="top"><img src="../../logo.png" class="logo" alt="Ahmed TV"><h1>اختبر نظرك</h1><div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div></div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقاط ⭐</span></div><div class="stat"><b id="level">1</b><span>المرحلة 🎮</span></div><div class="stat"><b id="lives">❤️❤️❤️</b><span>قلوب</span></div><div class="stat"><b id="best">0</b><span>الأفضل 🏆</span></div></div>
+<div id="box">
+<div id="timerBar"><div id="timerFill"></div></div>
+<div id="q">دوس على الزرار وابدأ!</div>
+<div id="grid"></div>
+<div id="msg"></div>
+</div>
+<div id="overlay">
+<img src="../../logo.png" style="width:130px;height:130px;border-radius:50%;border:6px solid #FF006E;object-fit:cover;background:#fff;box-shadow:0 6px 0 rgba(0,0,0,.2)" alt="Ahmed TV"><div style="font-size:30px;font-weight:900;color:#222;line-height:1.2">أحمد عبدالعزيز<br><span style="color:#FF006E;font-size:34px">Ahmed TV</span></div>
+<h2 style="font-size:36px">اختبر نظرك 👀</h2>
+<p>أكتر من <b style="color:#FF006E">60 شكل ولون ووش</b> مختلف!<br>كل جولة شكل جديد - لاقي المختلف بسرعة!</p>
+<div class="modes">
+<div class="mode" onclick="startGame('shape')"><b>🔷 الأشكال</b><span>30 شكل مختلف</span></div>
+<div class="mode" onclick="startGame('color')"><b>🌈 الألوان</b><span>20 لون زاهي</span></div>
+<div class="mode" onclick="startGame('emoji')"><b>😀 الوشوش</b><span>30 وش وحيوان وفاكهة</span></div>
+<div class="mode" onclick="startGame('mix')"><b>🎲 كله على بعضه</b><span>80 شكل!</span></div>
+</div>
+<p style="font-size:12px">3 قلوب ❤️❤️❤️ - كل مرحلة أشكال أكتر وأسرع</p>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+<script>
+var score=0,level=1,lives=3,mode='shape',timer=null,timeLeft=20,best=0,gridEl=document.getElementById('grid');
+try{best=Number(localStorage.getItem('eyeBest3')||0)}catch(e){}
+document.getElementById('best').textContent=best;
+var actx=null;function act(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(actx&&actx.state==='suspended')actx.resume();return actx}
+function tone(f,d,t,v){var c=act();if(!c)return;try{var o=c.createOscillator(),g=c.createGain();o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||0.12,c.currentTime);g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d)}catch(e){}}
+function startGame(m){mode=m;score=0;level=1;lives=3;document.getElementById('overlay').style.display='none';document.getElementById('score').textContent=0;document.getElementById('level').textContent=1;updateLives();document.getElementById('msg').textContent='';nextRound();tone(600,0.15,'sine',0.15)}
+function updateLives(){document.getElementById('lives').textContent='❤️'.repeat(Math.max(0,lives))||'💔'}
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+var shapeSets=[
+{same:'🔵',diff:'🟣',label:'الدايرة البنفسجي'},{same:'🟥',diff:'🟧',label:'المربع البرتقالي'},{same:'⭐',diff:'🌟',label:'النجمة المختلفة'},{same:'🔺',diff:'🔻',label:'المثلث المقلوب'},{same:'💙',diff:'💜',label:'القلب البنفسجي'},{same:'🟢',diff:'🟡',label:'الدايرة الصفرا'},{same:'⬛',diff:'⬜',label:'المربع الأبيض'},{same:'🔶',diff:'🔷',label:'المعين الأزرق'},{same:'🟦',diff:'🟩',label:'المربع الأخضر'},{same:'🔴',diff:'🟠',label:'الدايرة البرتقالي'},{same:'🟪',diff:'🟫',label:'المربع البني'},{same:'💛',diff:'💚',label:'القلب الأخضر'},{same:'🔸',diff:'🔹',label:'المعين الأزرق'},{same:'⬤',diff:'◯',label:'الدايرة الفاضية'},{same:'▲',diff:'▼',label:'المثلث المقلوب'},{same:'■',diff:'□',label:'المربع الفاضي'},{same:'●',diff:'○',label:'النقطة الفاضية'},{same:'★',diff:'☆',label:'النجمة الفاضية'},{same:'♥',diff:'♡',label:'القلب الفاضي'},{same:'◆',diff:'◇',label:'المعين الفاضي'},{same:'🟩',diff:'🟨',label:'المربع الأصفر'},{same:'🟦',diff:'🟪',label:'المربع البنفسجي'},{same:'🔴',diff:'🔵',label:'الدايرة الزرقا'},{same:'🟠',diff:'🟢',label:'الدايرة الخضرا'},{same:'💖',diff:'💝',label:'القلب المختلف'},{same:'✦',diff:'✧',label:'النجمة المختلفة'},{same:'⬆️',diff:'⬇️',label:'السهم اللي تحت'},{same:'⬅️',diff:'➡️',label:'السهم اللي يمين'},{same:'↗️',diff:'↙️',label:'السهم المختلف'},{same:'🔼',diff:'🔽',label:'المثلث اللي تحت'}
+];
+var emojiSets=[
+{same:'😀',diff:'😃',label:'الوش المبتسم قوي'},{same:'😴',diff:'😪',label:'الوش النعسان'},{same:'🐶',diff:'🐱',label:'القطة'},{same:'🍎',diff:'🍓',label:'الفراولة'},{same:'⚽',diff:'🏀',label:'كرة السلة'},{same:'🚗',diff:'🚙',label:'العربية المختلفة'},{same:'🌹',diff:'🌷',label:'الوردة المختلفة'},{same:'🐟',diff:'🐠',label:'السمكة المختلفة'},{same:'🍌',diff:'🍊',label:'البرتقانة'},{same:'🐥',diff:'🐣',label:'الكتكوت المختلف'},{same:'🦁',diff:'🐯',label:'النمر'},{same:'🐰',diff:'🐭',label:'الفار'},{same:'🍕',diff:'🍔',label:'البرجر'},{same:'🍦',diff:'🍧',label:'الآيس كريم المختلف'},{same:'🚲',diff:'🛵',label:'الموتوسيكل'},{same:'✈️',diff:'🚀',label:'الصاروخ'},{same:'🐝',diff:'🦋',label:'الفراشة'},{same:'🌞',diff:'🌛',label:'الهلال'},{same:'🍇',diff:'🍒',label:'الكرز'},{same:'🥕',diff:'🌽',label:'الذرة'},{same:'🐢',diff:'🐌',label:'الحلزونة'},{same:'🦄',diff:'🐴',label:'الحصان'},{same:'🍩',diff:'🍪',label:'البسكوتة'},{same:'🎈',diff:'🎀',label:'الفيونكة'},{same:'🎸',diff:'🥁',label:'الطبلة'},{same:'📚',diff:'📖',label:'الكتاب المفتوح'},{same:'🐙',diff:'🦑',label:'السبيط'},{same:'🦀',diff:'🦞',label:'الجمبري'},{same:'🌻',diff:'🌼',label:'الوردة الصفرا'},{same:'🍉',diff:'🍑',label:'الخوخة'}
+];
+var colorSets=[
+{ same:'#FF006E',diff:'#FF4D9E',label:'الوردي الفاتح'},{same:'#FFBE0B',diff:'#FFD60A',label:'الأصفر الفاتح'},{same:'#00F5D4',diff:'#00D4FF',label:'الأزرق الفاتح'},{same:'#00BBF9',diff:'#0066FF',label:'الأزرق الغامق'},{same:'#9B5DE5',diff:'#C77DFF',label:'البنفسجي الفاتح'},{same:'#F15BB5',diff:'#FF006E',label:'الوردي الغامق'},{same:'#00F5D4',diff:'#00BB7A',label:'الأخضر الغامق'},{same:'#FF9F1C',diff:'#FF6B35',label:'البرتقالي الغامق'},{same:'#80ED99',diff:'#00F5D4',label:'التركوازي'},{same:'#FF6B6B',diff:'#FF9E7A',label:'السيمون الفاتح'},{same:'#4ECDC4',diff:'#1A535C',label:'التركوازي الغامق'},{same:'#FFE66D',diff:'#FFBE0B',label:'الأصفر الغامق'},{same:'#A78BFA',diff:'#6D28D9',label:'البنفسجي الغامق'},{same:'#F472B6',diff:'#DB2777',label:'الوردي الغامق'},{same:'#34D399',diff:'#059669',label:'الأخضر الغامق'},{same:'#FBBF24',diff:'#F97316',label:'البرتقالي'},{same:'#38BDF8',diff:'#0369A1',label:'الأزرق الغامق'},{same:'#FCA5A5',diff:'#EF4444',label:'الأحمر'},{same:'#86EFAC',diff:'#16A34A',label:'الأخضر الغامق'},{same:'#FDE68A',diff:'#EAB308',label:'الأصفر الغامق'}
+];
+function nextRound(){
+  clearInterval(timer);
+  timeLeft=Math.max(6,22-Math.floor(level*0.8));var total=timeLeft;
+  document.getElementById('timerFill').style.width='100%';
+  var n=level<2?6:level<4?9:level<7?12:level<10?16:20;
+  var cols=n<=6?3:n<=9?3:n<=12?4:5;
+  gridEl.style.gridTemplateColumns='repeat('+cols+',1fr)';
+  var idx=Math.floor(Math.random()*n);
+  var q=document.getElementById('q');
+  var useMode=mode==='mix'?rand(['shape','color','emoji']):mode;
+  var same,diff,isColor=false;
+  if(useMode==='shape'){var s=rand(shapeSets);same=s.same;diff=s.diff;q.innerHTML='دور على <b>'+s.label+'</b> 👀<span class="hint">كل مرة شكل جديد - عندنا 30 شكل!</span>';}
+  else if(useMode==='emoji'){var e=rand(emojiSets);same=e.same;diff=e.diff;q.innerHTML='دور على <b>'+e.label+'</b> 👀<span class="hint">عندنا 30 وش وحيوان وفاكهة!</span>';}
+  else{var c=rand(colorSets);same=c.same;diff=c.diff;isColor=true;q.innerHTML='دور على <b>'+c.label+'</b> 🌈<span class="hint">20 لون زاهي!</span>';}
+  gridEl.innerHTML='';
+  for(var i=0;i<n;i++){
+    var cell=document.createElement('div');cell.className='cell';
+    if(isColor){cell.style.background=(i===idx?diff:same);cell.style.borderColor=(i===idx?diff:same);}
+    else{cell.textContent=(i===idx?diff:same);cell.style.fontSize=(n>12?'22px':'30px');}
+    (function(isDiff){cell.onclick=function(){if(isDiff){var pts=100+level*20+timeLeft*5;score+=pts;document.getElementById('score').textContent=score;document.getElementById('msg').textContent='صح! 🎉 +'+pts;document.getElementById('msg').style.color='#00B894';tone(900,0.12,'sine',0.15);setTimeout(function(){tone(1400,0.15,'sine',0.15)},80);level++;document.getElementById('level').textContent=level;setTimeout(nextRound,250);}else{lives--;updateLives();document.getElementById('msg').textContent='غلط! 😅 ركز تاني';document.getElementById('msg').style.color='#FF006E';tone(200,0.3,'sawtooth',0.15);if(lives<=0)endGame();}};})(i===idx);
+    gridEl.appendChild(cell);
+  }
+  timer=setInterval(function(){timeLeft--;document.getElementById('timerFill').style.width=(Math.max(0,timeLeft/total)*100)+'%';if(timeLeft<=0){clearInterval(timer);lives--;updateLives();document.getElementById('msg').textContent='الوقت خلص! ⏰';tone(200,0.3,'sawtooth',0.15);if(lives<=0)endGame();else nextRound();}},1000);
+}
+function endGame(){clearInterval(timer);if(score>best){best=score;try{localStorage.setItem('eyeBest3',best)}catch(e){}document.getElementById('best').textContent=best}
+  var title=score>1500?'نظر صقر! 🦅':score>800?'نظر قوي! 👀':score>300?'نظر كويس 🙂':'محتاج تركز أكتر 😅';
+  var ov=document.getElementById('overlay');ov.style.display='flex';
+  ov.innerHTML='<img src="../../logo.png" style="width:100px;height:100px;border-radius:50%;border:5px solid #FF006E;object-fit:cover;background:#fff"><h2>'+title+'</h2><p>جبت <b style="color:#FF006E;font-size:22px">'+score+' نقطة</b><br>وصلت المرحلة '+level+'<br>أعلى نتيجة: '+best+'</p><div class="modes"><div class="mode" onclick="startGame(\'shape\')"><b>🔷 تاني</b><span>أشكال</span></div><div class="mode" onclick="startGame(\'color\')"><b>🌈 تاني</b><span>ألوان</span></div><div class="mode" onclick="startGame(\'emoji\')"><b>😀 تاني</b><span>وشوش</span></div><div class="mode" onclick="startGame(\'mix\')"><b>🎲 تاني</b><span>كله</span></div></div>';
+}
+</script>
+</body>
+</html>
