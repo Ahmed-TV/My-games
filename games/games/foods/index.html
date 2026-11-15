@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - لعبة الأكلات</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#4E0E0E,#D32F2F);height:100vh;height:100dvh;display:flex;justify-content:center;padding:4px 8px;overflow:hidden}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:#fff;border:3px solid #D32F2F;border-radius:20px;padding:8px;overflow:hidden;position:relative}
+header{padding:2px 0 4px;display:flex;flex-direction:column;align-items:center;text-align:center;flex-shrink:0}
+.logo-img{width:72px;height:72px;border-radius:50%;border:3px solid #D32F2F;object-fit:cover;background:#fff;margin-bottom:4px}
+.brand{font-size:22px;font-weight:900;color:#B71C1C}
+.names{font-size:13px;font-weight:700;color:#D32F2F}
+.type-row{display:flex;gap:5px;width:100%;margin:6px 0;flex-shrink:0}
+.type-btn{flex:1;padding:8px 2px;border-radius:10px;border:2px solid #D32F2F;background:#fff;color:#B71C1C;font-weight:800;font-size:11px;cursor:pointer;font-family:inherit}
+.type-btn.active{background:#D32F2F;color:#fff}
+.progress-wrap{width:100%;height:8px;background:#FFCDD2;border-radius:10px;margin:2px 0;overflow:hidden;flex-shrink:0}
+.progress{height:100%;background:linear-gradient(90deg,#D32F2F,#FF8A65);width:0%;transition:width .3s}
+.prog-text{text-align:center;font-size:12px;font-weight:800;color:#B71C1C;margin-bottom:4px;flex-shrink:0}
+.qbox{background:linear-gradient(180deg,#FFEBEE,#fff);border:2px solid #EF9A9A;border-radius:14px;padding:8px;text-align:center;flex-shrink:0;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.qicon{font-size:52px}
+.qtext{font-size:19px;font-weight:800;color:#B71C1C;margin-top:6px;line-height:1.4}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;flex-shrink:0;height:102px}
+.answer{font-family:inherit;font-size:14px;font-weight:800;color:#fff;background:linear-gradient(135deg,#D32F2F,#FF8A65);border:0;border-radius:12px;padding:10px 5px;min-height:44px;cursor:pointer;overflow:hidden}
+.answer.correct{background:#2E7D32}
+.answer.wrong{background:#333}
+.answer:disabled{opacity:.9}
+.feedback{height:20px;font-size:12px;font-weight:700;color:#B71C1C;text-align:center;margin:4px 0;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn-row{display:flex;gap:7px;flex-shrink:0;position:absolute;bottom:0;left:0;right:0;background:#fff;padding:6px 8px;border-top:2px solid #EF9A9A}
+.mainbtn{flex:2;font-family:inherit;font-weight:800;border:0;border-radius:20px;padding:11px 10px;background:#D32F2F;color:#fff;cursor:pointer;font-size:13px}
+.skipbtn{flex:1;font-family:inherit;font-weight:800;border:2px solid #D32F2F;border-radius:20px;padding:11px 6px;background:#fff;color:#B71C1C;cursor:pointer;font-size:13px}
+footer{text-align:center;color:#D32F2F;font-size:11px;margin-top:4px;flex-shrink:0}
+footer a{color:#D32F2F;text-decoration:none;font-weight:700}
+</style></head>
+<body><div class="game">
+<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">🍔 لعبة الأكلات 🍔</div><div class="names">أحمد عبدالعزيز • Ahmed TV</div><button id="soundBtn" style="margin:5px auto 0 auto;display:block;font-family:inherit;font-weight:800;border:2px solid #D32F2F;border-radius:20px;padding:6px 18px;background:#fff;color:#B71C1C;cursor:pointer;font-size:12px">🔊 الصوت: شغال</button></header>
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding-bottom:62px;position:relative">
+<div class="type-row"><button class="type-btn active" onclick="setType('الكل',this)">🍔 الكل - 200</button><button class="type-btn" onclick="setType('بلد',this)">🌍 البلد</button><button class="type-btn" onclick="setType('مكون',this)">🥣 المكون</button><button class="type-btn" onclick="setType('وجبة',this)">🍽️ الوجبة</button></div>
+<div class="progress-wrap"><div class="progress" id="prog"></div></div>
+<div class="prog-text" id="progText">السؤال 1 / 200</div>
+<div class="qbox"><div class="qicon" id="qicon">🍔</div><div class="qtext" id="qText">الكشري أكلة من بلد إيه؟</div></div>
+<div class="answers" id="answers"></div>
+<div class="feedback" id="feedback">🍔 يلا! اختر الصح</div>
+<div class="btn-row"><button class="skipbtn" onclick="skipQ()">⏭️ تخطي</button><button class="mainbtn" id="nextBtn" disabled>السؤال التالي ←</button></div>
+</div>
+<footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
+<script>
+const DATA=[{n:"كشري",country:"مصري",ing:"مكرونة وعدس",meal:"غدا"},{n:"فول مدمس",country:"مصري",ing:"فول",meal:"فطار"},{n:"طعمية",country:"مصري",ing:"فول مدشوش",meal:"فطار"},{n:"ملوخية",country:"مصري",ing:"ملوخية",meal:"غدا"},{n:"محشي كرنب",country:"مصري",ing:"كرنب ورز",meal:"غدا"},{n:"محشي ورق عنب",country:"مصري",ing:"ورق عنب ورز",meal:"غدا"},{n:"فتة",country:"مصري",ing:"عيش ولحمة",meal:"غدا"},{n:"مسقعة",country:"مصري",ing:"باذنجان",meal:"غدا"},{n:"كبدة اسكندراني",country:"مصري",ing:"كبدة",meal:"غدا"},{n:"سجق",country:"مصري",ing:"لحمة مفرومة",meal:"غدا"},{n:"حواوشي",country:"مصري",ing:"عيش ولحمة",meal:"غدا"},{n:"فسيخ",country:"مصري",ing:"سمك مملح",meal:"غدا"},{n:"رنجة",country:"مصري",ing:"سمك مدخن",meal:"غدا"},{n:"بامية",country:"مصري",ing:"بامية",meal:"غدا"},{n:"فتير مشلتت",country:"مصري",ing:"دقيق وسمنة",meal:"فطار"},{n:"أم علي",country:"مصري",ing:"رقاق ولبن",meal:"حلو"},{n:"كنافة",country:"مصري",ing:"كنافة وجبنة",meal:"حلو"},{n:"بسبوسة",country:"مصري",ing:"سميد",meal:"حلو"},{n:"قطايف",country:"مصري",ing:"دقيق ومكسرات",meal:"حلو"},{n:"زلابية",country:"مصري",ing:"دقيق وعسل",meal:"حلو"},{n:"بلح الشام",country:"مصري",ing:"دقيق وشربات",meal:"حلو"},{n:"شوربة عدس",country:"مصري",ing:"عدس",meal:"غدا"},{n:"بصارة",country:"مصري",ing:"فول مدشوش",meal:"غدا"},{n:"طاجن بامية",country:"مصري",ing:"بامية ولحمة",meal:"غدا"},{n:"فراخ مشوية",country:"مصري",ing:"فراخ",meal:"غدا"},{n:"حمام محشي",country:"مصري",ing:"حمام وفريك",meal:"غدا"},{n:"مكرونة بشاميل",country:"مصري",ing:"مكرونة ولبن",meal:"غدا"},{n:"جلاش باللحمة",country:"مصري",ing:"جلاش ولحمة",meal:"غدا"},{n:"رقاق باللحمة",country:"مصري",ing:"رقاق ولحمة",meal:"غدا"},{n:"ممبار",country:"مصري",ing:"ممبار ورز",meal:"غدا"},{n:"كرشة",country:"مصري",ing:"كرشة",meal:"غدا"},{n:"كشك",country:"مصري",ing:"لبن ودقيق",meal:"غدا"},{n:"شوربة لسان عصفور",country:"مصري",ing:"مكرونة وشوربة",meal:"غدا"},{n:"بابا غنوج",country:"مصري",ing:"باذنجان",meal:"سلطة"},{n:"طحينة",country:"مصري",ing:"سمسم",meal:"سلطة"},{n:"عجة",country:"مصري",ing:"بيض",meal:"فطار"},{n:"بيض بالبسطرمة",country:"مصري",ing:"بيض وبسطرمة",meal:"فطار"},{n:"جبنة قديمة",country:"مصري",ing:"جبنة",meal:"فطار"},{n:"عسل وقشطة",country:"مصري",ing:"عسل وقشطة",meal:"فطار"},{n:"بط محمر",country:"مصري",ing:"بط",meal:"غدا"},{n:"بيتزا",country:"إيطالي",ing:"عجين وجبنة",meal:"غدا"},{n:"برجر",country:"أمريكي",ing:"لحمة وعيش",meal:"غدا"},{n:"شاورما",country:"سوري",ing:"فراخ وعيش",meal:"غدا"},{n:"سوشي",country:"ياباني",ing:"رز وسمك",meal:"غدا"},{n:"باستا",country:"إيطالي",ing:"مكرونة",meal:"غدا"},{n:"كبسة",country:"سعودي",ing:"رز وفراخ",meal:"غدا"},{n:"مندي",country:"يمني",ing:"رز ولحمة",meal:"غدا"},{n:"طاجين",country:"مغربي",ing:"لحمة وخضار",meal:"غدا"},{n:"فلافل",country:"شامي",ing:"حمص",meal:"فطار"},{n:"حمص بالطحينة",country:"شامي",ing:"حمص",meal:"سلطة"}];
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
+let soundOn=true, audioCtx=null;
+function getCtx(){ if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
+document.addEventListener('pointerdown',()=>{ getCtx(); },{once:false});
+document.addEventListener('touchstart',()=>{ getCtx(); },{once:false});
+function tone(f,dur,vol,type,delay,slideTo){ if(!soundOn) return; const ctx=getCtx(); if(!ctx) return; try{ const t0=ctx.currentTime+(delay||0); const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type||'triangle'; o.frequency.setValueAtTime(f,t0); if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t0+dur); g.gain.setValueAtTime(0.0001,t0); g.gain.linearRampToValueAtTime(vol,t0+0.02); g.gain.exponentialRampToValueAtTime(0.001,t0+dur); o.connect(g); g.connect(ctx.destination); o.start(t0); o.stop(t0+dur+0.08); }catch(e){} }
+function noise(dur,vol,delay){ if(!soundOn) return; const ctx=getCtx(); if(!ctx) return; try{ const t0=ctx.currentTime+(delay||0); const len=ctx.sampleRate*dur; const buf=ctx.createBuffer(1,len,ctx.sampleRate); const d=buf.getChannelData(0); for(let i=0;i<len;i++) d[i]=Math.random()*2-1; const src=ctx.createBufferSource(); src.buffer=buf; const f=ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1200; const g=ctx.createGain(); g.gain.setValueAtTime(vol,t0); g.gain.exponentialRampToValueAtTime(0.001,t0+dur); src.connect(f); f.connect(g); g.connect(ctx.destination); src.start(t0); }catch(e){} }
+function playCorrect(){ tone(523,0.15,0.25,'triangle',0); tone(659,0.15,0.25,'triangle',0.15); tone(784,0.4,0.28,'triangle',0.3); noise(0.2,0.1,0.5); }
+function playWrong(){ tone(220,0.35,0.25,'square',0); tone(180,0.5,0.25,'square',0.35); }
+function playSkip(){ tone(600,0.2,0.2,'sine',0,900); }
+let curType='الكل', qs=[], idx=0, score=0, correct=0, locked=false;
+const HARD_EGYPTIAN=["ممبار","كرشة","فسيخ","بصارة","كشك","حمام محشي","فتير مشلتت","أم علي","بلح الشام","رنجة","كبدة اسكندراني","حواوشي","مسقعة","محشي ورق عنب","طاجن بامية","بط محمر","جبنة قديمة","بيض بالبسطرمة"];
+function build(){ qs=[]; DATA.forEach(c=>{ let types = curType==='الكل' ? ['بلد','مكون','وجبة','عكس'] : [curType]; types.forEach(t=>{ let q='', corr='', pool=[], icon=''; if(t==='بلد'){ q='أكلة '+c.n+' من بلد إيه؟'; corr=c.country; pool=DATA.map(x=>x.country); icon='🌍'; } if(t==='مكون'){ q='أكلة '+c.n+' مكونها الرئيسي إيه؟'; corr=c.ing; pool=DATA.map(x=>x.ing); icon='🥣'; } if(t==='وجبة'){ q='أكلة '+c.n+' بتتاكل إمتى؟'; corr=c.meal; pool=['فطار','غدا','حلو','سلطة']; icon='🍽️'; } if(t==='عكس'){ q='أكلة مكونها الرئيسي '+c.ing+' إيه؟'; corr=c.n; pool=DATA.map(x=>x.n); icon='🍔'; } let others = shuffle([...new Set(pool.filter(x=>x!==corr))]).slice(0,3); qs.push({q:q, correct:corr, opts:shuffle([...new Set([corr,...others])]), icon:icon}); }); }); let hard=[], egy=[], other=[]; qs.forEach(q=>{ let isHard=HARD_EGYPTIAN.some(h=>q.q.includes(h)); let isEgy=DATA.find(d=>q.q.includes(d.n) && d.country==='مصري'); if(isHard) hard.push(q); else if(isEgy) egy.push(q); else other.push(q); }); qs=[...shuffle(hard),...shuffle(egy),...shuffle(other)]; }
+function loadQ(){ if(idx>=qs.length){ document.getElementById('qText').textContent='خلصت الـ '+qs.length+' سؤال! 🏆'; document.getElementById('feedback').textContent='نتيجتك: '+score+' • صح: '+correct; document.getElementById('answers').innerHTML=''; return; } locked=false; let it=qs[idx]; document.getElementById('qicon').textContent=it.icon; document.getElementById('qText').textContent=it.q; document.getElementById('prog').style.width=((idx+1)/qs.length*100)+'%'; document.getElementById('progText').textContent='السؤال '+(idx+1)+' / '+qs.length; document.getElementById('feedback').textContent='🍔 السؤال '+(idx+1)+' من '+qs.length; let ans=document.getElementById('answers'); ans.innerHTML=''; it.opts.forEach(o=>{ let b=document.createElement('button'); b.className='answer'; b.textContent=o; b.onclick=()=>choose(o===it.correct,b,it); ans.appendChild(b); }); document.getElementById('nextBtn').disabled=true; }
+function choose(ok,btn,it){ if(locked) return; locked=true; [...document.getElementById('answers').children].forEach(b=>{ b.disabled=true; if(b.textContent===it.correct) b.classList.add('correct'); else if(b===btn) b.classList.add('wrong'); }); if(ok){ playCorrect(); score+=10; correct++; document.getElementById('feedback').textContent='✅ صح! +10 🍔'; } else { playWrong(); document.getElementById('feedback').textContent='❌ غلط - الصح: '+it.correct; } document.getElementById('nextBtn').disabled=false; }
+function skipQ(){ playSkip(); if(idx>=qs.length){ build(); idx=0; loadQ(); return; } document.getElementById('feedback').textContent='⏭️ تخطيت - الصح: '+qs[idx].correct; idx++; setTimeout(loadQ,600); }
+function setType(t,btn){ document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); curType=t; idx=0; score=0; correct=0; build(); loadQ(); }
+document.getElementById('nextBtn').onclick=()=>{ if(!locked && idx<qs.length) return; idx++; loadQ(); };
+document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'🔊 الصوت: شغال':'🔇 الصوت: مطفي'; if(soundOn) getCtx(); };
+build(); loadQ();
+</script></body></html>
