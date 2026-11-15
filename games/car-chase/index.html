@@ -2,40 +2,40 @@
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - مطاردة العربيات</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:none}
-body{font-family:Tahoma,Arial;background:#1A0033;height:100vh;display:flex;justify-content:center;padding:4px}
-.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:linear-gradient(180deg,#FF1744 0%,#FF9800 20%,#FFD600 40%,#00E676 60%,#00E5FF 80%,#6D28D9 100%);border:4px solid #00E5FF;border-radius:28px;padding:6px;overflow:hidden}
+body{font-family:Tahoma,Arial;background:#1A0033;height:100dvh;display:flex;justify-content:center;padding:3px;overflow:hidden}
+.game{width:100%;max-width:500px;height:100dvh;display:flex;flex-direction:column;background:linear-gradient(180deg,#FF1744 0%,#FF9800 20%,#FFD600 40%,#00E676 60%,#00E5FF 80%,#6D28D9 100%);border:4px solid #00E5FF;border-radius:28px;padding:6px;overflow:hidden}
 header{display:flex;align-items:center;gap:10px;justify-content:center;text-align:right}
-.logo-wrap{width:92px;height:92px;flex-shrink:0;border-radius:50%;border:3px solid #00E5FF;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px #00E5FF, 0 0 30px #FFD600;padding:6px}
-.logo{width:76px;height:76px;border-radius:14px;border:3px solid #00E5FF;background:#fff;object-fit:contain;padding:4px}
+.logo-wrap{width:88px;height:88px;flex-shrink:0;border-radius:50%;border:3px solid #00E5FF;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px #00E5FF, 0 0 30px #FFD600;padding:0;background:#000}
+.logo{width:100%;height:100%;border-radius:50%;border:0;object-fit:cover;padding:0;display:block}
 .brand{font-size:20px;font-weight:900;color:#FFD600}
 .names{font-size:11px;font-weight:700;color:#FFE066}
 .stats{display:flex;gap:4px;margin:4px 0}
-.stat{flex:1;background:#fff;border:2px solid #00E5FF;border-radius:10px;text-align:center;padding:2px}
+.stat{flex:1;background:#FFF176;border:2px solid #00E5FF;border-radius:10px;text-align:center;padding:2px}
 .stat b{display:block;color:#D50000}
 .stat span{font-size:9px;color:#666;font-weight:800}
-#view{flex:1;background:#111;border:2px solid #00E5FF;border-radius:14px;position:relative;overflow:hidden;min-height:260px}
+#view{flex:1;background:#111;border:2px solid #00E5FF;border-radius:14px;position:relative;overflow:hidden;min-height:150px}
 #view canvas{width:100%;height:100%;display:block}
 #inGame{position:absolute;top:2px;left:0;right:0;text-align:center;pointer-events:none;line-height:1.2}
 #inGame div{font-weight:900;color:#FFD600;text-shadow:1px 1px 0 #000;font-size:13px}
 #inGame small{color:#fff;text-shadow:1px 1px 0 #D50000;font-size:10px}
 #overlay{position:absolute;inset:0;background:rgba(0,0,0,.65);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:5}
 #overlay button{margin-top:10px;padding:11px 24px;border:0;border-radius:20px;background:#FFD600;color:#D50000;font-weight:900;font-size:16px}
-.feedback{text-align:center;color:#FFD600;font-size:12px;font-weight:800;margin:3px 0}
+.feedback{text-align:center;color:#FFD600;font-size:11px;font-weight:800;margin:2px 0}
 .controls{display:flex;gap:6px}
-.cbtn{flex:1;padding:12px;border:2px solid #00E5FF;border-radius:14px;background:#fff;color:#D50000;font-weight:900;font-size:16px}
+.cbtn{flex:1;padding:10px;border:2px solid #FFD600;border-radius:14px;background:#00E5FF;color:#000;font-weight:900;font-size:16px}
 .cbtn.go{background:#FFD600}
 .btn-row{display:flex;gap:6px;margin-top:4px}
 .mainbtn{flex:2;padding:8px;border:0;border-radius:16px;background:#FFD600;color:#D50000;font-weight:900}
-.skipbtn{flex:1;padding:8px;border:2px solid #00E5FF;border-radius:16px;background:#fff;color:#D50000;font-weight:800}
+.skipbtn{flex:1;padding:8px;border:2px solid #FFD600;border-radius:16px;background:#FF9800;color:#fff;font-weight:800}
 footer{text-align:center;color:#FFE066;font-size:10px}
 footer a{color:#FFE066;text-decoration:none}
 </style></head>
 <body><div class="game">
-<header><div class="logo-wrap"><img src="../../logo.png" class="logo" alt="Ahmed TV"></div><div style="flex:1"><div class="brand" style="font-size:24px">مطاردة العربيات</div><div class="names" style="font-size:14px">أحمد عبدالعزيز<br>Ahmed TV</div></div><button id="soundBtn" style="margin:3px auto;display:block;padding:4px 14px;border:2px solid #00E5FF;border-radius:20px;background:#fff;color:#D50000;font-weight:800;font-size:11px">🔊 الصوت: شغال</button></header>
+<header><div class="logo-wrap"><img src="../../logo.png" class="logo" alt="Ahmed TV"></div><div style="flex:1"><div class="brand" style="font-size:24px">مطاردة العربيات</div><div class="names" style="font-size:14px">أحمد عبدالعزيز<br>Ahmed TV</div></div><button id="soundBtn" style="margin:2px auto;display:block;padding:3px 10px;border:2px solid #00E5FF;border-radius:20px;background:#fff;color:#D50000;font-weight:800;font-size:11px">🔊 الصوت: شغال</button></header>
 <div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="coins">0</b><span>فلوس 💰</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
 <div id="view"><canvas id="cv"></canvas><div id="inGame"><div>أحمد عبدالعزيز</div><small>Ahmed TV</small></div><div id="overlay"><h2>🏎️ مطاردة العربيات</h2><p>سوق ولم الفلوس 💰<br>واهرب من العربيات</p><button onclick="startGame()">ابدأ المطاردة ▶️</button></div></div>
 <div class="feedback" id="feedback">🏎️ اللعبة بتتحرك لوحدها - دوس ابدأ!</div>
-<div style="background:#111;border:2px solid #FFD600;border-radius:12px;padding:4px 8px;margin:4px 0">
+<div style="background:#111;border:2px solid #FFD600;border-radius:12px;padding:3px 8px;margin:2px 0">
 <div style="display:flex;justify-content:space-between;color:#FFD600;font-size:11px;font-weight:900"><span>⛽ لوحة البنزين</span><span id="fuelText">100%</span></div>
 <div style="background:#333;border-radius:10px;height:14px;overflow:hidden;margin-top:2px"><div id="fuelBar" style="width:100%;height:100%;background:linear-gradient(90deg,#00E676,#FFD600,#FF1744);transition:width 0.2s"></div></div>
 <div style="text-align:center;color:#fff;font-size:10px;margin-top:1px" id="fuelMsg">البنزين مليان - دوس بنزين واطير!</div>
