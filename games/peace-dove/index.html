@@ -73,4 +73,10 @@ function animate(timestamp){if(!playing)return;if(!lastTime)lastTime=timestamp;c
 function startGame(){doves.forEach(d=>d.el.remove());doves=[];score=0;timeLeft=60;playing=true;getCtx();startAmbient();lastTime=0;scoreEl.textContent=score;timerEl.textContent=timeLeft;document.getElementById('startScreen').classList.add('hidden');document.getElementById('endScreen').classList.add('hidden');createDove();if(spawnInterval)clearInterval(spawnInterval);spawnInterval=setInterval(createDove,700);if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(()=>{timeLeft--;timerEl.textContent=timeLeft;if(timeLeft<=0)endGame();},1000);if(animationId)cancelAnimationFrame(animationId);animationId=requestAnimationFrame(animate);}
 function endGame(){playing=false;clearInterval(timerInterval);clearInterval(spawnInterval);cancelAnimationFrame(animationId);doves.forEach(d=>d.el.remove());doves=[];let title,msg;if(score>=200){title='🏆 بطل السلام!';msg='رائع! حصلت على '+score+' نقطة';}else if(score>=100){title='🌟 ممتاز!';msg='حصلت على '+score+' نقطة - أنت سريع جداً';}else if(score>=50){title='👏 جيد!';msg='حصلت على '+score+' نقطة - استمر';}else{title='💪 حاول مرة أخرى';msg='حصلت على '+score+' نقطة فقط';}playWin();document.getElementById('endTitle').textContent=title;document.getElementById('endMessage').textContent=msg;document.getElementById('endScreen').classList.remove('hidden');}
 document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?"🔊 الصوت: شغال":"🔇 الصوت: مطفي"; if(soundOn){ getCtx(); if(playing) startAmbient(); } else { stopAmbient(); } };
-</script></body></html>
+</script><a href="https://wa.me/201551668092?text=أهلا%20Ahmed%20TV%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;">
+<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;" alt="واتساب">
+</span>
+<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;">كلمنا واتساب</span>
+</a>
+</body></html>
