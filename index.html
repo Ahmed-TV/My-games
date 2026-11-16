@@ -706,42 +706,33 @@ document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touc
 document.addEventListener('touchend',function(){ endDrag(); });
 wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
 </script>
-   <!-- عداد الزوار - روبوت -->
-<div style="position:fixed;top:56%;left:8px;z-index:9998;display:flex;flex-direction:column;align-items:center;pointer-events:none;direction:rtl;-webkit-touch-callout:none !important;-webkit-user-select:none !important;user-select:none !important;">
+   <!-- عداد الزوار - روبوت صغير -->
+<div style="position:fixed;top:32%;left:4px;z-index:9998;display:flex;flex-direction:column;align-items:center;pointer-events:none;direction:rtl;-webkit-touch-callout:none !important;-webkit-user-select:none !important;user-select:none !important;transform:scale(0.65);transform-origin:top left;">
 
   <!-- الانتينا -->
-  <div style="width:6px;height:22px;background:#FF5FA8;margin:0 auto;"></div>
-  <div style="width:16px;height:16px;background:#FF8FBB;border-radius:50%;box-shadow:0 0 12px #FF8FBB;margin:-4px auto 0 auto;"></div>
-  <div style="width:34px;height:10px;background:#2E345E;border-radius:10px 10px 0 0;margin-top:4px;"></div>
+  <div style="width:4px;height:14px;background:#FF5FA8;margin:0 auto;"></div>
+  <div style="width:11px;height:11px;background:#FF8FBB;border-radius:50%;box-shadow:0 0 8px #FF8FBB;margin:-3px auto 0 auto;"></div>
+  <div style="width:24px;height:7px;background:#2E345E;border-radius:8px 8px 0 0;margin-top:3px;"></div>
 
   <!-- جسم الروبوت -->
-  <div style="width:88px;background:#2E345E;border-radius:24px;padding:14px 8px 12px 8px;display:flex;flex-direction:column;align-items:center;box-shadow:0 10px 25px rgba(0,0,0,.5);">
-
-    <!-- الودان -->
-    <div style="display:flex;justify-content:space-between;width:100%;margin-bottom:-18px;">
-      <div style="width:10px;height:26px;background:#232844;border-radius:8px;"></div>
-      <div style="width:10px;height:26px;background:#232844;border-radius:8px;"></div>
-    </div>
+  <div style="width:62px;background:#2E345E;border-radius:18px;padding:10px 6px 8px 6px;display:flex;flex-direction:column;align-items:center;box-shadow:0 8px 20px rgba(0,0,0,.5);">
 
     <!-- العيون -->
-    <div style="display:flex;gap:18px;margin-top:18px;">
-      <div style="width:22px;height:22px;background:#00E5FF;border-radius:50%;box-shadow:0 0 12px #00E5FF;"></div>
-      <div style="width:22px;height:22px;background:#00E5FF;border-radius:50%;box-shadow:0 0 12px #00E5FF;"></div>
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <div style="width:15px;height:15px;background:#00E5FF;border-radius:50%;box-shadow:0 0 8px #00E5FF;"></div>
+      <div style="width:15px;height:15px;background:#00E5FF;border-radius:50%;box-shadow:0 0 8px #00E5FF;"></div>
     </div>
 
     <!-- البوق -->
-    <div style="width:34px;height:16px;border:2px solid #1A1E3A;border-top:none;border-radius:0 0 20px 20px;margin-top:12px;display:flex;justify-content:center;gap:6px;padding-top:2px;">
-      <span style="color:#1A1E3A;font-size:10px;line-height:1;">v</span>
-      <span style="color:#1A1E3A;font-size:10px;line-height:1;">v</span>
-    </div>
+    <div style="width:24px;height:11px;border:1.5px solid #1A1E3A;border-top:none;border-radius:0 0 14px 14px;margin-top:8px;"></div>
 
     <!-- عدد الزوار -->
-    <div style="color:#fff;font-family:Tahoma,Arial;font-size:15px;margin-top:22px;text-align:center;line-height:1.2;">عدد الزوار</div>
+    <div style="color:#fff;font-family:Tahoma,Arial;font-size:11px;margin-top:14px;text-align:center;line-height:1.2;">عدد الزوار</div>
 
-    <!-- الرقم بس - من غير كلمة visitors -->
-    <div style="width:72px;height:28px;background:#FF5FA8;border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-top:10px;">
-      <div style="width:52px;height:20px;overflow:hidden;display:flex;justify-content:center;">
-        <img src="https://visitor-badge.laobi.icu/badge?page_id=ahmed-tv-my-games-2026" style="height:20px;max-width:none;transform:translateX(38px);" alt="">
+    <!-- الرقم بس -->
+    <div style="width:52px;height:22px;background:#FF5FA8;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-top:7px;">
+      <div style="width:42px;height:18px;overflow:hidden;">
+        <img src="https://visitor-badge.laobi.icu/badge?page_id=ahmed-tv-my-games-2026" style="height:18px;max-width:none;margin-left:-52px;" alt="">
       </div>
     </div>
 
