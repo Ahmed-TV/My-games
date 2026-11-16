@@ -6,38 +6,38 @@
 <title>لعبة البيانو</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:Tahoma,Arial,sans-serif;background:#16213e;color:#fff;padding:10px;padding-top:16px;display:flex;flex-direction:column;align-items:center}
-.header{background:#fff;border-radius:22px;padding:16px 12px 12px;text-align:center;width:100%;max-width:900px}
-.logo{width:92px;height:92px;border-radius:50%;border:5px solid #FF006E;object-fit:cover;background:#fff}
-.header h1{font-size:34px;color:#FF006E;margin:4px 0;line-height:1.2}
-.header p{font-size:18px;font-weight:900;color:#333}
-.header p b{color:#FF006E}
-.controls{width:100%;max-width:900px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}
-.cbtn{background:#fff;color:#222;border:none;padding:11px 14px;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.25);white-space:nowrap}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:#16213e;color:#fff;display:flex;flex-direction:column;padding:6px;gap:6px}
+.header{background:#fff;border-radius:16px;padding:6px 10px;display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0}
+.header img{width:44px;height:44px;border-radius:50%;border:3px solid #FF006E;object-fit:cover}
+.header h1{font-size:24px;color:#FF006E;line-height:1}
+.header p{font-size:12px;font-weight:900;color:#333;line-height:1}
+.controls{display:flex;gap:5px;justify-content:center;flex-wrap:nowrap;flex-shrink:0;overflow-x:auto;padding:2px}
+.cbtn{background:#fff;color:#222;border:none;padding:8px 10px;border-radius:10px;font-size:13px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .cbtn.active{background:#FF006E;color:#fff}
 .cbtn.red{background:#FF006E;color:#fff}
-.noteBox{width:100%;max-width:900px;background:#fff;color:#222;border-radius:16px;padding:14px;text-align:center}
-.noteBox .big{font-size:42px;font-weight:900;color:#FF006E;line-height:1.1}
-.noteBox .sub{font-size:14px;color:#666;margin-top:4px}
-.pianoWrap{width:100%;max-width:900px;background:#111;border-radius:16px;padding:12px 8px 10px;margin-top:12px}
-.piano{position:relative;height:210px;display:flex;user-select:none;touch-action:none}
-.white{flex:1;background:#fff;border:2px solid #111;border-top:none;border-radius:0 0 10px 10px;position:relative;display:flex;justify-content:center;align-items:flex-end;padding-bottom:10px;cursor:pointer;z-index:1}
-.white span{font-size:16px;font-weight:900;color:#222;white-space:nowrap}
-.white:active,.white.hit{background:#FFBE0B}
-.black{position:absolute;top:0;width:11%;max-width:46px;height:125px;background:#000;border-radius:0 0 10px 10px;z-index:2;display:flex;justify-content:center;align-items:flex-end;padding-bottom:8px;cursor:pointer}
-.black span{font-size:12px;font-weight:900;color:#fff;white-space:nowrap}
-.black:active,.black.hit{background:#FF006E}
-.songs{width:100%;max-width:900px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}
-.sbtn{background:#FFBE0B;color:#222;border:none;padding:11px 14px;border-radius:12px;font-size:14px;font-weight:900;cursor:pointer;white-space:nowrap}
-.staff{width:100%;max-width:900px;background:#fff;border-radius:16px;padding:12px;text-align:center;color:#222}
-.staff b{font-size:16px}
-.staff div{font-size:20px;margin-top:6px;font-weight:900;color:#FF006E}
-.footer{font-size:13px;margin:14px 0}.footer a{color:#fff;font-weight:900}
-@media(max-width:500px){.white span{font-size:13px}.black{height:105px}.piano{height:180px}.header h1{font-size:30px}}
+.noteBox{background:#fff;color:#222;border-radius:12px;padding:6px;text-align:center;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:8px}
+.noteBox .big{font-size:26px;font-weight:900;color:#FF006E}
+.noteBox .sub{font-size:12px;color:#777}
+.pianoWrap{background:#111;border-radius:14px;padding:8px 6px 6px;flex:1;display:flex;flex-direction:column;min-height:0}
+.piano{position:relative;flex:1;display:flex;user-select:none;touch-action:none;min-height:140px}
+.white{flex:1;background:#fff;border:2px solid #111;border-top:none;border-radius:0 0 10px 10px;cursor:pointer;z-index:1}
+.white.hit{background:#FFBE0B}
+.black{position:absolute;top:0;width:9%;max-width:52px;height:58%;background:#000;border-radius:0 0 10px 10px;z-index:2;cursor:pointer}
+.black.hit{background:#FF006E}
+.songs{display:flex;gap:5px;justify-content:center;flex-wrap:nowrap;overflow-x:auto;flex-shrink:0;padding:2px}
+.sbtn{background:#FFBE0B;color:#222;border:none;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.staff{background:#fff;border-radius:12px;padding:6px;text-align:center;color:#222;flex-shrink:0;font-size:15px;font-weight:900}
+.staff span{color:#FF006E}
+@media (orientation:portrait){ .rotateHint{display:flex !important} }
+.rotateHint{display:none;background:#FF006E;color:#fff;border-radius:10px;padding:5px;text-align:center;font-size:12px;font-weight:900;flex-shrink:0}
 </style>
 </head>
 <body>
-<div class="header"><img src="../../logo.png" class="logo" alt="Ahmed TV"><h1>لعبة البيانو</h1><p>أحمد عبدالعزيز • <b>Ahmed TV</b></p></div>
+
+<div class="header"><img src="../../logo.png" alt="Ahmed TV"><div><h1>لعبة البيانو</h1><p>أحمد عبدالعزيز • Ahmed TV</p></div></div>
+
+<div class="rotateHint">📱 اقلب الموبايل بالعرض عشان البيانو يبان كله</div>
 
 <div class="controls">
 <button class="cbtn active" onclick="setSound(this,'piano')">بيانو</button>
@@ -49,26 +49,23 @@ body{font-family:Tahoma,Arial,sans-serif;background:#16213e;color:#fff;padding:1
 <button class="cbtn" onclick="clearRec()">مسح</button>
 </div>
 
-<div class="noteBox"><div class="big" id="curNote">دوس على أي زرار</div><div class="sub" id="curSub">اعزف براحتك - كل زرار ليه صوت</div></div>
+<div class="noteBox"><div class="big" id="curNote">دوس على أي زرار</div><div class="sub" id="curSub"></div></div>
 
 <div class="pianoWrap"><div class="piano" id="piano"></div></div>
 
 <div class="songs">
-<button class="sbtn" onclick="playSong('twinkle')">توينكل توينكل</button>
+<button class="sbtn" onclick="playSong('twinkle')">توينكل</button>
 <button class="sbtn" onclick="playSong('happy')">هابي بيرثداي</button>
-<button class="sbtn" onclick="playSong('mary')">ماري عندها خروف</button>
+<button class="sbtn" onclick="playSong('mary')">ماري</button>
 <button class="sbtn" onclick="playSong('egypt')">أغنية مصرية</button>
 <button class="sbtn" onclick="playSong('ode')">أغنية الفرح</button>
 </div>
 
-<div class="staff"><b>النوتة الموسيقية</b><div>دو &nbsp; ري &nbsp; مي &nbsp; فا &nbsp; صول &nbsp; لا &nbsp; سي &nbsp; دو</div></div>
+<div class="staff"><span>دو &nbsp; ري &nbsp; مي &nbsp; فا &nbsp; صول &nbsp; لا &nbsp; سي &nbsp; دو</span></div>
 
-<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
-
-<!-- واتساب - ثابت تحت - ظاهر كامل -->
-<a id="waBtn" href="https://wa.me/201551668092" target="_blank" style="position:fixed;bottom:14px;left:12px;z-index:9999;display:flex;align-items:center;gap:6px;text-decoration:none;background:#25D366;border-radius:50px;padding:6px 12px 6px 6px;box-shadow:0 6px 20px rgba(0,0,0,.4);">
-<span style="width:44px;height:44px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;">💬</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:16px;font-weight:900;white-space:nowrap;">كلمنا واتساب</span>
+<a href="https://wa.me/201551668092" target="_blank" style="position:fixed;bottom:8px;left:8px;z-index:9999;display:flex;align-items:center;gap:6px;text-decoration:none;background:#25D366;border-radius:50px;padding:5px 12px 5px 5px;box-shadow:0 6px 20px rgba(0,0,0,.4);">
+<span style="width:38px;height:38px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;">💬</span>
+<span style="color:#fff;font-family:Tahoma,Arial;font-size:15px;font-weight:900;white-space:nowrap;">كلمنا واتساب</span>
 </a>
 
 <script>
@@ -82,14 +79,14 @@ var blackAfter=[0,1,3,4,5, 7,8,10,11,12];
 var blackNames=['دو','ري','فا','صول','لا','دو','ري','فا','صول','لا'];
 var blackFreq=[277.18,311.13,369.99,415.30,466.16,554.37,622.25,739.99,830.61,932.33];
 var piano=document.getElementById('piano');
-whites.forEach(function(w,i){
-  var el=document.createElement('div'); el.className='white'; el.innerHTML='<span>'+w.ar+'</span>';
+whites.forEach(function(w){
+  var el=document.createElement('div'); el.className='white';
   el.addEventListener('pointerdown',function(e){e.preventDefault(); playNote(w.freq,w.ar,el,false);});
   piano.appendChild(el);
 });
 blackAfter.forEach(function(wi,bi){
-  var el=document.createElement('div'); el.className='black'; el.innerHTML='<span></span>';
-  el.style.left='calc('+(wi+1)*(100/14)+'% - 5.5%)';
+  var el=document.createElement('div'); el.className='black';
+  el.style.left='calc('+(wi+1)*(100/14)+'% - 4.5%)';
   var f=blackFreq[bi], name=blackNames[bi];
   el.addEventListener('pointerdown',function(e){e.preventDefault(); e.stopPropagation(); playNote(f,name,el,true);});
   piano.appendChild(el);
@@ -110,22 +107,12 @@ function playNote(freq,name,el,isBlack){
   if(el){ el.classList.add('hit'); setTimeout(function(){el.classList.remove('hit')},250); }
   if(recording){ recNotes.push({freq:freq,time:Date.now()-recStart}); }
 }
-function setSound(btn,s){ soundType=s; var b=document.querySelectorAll('.controls .cbtn'); b.forEach(function(x){ if(x.textContent==='بيانو'||x.textContent==='أورج'||x.textContent==='فلوت'||x.textContent==='جيتار') x.classList.remove('active'); }); btn.classList.add('active'); }
-function toggleRec(){ recording=!recording; var b=document.getElementById('recBtn'); if(recording){ recNotes=[]; recStart=Date.now(); b.textContent='بيسجل... دوس تاني عشان توقف'; document.getElementById('curNote').textContent='بيسجل'; } else { b.textContent='تسجيل'; document.getElementById('curNote').textContent='خلص التسجيل - '+recNotes.length+' نوتة'; } }
+function setSound(btn,s){ soundType=s; document.querySelectorAll('.controls .cbtn').forEach(function(x){ if(['بيانو','أورج','فلوت','جيتار'].indexOf(x.textContent)>-1) x.classList.remove('active'); }); btn.classList.add('active'); }
+function toggleRec(){ recording=!recording; var b=document.getElementById('recBtn'); if(recording){ recNotes=[]; recStart=Date.now(); b.textContent='بيسجل...'; document.getElementById('curNote').textContent='بيسجل'; } else { b.textContent='تسجيل'; document.getElementById('curNote').textContent='خلص التسجيل'; } }
 function playRec(){ if(!recNotes.length){ document.getElementById('curNote').textContent='سجل الأول'; return; } recNotes.forEach(function(n){ setTimeout(function(){ playFreq(n.freq,1); }, n.time); }); }
 function clearRec(){ recNotes=[]; document.getElementById('curNote').textContent='اتمسح التسجيل'; }
-var songs={
-twinkle:[0,0,4,4,5,5,4, 3,3,2,2,1,1,0],
-happy:[0,0,1,0,3,2, 0,0,1,0,4,3],
-mary:[2,1,0,1,2,2,2, 1,1,1,2,4,4],
-egypt:[0,1,2,3,4,3,2,1,0,1,2,4,5,4],
-ode:[2,2,3,4,4,3,2,1,0,0,1,2,2,1,1]
-};
-function playSong(name){
-  var seq=songs[name]||[];
-  document.getElementById('curNote').textContent='بيعزف...';
-  seq.forEach(function(wi,i){ setTimeout(function(){ var w=whites[wi]; playNote(w.freq,w.ar,null,false); }, i*450); });
-}
+var songs={ twinkle:[0,0,4,4,5,5,4,3,3,2,2,1,1,0], happy:[0,0,1,0,3,2,0,0,1,0,4,3], mary:[2,1,0,1,2,2,2,1,1,1,2,4,4], egypt:[0,1,2,3,4,3,2,1,0,1,2,4,5,4], ode:[2,2,3,4,4,3,2,1,0,0,1,2,2,1,1] };
+function playSong(name){ var seq=songs[name]||[]; document.getElementById('curNote').textContent='بيعزف...'; seq.forEach(function(wi,i){ setTimeout(function(){ var w=whites[wi]; playNote(w.freq,w.ar,null,false); }, i*450); }); }
 </script>
 </body>
 </html>
