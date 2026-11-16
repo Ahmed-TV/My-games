@@ -370,5 +370,26 @@ document.getElementById('startO').addEventListener('click', () => startGame('O')
 document.body.addEventListener('touchstart', initAudio, { once: true });
 document.body.addEventListener('click', initAudio, { once: true });
 </script>
+ <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20Ahmed%20TV%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
+<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
+</span>
+<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
+</a>
+
+<script>
+var wa = document.getElementById('waBtn');
+var dragging = false, startX=0, startY=0, startLeft=0, startTop=0, moved=false;
+function startDrag(x,y){ dragging=true; moved=false; startX=x; startY=y; startLeft=wa.offsetLeft; startTop=wa.offsetTop; }
+function moveDrag(x,y){ if(!dragging) return; var dx=x-startX, dy=y-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ moved=true; } if(moved){ wa.style.left=(startLeft+dx)+'px'; wa.style.top=(startTop+dy)+'px'; wa.style.right='auto'; wa.style.bottom='auto'; } }
+function endDrag(){ if(moved){ setTimeout(function(){moved=false},50); } dragging=false; }
+wa.addEventListener('mousedown',function(e){ startDrag(e.clientX,e.clientY); });
+document.addEventListener('mousemove',function(e){ moveDrag(e.clientX,e.clientY); });
+document.addEventListener('mouseup',function(){ endDrag(); });
+wa.addEventListener('touchstart',function(e){ startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
+document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
+document.addEventListener('touchend',function(){ endDrag(); });
+wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
+</script>
 </body>
 </html>
