@@ -706,14 +706,22 @@ document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touc
 document.addEventListener('touchend',function(){ endDrag(); });
 wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
 </script>
-   <!-- عداد الزوار - بالطول - عربي بس - من غير كلمة visitors -->
-<div style="position:fixed;top:58%;left:8px;z-index:9998;display:flex;flex-direction:column;align-items:center;gap:4px;background:linear-gradient(180deg,#1a1a2e,#16213e);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:10px 10px 8px 10px;box-shadow:0 8px 25px rgba(0,0,0,.5);pointer-events:none;direction:rtl;width:74px;text-align:center;overflow:hidden;">
+   <!-- عداد الزوار - بالطول - احترافي - عربي - ثابت -->
+<div style="position:fixed;top:58%;left:8px;z-index:9998;display:flex;flex-direction:column;align-items:center;gap:4px;background:linear-gradient(180deg,#1a1a2e,#16213e);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:10px 10px 8px 10px;box-shadow:0 8px 25px rgba(0,0,0,.5);pointer-events:none;direction:rtl;width:74px;text-align:center;overflow:hidden;-webkit-touch-callout:none !important;-webkit-user-select:none !important;user-select:none !important;">
+  <!-- الأيقونة فوق -->
   <span style="width:46px;height:46px;background:linear-gradient(135deg,#FF006E,#FF8A00);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 12px rgba(255,0,110,.4);">👁️</span>
+  <!-- الكلام -->
   <span style="color:#fff;font-family:Tahoma,Arial;font-size:13px;font-weight:400;line-height:1.2;">عدد<br>الزوار</span>
-  <!-- هنا بنخفي كلمة visitors وبنبين الرقم بس -->
-  <span style="background:#FF006E;border-radius:10px;padding:3px 0;width:52px;height:24px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-    <img src="https://visitor-badge.laobi.icu/badge?page_id=ahmed-tv-my-games-2026" style="height:20px;max-width:none;transform:translateX(-28px);" alt="">
+  <!-- الرقم بس - من غير كلمة visitors - من غير أحمر ولا أزرق -->
+  <span style="width:52px;height:24px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=ahmed-tv-my-games-2026&left_color=%2316213e&right_color=%2316213e" style="height:20px;max-width:none;transform:translateX(-52px);" alt="">
   </span>
 </div>
+
+<script>
+// منع بحث جوجل لما تدوس دوسة طويلة
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
+</script>
 </body>
 </html>
