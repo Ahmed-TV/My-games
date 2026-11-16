@@ -706,33 +706,19 @@ document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touc
 document.addEventListener('touchend',function(){ endDrag(); });
 wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
 </script>
-   <!-- عداد الزوار - عداد واحد بس - بيعد وبيعرض -->
+   <!-- عداد الزوار - صورة فيها الرقم بس - بتعد على طول - في النص -->
 <div style="position:fixed;top:58%;left:8px;z-index:9998;display:flex;flex-direction:column;align-items:center;gap:4px;background:linear-gradient(180deg,#1a1a2e,#16213e);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:10px 10px 10px 10px;box-shadow:0 8px 25px rgba(0,0,0,.5);pointer-events:none;direction:rtl;width:74px;text-align:center;-webkit-touch-callout:none !important;-webkit-user-select:none !important;user-select:none !important;">
   <span style="width:46px;height:46px;background:linear-gradient(135deg,#FF006E,#FF8A00);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 12px rgba(255,0,110,.4);">👁️</span>
   <span style="color:#fff;font-family:Tahoma,Arial;font-size:13px;font-weight:400;line-height:1.2;">عدد<br>الزوار</span>
-  <span id="visitorCount" style="color:#fff;font-family:Tahoma,Arial;font-size:22px;font-weight:900;line-height:1.2;text-align:center;width:100%;">...</span>
+  <!-- الصورة دي فيها الرقم بس - من غير كلمة visitors - من غير قص -->
+  <span style="width:100%;display:flex;align-items:center;justify-content:center;">
+    <img src="https://count.getloli.com/get/@ahmed-tv-my-games-2026" style="height:24px;" alt="0">
+  </span>
 </div>
 
 <script>
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
-
-// عداد واحد بس - كل مرة الموقع يفتح - بيعد 1 - وبيعرض الرقم الجديد
-fetch('https://counterapi.dev/api/v1/ahmed-tv-my-games-2026/up')
-.then(function(r){ return r.json(); })
-.then(function(d){
-  // الرقم جوه d.count
-  var n = d.count || d.value || d.data;
-  if(n) document.getElementById('visitorCount').textContent = n;
-})
-.catch(function(){
-  // لو السيرفر مردش - جرب السيرفر التاني
-  fetch('https://abacus.jasoncameron.dev/hit/ahmed-tv-my-games-2026')
-  .then(function(r){ return r.json(); })
-  .then(function(d){
-    document.getElementById('visitorCount').textContent = d.value;
-  });
-});
 </script>
 </body>
 </html>
