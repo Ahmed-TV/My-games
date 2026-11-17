@@ -887,18 +887,12 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
       el.style.whiteSpace = 'nowrap';
     }
 
-    // السطرين البيض - في النص بالظبط
-    if(el.children.length === 0 && el.textContent.includes('مرحباً بك في موقع بنك الألعاب')){
-      el.innerHTML = 'مرحباً بك في موقع بنك الألعاب.<br>استعد لأقوى التحديات والمرح!';
-      el.style.display = 'block';
-      el.style.width = '100%';
-      el.style.textAlign = 'center';
-      el.style.padding = '0';
-      el.style.margin = '2px 0 2px 0';
-      el.style.lineHeight = '1.5';
-    }
-  });
-</script>
-   
+    <style>
+  html, body { overflow-x: hidden !important; max-width: 100% !important; }
+  img { margin: 0 !important; padding: 0 !important; display: block !important; }
+  header, .header, .hero { padding: 0 0 2px 0 !important; margin: 0 !important; }
+  h1 { margin: 0 !important; padding: 0 !important; line-height: 1.1 !important; }
+  main, .games, .container, .grid { margin-top: 4px !important; padding-top: 0 !important; }
+</style>
 </body>
 </html>
