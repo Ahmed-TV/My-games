@@ -813,5 +813,22 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
   }
   p { color: #fff !important; font-weight: bold !important; }
 </style>
+   <!-- اسمك اللي تحت البانر بس -->
+<script>
+  document.querySelectorAll('*').forEach(function(el){
+    if(el.children.length === 0 && el.textContent.trim() === 'أحمد عبدالعزيز'){
+      el.style.display = 'block';
+      el.style.width = '100%';
+      el.style.textAlign = 'center';
+      el.style.fontSize = '32px';
+      el.style.fontWeight = '900';
+      el.style.letterSpacing = '6px';
+      el.style.transform = 'scaleX(1.12)';
+      el.style.color = '#FF0000';
+      el.style.webkitTextStroke = '1.2px #FFD700';
+      el.style.textShadow = '0 0 14px rgba(255,215,0,0.9), 0 2px 4px rgba(0,0,0,1)';
+    }
+  });
+   </script>
 </body>
 </html>
