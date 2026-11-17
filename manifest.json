@@ -1,17 +1,18 @@
 {
   "name": "Ahmed TV - بنك الألعاب",
   "short_name": "Ahmed TV",
-  "description": "Ahmed TV - بنك الألعاب",
-  "display": "standalone",
+  "description": "بنك الألعاب - العاب الذكاء والتحديات",
   "start_url": "./index.html",
-  "scope": "./",
-  "background_color": "#1a1a2e",
-  "theme_color": "#1a1a2e",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#3A9D6E",
+  "theme_color": "#3A9D6E",
   "icons": [
     {
       "src": "logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
