@@ -813,22 +813,31 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
   }
   p { color: #fff !important; font-weight: bold !important; }
 </style>
-   <!-- اسمك اللي تحت البانر بس -->
+   <!-- شيل اسمك وحط بنك الألعاب - مسافات صغيرة -->
 <script>
   document.querySelectorAll('*').forEach(function(el){
     if(el.children.length === 0 && el.textContent.trim() === 'أحمد عبدالعزيز'){
+      el.textContent = 'بنك الألعاب';
       el.style.display = 'block';
       el.style.width = '100%';
       el.style.textAlign = 'center';
-      el.style.fontSize = '32px';
+      el.style.fontSize = '34px';
       el.style.fontWeight = '900';
-      el.style.letterSpacing = '6px';
+      el.style.letterSpacing = '8px';
       el.style.transform = 'scaleX(1.12)';
       el.style.color = '#FF0000';
       el.style.webkitTextStroke = '1.2px #FFD700';
       el.style.textShadow = '0 0 14px rgba(255,215,0,0.9), 0 2px 4px rgba(0,0,0,1)';
+      el.style.margin = '2px 0 2px 0';
+      el.style.padding = '0';
+      el.style.lineHeight = '1.1';
     }
   });
-   </script>
+</script>
+<style>
+  /* قلل المسافات اللي فوق وتحت */
+  h1 { margin-bottom: 2px !important; padding-bottom: 0 !important; line-height: 1.1 !important; }
+  p { margin-top: 2px !important; padding-top: 0 !important; line-height: 1.3 !important; }
+</style>
 </body>
 </html>
