@@ -755,9 +755,12 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
     box-shadow: 0 0 18px rgba(255,215,0,.6), 0 8px 20px rgba(0,0,0,.5) !important;
   }
 </style>
-   <!-- قوس قزح أصلي - كل الألوان في أول شاشة - الكلام باين -->
+   <!-- قوس قزح هو الأصل - مفيش أبيض - مفيش خط -->
 <style>
-  html {
+  html { background: #9600ff !important; }
+  body {
+    margin: 0 !important;
+    min-height: 100vh !important;
     background: linear-gradient(to bottom,
       #00c853 0%,
       #ffe600 20%,
@@ -766,19 +769,13 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
       #0064ff 80%,
       #9600ff 100%
     ) !important;
-    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
     background-size: 100% 100% !important;
   }
-  body { background: transparent !important; }
-
-  /* الكلام يبان على أي لون */
   h1, h2, h3, p, span, div {
     text-shadow: 0 2px 8px rgba(0,0,0,0.9) !important;
   }
-  p {
-    color: #fff !important;
-    font-weight: bold !important;
-  }
+  p { color: #fff !important; font-weight: bold !important; }
 </style>
 </body>
 </html>
