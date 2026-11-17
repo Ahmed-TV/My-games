@@ -748,5 +748,12 @@ wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
 </script>
+   <!-- تحزيز الكارت - عشان يبان -->
+<style>
+  .game-card, .card, .game, a[href*="games/"] {
+    border: 2px solid #FFD700 !important;
+    box-shadow: 0 0 18px rgba(255,215,0,.6), 0 8px 20px rgba(0,0,0,.5) !important;
+  }
+</style>
 </body>
 </html>
