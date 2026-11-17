@@ -813,17 +813,18 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
   }
   p { color: #fff !important; font-weight: bold !important; }
 </style>
-   <!-- الجديد - بنك الألعاب + البانر لازق + مفيش حركة يمين وشمال -->
+   <!-- الجديد كله - بنك الألعاب + سطرين + البانر لازق -->
 <style>
   html, body { overflow-x: hidden !important; max-width: 100% !important; }
     * { box-sizing: border-box !important; }
-  img { margin-bottom: 0 !important; display: block !important; }
+  img { margin: 0 !important; padding: 0 !important; display: block !important; }
   header, .header, .hero { padding: 0 !important; margin: 0 !important; }
   h1 { margin: 0 !important; padding: 0 !important; line-height: 1.1 !important; }
 </style>
 
 <script>
   document.querySelectorAll('*').forEach(function(el){
+    // 1 - بنك الألعاب مكان اسمك
     if(el.children.length === 0 && (el.textContent.trim() === 'أحمد عبدالعزيز' || el.textContent.trim() === 'بنك الألعاب')){
       el.textContent = 'بنك الألعاب';
       el.style.display = 'block';
@@ -839,6 +840,17 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
       el.style.padding = '0';
       el.style.lineHeight = '1.1';
       el.style.whiteSpace = 'nowrap';
+    }
+
+    // 2 - السطر الأبيض على سطرين فوق بعض - عشان الروبوت ميداريش عليه
+    if(el.children.length === 0 && el.textContent.includes('مرحباً بك في موقع بنك الألعاب')){
+      el.innerHTML = 'مرحباً بك في موقع بنك الألعاب.<br>استعد لأقوى التحديات والمرح!';
+      el.style.display = 'block';
+      el.style.textAlign = 'center';
+      el.style.paddingLeft = '85px';
+      el.style.paddingRight = '10px';
+      el.style.lineHeight = '1.5';
+      el.style.margin = '4px 0 0 0';
     }
   });
 </script>
