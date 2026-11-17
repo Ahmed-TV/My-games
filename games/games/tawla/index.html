@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>الطاولة - بنك الألعاب</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:#9600ff}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-repeat:no-repeat;background-size:100% 100%;min-height:100dvh;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:15px 15px 110px 15px;overflow-x:hidden;touch-action:manipulation}
+  h1{font-size:30px;color:#FFD700;text-shadow:0 2px 6px #000}
+  .sub{font-size:26px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 14px rgba(255,215,0,.9);margin:4px 0 10px}
+  .board{background:#8B4513;border:5px solid #FFD700;border-radius:18px;max-width:520px;margin:0 auto;padding:12px;box-shadow:0 0 30px rgba(0,0,0,.6);width:100%}
+  .top,.bottom{display:flex;justify-content:space-between}
+  .col{width:32px;min-height:110px;background:rgba(255,255,255,.15);border-radius:8px;padding:4px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+  .col.sel{outline:3px solid #FFD700}
+  .piece{width:26px;height:26px;border-radius:50%;border:2px solid #000;font-size:12px;font-weight:900;line-height:22px}
+  .white{background:#fff;color:#000}
+  .black{background:#222;color:#fff;border-color:#FFD700}
+  .mid{height:14px}
+  .dice{font-size:38px;margin:10px 0}
+  .btn{background:#FFD700;color:#000;border:none;padding:14px 25px;font-size:19px;font-weight:900;border-radius:12px;cursor:pointer;margin:6px}
+  #msg{font-size:19px;font-weight:900;min-height:30px;margin:8px 0}
+  a{color:#FFD700;display:block;margin-top:12px;font-weight:bold;font-size:18px}
+  .wa{position:fixed!important;top:10px!important;left:10px!important;z-index:9999!important;width:55px;height:55px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+  @media (display-mode: standalone){ body{padding-bottom:130px!important} }
+</style>
+</head>
+<body>
+<a class="wa" href="https://wa.me/201551668092" target="_blank">💬</a>
+<h1>🎲 الطاولة</h1>
+<div class="sub">بنك الألعاب</div>
+<div class="board">
+  <div id="msg">دوس ارمي الزهر - انت الأبيض ⚪</div>
+  <div class="dice" id="dice">🎲 🎲</div>
+  <button class="btn" onclick="roll()">ارمي الزهر 🎲</button>
+  <div class="top" id="top"></div>
+  <div class="mid"></div>
+  <div class="bottom" id="bottom"></div>
+  <div style="margin-top:10px;font-weight:bold;">انت: <span id="myCount">15</span> | الكمبيوتر: <span id="pcCount">15</span> | الدور: <span id="turn">انت</span></div>
+  <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
+</div>
+<a href="../../index.html">⬅ ارجع للرئيسية</a>
+<script>
+var board=[];for(var i=0;i<24;i++) board[i]={n:0,c:''};
+board[0]={n:2,c:'white'};board[11]={n:5,c:'black'};board[16]={n:3,c:'black'};board[18]={n:5,c:'white'};board[23]={n:2,c:'black'};board[12]={n:5,c:'white'};board[7]={n:3,c:'white'};board[5]={n:5,c:'black'};
+var sel=-1,diceVals=[],myTurn=true;
+function render(){var top=document.getElementById('top'),bottom=document.getElementById('bottom');top.innerHTML='';bottom.innerHTML='';for(var i=0;i<12;i++)top.appendChild(makeCol(11-i));for(var i=12;i<24;i++)bottom.appendChild(makeCol(i));document.getElementById('myCount').textContent=count('white');document.getElementById('pcCount').textContent=count('black');document.getElementById('turn').textContent=myTurn?'انت':'الكمبيوتر';}
+function count(c){var s=0;board.forEach(function(p){if(p.c===c)s+=p.n;});return s;}
+function makeCol(idx){var d=document.createElement('div');d.className='col'+(sel===idx?' sel':'');d.onclick=function(){clickCol(idx);};var p=board[idx];for(var i=0;i<p.n;i++){var s=document.createElement('div');s.className='piece '+(p.c==='white'?'white':'black');s.textContent=p.n;d.appendChild(s);}var lab=document.createElement('div');lab.style.fontSize='10px';lab.textContent=idx+1;d.appendChild(lab);return d;}
+function roll(){if(diceVals.length>0){document.getElementById('msg').textContent='العب الزهر اللي معاك الأول!';return;}var d1=Math.floor(Math.random()*6)+1,d2=Math.floor(Math.random()*6)+1;diceVals=[d1,d2];if(d1===d2)diceVals=[d1,d1,d1,d1];document.getElementById('dice').textContent='🎲 '+d1+'  🎲 '+d2+(d1===d2?' - دوبل!':'');document.getElementById('msg').textContent=myTurn?'دوس على حجرك وبعدين المكان اللي هتروحله':'دور الكمبيوتر...';if(!myTurn)setTimeout(pcPlay,800);}
+function clickCol(idx){if(!myTurn||diceVals.length===0)return;if(sel===-1){if(board[idx].c!=='white'||board[idx].n===0){document.getElementById('msg').textContent='دوس على حجر أبيض بتاعك!';return;}sel=idx;render();}else{var move=diceVals.find(function(d){return idx===sel+d;});if(move===undefined){sel=-1;render();document.getElementById('msg').textContent='مش هينفع تتحرك كده - اختار تاني';return;}doMove(sel,idx,move);sel=-1;if(diceVals.length===0){myTurn=false;render();setTimeout(function(){roll();},600);}else render();}}
+function doMove(from,to,d){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='white'){board[to].c='white';board[to].n++;}else if(board[to].n===1){board[to].c='white';board[to].n=1;document.getElementById('msg').textContent='أكلت حجر الكمبيوتر! 😍';}else{board[from].n++;board[from].c='white';return;}diceVals.splice(diceVals.indexOf(d),1);}
+function pcPlay(){if(diceVals.length===0)return;for(var from=23;from>=0;from--){if(board[from].c!=='black')continue;for(var k=0;k<diceVals.length;k++){var to=from-diceVals[k];if(to<0)continue;if(board[to].c===''||board[to].c==='black'||board[to].n===1){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='black'){board[to].c='black';board[to].n++;}else{board[to].c='black';board[to].n=1;}diceVals.splice(k,1);render();if(diceVals.length>0){setTimeout(pcPlay,600);return;}myTurn=true;document.getElementById('msg').textContent='دورك انت - ارمي الزهر!';render();return;}}}diceVals=[];myTurn=true;document.getElementById('msg').textContent='الكمبيوتر معرفش يلعب - دورك!';render();}
+render();
+</script>
+</body>
+</html>
