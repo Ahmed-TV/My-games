@@ -856,6 +856,19 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
     }
   });
 </script>
-   
+   <!-- إصلاح السطر الأخير - <br> تظهر كسطر جديد مش كلام -->
+<script>
+  document.querySelectorAll('*').forEach(function(el){
+    if(el.children.length === 0 && el.textContent.includes('<br>')){
+      el.innerHTML = el.textContent.replaceAll('&lt;br&gt;', '<br>').replaceAll('<br>', '<br>');
+      el.style.display = 'block';
+      el.style.width = '100%';
+      el.style.textAlign = 'center';
+      el.style.padding = '0 10px';
+      el.style.margin = '2px 0 10px 0';
+      el.style.lineHeight = '1.6';
+    }
+  });
+</script>
 </body>
 </html>
