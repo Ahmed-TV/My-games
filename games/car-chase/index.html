@@ -177,12 +177,36 @@ document.getElementById('btnRight').addEventListener('pointerleave',function(){m
 document.getElementById('btnGo').addEventListener('pointerdown',function(){boost=true; this.style.background='#FF1744'; this.style.color='#fff'; this.textContent='بنزين 🔥🔥🔥'; sndGo();});
 document.getElementById('btnGo').addEventListener('pointerup',function(){boost=false; this.style.background='#FFD600'; this.style.color='#D50000'; this.textContent='بنزين >>>';});
 loop();
-</script><a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20Ahmed%20TV%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
+</script><<!-- واتساب - عايم - بيتحرك بصباعك -->
+<a id="waBtn" href="https://wa.me/201551668092" target="_blank" style="position:fixed;top:10px;left:10px;z-index:9999;display:flex;flex-direction:column;align-items:center;text-decoration:none;touch-action:none;">
+  <img src="../../logo.png" alt="واتساب" style="width:52px;height:52px;border-radius:50%;border:2px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:none;">
+  <span style="background:#25D366;color:#fff;font-family:Tahoma,Arial;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:3px;pointer-events:none;">كلمنا واتساب</span>
 </a>
-
+<script>
+(function(){
+  var btn = document.getElementById('waBtn');
+  if(!btn) return;
+  var startX, startY, startLeft, startTop, moved = false;
+  btn.addEventListener('touchstart', function(e){
+    var t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    startLeft = btn.offsetLeft; startTop = btn.offsetTop;
+    moved = false;
+  }, {passive:true});
+  btn.addEventListener('touchmove', function(e){
+    var t = e.touches[0];
+    var dx = t.clientX - startX, dy = t.clientY - startY;
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moved = true;
+    if (moved) {
+      e.preventDefault();
+      btn.style.left = Math.max(0, Math.min(window.innerWidth - 60, startLeft + dx)) + 'px';
+      btn.style.top = Math.max(0, Math.min(window.innerHeight - 90, startTop + dy)) + 'px';
+    }
+  }, {passive:false});
+  btn.addEventListener('click', function(e){
+    if (moved) { e.preventDefault(); moved = false; }
+  });
+})();
+</script>
 
 </body></html>
