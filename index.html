@@ -856,9 +856,9 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
     }
   });
 </script>
-   <!-- شاشة خضرا - بتظهر في التطبيق بس - مش في كروم -->
+   <!-- الشاشة الخضرا كاملة - بتظهر في التطبيق بس -->
 <div id="mySplash" style="position:fixed;inset:0;z-index:9999;background:#3A9D6E;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;">
-  <img src="PUT_YOUR_LOGO_HERE" style="width:130px;height:130px;border-radius:50%;margin-bottom:16px;border:3px solid #FFD700;">
+  <img src="logo.png" style="width:130px;height:130px;border-radius:50%;margin-bottom:16px;border:3px solid #FFD700;">
   <div style="color:#fff;font-size:32px;font-weight:900;line-height:1.4;">مرحباً بك في بنك الألعاب</div>
   <div style="color:#FFD700;font-size:22px;font-weight:900;margin-top:8px;">Welcome to Games Bank</div>
   <div style="width:80px;height:2px;background:#FFD700;margin:16px 0;"></div>
@@ -867,7 +867,6 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
 </div>
 
 <script>
-  // لو فاتح من التطبيق بس - اظهر الشاشة - لو من كروم متظهرش
   if (window.matchMedia('(display-mode: standalone)').matches) {
     var s = document.getElementById('mySplash');
     s.style.display = 'flex';
