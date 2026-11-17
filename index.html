@@ -856,5 +856,21 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
     }
   });
 </script>
+   <!-- شاشة ترحيب - جملة + اسمك عربي وانجليزي -->
+<div id="mySplash" style="position:fixed;inset:0;z-index:9999;background:#3A9D6E;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;">
+  <img src="icon.png" style="width:130px;height:130px;border-radius:50%;margin-bottom:16px;border:3px solid #FFD700;">
+  <div style="color:#fff;font-size:32px;font-weight:900;line-height:1.4;">مرحباً بك في بنك الألعاب</div>
+  <div style="color:#FFD700;font-size:22px;font-weight:900;margin-top:8px;">Welcome to Games Bank</div>
+  <div style="width:80px;height:2px;background:#FFD700;margin:16px 0;"></div>
+  <div style="color:#fff;font-size:26px;font-weight:900;">أحمد عبدالعزيز</div>
+  <div style="color:#fff;font-size:20px;font-weight:bold;margin-top:4px;">Ahmed TV</div>
+</div>
+
+<script>
+  setTimeout(function(){
+    var s = document.getElementById('mySplash');
+    if(s) s.style.display = 'none';
+  }, 2000);
+</script>
 </body>
 </html>
