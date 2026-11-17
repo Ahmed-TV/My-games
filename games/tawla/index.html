@@ -6,38 +6,46 @@
 <title>الطاولة - بنك الألعاب</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;overflow-x:hidden}
-  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-repeat:no-repeat;background-size:100% 100%;background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:10px 10px 85px 10px;touch-action:manipulation}
-  .logo-bar{background:#2d0a4a;border:2px solid #FFD700;border-radius:12px;padding:7px 5px;margin:0 auto 6px auto;max-width:520px;font-size:18px;font-weight:900;color:#FFD700}
-  .bank{font-size:26px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 14px rgba(255,215,0,.9);margin:0 0 6px 0;letter-spacing:3px}
-  h1{font-size:24px;color:#FFD700;text-shadow:0 2px 6px #000;margin-bottom:4px}
-  .board{background:#8B4513;border:4px solid #FFD700;border-radius:16px;max-width:520px;margin:0 auto;padding:8px;box-shadow:0 0 25px rgba(0,0,0,.6);width:100%}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:10px 10px 85px 10px;touch-action:manipulation;overflow-x:hidden}
+  /* الواتس العايم - ثابت معاك وانت بتقلب */
+  .wa-fixed{position:fixed !important;top:12px !important;left:12px !important;z-index:99999 !important;text-align:center !important}
+  .wa{display:inline-flex;width:60px;height:60px;background:#25D366;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(0,0,0,.5);text-decoration:none}
+  .wa img{width:35px;height:35px}
+  .wa-txt{font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 4px #000,0 0 6px #000;margin-top:3px}
+  .top-box{background:#fff;border:3px solid #c40000;border-radius:22px;max-width:520px;margin:0 auto;padding:10px 10px 12px;box-shadow:0 0 20px rgba(0,0,0,.4)}
+  .logo{width:95px;height:95px;border-radius:50%;border:3px solid #c40000;object-fit:cover;box-shadow:0 0 15px rgba(255,0,0,.5)}
+  .game-title{font-size:28px;font-weight:900;color:#c40000;margin:6px 0 2px}
+  .my-name{font-size:18px;font-weight:900;color:#c40000}
+  .bank{font-size:22px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 10px rgba(255,215,0,.8);margin:2px 0 0}
+  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:10px auto 0;padding:8px;width:100%}
   .top,.bottom{display:flex;justify-content:space-between}
-  .col{width:32px;min-height:88px;background:rgba(255,255,255,.15);border-radius:8px;padding:3px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer}
+  .col{width:32px;min-height:88px;background:rgba(255,255,255,.2);border-radius:8px;padding:3px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer}
   .col.sel{outline:3px solid #FFD700}
   .piece{width:24px;height:24px;border-radius:50%;border:2px solid #000;font-size:11px;font-weight:900;line-height:20px}
   .white{background:#fff;color:#000}
   .black{background:#222;color:#fff;border-color:#FFD700}
   .mid{height:8px}
-  .dice{font-size:28px;margin:6px 0}
+  .dice{font-size:28px;margin:6px 0;color:#fff}
   .btn{background:#FFD700;color:#000;border:none;padding:11px 20px;font-size:17px;font-weight:900;border-radius:10px;cursor:pointer;margin:4px}
-  #msg{font-size:16px;font-weight:900;min-height:24px;margin:5px 0}
-  .score{font-weight:bold;font-size:14px;margin-top:4px}
+  #msg{font-size:16px;font-weight:900;min-height:24px;margin:5px 0;color:#fff}
+  .score{font-weight:bold;font-size:14px;margin-top:4px;color:#fff}
   .back{color:#FFD700;display:block;margin-top:8px;font-weight:bold;font-size:16px}
-  .wa{position:fixed !important;bottom:18px !important;left:14px !important;z-index:99999 !important;width:56px !important;height:56px !important;background:#25D366 !important;border-radius:50% !important;display:flex !important;align-items:center !important;justify-content:center !important;box-shadow:0 4px 15px rgba(0,0,0,.5) !important;text-decoration:none !important}
-  .wa img{width:32px !important;height:32px !important}
 </style>
 </head>
 <body>
 
-<!-- اللوجو واسمك -->
-<div class="logo-bar">أحمد عبدالعزيز • Ahmed TV</div>
-<div class="bank">بنك الألعاب</div>
+<!-- الواتس العايم - برة الصندوق - بيفضل معاك -->
+<div class="wa-fixed">
+  <a class="wa" href="https://wa.me/201551668092" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+  <div class="wa-txt">كلمنا واتساب</div>
+</div>
 
-<!-- الواتس العايم -->
-<a class="wa" href="https://wa.me/201551668092" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
-
-<h1>🎲 الطاولة</h1>
+<div class="top-box">
+  <img class="logo" src="../../logo.png">
+  <div class="game-title">🎲 الطاولة 🎲</div>
+  <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
+  <div class="bank">بنك الألعاب</div>
+</div>
 
 <div class="board">
   <div id="msg">دوس ارمي الزهر - انت الأبيض ⚪</div>
