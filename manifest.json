@@ -1,0 +1,14 @@
+{
+  "name": "Ahmed TV - بنك الألعاب",
+  "short_name": "Ahmed TV",
+  "description": "Ahmed TV - بنك الألعاب",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
