@@ -755,10 +755,22 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
     box-shadow: 0 0 18px rgba(255,215,0,.6), 0 8px 20px rgba(0,0,0,.5) !important;
   }
 </style>
-   <!-- خلفية قوس قزح - ثابتة - أصلية -->
-<div style="position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(to bottom, rgba(0,200,80,0.75) 0%, rgba(0,200,80,0.75) 35%, rgba(255,230,0,0.75) 50%, rgba(255,150,0,0.75) 62%, rgba(255,0,0,0.75) 74%, rgba(0,100,255,0.75) 87%, rgba(150,0,255,0.75) 100%), #1a1a2e;"></div>
+   <!-- خلفية قوس قزح هي الأصلية - مفيش أسود خالص -->
 <style>
-  body { background: #1a1a2e !important; }
+  html {
+    background: linear-gradient(to bottom,
+      #00c853 0%,
+      #00c853 35%,
+      #ffe600 50%,
+      #ff9600 62%,
+      #ff0000 74%,
+      #0064ff 87%,
+      #9600ff 100%
+    ) !important;
+  }
+  body {
+    background: transparent !important;
+  }
 </style>
 </body>
 </html>
