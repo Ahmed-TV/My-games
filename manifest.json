@@ -3,7 +3,10 @@
   "short_name": "Ahmed TV",
   "description": "Ahmed TV - بنك الألعاب",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
   "icons": [
     {
       "src": "logo.png",
