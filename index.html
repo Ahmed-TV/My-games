@@ -846,7 +846,7 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
 
     // السطرين البيض - في النص بالظبط
     if(el.children.length === 0 && el.textContent.includes('مرحباً بك في موقع بنك الألعاب')){
-      el.innerHTML = 'مرحباً بك في موقع بنك الألعاب.<br>استعد لأقوى التحديات والمرح!';
+      <p style="text-align:center;line-height:1.6;">مرحباً بك في موقع بنك الألعاب.<br>استعد لأقوى التحديات والمرح!</p>
       el.style.display = 'block';
       el.style.width = '100%';
       el.style.textAlign = 'center';
@@ -856,16 +856,6 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
     }
   });
 </script>
-   <script>
-document.querySelectorAll('*').forEach(function(el){
-  if(el.children.length === 0 && el.textContent.includes('مرحباً بك')){
-    el.innerHTML = 'مرحباً بك في موقع بنك الألعاب.<br>استعد لأقوى التحديات والمرح!';
-    el.style.display = 'block';
-    el.style.width = '100%';
-    el.style.textAlign = 'center';
-    el.style.lineHeight = '1.6';
-  }
-});
-</script>
+   
 </body>
 </html>
