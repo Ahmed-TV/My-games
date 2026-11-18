@@ -104,7 +104,7 @@ function cutFruit(item){
   document.getElementById('score').textContent=score;
   item.el.classList.add('cut');
   showSlice(item.x, item.y);
-  document.getElementById('msg').textContent='عاش! قطعتها! +10 🎉';
+  document.getElementById('msg').textContent='عاش! قطعتها! +10 🎉 - النقط: '+score;
   setTimeout(function(){ if(item.el.parentNode) item.el.parentNode.removeChild(item.el); },200);
   items = items.filter(function(i){ return i!==item; });
 }
@@ -130,8 +130,9 @@ function animate(){
       items.splice(i,1);
       if(!it.bomb){
         miss++;
+        // العداد فوق بيعد دلوقتي - 1 - 2 - 3 ... 10
         document.getElementById('miss').textContent=miss;
-        document.getElementById('msg').textContent='فاتتك واحدة! 😢';
+        document.getElementById('msg').textContent='فاتتك '+miss+' من 10 😢 - فاضل '+(10-miss)+' وتخسر!';
         if(miss>=10){ endGame(false, 'فاتتك 10 فواكه!'); return; }
       }
     }
@@ -146,26 +147,6 @@ function endGame(win, reason){
   if(win){ soundWin(); document.getElementById('msg').textContent='خلص الوقت! كسبت! 🏆 النقط: '+score; }
   else { soundLose(); document.getElementById('msg').textContent=(reason||'خسرت!')+' النقط: '+score+' - دوس لعبة جديدة!'; }
 }
-</script>
- <div id="waBox" style="position:fixed; top:10px; left:10px; z-index:999999; text-align:center; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none;">
-  <div id="waDrag" style="width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,.5);">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px; height:35px; pointer-events:none;">
-  </div>
-  <div style="font-size:12px; font-weight:900; color:#fff; text-shadow:0 1px 4px #000; margin-top:2px; pointer-events:none;">كلمنا واتساب</div>
-</div>
-<script>
-(function(){
-  var box = document.getElementById('waBox');
-  var startX=0, startY=0, origX=0, origY=0, moved=false, down=false, pid=null;
-  function pos(e){ return {x:e.clientX, y:e.clientY}; }
-  function downFn(e){ down=true; moved=false; pid=e.pointerId; var p=pos(e); startX=p.x; startY=p.y; origX=box.offsetLeft; origY=box.offsetTop; try{ box.setPointerCapture(pid); }catch(err){} e.preventDefault(); }
-  function moveFn(e){ if(!down || e.pointerId!==pid) return; var p=pos(e); var dx=p.x-startX, dy=p.y-startY; if(Math.abs(dx)>6 || Math.abs(dy)>6) moved=true; if(!moved) return; var nx=origX+dx, ny=origY+dy; nx=Math.max(0, Math.min(window.innerWidth-65, nx)); ny=Math.max(0, Math.min(window.innerHeight-85, ny)); box.style.left=nx+'px'; box.style.top=ny+'px'; e.preventDefault(); }
-  function upFn(e){ if(!down) return; down=false; var wasMoved=moved; setTimeout(function(){ moved=false; }, 200); if(!wasMoved){ window.open('https://wa.me/201551668092','_blank'); } }
-  box.addEventListener('pointerdown', downFn);
-  box.addEventListener('pointermove', moveFn);
-  box.addEventListener('pointerup', upFn);
-  box.addEventListener('pointercancel', function(){ down=false; });
-})();
 </script>
 </body>
 </html>
