@@ -7,11 +7,6 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
-  .wa-fixed{position:fixed !important;top:10px !important;left:10px !important;z-index:99999 !important;text-align:center !important;touch-action:none !important;cursor:grab}
-  .wa-fixed.dragging{cursor:grabbing}
-  .wa{display:inline-flex;width:55px;height:55px;background:#25D366;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(0,0,0,.5);text-decoration:none;pointer-events:none}
-  .wa img{width:32px;height:32px;pointer-events:none}
-  .wa-txt{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 4px #000,0 0 6px #000;margin-top:2px;pointer-events:none}
   .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
   .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
   .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
@@ -32,16 +27,20 @@
 </style>
 </head>
 <body>
-<div class="wa-fixed" id="waBox">
-  <a class="wa" href="https://wa.me/201551668092" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
-  <div class="wa-txt">كلمنا واتساب</div>
-</div>
+
+<!-- الواتس العايم القديم - اللي كان شغال -->
+<a href="https://wa.me/201551668092" target="_blank" style="position:fixed !important; top:10px !important; left:10px !important; z-index:99999 !important; width:60px !important; height:60px !important; background:#25D366 !important; border-radius:50% !important; display:flex !important; align-items:center !important; justify-content:center !important; box-shadow:0 4px 15px rgba(0,0,0,.5) !important; text-decoration:none !important;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px !important; height:35px !important;">
+</a>
+<div style="position:fixed !important; top:74px !important; left:10px !important; z-index:99999 !important; font-size:12px !important; font-weight:900 !important; color:#fff !important; text-shadow:0 1px 4px #000 !important; width:60px !important; text-align:center !important;">كلمنا واتساب</div>
+
 <div class="top-box">
   <img class="logo" src="../../logo.png">
   <div class="game-title">🎲 الطاولة 🎲</div>
   <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
   <div class="bank">بنك الألعاب</div>
 </div>
+
 <div class="board">
   <div id="msg">دوس ارمي الزهر - انت الأبيض ⚪</div>
   <div class="dice" id="dice">🎲 🎲</div>
@@ -52,18 +51,7 @@
   <div class="score">انت: <span id="myCount">15</span> | الكمبيوتر: <span id="pcCount">15</span> | الدور: <span id="turn">انت</span></div>
   <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
 </div>
-<script>
-var waBox=document.getElementById('waBox');
-var isDrag=false,startX=0,startY=0,origX=0,origY=0,moved=false;
-function getPos(e){var t=e.touches?e.touches[0]:e;return {x:t.clientX,y:t.clientY};}
-waBox.addEventListener('touchstart',function(e){var p=getPos(e);isDrag=true;moved=false;startX=p.x;startY=p.y;origX=waBox.offsetLeft;origY=waBox.offsetTop;waBox.classList.add('dragging');},{passive:true});
-waBox.addEventListener('touchmove',function(e){if(!isDrag)return;var p=getPos(e);var dx=p.x-startX,dy=p.y-startY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;var nx=origX+dx,ny=origY+dy;nx=Math.max(0,Math.min(window.innerWidth-60,nx));ny=Math.max(0,Math.min(window.innerHeight-80,ny));waBox.style.left=nx+'px';waBox.style.top=ny+'px';waBox.style.right='auto';waBox.style.bottom='auto';e.preventDefault();},{passive:false});
-waBox.addEventListener('touchend',function(){isDrag=false;waBox.classList.remove('dragging');setTimeout(function(){moved=false;},100);});
-waBox.querySelector('a').addEventListener('click',function(e){if(moved)e.preventDefault();});
-waBox.addEventListener('mousedown',function(e){isDrag=true;moved=false;startX=e.clientX;startY=e.clientY;origX=waBox.offsetLeft;origY=waBox.offsetTop;waBox.classList.add('dragging');});
-document.addEventListener('mousemove',function(e){if(!isDrag)return;var dx=e.clientX-startX,dy=e.clientY-startY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;var nx=origX+dx,ny=origY+dy;waBox.style.left=Math.max(0,Math.min(window.innerWidth-60,nx))+'px';waBox.style.top=Math.max(0,Math.min(window.innerHeight-80,ny))+'px';});
-document.addEventListener('mouseup',function(){isDrag=false;waBox.classList.remove('dragging');});
-</script>
+
 <script>
 var board=[];for(var i=0;i<24;i++) board[i]={n:0,c:''};
 board[0]={n:2,c:'white'};board[11]={n:5,c:'black'};board[16]={n:3,c:'black'};board[18]={n:5,c:'white'};board[23]={n:2,c:'black'};board[12]={n:5,c:'white'};board[7]={n:3,c:'white'};board[5]={n:5,c:'black'};
