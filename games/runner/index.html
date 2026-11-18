@@ -12,15 +12,18 @@
   html, body { height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior: none; }
   body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
   .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0; }
-  .top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 4px; }
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
 
-  /* اللوجو - صورتك زي كل الألعاب بالظبط */
-  .logo-wrap { width: 88px; height: 88px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #fff; box-shadow: 0 0 22px rgba(250,204,21,0.9), 0 0 30px rgba(255,45,149,0.6); }
-  .logo-wrap svg { width: 100%; height: 100%; display: block; }
+  /* اللوجو بتاعك الحقيقي */
+  .logo-wrap { width: 88px; height: 88px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; box-shadow: 0 0 22px rgba(250,204,21,0.9), 0 0 30px rgba(255,45,149,0.6); }
+  .logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   h1 { font-size: 26px; line-height: 1.2; color: #ff2d95; text-shadow: 0 0 12px #ff2d95; }
   h1 small { display: block; font-size: 13px; color: #00e5ff; margin-top: 2px; }
-  .names { font-size: 22px; color: #facc15; margin-bottom: 8px; font-weight: 900; text-shadow: 0 0 10px rgba(250,204,21,0.7); }
+  /* تحت اللوجو - اسمك بالعربي + Ahmed TV */
+  .names { text-align: center; margin-bottom: 8px; line-height: 1.3; }
+  .names .ar { display: block; font-size: 22px; color: #facc15; font-weight: 900; text-shadow: 0 0 10px rgba(250,204,21,0.7); }
+  .names .en { display: block; font-size: 16px; color: #fff; font-weight: 900; letter-spacing: 1px; margin-top: 1px; }
   .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0 8px; flex-wrap: wrap; }
   .stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 12px; padding: 5px 15px; min-width: 80px; text-align: center; }
   .stat b { display: block; font-size: 18px; color: #00e5ff; }
@@ -43,27 +46,17 @@
 
   <div class="header">
     <div class="top-row">
-      <!-- اللوجو بتاعك - صورتك - زي كل الألعاب -->
+      <!-- اللوجو بتاعك - احفظ الصورة اللي بعتها باسم logo.png -->
       <div class="logo-wrap">
-        <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="50" fill="#facc15"/>
-          <circle cx="50" cy="50" r="44" fill="#fff7ed"/>
-          <circle cx="50" cy="38" r="28" fill="#fcd7b0"/>
-          <path d="M22 38 Q22 12 50 12 Q78 12 78 38 L78 30 Q78 18 50 18 Q22 18 22 30 Z" fill="#1e3a8a"/>
-          <rect x="20" y="28" width="60" height="10" rx="5" fill="#2563eb"/>
-          <ellipse cx="38" cy="40" rx="5" ry="6" fill="#1f2937"/>
-          <ellipse cx="62" cy="40" rx="5" ry="6" fill="#1f2937"/>
-          <circle cx="40" cy="38" r="2" fill="#fff"/>
-          <circle cx="64" cy="38" r="2" fill="#fff"/>
-          <ellipse cx="30" cy="52" rx="6" ry="3" fill="#fda4af" opacity="0.7"/>
-          <ellipse cx="70" cy="52" rx="6" ry="3" fill="#fda4af" opacity="0.7"/>
-          <path d="M38 58 Q50 68 62 58 Q50 64 38 58" fill="#7f1d1d"/>
-          <path d="M30 78 Q50 62 70 78 L70 100 L30 100 Z" fill="#dc2626"/>
-        </svg>
+        <img src="../../logo.png" alt="أحمد عبدالعزيز">
       </div>
       <h1>الجري والقفز<small>لعبة الجري النيون</small></h1>
     </div>
-    <div class="names">أحمد عبدالعزيز</div>
+    <!-- تحت اللوجو - اسمك بالعربي + Ahmed TV -->
+    <div class="names">
+      <span class="ar">أحمد عبدالعزيز</span>
+      <span class="en">Ahmed TV</span>
+    </div>
     <div id="hearts">💜💜💜</div>
     <div class="stats">
       <div class="stat"><b id="score">0</b><span>النقاط</span></div>
@@ -82,7 +75,7 @@
   </div>
 
   <button id="jumpBtn">🚀 اقفز عالي</button>
-  <div class="footer"><b>أحمد عبدالعزيز</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+  <div class="footer"><b>أحمد عبدالعزيز - Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
 
 <script>
 const canvas = document.getElementById('gameCanvas');
@@ -139,26 +132,6 @@ document.addEventListener('touchmove',(e)=>{ if(e.target.closest('#game-containe
 resize(); draw();
 document.body.addEventListener('touchstart',initAudio,{once:true});
 document.body.addEventListener('click',initAudio,{once:true});
-</script>
-    <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa = document.getElementById('waBtn');
-var dragging = false, startX=0, startY=0, startLeft=0, startTop=0, moved=false;
-function startDrag(x,y){ dragging=true; moved=false; startX=x; startY=y; startLeft=wa.offsetLeft; startTop=wa.offsetTop; }
-function moveDrag(x,y){ if(!dragging) return; var dx=x-startX, dy=y-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ moved=true; } if(moved){ wa.style.left=(startLeft+dx)+'px'; wa.style.top=(startTop+dy)+'px'; wa.style.right='auto'; wa.style.bottom='auto'; } }
-function endDrag(){ if(moved){ setTimeout(function(){moved=false},50); } dragging=false; }
-wa.addEventListener('mousedown',function(e){ startDrag(e.clientX,e.clientY); });
-document.addEventListener('mousemove',function(e){ moveDrag(e.clientX,e.clientY); });
-document.addEventListener('mouseup',function(){ endDrag(); });
-wa.addEventListener('touchstart',function(e){ startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
-document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
-document.addEventListener('touchend',function(){ endDrag(); });
-wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
 </script>
 </body>
 </html>
