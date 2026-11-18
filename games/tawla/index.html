@@ -81,5 +81,23 @@ function doMove(from,to,d){board[from].n--;if(board[from].n===0)board[from].c=''
 function pcPlay(){if(diceVals.length===0)return;for(var from=23;from>=0;from--){if(board[from].c!=='black')continue;for(var k=0;k<diceVals.length;k++){var to=from-diceVals[k];if(to<0)continue;if(board[to].c===''||board[to].c==='black'||board[to].n===1){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='black'){board[to].c='black';board[to].n++;}else{board[to].c='black';board[to].n=1;}diceVals.splice(k,1);render();if(diceVals.length>0){setTimeout(pcPlay,600);return;}myTurn=true;document.getElementById('msg').textContent='دورك انت - ارمي الزهر!';render();return;}}}diceVals=[];myTurn=true;document.getElementById('msg').textContent='الكمبيوتر معرفش يلعب - دورك!';render();}
 render();
 </script>
+ <!-- الواتس العايم - بيتسحب بصباعك -->
+<div id="waBox" style="position:fixed !important; top:10px !important; left:10px !important; z-index:99999 !important; text-align:center !important; touch-action:none !important; cursor:grab;">
+  <a id="waLink" href="https://wa.me/201551668092" target="_blank" style="display:inline-flex !important; width:60px !important; height:60px !important; background:#25D366 !important; border-radius:50% !important; align-items:center !important; justify-content:center !important; box-shadow:0 4px 15px rgba(0,0,0,.5) !important; text-decoration:none !important;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px !important; height:35px !important;">
+  </a>
+  <div style="font-size:12px !important; font-weight:900 !important; color:#fff !important; text-shadow:0 1px 4px #000,0 0 6px #000 !important; margin-top:2px !important;">كلمنا واتساب</div>
+</div>
+
+<script>
+var waBox=document.getElementById('waBox');
+var waLink=document.getElementById('waLink');
+var isDrag=false,startX=0,startY=0,origX=0,origY=0,moved=false;
+function getPos(e){var t=e.touches?e.touches[0]:e;return {x:t.clientX,y:t.clientY};}
+waBox.addEventListener('touchstart',function(e){var p=getPos(e);isDrag=true;moved=false;startX=p.x;startY=p.y;origX=waBox.offsetLeft;origY=waBox.offsetTop;},{passive:true});
+waBox.addEventListener('touchmove',function(e){if(!isDrag)return;var p=getPos(e);var dx=p.x-startX,dy=p.y-startY;if(Math.abs(dx)>8||Math.abs(dy)>8)moved=true;if(!moved)return;var nx=origX+dx,ny=origY+dy;nx=Math.max(0,Math.min(window.innerWidth-65,nx));ny=Math.max(0,Math.min(window.innerHeight-85,ny));waBox.style.left=nx+'px';waBox.style.top=ny+'px';e.preventDefault();},{passive:false});
+waBox.addEventListener('touchend',function(){isDrag=false;setTimeout(function(){moved=false;},150);});
+waLink.addEventListener('click',function(e){if(moved){e.preventDefault();moved=false;}});
+</script>
 </body>
 </html>
