@@ -13,17 +13,16 @@
   .my-name{font-size:15px;font-weight:900;color:#c40000}
   .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
   .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:10px;width:100%}
-  .tetris-wrap{display:flex;justify-content:center;gap:8px;margin:8px 0}
-  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:1px;background:#111;padding:3px;border-radius:8px;width:230px}
+  .tetris-wrap{display:flex;justify-content:center;gap:8px;margin:8px 0;direction:ltr}
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:1px;background:#111;padding:3px;border-radius:8px;width:230px;direction:ltr}
   .cell{aspect-ratio:1;background:#222;border-radius:2px}
   .cell.c1{background:#00E5FF}.cell.c2{background:#FFD700}.cell.c3{background:#FF4081}.cell.c4{background:#76FF03}.cell.c5{background:#FF6D00}.cell.c6{background:#B388FF}.cell.c7{background:#FF1744}
-  .side{width:86px;text-align:center}
-  .next-box{background:#111;border-radius:8px;padding:6px;min-height:60px}
-  .next-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px}
+  .side{width:86px;text-align:center;direction:rtl}
+  .next-box{background:#111;border-radius:8px;padding:6px;min-height:60px;direction:ltr}
+  .next-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;direction:ltr}
   .ncell{aspect-ratio:1;background:#222;border-radius:2px}
-  .ncell.on{background:#FFD700}
-  /* الزراير كلها جنب بعض في سطر واحد */
-  .controls{display:flex;justify-content:center;gap:4px;margin:6px 0;flex-wrap:nowrap}
+  .ncell.c1{background:#00E5FF}.ncell.c2{background:#FFD700}.ncell.c3{background:#FF4081}.ncell.c4{background:#76FF03}.ncell.c5{background:#FF6D00}.ncell.c6{background:#B388FF}.ncell.c7{background:#FF1744}
+  .controls{display:flex;justify-content:center;gap:4px;margin:6px 0;flex-wrap:nowrap;direction:ltr}
   .btn{background:#FFD700;color:#000;border:none;padding:10px 0;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;flex:1;max-width:90px}
   .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:7px 12px;font-size:13px;font-weight:900;border-radius:20px;cursor:pointer;margin:3px}
   #msg{font-size:16px;font-weight:900;min-height:22px;margin:4px 0;color:#fff}
@@ -48,13 +47,13 @@
       <button class="btn" style="max-width:100%;font-size:14px;" onclick="startGame()">ابدأ ▶️</button>
     </div>
   </div>
-  <!-- كل الزراير جنب بعض - الشمال شمال - واليمين يمين -->
-  <div class="controls" dir="ltr">
-    <button class="btn" onclick="move(-1)">⬅️</button>
+  <!-- الشمال على الشمال - واليمين على اليمين - والاتجاه مظبوط -->
+  <div class="controls">
+    <button class="btn" onclick="moveLeft()">⬅️</button>
     <button class="btn" onclick="rotate()">🔄</button>
     <button class="btn" onclick="softDrop()">⬇️</button>
     <button class="btn" onclick="hardDrop()">⏬</button>
-    <button class="btn" onclick="move(1)">➡️</button>
+    <button class="btn" onclick="moveRight()">➡️</button>
   </div>
   <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button>
   <button class="btn" style="max-width:120px;font-size:14px;" onclick="location.reload()">لعبة جديدة 🔁</button>
@@ -141,15 +140,21 @@ function draw(){
   }
 }
 function drawNext(){
+  // اللي جاي - بنفس الشكل ونفس اللون اللي هينزل بالظبط
   var n=document.getElementById('nextGrid'); n.innerHTML='';
   var m = nextPiece ? nextPiece.m : [[0]];
+  var col = nextPiece ? nextPiece.c : 0;
   for(var r=0;r<4;r++) for(var c=0;c<4;c++){
     var d=document.createElement('div');
-    d.className='ncell'+(r<m.length && c<m[r].length && m[r][c] ? ' on' : '');
+    var on = (r<m.length && c<m[r].length && m[r][c]);
+    d.className='ncell'+(on ? ' c'+col : '');
     n.appendChild(d);
   }
   draw();
 }
+// زراير الاتجاه - مظبوطة بعد ما ثبتنا الاتجاه ltr
+function moveLeft(){ move(-1); }
+function moveRight(){ move(1); }
 function move(dx){
   if(!playing || over) return;
   if(!collide(cur.m, curX+dx, curY)){ curX+=dx; soundMove(); draw(); }
@@ -197,33 +202,13 @@ function gameOver(){
   draw();
 }
 document.addEventListener('keydown', function(e){
-  if(e.key==='ArrowLeft') move(-1);
-  if(e.key==='ArrowRight') move(1);
+  if(e.key==='ArrowLeft') moveLeft();
+  if(e.key==='ArrowRight') moveRight();
   if(e.key==='ArrowDown') softDrop();
   if(e.key==='ArrowUp') rotate();
   if(e.key===' ') { e.preventDefault(); hardDrop(); }
 });
 newBoard(); drawNext();
-</script>
- <div id="waBox" style="position:fixed; top:10px; left:10px; z-index:999999; text-align:center; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none;">
-  <div id="waDrag" style="width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,.5);">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px; height:35px; pointer-events:none;">
-  </div>
-  <div style="font-size:12px; font-weight:900; color:#fff; text-shadow:0 1px 4px #000; margin-top:2px; pointer-events:none;">كلمنا واتساب</div>
-</div>
-<script>
-(function(){
-  var box = document.getElementById('waBox');
-  var startX=0, startY=0, origX=0, origY=0, moved=false, down=false, pid=null;
-  function pos(e){ return {x:e.clientX, y:e.clientY}; }
-  function downFn(e){ down=true; moved=false; pid=e.pointerId; var p=pos(e); startX=p.x; startY=p.y; origX=box.offsetLeft; origY=box.offsetTop; try{ box.setPointerCapture(pid); }catch(err){} e.preventDefault(); }
-  function moveFn(e){ if(!down || e.pointerId!==pid) return; var p=pos(e); var dx=p.x-startX, dy=p.y-startY; if(Math.abs(dx)>6 || Math.abs(dy)>6) moved=true; if(!moved) return; var nx=origX+dx, ny=origY+dy; nx=Math.max(0, Math.min(window.innerWidth-65, nx)); ny=Math.max(0, Math.min(window.innerHeight-85, ny)); box.style.left=nx+'px'; box.style.top=ny+'px'; e.preventDefault(); }
-  function upFn(e){ if(!down) return; down=false; var wasMoved=moved; setTimeout(function(){ moved=false; }, 200); if(!wasMoved){ window.open('https://wa.me/201551668092','_blank'); } }
-  box.addEventListener('pointerdown', downFn);
-  box.addEventListener('pointermove', moveFn);
-  box.addEventListener('pointerup', upFn);
-  box.addEventListener('pointercancel', function(){ down=false; });
-})();
 </script>
 </body>
 </html>
