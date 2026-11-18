@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>الكوتشينة - بنك الألعاب</title>
+<title>توقع الكارت - بنك الألعاب</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
   body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
@@ -13,12 +13,13 @@
   .my-name{font-size:15px;font-weight:900;color:#c40000}
   .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
   .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:12px;width:100%}
-  .cards{display:flex;justify-content:center;gap:12px;margin:12px 0}
-  .card{width:90px;height:130px;background:#fff;border-radius:10px;border:3px solid #000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#000;font-weight:900;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+  .label{font-weight:900;font-size:16px;margin:6px 0 4px}
+  .card{width:110px;height:150px;background:#fff;border-radius:12px;border:3px solid #000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#000;font-weight:900;box-shadow:0 4px 10px rgba(0,0,0,.4);margin:0 auto;transition:transform 0.5s}
   .card.red{color:#c40000}
-  .card .big{font-size:38px}
-  .card .small{font-size:16px}
-  .card.back{background:linear-gradient(135deg,#c40000,#2d0a4a);color:#FFD700;font-size:40px;border-color:#FFD700}
+  .card .big{font-size:44px}
+  .card .small{font-size:18px}
+  .card.back{background:linear-gradient(135deg,#c40000,#2d0a4a);color:#FFD700;font-size:50px;border-color:#FFD700}
+  .card.flip{transform:rotateY(360deg)}
   .btn{background:#FFD700;color:#000;border:none;padding:13px 20px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;margin:5px}
   .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:8px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
   #msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
@@ -28,26 +29,23 @@
 <body oncontextmenu="return false" onselectstart="return false">
 <div class="top-box">
   <img class="logo" src="../../logo.png">
-  <div class="game-title">🃏 الكوتشينة 🃏</div>
+  <div class="game-title">🃏 توقع الكارت 🃏</div>
   <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
   <div class="bank">بنك الألعاب</div>
 </div>
 <div class="board">
-  <div id="msg">توقع الكارت الجاي أعلى ولا أقل؟</div>
-  <div class="cards">
-    <div class="card" id="myCard"><div class="small">انت</div><div class="big" id="myVal">؟</div><div class="small" id="mySuit">-</div></div>
-    <div class="card back">🃏</div>
-    <div class="card" id="pcCard"><div class="small">الكمبيوتر</div><div class="big" id="pcVal">؟</div><div class="small" id="pcSuit">-</div></div>
-  </div>
-  <div style="font-weight:900;">الكارت اللي في النص ده - اللي هييجي؟</div>
-  <div style="margin:8px 0;">
-    <button class="btn" onclick="guess('up')">⬆️ أعلى</button>
-    <button class="btn" onclick="guess('down')">⬇️ أقل</button>
+  <div id="msg">شوف الكارت الحالي - وتوقع اللي جاي أعلى ولا أقل؟</div>
+  <div class="label">👇 الكارت الحالي 👇</div>
+  <div class="card" id="curCard"><div class="small" id="curSuit">♥</div><div class="big" id="curVal">7</div><div class="small">الحالي</div></div>
+  <div class="label">👇 الكارت اللي جاي - مقلوب 👇</div>
+  <div class="card back" id="nextCard">🃏</div>
+  <div style="margin:10px 0;">
+    <button class="btn" onclick="guess('up')">⬆️ اللي جاي أعلى</button>
+    <button class="btn" onclick="guess('down')">⬇️ اللي جاي أقل</button>
   </div>
   <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button>
-  <div class="score">نقطك: <span id="score">0</span> | نقط الكمبيوتر: <span id="pcScore">0</span> | الدور: <span id="round">1</span> / 10</div>
+  <div class="score">صح: <span id="score">0</span> | غلط: <span id="pcScore">0</span> | الدور: <span id="round">1</span> / 10</div>
   <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
-  <div style="font-size:13px;margin-top:6px;">لو توقعت صح - هتاخد نقطة! اللي يوصل 10 الأول يكسب!</div>
 </div>
 
 <script>
@@ -63,64 +61,53 @@ var values=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
 function valNum(v){ if(v==='J')return 11; if(v==='Q')return 12; if(v==='K')return 13; if(v==='A')return 14; return parseInt(v); }
 function randCard(){ var s=suits[Math.floor(Math.random()*4)]; var v=values[Math.floor(Math.random()*values.length)]; return {s:s,v:v,n:valNum(v)}; }
 var cur = randCard();
-var score=0, pcScore=0, round=1;
-function showCard(el, card){
-  var c=document.getElementById(el);
-  c.className='card'+((card.s==='♥'||card.s==='♦')?' red':'');
-  document.getElementById(el==='myCard'?'myVal':'pcVal').textContent = card.v;
-  document.getElementById(el==='myCard'?'mySuit':'pcSuit').textContent = card.s;
+var score=0, wrong=0, round=1, locked=false;
+function showCur(){
+  var c=document.getElementById('curCard');
+  c.className='card'+((cur.s==='♥'||cur.s==='♦')?' red':'');
+  document.getElementById('curVal').textContent=cur.v;
+  document.getElementById('curSuit').textContent=cur.s;
+}
+function resetNext(){
+  var n=document.getElementById('nextCard');
+  n.className='card back';
+  n.innerHTML='🃏';
 }
 function guess(dir){
-  if(round>10) return;
+  if(locked || round>10) return;
+  locked=true;
   soundFlip();
   var next = randCard();
-  // الكارت اللي في النص هو cur - واللي هييجي هو next - هنعرض next في كارت الكمبيوتر
-  var isUp = next.n > cur.n;
-  var isDown = next.n < cur.n;
-  var win = (dir==='up' && isUp) || (dir==='down' && isDown);
-  var tie = next.n===cur.n;
-  showCard('pcCard', next);
-  if(tie){ document.getElementById('msg').textContent='تعادل! نفس الرقم - كمل!'; }
-  else if(win){ score++; soundWin(); document.getElementById('msg').textContent='صح! 🎉 الكارت الجاي كان '+next.v+next.s+' - خدت نقطة!'; }
-  else { pcScore++; soundLose(); document.getElementById('msg').textContent='غلط! 😢 الكارت الجاي كان '+next.v+next.s+' - الكمبيوتر خد نقطة!'; }
-  document.getElementById('score').textContent=score;
-  document.getElementById('pcScore').textContent=pcScore;
-  cur = next;
-  showCard('myCard', cur);
-  round++;
-  document.getElementById('round').textContent = round>10?10:round;
-  if(round>10){
+  var nc=document.getElementById('nextCard');
+  // الكارت اللي في النص بيتقلب وبيبين الرقم
+  nc.classList.add('flip');
+  setTimeout(function(){
+    nc.className='card flip'+((next.s==='♥'||next.s==='♦')?' red':'');
+    nc.innerHTML='<div class="small">'+next.s+'</div><div class="big">'+next.v+'</div><div class="small">اللي جاي</div>';
+    var win = (dir==='up' && next.n>cur.n) || (dir==='down' && next.n<cur.n);
+    var tie = next.n===cur.n;
+    if(tie){ document.getElementById('msg').textContent='تعادل! نفس الرقم '+next.v+' - كمل!'; }
+    else if(win){ score++; soundWin(); document.getElementById('msg').textContent='صح! 🎉 اللي جاي كان '+next.v+next.s+' - خدت نقطة!'; }
+    else { wrong++; soundLose(); document.getElementById('msg').textContent='غلط! 😢 اللي جاي كان '+next.v+next.s+' - غلطت!'; }
+    document.getElementById('score').textContent=score;
+    document.getElementById('pcScore').textContent=wrong;
+    // بعد ثانيتين - اللي جاي يبقى هو الحالي - ونقلب كارت جديد
     setTimeout(function(){
-      if(score>pcScore){ soundWin(); document.getElementById('msg').textContent='كسبت يا بطل! 🏆 '+score+' - '+pcScore; }
-      else if(pcScore>score){ soundLose(); document.getElementById('msg').textContent='الكمبيوتر كسب - حاول تاني! '+score+' - '+pcScore; }
-      else document.getElementById('msg').textContent='تعادل! العب تاني!';
-    },500);
-  }
+      cur=next; showCur(); resetNext();
+      round++;
+      document.getElementById('round').textContent = round>10?10:round;
+      if(round>10){
+        if(score>wrong){ soundWin(); document.getElementById('msg').textContent='كسبت يا بطل! 🏆 صح '+score+' - غلط '+wrong; }
+        else if(wrong>score){ soundLose(); document.getElementById('msg').textContent='خسرت - حاول تاني! صح '+score+' - غلط '+wrong; }
+        else document.getElementById('msg').textContent='تعادل! العب تاني!';
+      } else {
+        document.getElementById('msg').textContent='شوف الكارت الحالي - وتوقع اللي جاي؟';
+      }
+      locked=false;
+    },1800);
+  },400);
 }
-// أول كارت
-showCard('myCard', cur);
-document.getElementById('pcVal').textContent='؟';
-document.getElementById('pcSuit').textContent='-';
-</script>
- <div id="waBox" style="position:fixed; top:10px; left:10px; z-index:999999; text-align:center; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none;">
-  <div id="waDrag" style="width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,.5);">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px; height:35px; pointer-events:none;">
-  </div>
-  <div style="font-size:12px; font-weight:900; color:#fff; text-shadow:0 1px 4px #000; margin-top:2px; pointer-events:none;">كلمنا واتساب</div>
-</div>
-<script>
-(function(){
-  var box = document.getElementById('waBox');
-  var startX=0, startY=0, origX=0, origY=0, moved=false, down=false, pid=null;
-  function pos(e){ return {x:e.clientX, y:e.clientY}; }
-  function downFn(e){ down=true; moved=false; pid=e.pointerId; var p=pos(e); startX=p.x; startY=p.y; origX=box.offsetLeft; origY=box.offsetTop; try{ box.setPointerCapture(pid); }catch(err){} e.preventDefault(); }
-  function moveFn(e){ if(!down || e.pointerId!==pid) return; var p=pos(e); var dx=p.x-startX, dy=p.y-startY; if(Math.abs(dx)>6 || Math.abs(dy)>6) moved=true; if(!moved) return; var nx=origX+dx, ny=origY+dy; nx=Math.max(0, Math.min(window.innerWidth-65, nx)); ny=Math.max(0, Math.min(window.innerHeight-85, ny)); box.style.left=nx+'px'; box.style.top=ny+'px'; e.preventDefault(); }
-  function upFn(e){ if(!down) return; down=false; var wasMoved=moved; setTimeout(function(){ moved=false; }, 200); if(!wasMoved){ window.open('https://wa.me/201551668092','_blank'); } }
-  box.addEventListener('pointerdown', downFn);
-  box.addEventListener('pointermove', moveFn);
-  box.addEventListener('pointerup', upFn);
-  box.addEventListener('pointercancel', function(){ down=false; });
-})();
+showCur();
 </script>
 </body>
 </html>
