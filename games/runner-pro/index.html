@@ -13,11 +13,12 @@
   .my-name{font-size:15px;font-weight:900;color:#c40000}
   .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
   .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:10px;width:100%}
-  .game-area{position:relative;width:100%;height:280px;background:linear-gradient(to bottom,#87CEEB 0%,#E0F7FF 70%,#8BC34A 70%,#4CAF50 100%);border-radius:12px;overflow:hidden;touch-action:none;border:3px solid #fff}
+  .game-area{position:relative;width:100%;height:280px;background:linear-gradient(to bottom,#87CEEB 0%,#E0F7FF 70%,#8BC34A 70%,#4CAF50 100%);border-radius:12px;overflow:hidden;touch-action:none;border:3px solid #fff;direction:ltr}
   .ground{position:absolute;bottom:0;left:0;width:100%;height:30px;background:#4CAF50;border-top:3px solid #2E7D32}
-  .player{position:absolute;bottom:30px;left:40px;width:50px;height:50px;font-size:42px;display:flex;align-items:center;justify-content:center}
-  .obs{position:absolute;bottom:30px;width:40px;height:50px;font-size:36px;display:flex;align-items:center;justify-content:center}
-  .coin{position:absolute;width:34px;height:34px;font-size:28px;display:flex;align-items:center;justify-content:center}
+  /* الراجل وشه لقدام - ناحية اليمين - ناحية الجري */
+  .player{position:absolute;bottom:30px;left:40px;width:50px;height:50px;font-size:42px;display:flex;align-items:center;justify-content:center;transform:scaleX(1);direction:ltr}
+  .obs{position:absolute;bottom:30px;width:40px;height:50px;font-size:36px;display:flex;align-items:center;justify-content:center;direction:ltr}
+  .coin{position:absolute;width:34px;height:34px;font-size:28px;display:flex;align-items:center;justify-content:center;direction:ltr}
   .controls{display:flex;justify-content:center;gap:6px;margin:8px 0}
   .btn{background:#FFD700;color:#000;border:none;padding:14px 18px;font-size:19px;font-weight:900;border-radius:10px;cursor:pointer;flex:1;max-width:180px}
   .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:8px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
@@ -36,7 +37,7 @@
   <div id="msg">دوس نط عشان تنط من الحواجز - واجمع العملات!</div>
   <div class="game-area" id="area">
     <div class="ground"></div>
-    <div class="player" id="player">🏃</div>
+    <div class="player" id="player">🏃‍♂️</div>
   </div>
   <div class="controls">
     <button class="btn" onclick="startGame()">ابدأ ▶️</button>
@@ -58,10 +59,10 @@ function soundHit(){ beep(200,0.4,'sawtooth'); }
 </script>
 
 <script>
-var playing=false, over=false, score=0, coins=0, best=0, speed=4, playerY=30, vy=0, jumping=false, obs=[], coinItems=[], spawnTimer=null, animId=null, frame=0;
+var playing=false, over=false, score=0, coins=0, best=0, speed=2.2, playerY=30, vy=0, jumping=false, obs=[], coinItems=[], spawnTimer=null, animId=null, frame=0;
 function startGame(){
   if(playing) return;
-  playing=true; over=false; score=0; coins=0; speed=4; playerY=30; vy=0; jumping=false; obs=[]; coinItems=[]; frame=0;
+  playing=true; over=false; score=0; coins=0; speed=2.2; playerY=30; vy=0; jumping=false; obs=[]; coinItems=[]; frame=0;
   document.getElementById('score').textContent='0';
   document.getElementById('coins').textContent='0';
   document.getElementById('msg').textContent='يلا اجري! 🏃';
@@ -69,13 +70,13 @@ function startGame(){
   var olds=area.querySelectorAll('.obs,.coin');
   for(var i=0;i<olds.length;i++) olds[i].remove();
   document.getElementById('player').style.bottom='30px';
-  document.getElementById('player').textContent='🏃';
-  spawnTimer=setInterval(spawnObs, 1100);
+  document.getElementById('player').textContent='🏃‍♂️';
+  spawnTimer=setInterval(spawnObs, 1600);
   animate();
 }
 function jump(){
   if(!playing || jumping) return;
-  jumping=true; vy=13; soundJump();
+  jumping=true; vy=11; soundJump();
   document.getElementById('player').textContent='🦘';
 }
 function spawnObs(){
@@ -103,12 +104,12 @@ function animate(){
   if(!playing) return;
   frame++;
   score++;
-  if(frame%200===0) speed+=0.5;
+  if(frame%400===0) speed+=0.2;
   document.getElementById('score').textContent=Math.floor(score/10);
   var p=document.getElementById('player');
   if(jumping){
-    playerY+=vy; vy-=0.8;
-    if(playerY<=30){ playerY=30; jumping=false; vy=0; p.textContent='🏃'; }
+    playerY+=vy; vy-=0.7;
+    if(playerY<=30){ playerY=30; jumping=false; vy=0; p.textContent='🏃‍♂️'; }
     p.style.bottom=playerY+'px';
   }
   for(var i=obs.length-1;i>=0;i--){
@@ -143,26 +144,6 @@ function hit(){
 }
 document.getElementById('area').addEventListener('pointerdown', function(){ if(playing) jump(); else startGame(); });
 document.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='ArrowUp'){ e.preventDefault(); if(!playing) startGame(); else jump(); } });
-</script>
- <div id="waBox" style="position:fixed; top:10px; left:10px; z-index:999999; text-align:center; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none;">
-  <div id="waDrag" style="width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,.5);">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px; height:35px; pointer-events:none;">
-  </div>
-  <div style="font-size:12px; font-weight:900; color:#fff; text-shadow:0 1px 4px #000; margin-top:2px; pointer-events:none;">كلمنا واتساب</div>
-</div>
-<script>
-(function(){
-  var box = document.getElementById('waBox');
-  var startX=0, startY=0, origX=0, origY=0, moved=false, down=false, pid=null;
-  function pos(e){ return {x:e.clientX, y:e.clientY}; }
-  function downFn(e){ down=true; moved=false; pid=e.pointerId; var p=pos(e); startX=p.x; startY=p.y; origX=box.offsetLeft; origY=box.offsetTop; try{ box.setPointerCapture(pid); }catch(err){} e.preventDefault(); }
-  function moveFn(e){ if(!down || e.pointerId!==pid) return; var p=pos(e); var dx=p.x-startX, dy=p.y-startY; if(Math.abs(dx)>6 || Math.abs(dy)>6) moved=true; if(!moved) return; var nx=origX+dx, ny=origY+dy; nx=Math.max(0, Math.min(window.innerWidth-65, nx)); ny=Math.max(0, Math.min(window.innerHeight-85, ny)); box.style.left=nx+'px'; box.style.top=ny+'px'; e.preventDefault(); }
-  function upFn(e){ if(!down) return; down=false; var wasMoved=moved; setTimeout(function(){ moved=false; }, 200); if(!wasMoved){ window.open('https://wa.me/201551668092','_blank'); } }
-  box.addEventListener('pointerdown', downFn);
-  box.addEventListener('pointermove', moveFn);
-  box.addEventListener('pointerup', upFn);
-  box.addEventListener('pointercancel', function(){ down=false; });
-})();
 </script>
 </body>
 </html>
