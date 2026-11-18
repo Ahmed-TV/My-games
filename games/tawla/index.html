@@ -5,8 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>الطاولة - بنك الألعاب</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
   body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
+  .wa-fixed{position:fixed !important;top:10px !important;left:10px !important;z-index:99999 !important;text-align:center !important;touch-action:none !important;cursor:grab}
+  .wa{display:inline-flex;width:60px;height:60px;background:#25D366;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(0,0,0,.5);text-decoration:none}
+  .wa img{width:35px;height:35px}
+  .wa-txt{font-size:12px;font-weight:900;color:#fff;text-shadow:0 1px 4px #000,0 0 6px #000;margin-top:2px}
   .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
   .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
   .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
@@ -16,7 +20,7 @@
   .top,.bottom{display:flex;justify-content:space-between}
   .col{width:34px;min-height:125px;background:rgba(255,255,255,.2);border-radius:8px;padding:4px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
   .col.sel{outline:3px solid #FFD700}
-  .piece{width:28px;height:28px;border-radius:50%;border:2px solid #000;font-size:13px;font-weight:900;line-height:24px}
+  .piece{width:28px;height:28px;border-radius:50%;border:2px solid #000;font-size:13px;font-weight:900;line-height:24px;pointer-events:none}
   .white{background:#fff;color:#000}
   .black{background:#222;color:#fff;border-color:#FFD700}
   .mid{height:10px}
@@ -26,13 +30,13 @@
   .score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
 </style>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false">
 
-<!-- الواتس العايم القديم - اللي كان شغال -->
-<a href="https://wa.me/201551668092" target="_blank" style="position:fixed !important; top:10px !important; left:10px !important; z-index:99999 !important; width:60px !important; height:60px !important; background:#25D366 !important; border-radius:50% !important; display:flex !important; align-items:center !important; justify-content:center !important; box-shadow:0 4px 15px rgba(0,0,0,.5) !important; text-decoration:none !important;">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px !important; height:35px !important;">
-</a>
-<div style="position:fixed !important; top:74px !important; left:10px !important; z-index:99999 !important; font-size:12px !important; font-weight:900 !important; color:#fff !important; text-shadow:0 1px 4px #000 !important; width:60px !important; text-align:center !important;">كلمنا واتساب</div>
+<!-- الواتس بيتسحب بصباعك - وشغال -->
+<div class="wa-fixed" id="waBox">
+  <a class="wa" id="waLink" href="https://wa.me/201551668092" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"></a>
+  <div class="wa-txt">كلمنا واتساب</div>
+</div>
 
 <div class="top-box">
   <img class="logo" src="../../logo.png">
@@ -53,12 +57,24 @@
 </div>
 
 <script>
+// الواتس بيتسحب - ولو دوست عليه دوسة خفيفة بيفتح
+var waBox=document.getElementById('waBox');
+var waLink=document.getElementById('waLink');
+var isDrag=false,startX=0,startY=0,origX=0,origY=0,moved=false;
+function getPos(e){var t=e.touches?e.touches[0]:e;return {x:t.clientX,y:t.clientY};}
+waBox.addEventListener('touchstart',function(e){var p=getPos(e);isDrag=true;moved=false;startX=p.x;startY=p.y;origX=waBox.offsetLeft;origY=waBox.offsetTop;},{passive:true});
+waBox.addEventListener('touchmove',function(e){if(!isDrag)return;var p=getPos(e);var dx=p.x-startX,dy=p.y-startY;if(Math.abs(dx)>8||Math.abs(dy)>8)moved=true;if(!moved)return;var nx=origX+dx,ny=origY+dy;nx=Math.max(0,Math.min(window.innerWidth-65,nx));ny=Math.max(0,Math.min(window.innerHeight-85,ny));waBox.style.left=nx+'px';waBox.style.top=ny+'px';e.preventDefault();},{passive:false});
+waBox.addEventListener('touchend',function(){isDrag=false;setTimeout(function(){moved=false;},150);});
+waLink.addEventListener('click',function(e){if(moved){e.preventDefault();moved=false;}});
+</script>
+
+<script>
 var board=[];for(var i=0;i<24;i++) board[i]={n:0,c:''};
 board[0]={n:2,c:'white'};board[11]={n:5,c:'black'};board[16]={n:3,c:'black'};board[18]={n:5,c:'white'};board[23]={n:2,c:'black'};board[12]={n:5,c:'white'};board[7]={n:3,c:'white'};board[5]={n:5,c:'black'};
 var sel=-1,diceVals=[],myTurn=true;
 function render(){var top=document.getElementById('top'),bottom=document.getElementById('bottom');top.innerHTML='';bottom.innerHTML='';for(var i=0;i<12;i++)top.appendChild(makeCol(11-i));for(var i=12;i<24;i++)bottom.appendChild(makeCol(i));document.getElementById('myCount').textContent=count('white');document.getElementById('pcCount').textContent=count('black');document.getElementById('turn').textContent=myTurn?'انت':'الكمبيوتر';}
 function count(c){var s=0;board.forEach(function(p){if(p.c===c)s+=p.n;});return s;}
-function makeCol(idx){var d=document.createElement('div');d.className='col'+(sel===idx?' sel':'');d.onclick=function(){clickCol(idx);};var p=board[idx];for(var i=0;i<p.n;i++){var s=document.createElement('div');s.className='piece '+(p.c==='white'?'white':'black');s.textContent=p.n;d.appendChild(s);}var lab=document.createElement('div');lab.style.fontSize='10px';lab.textContent=idx+1;d.appendChild(lab);return d;}
+function makeCol(idx){var d=document.createElement('div');d.className='col'+(sel===idx?' sel':'');d.onclick=function(){clickCol(idx);};var p=board[idx];for(var i=0;i<p.n;i++){var s=document.createElement('div');s.className='piece '+(p.c==='white'?'white':'black');s.textContent=p.n;d.appendChild(s);}var lab=document.createElement('div');lab.style.fontSize='10px';lab.style.pointerEvents='none';lab.textContent=idx+1;d.appendChild(lab);return d;}
 function roll(){if(diceVals.length>0){document.getElementById('msg').textContent='العب الزهر اللي معاك الأول!';return;}var d1=Math.floor(Math.random()*6)+1,d2=Math.floor(Math.random()*6)+1;diceVals=[d1,d2];if(d1===d2)diceVals=[d1,d1,d1,d1];document.getElementById('dice').textContent='🎲 '+d1+'  🎲 '+d2+(d1===d2?' - دوبل!':'');document.getElementById('msg').textContent=myTurn?'دوس على حجرك وبعدين المكان اللي هتروحله':'دور الكمبيوتر...';if(!myTurn)setTimeout(pcPlay,800);}
 function clickCol(idx){if(!myTurn||diceVals.length===0)return;if(sel===-1){if(board[idx].c!=='white'||board[idx].n===0){document.getElementById('msg').textContent='دوس على حجر أبيض بتاعك!';return;}sel=idx;render();}else{var move=diceVals.find(function(d){return idx===sel+d;});if(move===undefined){sel=-1;render();document.getElementById('msg').textContent='مش هينفع تتحرك كده - اختار تاني';return;}doMove(sel,idx,move);sel=-1;if(diceVals.length===0){myTurn=false;render();setTimeout(function(){roll();},600);}else render();}}
 function doMove(from,to,d){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='white'){board[to].c='white';board[to].n++;}else if(board[to].n===1){board[to].c='white';board[to].n=1;document.getElementById('msg').textContent='أكلت حجر الكمبيوتر! 😍';}else{board[from].n++;board[from].c='white';return;}diceVals.splice(diceVals.indexOf(d),1);}
