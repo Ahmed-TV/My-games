@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>التتريس - بنك الألعاب</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
+  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
+  .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
+  .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
+  .my-name{font-size:15px;font-weight:900;color:#c40000}
+  .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
+  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:12px;width:100%}
+  .tetris-wrap{display:flex;justify-content:center;gap:10px;margin:10px 0}
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:1px;background:#111;padding:3px;border-radius:8px;width:240px}
+  .cell{aspect-ratio:1;background:#222;border-radius:2px}
+  .cell.c1{background:#00E5FF}.cell.c2{background:#FFD700}.cell.c3{background:#FF4081}.cell.c4{background:#76FF03}.cell.c5{background:#FF6D00}.cell.c6{background:#B388FF}.cell.c7{background:#FF1744}
+  .side{width:90px;text-align:center}
+  .next-box{background:#111;border-radius:8px;padding:6px;min-height:70px}
+  .next-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px}
+  .ncell{aspect-ratio:1;background:#222;border-radius:2px}
+  .ncell.on{background:#FFD700}
+  .btn{background:#FFD700;color:#000;border:none;padding:12px 10px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;margin:3px;min-width:52px}
+  .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:8px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
+  #msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
+  .score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false">
+<div class="top-box">
+  <img class="logo" src="../../logo.png">
+  <div class="game-title">🟦 التتريس 🟦</div>
+  <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
+  <div class="bank">بنك الألعاب</div>
+</div>
+<div class="board">
+  <div id="msg">رص المكعبات - املى سطر كامل عشان يختفي!</div>
+  <div class="tetris-wrap">
+    <div class="grid" id="grid"></div>
+    <div class="side">
+      <div style="font-weight:900;font-size:14px;">اللي جاي:</div>
+      <div class="next-box"><div class="next-grid" id="nextGrid"></div></div>
+      <div class="score">النقط: <span id="score">0</span><br>السطور: <span id="lines">0</span><br>المستوى: <span id="level">1</span></div>
+      <button class="btn" onclick="startGame()">ابدأ ▶️</button>
+    </div>
+  </div>
+  <div>
+    <button class="btn" onclick="move(-1)">⬅️</button>
+    <button class="btn" onclick="rotate()">🔄</button>
+    <button class="btn" onclick="move(1)">➡️</button>
+  </div>
+  <div>
+    <button class="btn" onclick="softDrop()">⬇️</button>
+    <button class="btn" onclick="hardDrop()">⏬ نزّل</button>
+  </div>
+  <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button>
+  <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
+  <div style="font-size:13px;margin-top:6px;">دوس على الأسهم من الموبايل - أو لوحة المفاتيح من الكمبيوتر</div>
+</div>
+
+<script>
+var audioCtx=null, soundOn=true;
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; }
+function beep(f,d,t){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); var o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=t||'sine'; o.frequency.value=f; g.gain.value=0.25; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d); }catch(e){} }
+function soundMove(){ beep(500,0.08,'square'); }
+function soundRotate(){ beep(700,0.08,'square'); }
+function soundLine(){ beep(523,0.15,'sine'); setTimeout(function(){beep(659,0.15,'sine');},120); setTimeout(function(){beep(784,0.2,'sine');},240); }
+function soundOver(){ beep(400,0.3,'sawtooth'); setTimeout(function(){beep(300,0.4,'sawtooth');},300); }
+function soundDrop(){ beep(300,0.1,'square'); }
+</script>
+
+<script>
+var COLS=10, ROWS=20;
+var board=[], cur=null, curX=3, curY=0, nextPiece=null, score=0, lines=0, level=1, timer=null, playing=false, over=false;
+var SHAPES = [
+  {m:[[1,1,1,1]], c:1},
+  {m:[[1,1],[1,1]], c:2},
+  {m:[[0,1,0],[1,1,1]], c:3},
+  {m:[[1,0,0],[1,1,1]], c:4},
+  {m:[[0,0,1],[1,1,1]], c:5},
+  {m:[[1,1,0],[0,1,1]], c:6},
+  {m:[[0,1,1],[1,1,0]], c:7},
+];
+function newBoard(){ board=[]; for(var r=0;r<ROWS;r++){ var row=[]; for(var c=0;c<COLS;c++) row.push(0); board.push(row); } }
+function randPiece(){ return JSON.parse(JSON.stringify(SHAPES[Math.floor(Math.random()*SHAPES.length)])); }
+function collide(m, px, py){
+  for(var r=0;r<m.length;r++) for(var c=0;c<m[r].length;c++) if(m[r][c]){
+    var nr=py+r, nc=px+c;
+    if(nc<0 || nc>=COLS || nr>=ROWS) return true;
+    if(nr>=0 && board[nr][nc]) return true;
+  }
+  return false;
+}
+function spawn(){
+  cur = nextPiece || randPiece();
+  nextPiece = randPiece();
+  curX=3; curY=0;
+  if(collide(cur.m, curX, curY)){ gameOver(); return; }
+  drawNext();
+}
+function lock(){
+  for(var r=0;r<cur.m.length;r++) for(var c=0;c<cur.m[r].length;c++) if(cur.m[r][c]){
+    var nr=curY+r, nc=curX+c;
+    if(nr>=0) board[nr][nc]=cur.c;
+  }
+  soundDrop();
+  clearLines();
+  spawn();
+}
+function clearLines(){
+  var cleared=0;
+  for(var r=ROWS-1;r>=0;r--){
+    var full=true;
+    for(var c=0;c<COLS;c++) if(!board[r][c]) full=false;
+    if(full){ board.splice(r,1); var nr=[]; for(var i=0;i<COLS;i++) nr.push(0); board.unshift(nr); cleared++; r++; }
+  }
+  if(cleared){
+    soundLine();
+    lines+=cleared; score+=cleared*100*level;
+    level = Math.floor(lines/5)+1;
+    document.getElementById('score').textContent=score;
+    document.getElementById('lines').textContent=lines;
+    document.getElementById('level').textContent=level;
+    document.getElementById('msg').textContent='عاش! مسحت '+cleared+' سطر! 🎉';
+    restartTimer();
+  }
+}
+function draw(){
+  var g=document.getElementById('grid'); g.innerHTML='';
+  var disp = JSON.parse(JSON.stringify(board));
+  if(cur) for(var r=0;r<cur.m.length;r++) for(var c=0;c<cur.m[r].length;c++) if(cur.m[r][c]){
+    var nr=curY+r, nc=curX+c;
+    if(nr>=0 && nr<ROWS && nc>=0 && nc<COLS) disp[nr][nc]=cur.c;
+  }
+  for(var r=0;r<ROWS;r++) for(var c=0;c<COLS;c++){
+    var d=document.createElement('div');
+    d.className='cell'+(disp[r][c]?' c'+disp[r][c]:'');
+    g.appendChild(d);
+  }
+}
+function drawNext(){
+  var n=document.getElementById('nextGrid'); n.innerHTML='';
+  var m = nextPiece ? nextPiece.m : [[0]];
+  for(var r=0;r<4;r++) for(var c=0;c<4;c++){
+    var d=document.createElement('div');
+    d.className='ncell'+(r<m.length && c<m[r].length && m[r][c] ? ' on' : '');
+    n.appendChild(d);
+  }
+  draw();
+}
+function move(dx){
+  if(!playing || over) return;
+  if(!collide(cur.m, curX+dx, curY)){ curX+=dx; soundMove(); draw(); }
+}
+function rotate(){
+  if(!playing || over) return;
+  var m=cur.m, nm=[];
+  for(var c=0;c<m[0].length;c++){ var row=[]; for(var r=m.length-1;r>=0;r--) row.push(m[r][c]); nm.push(row); }
+  if(!collide(nm, curX, curY)){ cur.m=nm; soundRotate(); draw(); }
+}
+function softDrop(){
+  if(!playing || over) return;
+  if(!collide(cur.m, curX, curY+1)){ curY++; draw(); }
+  else lock(), draw();
+}
+function hardDrop(){
+  if(!playing || over) return;
+  while(!collide(cur.m, curX, curY+1)) curY++;
+  lock(); draw();
+}
+function tick(){
+  if(!playing || over) return;
+  if(!collide(cur.m, curX, curY+1)) curY++;
+  else lock();
+  draw();
+}
+function restartTimer(){
+  if(timer) clearInterval(timer);
+  var speed = Math.max(150, 700 - (level-1)*80);
+  timer=setInterval(tick, speed);
+}
+function startGame(){
+  if(playing) return;
+  newBoard(); score=0; lines=0; level=1; over=false; playing=true;
+  document.getElementById('score').textContent='0';
+  document.getElementById('lines').textContent='0';
+  document.getElementById('level').textContent='1';
+  document.getElementById('msg').textContent='يلا العب! رص المكعبات!';
+  nextPiece=null; spawn(); restartTimer();
+}
+function gameOver(){
+  over=true; playing=false; if(timer) clearInterval(timer);
+  soundOver();
+  document.getElementById('msg').textContent='خسرت! وصلت فوق! النقط: '+score+' - دوس لعبة جديدة!';
+  draw();
+}
+document.addEventListener('keydown', function(e){
+  if(e.key==='ArrowLeft') move(-1);
+  if(e.key==='ArrowRight') move(1);
+  if(e.key==='ArrowDown') softDrop();
+  if(e.key==='ArrowUp') rotate();
+  if(e.key===' ') { e.preventDefault(); hardDrop(); }
+});
+newBoard(); drawNext();
+</script>
+</body>
+</html>
