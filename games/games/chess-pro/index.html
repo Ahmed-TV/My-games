@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>شطرنج الأبطال - بنك الألعاب</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
+  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
+  .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
+  .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
+  .my-name{font-size:15px;font-weight:900;color:#c40000}
+  .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
+  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:12px;width:100%}
+  .chess{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;max-width:400px;margin:10px auto;background:#8B4513;padding:4px;border-radius:8px}
+  .sq{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;border-radius:4px}
+  .sq.w{background:#F0D9B5}
+  .sq.b{background:#B58863}
+  .sq.sel{outline:3px solid #FFD700;outline-offset:-3px}
+  .sq.can{outline:3px solid #00c853;outline-offset:-3px}
+  .btn{background:#FFD700;color:#000;border:none;padding:13px 20px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;margin:5px}
+  .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:8px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
+  #msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
+  .score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false">
+<div class="top-box">
+  <img class="logo" src="../../logo.png">
+  <div class="game-title">♟️ شطرنج الأبطال ♟️</div>
+  <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
+  <div class="bank">بنك الألعاب</div>
+</div>
+<div class="board">
+  <div id="msg">انت الأبيض ⬇️ - دوس على قطعة - وبعدين دوس على المكان اللي عايز تروحله</div>
+  <div class="chess" id="chess"></div>
+  <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button>
+  <div class="score">اللي اتاكل منك: <span id="eatenMe">-</span> | اللي أكلته: <span id="eatenPc">-</span></div>
+  <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
+  <div style="font-size:13px;margin-top:6px;">كل قطعة بتمشي زي الشطرنج الحقيقي - لو أكلت ملك الكمبيوتر تكسب!</div>
+</div>
+
+<script>
+var audioCtx=null, soundOn=true;
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; }
+function beep(f,d,t){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); var o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=t||'sine'; o.frequency.value=f; g.gain.value=0.3; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d); }catch(e){} }
+function soundMove(){ beep(600,0.15,'sine'); }
+function soundEat(){ beep(800,0.1,'sawtooth'); setTimeout(function(){beep(1000,0.2,'sawtooth');},100); }
+function soundWin(){ beep(523,0.2,'sine'); setTimeout(function(){beep(659,0.2,'sine');},200); setTimeout(function(){beep(784,0.2,'sine');},400); setTimeout(function(){beep(1046,0.4,'sine');},600); }
+function soundLose(){ beep(400,0.2,'sawtooth'); setTimeout(function(){beep(300,0.3,'sawtooth');},200); }
+</script>
+
+<script>
+var P = { K:'♔', Q:'♕', R:'♖', B:'♗', N:'♘', P:'♙', k:'♚', q:'♛', r:'♜', b:'♝', n:'♞', p:'♟' };
+var board = [];
+function startBoard(){
+  board = [
+    ['r','n','b','q','k','b','n','r'],
+    ['p','p','p','p','p','p','p','p'],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['P','P','P','P','P','P','P','P'],
+    ['R','N','B','Q','K','B','N','R'],
+  ];
+}
+var sel=null, myTurn=true, eatenMe=[], eatenPc=[], over=false;
+function isWhite(p){ return p && p===p.toUpperCase(); }
+function isBlack(p){ return p && p===p.toLowerCase(); }
+function canMove(fr,fc,tr,tc){
+  var p=board[fr][fc]; if(!p) return false;
+  var t=board[tr][tc];
+  if(t && ((isWhite(p)&&isWhite(t)) || (isBlack(p)&&isBlack(t)))) return false;
+  var dr=tr-fr, dc=tc-fc, adr=Math.abs(dr), adc=Math.abs(dc);
+  var type=p.toUpperCase();
+  if(type==='P'){
+    var dir = isWhite(p) ? -1 : 1;
+    var startRow = isWhite(p) ? 6 : 1;
+    if(dc===0 && !t){
+      if(dr===dir) return true;
+      if(fr===startRow && dr===2*dir && !board[fr+dir][fc]) return true;
+    }
+    if(adc===1 && dr===dir && t) return true;
+    return false;
+  }
+  if(type==='N') return (adr===2 && adc===1) || (adr===1 && adc===2);
+  if(type==='K') return adr<=1 && adc<=1;
+  if(type==='R' || type==='Q'){
+    if(dr===0 || dc===0){
+      var sr = dr===0?0:(dr>0?1:-1), sc = dc===0?0:(dc>0?1:-1);
+      var r=fr+sr, c=fc+sc;
+      while(r!==tr || c!==tc){ if(board[r][c]) return false; r+=sr; c+=sc; }
+      return true;
+    }
+    if(type==='R') return false;
+  }
+  if(type==='B' || type==='Q'){
+    if(adr===adc && adr>0){
+      var sr2 = dr>0?1:-1, sc2 = dc>0?1:-1;
+      var r2=fr+sr2, c2=fc+sc2;
+      while(r2!==tr || c2!==tc){ if(board[r2][c2]) return false; r2+=sr2; c2+=sc2; }
+      return true;
+    }
+    if(type==='B') return false;
+  }
+  return false;
+}
+function render(){
+  var el=document.getElementById('chess'); el.innerHTML='';
+  for(var r=0;r<8;r++) for(var c=0;c<8;c++){
+    var d=document.createElement('div');
+    d.className='sq '+(((r+c)%2===0)?'w':'b');
+    d.textContent = board[r][c] ? P[board[r][c]] : '';
+    if(sel && sel[0]===r && sel[1]===c) d.classList.add('sel');
+    if(sel && canMove(sel[0],sel[1],r,c)) d.classList.add('can');
+    (function(rr,cc){ d.onclick=function(){ clickSq(rr,cc); }; })(r,c);
+    el.appendChild(d);
+  }
+  document.getElementById('eatenMe').textContent = eatenMe.length? eatenMe.map(function(x){return P[x]}).join(' ') : '-';
+  document.getElementById('eatenPc').textContent = eatenPc.length? eatenPc.map(function(x){return P[x]}).join(' ') : '-';
+}
+function clickSq(r,c){
+  if(over || !myTurn) return;
+  var p=board[r][c];
+  if(sel){
+    if(canMove(sel[0],sel[1],r,c)){
+      doMove(sel[0],sel[1],r,c,true);
+      sel=null; render();
+      if(!over) setTimeout(pcMove,600);
+      return;
+    }
+    sel=null;
+  }
+  if(p && isWhite(p)){ sel=[r,c]; soundMove(); }
+  render();
+}
+function doMove(fr,fc,tr,tc,isMe){
+  var p=board[fr][fc], t=board[tr][tc];
+  if(t){
+    if(isMe) eatenPc.push(t); else eatenMe.push(t);
+    soundEat();
+    if(t.toUpperCase()==='K'){
+      over=true;
+      if(isMe){ soundWin(); document.getElementById('msg').textContent='كسبت يا بطل! 🏆 أكلت الملك!'; }
+      else { soundLose(); document.getElementById('msg').textContent='الكمبيوتر كسب - أكل ملكك! حاول تاني!'; }
+    }
+  } else soundMove();
+  if(p.toUpperCase()==='P' && (tr===0 || tr===7)) p = isMe ? 'Q' : 'q';
+  board[tr][tc]=p; board[fr][fc]='';
+  myTurn = !isMe;
+  if(!over) document.getElementById('msg').textContent = myTurn ? 'دورك انت - دوس على قطعة بيضا' : 'دور الكمبيوتر...';
+}
+function pcMove(){
+  if(over) return;
+  var moves=[];
+  for(var r=0;r<8;r++) for(var c=0;c<8;c++) if(isBlack(board[r][c])) for(var tr=0;tr<8;tr++) for(var tc=0;tc<8;tc++) if(canMove(r,c,tr,tc)) moves.push([r,c,tr,tc]);
+  if(moves.length===0){ over=true; soundWin(); document.getElementById('msg').textContent='كسبت! الكمبيوتر مالوش حركة! 🏆'; render(); return; }
+  var eats = moves.filter(function(m){ return board[m[2]][m[3]]; });
+  var m = eats.length ? eats[Math.floor(Math.random()*eats.length)] : moves[Math.floor(Math.random()*moves.length)];
+  doMove(m[0],m[1],m[2],m[3],false);
+  render();
+}
+startBoard(); render();
+</script>
+</body>
+</html>
