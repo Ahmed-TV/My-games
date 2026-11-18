@@ -41,13 +41,12 @@
   <div class="tetris-wrap">
     <div class="grid" id="grid"></div>
     <div class="side">
-      <div style="font-weight:900;font-size:13px;">اللي جاي:</div>
+      <div style="font-weight:900;font-size:13px;">اللي نازل:</div>
       <div class="next-box"><div class="next-grid" id="nextGrid"></div></div>
       <div class="score">النقط: <span id="score">0</span><br>السطور: <span id="lines">0</span><br>المستوى: <span id="level">1</span></div>
       <button class="btn" style="max-width:100%;font-size:14px;" onclick="startGame()">ابدأ ▶️</button>
     </div>
   </div>
-  <!-- الشمال على الشمال - واليمين على اليمين - والاتجاه مظبوط -->
   <div class="controls">
     <button class="btn" onclick="moveLeft()">⬅️</button>
     <button class="btn" onclick="rotate()">🔄</button>
@@ -72,7 +71,7 @@ function soundDrop(){ beep(300,0.1,'square'); }
 
 <script>
 var COLS=10, ROWS=20;
-var board=[], cur=null, curX=3, curY=0, nextPiece=null, score=0, lines=0, level=1, timer=null, playing=false, over=false;
+var board=[], cur=null, curX=3, curY=0, score=0, lines=0, level=1, timer=null, playing=false, over=false;
 var SHAPES = [
   {m:[[1,1,1,1]], c:1},
   {m:[[1,1],[1,1]], c:2},
@@ -93,8 +92,7 @@ function collide(m, px, py){
   return false;
 }
 function spawn(){
-  cur = nextPiece || randPiece();
-  nextPiece = randPiece();
+  cur = randPiece();
   curX=3; curY=0;
   if(collide(cur.m, curX, curY)){ gameOver(); return; }
   drawNext();
@@ -140,10 +138,10 @@ function draw(){
   }
 }
 function drawNext(){
-  // اللي جاي - بنفس الشكل ونفس اللون اللي هينزل بالظبط
+  // المربع ده دلوقتي بيبين نفس القطعة اللي نازلة بالظبط - نفس الشكل ونفس اللون
   var n=document.getElementById('nextGrid'); n.innerHTML='';
-  var m = nextPiece ? nextPiece.m : [[0]];
-  var col = nextPiece ? nextPiece.c : 0;
+  var m = cur ? cur.m : [[0]];
+  var col = cur ? cur.c : 0;
   for(var r=0;r<4;r++) for(var c=0;c<4;c++){
     var d=document.createElement('div');
     var on = (r<m.length && c<m[r].length && m[r][c]);
@@ -152,7 +150,6 @@ function drawNext(){
   }
   draw();
 }
-// زراير الاتجاه - مظبوطة بعد ما ثبتنا الاتجاه ltr
 function moveLeft(){ move(-1); }
 function moveRight(){ move(1); }
 function move(dx){
@@ -163,7 +160,7 @@ function rotate(){
   if(!playing || over) return;
   var m=cur.m, nm=[];
   for(var c=0;c<m[0].length;c++){ var row=[]; for(var r=m.length-1;r>=0;r--) row.push(m[r][c]); nm.push(row); }
-  if(!collide(nm, curX, curY)){ cur.m=nm; soundRotate(); draw(); }
+  if(!collide(nm, curX, curY)){ cur.m=nm; soundRotate(); drawNext(); }
 }
 function softDrop(){
   if(!playing || over) return;
@@ -193,7 +190,7 @@ function startGame(){
   document.getElementById('lines').textContent='0';
   document.getElementById('level').textContent='1';
   document.getElementById('msg').textContent='يلا العب! رص المكعبات!';
-  nextPiece=null; spawn(); restartTimer();
+  spawn(); restartTimer();
 }
 function gameOver(){
   over=true; playing=false; if(timer) clearInterval(timer);
@@ -209,26 +206,6 @@ document.addEventListener('keydown', function(e){
   if(e.key===' ') { e.preventDefault(); hardDrop(); }
 });
 newBoard(); drawNext();
-</script>
- <div id="waBox" style="position:fixed; top:10px; left:10px; z-index:999999; text-align:center; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none;">
-  <div id="waDrag" style="width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,.5);">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px; height:35px; pointer-events:none;">
-  </div>
-  <div style="font-size:12px; font-weight:900; color:#fff; text-shadow:0 1px 4px #000; margin-top:2px; pointer-events:none;">كلمنا واتساب</div>
-</div>
-<script>
-(function(){
-  var box = document.getElementById('waBox');
-  var startX=0, startY=0, origX=0, origY=0, moved=false, down=false, pid=null;
-  function pos(e){ return {x:e.clientX, y:e.clientY}; }
-  function downFn(e){ down=true; moved=false; pid=e.pointerId; var p=pos(e); startX=p.x; startY=p.y; origX=box.offsetLeft; origY=box.offsetTop; try{ box.setPointerCapture(pid); }catch(err){} e.preventDefault(); }
-  function moveFn(e){ if(!down || e.pointerId!==pid) return; var p=pos(e); var dx=p.x-startX, dy=p.y-startY; if(Math.abs(dx)>6 || Math.abs(dy)>6) moved=true; if(!moved) return; var nx=origX+dx, ny=origY+dy; nx=Math.max(0, Math.min(window.innerWidth-65, nx)); ny=Math.max(0, Math.min(window.innerHeight-85, ny)); box.style.left=nx+'px'; box.style.top=ny+'px'; e.preventDefault(); }
-  function upFn(e){ if(!down) return; down=false; var wasMoved=moved; setTimeout(function(){ moved=false; }, 200); if(!wasMoved){ window.open('https://wa.me/201551668092','_blank'); } }
-  box.addEventListener('pointerdown', downFn);
-  box.addEventListener('pointermove', moveFn);
-  box.addEventListener('pointerup', upFn);
-  box.addEventListener('pointercancel', function(){ down=false; });
-})();
 </script>
 </body>
 </html>
