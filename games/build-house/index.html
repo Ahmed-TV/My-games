@@ -3,429 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>بناء منزل | Ahmed TV</title>
+<title>بناء منزل | أحمد عبدالعزيز</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
-  body {
-    font-family: Tahoma, Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
-  }
-
-  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
-  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
-  
-  .logo {
-    width: 60px; height: 60px; flex-shrink: 0;
-    background: linear-gradient(135deg, #f59e0b, #ef4444); 
-    border: 4px solid #fff; border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #fff; line-height: 1;
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
-  }
-  .logo b { font-size: 12px; }
-  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
-  
-  h1 { font-size: 20px; line-height: 1.2; color: #facc15;}
-  h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
-  
-  .names { font-size: 14px; color: #cbd5e1; margin-bottom: 5px; font-weight: bold;}
-  .names b { color: #facc15; font-size: 16px;}
-
-  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0; flex-wrap: wrap; }
-  .stat {
-    background: #1e293b; border: 1px solid #334155; border-radius: 10px;
-    padding: 5px 15px; min-width: 80px; text-align: center;
-  }
-  .stat b { display: block; font-size: 18px; color: #facc15; }
-  .stat span { font-size: 10px; color: #94a3b8; }
-
-  #game-container {
-    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
-    position: relative; display: flex; flex-direction: column;
-    background: #38bdf8; /* سما */
-    border: 4px solid #f59e0b; border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .watermark {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: rgba(255, 255, 255, 0.1);
-    font-size: 40px;
-    font-weight: 900;
-    pointer-events: none;
-    z-index: 0;
-    white-space: nowrap;
-  }
-
-  /* منطقة البناء */
-  .build-area {
-    flex-grow: 1; position: relative; overflow: hidden;
-    z-index: 1; display: flex; flex-direction: column; justify-content: flex-end;
-  }
-
-  /* الأرضية الثابتة */
-  .ground {
-    width: 100%; height: 25px; background: #22c55e;
-    border-top: 5px solid #16a34a;
-    z-index: 2;
-  }
-
-  /* الطوابق */
-  .floor {
-    height: 35px;
-    background: linear-gradient(to bottom, #fcd34d, #f59e0b); /* لون خشب/طوب */
-    border: 2px solid #b45309;
-    border-radius: 4px;
-    position: absolute; /* بنحدد مكانه بالكود */
-    display: flex; justify-content: center; align-items: center;
-    font-size: 20px;
-    z-index: 1;
-  }
-
-  /* شكل الطوابق */
-  .floor .window-icon {
-    font-size: 16px;
-    color: #fff;
-  }
-  
-  .floor.roof {
-    background: linear-gradient(to bottom, #ef4444, #b91c1c);
-    border-color: #7f1d1d;
-    border-radius: 10px 10px 0 0;
-    height: 25px;
-  }
-
-  /* الطابق المتحرك */
-  .moving-floor {
-    position: absolute;
-    height: 35px;
-    background: linear-gradient(to bottom, #fcd34d, #f59e0b);
-    border: 2px solid #b45309;
-    border-radius: 4px;
-    z-index: 5;
-    display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  }
-  .moving-floor .window-icon {
-    font-size: 16px;
-    color: #fff;
-  }
-
-  /* الأزرار */
-  .controls {
-    display: flex; gap: 10px; justify-content: center; padding: 10px;
-    background: #1e293b; border-radius: 10px; z-index: 3;
-    flex-shrink: 0;
-  }
-  .btn {
-    background: #f59e0b; color: #000; border: none; padding: 15px 25px;
-    border-radius: 10px; font-size: 18px; font-weight: 900; cursor: pointer;
-    flex-grow: 1;
-    box-shadow: 0 4px 0 #d97706;
-  }
-  .btn:active { transform: translateY(4px); box-shadow: 0 0 0 #d97706; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  #overlay {
-    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 10px; z-index: 10;
-  }
-  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
-  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
-  .btn-start {
-    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
-    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
-    width: 80%; max-width: 200px;
-  }
-  .btn-start:active { transform: scale(0.95); }
-
-  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
-  .footer a { color: #facc15; text-decoration: none; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+html, body { overflow-y: auto; overflow-x: hidden; }
+body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 4px 4px 4px; }
+.header { width: 100%; max-width: 500px; text-align: center; }
+.top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
+.logo-wrap { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; flex-shrink: 0; }
+.logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+h1 { font-size: 26px; color: #ff2d95; line-height: 1.2; }
+h1 small { display: block; font-size: 13px; color: #00e5ff; }
+.names { text-align: center; line-height: 1.3; margin-bottom: 6px; }
+.names .ar { display: block; font-size: 22px; color: #facc15; font-weight: 900; }
+.names .en { display: block; font-size: 16px; color: #fff; font-weight: 900; }
+.stats { display: flex; gap: 8px; justify-content: center; margin: 4px 0 6px; }
+.stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 3px 12px; min-width: 85px; text-align: center; }
+.stat b { display: block; font-size: 16px; color: #00e5ff; }
+.stat span { font-size: 9px; color: #c4b5fd; }
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
+#game-container { width: 100%; max-width: 500px; height: 320px; position: relative; background: #38bdf8; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; }
+@media (max-width: 600px) {
+  #game-container { height: 400px; }
+}
+.watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.08); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 0; }
+.build-area { position: absolute; inset: 0; overflow: hidden; z-index: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+.ground { width: 100%; height: 25px; background: #22c55e; border-top: 5px solid #16a34a; z-index: 2; flex-shrink: 0; }
+.floor { height: 35px; background: linear-gradient(to bottom, #fcd34d, #f59e0b); border: 2px solid #b45309; border-radius: 4px; position: absolute; display: flex; justify-content: center; align-items: center; font-size: 20px; z-index: 1; }
+.floor .window-icon { font-size: 16px; color: #fff; }
+.floor.roof { background: linear-gradient(to bottom, #ef4444, #b91c1c); border-color: #7f1d1d; border-radius: 10px 10px 0 0; height: 25px; }
+.moving-floor { position: absolute; height: 35px; background: linear-gradient(to bottom, #fcd34d, #f59e0b); border: 2px solid #b45309; border-radius: 4px; z-index: 5; display: flex; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.moving-floor .window-icon { font-size: 16px; color: #fff; }
+/* الزرار بره اللعبة - وتحت - مش مخفي */
+.controls { width: 100%; max-width: 500px; margin-top: 6px; }
+.btn { width: 100%; background: linear-gradient(90deg,#f59e0b,#ff2d95); color: #fff; border: 2px solid #fff; padding: 12px; border-radius: 10px; font-size: 20px; font-weight: 900; cursor: pointer; }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+#overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; gap: 8px; z-index: 10; }
+#overlay h2 { font-size: 22px; color: #facc15; }
+#overlay p { line-height: 1.5; font-size: 13px; color: #fff; }
+.btn-start { background: linear-gradient(90deg,#f59e0b,#ff2d95); color: #fff; border: 2px solid #fff; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
+#game-wrap { position: relative; width: 100%; max-width: 500px; }
+.footer { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 6px; }
+.footer a { color: #facc15; text-decoration: none; }
 </style>
 </head>
-<body>
-
-  <div class="header">
-    <div class="top-row">
-      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
-      <h1>بناء منزل<small>AHMED TV BUILDER</small></h1>
-    </div>
-    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
-
-    <div class="stats">
-      <div class="stat"><b id="floors">0</b><span>الطوابق</span></div>
-      <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
-    </div>
-  </div>
-
-  <div id="game-container">
-    <div class="watermark">Ahmed TV</div>
-    
-    <div class="build-area" id="buildArea">
-      <div class="ground"></div>
-    </div>
-
-    <div class="controls">
-      <button class="btn" id="placeBtn" disabled>🎯 ركز وحط الطابق</button>
-    </div>
-
-    <div id="overlay">
-      <h2>لعبة بناء منزل</h2>
-      <p>
-        <b>Ahmed TV</b> - ابنِ أطول منزل!<br>
-        ركز عشان تحط الطوابق فوق بعض بالظبط
-      </p>
-      <button class="btn-start" id="startBtn">▶ ابدأ البناء</button>
-    </div>
-  </div>
-
-  <div class="footer">
-    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
-  </div>
-
+<body oncontextmenu="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>بناء منزل<small>AHMED TV BUILDER</small></h1></div>
+<div class="names"><span class="ar">أحمد عبدالعزيز</span><span class="en">Ahmed TV</span></div>
+<div class="stats"><div class="stat"><b id="floors">0</b><span>الطوابق 🏠</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
+</div>
+<div class="how">ابنِ أطول منزل 🏠 - ركز وحط الطابق فوق اللي تحته بالظبط<br>وصل لـ 10 طوابق عشان تكسب</div>
+<div id="game-wrap"><div id="game-container"><div class="watermark">أحمد عبدالعزيز</div><div class="build-area" id="buildArea"><div class="ground"></div></div><div id="overlay"><h2>🏠 بناء منزل</h2><p><b>Ahmed TV</b> - ابنِ أطول منزل!<br>ركز عشان تحط الطوابق فوق بعض بالظبط</p><button class="btn-start" id="startBtn">▶ ابدأ البناء</button></div></div></div>
+<div class="controls"><button class="btn" id="placeBtn" disabled>🎯 ركز وحط الطابق</button></div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
 <script>
-const buildArea = document.getElementById('buildArea');
-const placeBtn = document.getElementById('placeBtn');
-const floorsEl = document.getElementById('floors');
-const bestEl = document.getElementById('best');
-const overlay = document.getElementById('overlay');
-const startBtn = document.getElementById('startBtn');
-
-let floorCount = 0;
-let running = false;
-let best = parseInt(localStorage.getItem('houseBest') || '0');
-let audioCtx = null;
-
-// المتغيرات بتاعة حركة الطوابق
-let movingFloor = null;
-let moveInterval = null;
-let posX = 0; // نسبة من 0 لـ 100
-let direction = 1; // 1 يمين، -1 شمال
-
-// حفظ بيانات الطوابق المستقرة
-let lastFloorLeft = 0;
-let lastFloorWidth = 60; // الطوابق بتصغر شوية كل مرة
-let currentFloorY = 25; // فوق الأرضية (20px)
-
-bestEl.textContent = best;
-
-function initAudio() {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+const buildArea=document.getElementById('buildArea'),placeBtn=document.getElementById('placeBtn'),floorsEl=document.getElementById('floors'),bestEl=document.getElementById('best'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn');
+let floorCount=0,running=false;
+let best=parseInt(localStorage.getItem('houseBest')||'0');let audioCtx=null;
+let movingFloor=null,moveInterval=null,posX=0,direction=1,lastFloorLeft=0,lastFloorWidth=60,currentFloorY=25;
+bestEl.textContent=best;
+function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
+function playSound(type){if(!audioCtx)return;const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);if(type==='build'){osc.type='sine';osc.frequency.setValueAtTime(300,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(500,audioCtx.currentTime+0.1);gain.gain.setValueAtTime(0.15,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.2);osc.start();osc.stop(audioCtx.currentTime+0.2);}else if(type==='fail'){osc.type='sawtooth';osc.frequency.setValueAtTime(200,audioCtx.currentTime);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.3);osc.start();osc.stop(audioCtx.currentTime+0.3);}else if(type==='win'){osc.type='triangle';osc.frequency.setValueAtTime(600,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(1200,audioCtx.currentTime+0.4);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.5);osc.start();osc.stop(audioCtx.currentTime+0.5);}}
+function createMovingFloor(){
+movingFloor=document.createElement('div');movingFloor.className='moving-floor';movingFloor.style.width=lastFloorWidth+'%';movingFloor.style.left=posX+'%';movingFloor.style.bottom=(currentFloorY)+'px';
+if(floorCount===0)movingFloor.innerHTML='🚪';else movingFloor.innerHTML='<span class="window-icon">🪟</span>';
+buildArea.appendChild(movingFloor);posX=0;direction=1;
+moveInterval=setInterval(()=>{posX+=direction*1.2;if(posX>(100-lastFloorWidth)){posX=100-lastFloorWidth;direction=-1;}if(posX<0){posX=0;direction=1;}movingFloor.style.left=posX+'%';},16);
+placeBtn.disabled=false;
 }
-
-function playSound(type) {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  
-  if (type === 'build') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.1);
-    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-  } else if (type === 'fail') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-  } else if (type === 'win') {
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.4);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-  }
+function placeFloor(){
+if(!running||!movingFloor)return;
+clearInterval(moveInterval);placeBtn.disabled=true;
+let diff=Math.abs(posX-lastFloorLeft);
+if(diff>(lastFloorWidth*0.5)){
+playSound('fail');movingFloor.style.background='#ef4444';running=false;
+setTimeout(()=>{overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">💥</div><h2>البناء وقع!</h2><p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>أعلى نتيجة: ${best}<br>أحمد TV بيقولك: حاول تاني، ركز في النص!</p><button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>`;document.getElementById('againBtn').onclick=startGame;},500);return;
 }
-
-function createMovingFloor() {
-  movingFloor = document.createElement('div');
-  movingFloor.className = 'moving-floor';
-  movingFloor.style.width = lastFloorWidth + '%';
-  movingFloor.style.left = posX + '%';
-  movingFloor.style.bottom = (currentFloorY) + 'px';
-  
-  // تصميم داخلي (شباك أو باب)
-  if (floorCount === 0) {
-    movingFloor.innerHTML = '🚪'; // الباب في الطابق الأول
-  } else {
-    movingFloor.innerHTML = '<span class="window-icon">🪟</span>';
-  }
-  
-  buildArea.appendChild(movingFloor);
-  
-  posX = 0;
-  direction = 1;
-  
-  moveInterval = setInterval(() => {
-    posX += direction * 1.2; // سرعة الحركة
-    
-    if (posX > (100 - lastFloorWidth)) {
-      posX = 100 - lastFloorWidth;
-      direction = -1;
-    }
-    if (posX < 0) {
-      posX = 0;
-      direction = 1;
-    }
-    
-    movingFloor.style.left = posX + '%';
-  }, 16);
-  
-  placeBtn.disabled = false;
+playSound('build');movingFloor.className='floor';lastFloorLeft=posX;
+if(floorCount===0)movingFloor.innerHTML='🚪';else movingFloor.innerHTML='<span class="window-icon">🪟</span>';
+floorCount++;floorsEl.textContent=floorCount;currentFloorY+=35;
+if(floorCount>=10){
+running=false;playSound('win');
+if(best===0||floorCount>best){best=floorCount;localStorage.setItem('houseBest',best);bestEl.textContent=best;}
+setTimeout(()=>{let roof=document.createElement('div');roof.className='floor roof';roof.style.width=lastFloorWidth+'%';roof.style.left=lastFloorLeft+'%';roof.style.bottom=currentFloorY+'px';buildArea.appendChild(roof);},200);
+setTimeout(()=>{overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">🏠</div><h2>مبروك! بنيت المنزل!</h2><p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>أحمد TV بيقولك: إنت مهندس معماري!</p><button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>`;document.getElementById('againBtn').onclick=startGame;},600);return;
 }
-
-function placeFloor() {
-  if (!running || !movingFloor) return;
-  
-  clearInterval(moveInterval);
-  placeBtn.disabled = true;
-  
-  // حساب دقة التركيب (الفرق بين مكان الطابق الجديد ومكان الطابق اللي تحته)
-  let diff = Math.abs(posX - lastFloorLeft);
-  
-  // مسامحة 25% من العرض
-  if (diff > (lastFloorWidth * 0.5)) {
-    // خسر
-    playSound('fail');
-    movingFloor.style.background = '#ef4444';
-    running = false;
-    
-    setTimeout(() => {
-      overlay.style.display = 'flex';
-      overlay.innerHTML = `
-        <div style="font-size:35px">💥</div>
-        <h2>البناء وقع!</h2>
-        <p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>
-        أعلى نتيجة: ${best}<br>
-        أحمد TV بيقولك: حاول تاني، ركز في النص!</p>
-        <button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>
-      `;
-      document.getElementById('againBtn').onclick = startGame;
-    }, 500);
-    return;
-  }
-  
-  // الطابق لزق صح
-  playSound('build');
-  
-  // نحوله لطابق ثابت
-  movingFloor.className = 'floor';
-  
-  // تحديث المكان الجديد للطابق اللي بعده
-  lastFloorLeft = posX;
-  
-  // لو الطابق أوسع شوية، بنخليه يبقى فيه شباك
-  if (floorCount === 0) {
-    movingFloor.innerHTML = '🚪';
-  } else {
-    movingFloor.innerHTML = '<span class="window-icon">🪟</span>';
-  }
-  
-  floorCount++;
-  floorsEl.textContent = floorCount;
-  currentFloorY += 35; // الطابق اللي بعده بيبقى فوقه
-  
-  // لو وصلنا لعدد طوابق كبير، نفوز
-  if (floorCount >= 10) {
-    running = false;
-    playSound('win');
-    
-    if (best === 0 || floorCount > best) {
-      best = floorCount;
-      localStorage.setItem('houseBest', best);
-      bestEl.textContent = best;
-    }
-    
-    // نحط السقف
-    setTimeout(() => {
-      let roof = document.createElement('div');
-      roof.className = 'floor roof';
-      roof.style.width = lastFloorWidth + '%';
-      roof.style.left = lastFloorLeft + '%';
-      roof.style.bottom = currentFloorY + 'px';
-      buildArea.appendChild(roof);
-    }, 200);
-    
-    setTimeout(() => {
-      overlay.style.display = 'flex';
-      overlay.innerHTML = `
-        <div style="font-size:35px">🏠</div>
-        <h2>مبروك! بنيت المنزل!</h2>
-        <p>بنيت <b style="color:#facc15;font-size:22px">${floorCount}</b> طوابق<br>
-        أحمد TV بيقولك: إنت مهندس معماري!</p>
-        <button class="btn-start" id="againBtn">🔄 ابنِ تاني</button>
-      `;
-      document.getElementById('againBtn').onclick = startGame;
-    }, 600);
-    
-    return;
-  }
-  
-  // نجهز الطابق اللي بعده
-  setTimeout(createMovingFloor, 300);
+setTimeout(createMovingFloor,300);
 }
-
-function startGame() {
-  initAudio();
-  overlay.style.display = 'none';
-  
-  // تنظيف الساحة من أي طوابق قديمة
-  buildArea.innerHTML = '<div class="ground"></div>';
-  
-  floorCount = 0;
-  floorsEl.textContent = 0;
-  lastFloorLeft = 0;
-  lastFloorWidth = 60;
-  currentFloorY = 25;
-  running = true;
-  
-  createMovingFloor();
+function startGame(){
+initAudio();overlay.style.display='none';
+buildArea.innerHTML='<div class="ground"></div>';
+floorCount=0;floorsEl.textContent=0;lastFloorLeft=0;lastFloorWidth=60;currentFloorY=25;running=true;
+createMovingFloor();
 }
-
-placeBtn.onclick = placeFloor;
-startBtn.onclick = startGame;
-
-document.body.addEventListener('touchstart', initAudio, { once: true });
-document.body.addEventListener('click', initAudio, { once: true });
+placeBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();placeFloor();},{passive:false});
+placeBtn.addEventListener('click',()=>{initAudio();placeFloor();});
+startBtn.onclick=startGame;
+document.body.addEventListener('touchstart',initAudio,{once:true});
+document.body.addEventListener('click',initAudio,{once:true});
 </script>
- <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20Ahmed%20TV%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
+<!-- الواتس - جواه الكود - بيتسحب بالصباع -->
+<a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;">
 <span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
 </span>
 <span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
 </a>
-
 <script>
-var wa = document.getElementById('waBtn');
-var dragging = false, startX=0, startY=0, startLeft=0, startTop=0, moved=false;
-function startDrag(x,y){ dragging=true; moved=false; startX=x; startY=y; startLeft=wa.offsetLeft; startTop=wa.offsetTop; }
-function moveDrag(x,y){ if(!dragging) return; var dx=x-startX, dy=y-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ moved=true; } if(moved){ wa.style.left=(startLeft+dx)+'px'; wa.style.top=(startTop+dy)+'px'; wa.style.right='auto'; wa.style.bottom='auto'; } }
-function endDrag(){ if(moved){ setTimeout(function(){moved=false},50); } dragging=false; }
+(function(){
+var wa=document.getElementById('waBtn');
+var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
+function startDrag(x,y){ dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop; wa.style.transition='none'; }
+function moveDrag(x,y){
+  if(!dragging) return;
+  var dx=x-startX,dy=y-startY;
+  if(Math.abs(dx)>6||Math.abs(dy)>6) moved=true;
+  if(moved){
+    var nx=startLeft+dx,ny=startTop+dy;
+    nx=Math.max(0,Math.min(window.innerWidth-60,nx));
+    ny=Math.max(0,Math.min(window.innerHeight-80,ny));
+    wa.style.left=nx+'px';wa.style.top=ny+'px';
+    wa.style.right='auto';wa.style.bottom='auto';
+  }
+}
+function endDrag(){ if(moved){ setTimeout(function(){moved=false},80); } dragging=false; }
+wa.addEventListener('touchstart',function(e){ if(e.touches.length===1){ startDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
+document.addEventListener('touchmove',function(e){ if(!dragging) return; if(e.cancelable) e.preventDefault(); if(e.touches.length===1){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:false});
+document.addEventListener('touchend',function(){ endDrag(); });
 wa.addEventListener('mousedown',function(e){ startDrag(e.clientX,e.clientY); });
 document.addEventListener('mousemove',function(e){ moveDrag(e.clientX,e.clientY); });
 document.addEventListener('mouseup',function(){ endDrag(); });
-wa.addEventListener('touchstart',function(e){ startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
-document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
-document.addEventListener('touchend',function(){ endDrag(); });
-wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
+wa.addEventListener('click',function(e){ if(moved) e.preventDefault(); });
+})();
 </script>
 </body>
 </html>
