@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>صواريخ الفضاء | أحمد عبدالعزيز</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+html, body { overflow-y: auto; overflow-x: hidden; }
+body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 10px 8px 30px 8px; }
+.header { width: 100%; max-width: 500px; text-align: center; }
+.top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
+.logo-wrap { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; flex-shrink: 0; }
+.logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+h1 { font-size: 26px; color: #ff2d95; line-height: 1.2; }
+h1 small { display: block; font-size: 13px; color: #00e5ff; }
+.names { text-align: center; line-height: 1.3; margin-bottom: 8px; }
+.names .ar { display: block; font-size: 22px; color: #facc15; font-weight: 900; }
+.names .en { display: block; font-size: 16px; color: #fff; font-weight: 900; }
+.stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0 8px; }
+.stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 12px; padding: 5px 15px; min-width: 90px; text-align: center; }
+.stat b { display: block; font-size: 18px; color: #00e5ff; }
+.stat span { font-size: 10px; color: #c4b5fd; }
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 12px; padding: 10px; text-align: center; font-size: 14px; font-weight: 900; line-height: 1.6; margin-bottom: 10px; }
+#game-container { width: 100%; max-width: 500px; height: 380px; position: relative; background: #0f0529; border: 3px solid #ff2d95; border-radius: 20px; overflow: hidden; touch-action: none; }
+.watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.07); font-size: 32px; font-weight: 900; pointer-events: none; white-space: nowrap; }
+canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+.controls { display: flex; gap: 8px; width: 100%; max-width: 500px; margin-top: 12px; }
+.ctrl-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #7c3aed; border-radius: 14px; padding: 16px; font-size: 26px; font-weight: 900; cursor: pointer; }
+.ctrl-btn:active { background: #ff2d95; }
+#shootBtn { width: 100%; max-width: 500px; margin-top: 10px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 16px; padding: 18px; font-size: 24px; font-weight: 900; cursor: pointer; }
+#overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; gap: 10px; z-index: 10; }
+#overlay h2 { font-size: 26px; color: #ff2d95; }
+#overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; }
+.btn-start { background: linear-gradient(90deg,#ff2d95,#00e5ff); color: #fff; border: 2px solid #fff; padding: 15px 30px; border-radius: 14px; font-size: 18px; font-weight: 900; cursor: pointer; width: 80%; max-width: 220px; }
+#game-wrap { position: relative; width: 100%; max-width: 500px; }
+</style>
+</head>
+<body oncontextmenu="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>صواريخ الفضاء<small>فضاء الأبطال</small></h1></div>
+<div class="names"><span class="ar">أحمد عبدالعزيز</span><span class="en">Ahmed TV</span></div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="lives">3</b><span>💜 محاولات</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
+</div>
+<div class="how">حرك الصاروخ يمين وشمال - واضرب النيازك ☄️<br>اجمع النجوم ⭐ عشان تكسب</div>
+<div id="game-wrap"><div id="game-container"><div class="watermark">أحمد عبدالعزيز</div><canvas id="gameCanvas"></canvas><div id="overlay"><h2>🚀 صواريخ الفضاء</h2><p>حرك الصاروخ بالزراير اللي تحت<br>اضرب النيازك قبل ما تخبطك<br>عندك 3 محاولات - يلا يا بطل!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div></div>
+<div class="controls"><button class="ctrl-btn" id="leftBtn">◀</button><button class="ctrl-btn" id="rightBtn">▶</button></div>
+<button id="shootBtn">🔥 اضرب</button>
+<script>
+const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');
+const scoreEl=document.getElementById('score'),livesEl=document.getElementById('lives'),bestEl=document.getElementById('best'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),shootBtn=document.getElementById('shootBtn'),leftBtn=document.getElementById('leftBtn'),rightBtn=document.getElementById('rightBtn');
+let W=0,H=0,running=false,score=0,lives=3,player={x:0,y:0,w:44,h:50},bullets=[],rocks=[],stars=[],starsBg=[],timer=0;
+let best=parseInt(localStorage.getItem('spaceBest')||'0');bestEl.textContent=best;
+let audioCtx=null;
+function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
+function beep(f,d=0.1,type='square',v=0.1){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;player.x=W/2-22;player.y=H-70;starsBg=[];for(let i=0;i<50;i++)starsBg.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.5});if(!running)draw();}
+function resetGame(){score=0;lives=3;scoreEl.textContent=0;livesEl.textContent=3;bullets=[];rocks=[];stars=[];timer=0;running=true;overlay.style.display='none';loop();}
+function moveLeft(){player.x=Math.max(5,player.x-22);if(running)draw();}
+function moveRight(){player.x=Math.min(W-player.w-5,player.x+22);if(running)draw();}
+function shoot(){if(!running)return;initAudio();bullets.push({x:player.x+player.w/2-3,y:player.y,w:6,h:16});beep(700,0.08);}
+function update(){
+timer++;
+if(timer%45===0){rocks.push({x:Math.random()*(W-36),y:-30,w:30+Math.random()*14,h:30+Math.random()*14,speed:2+Math.random()*2});}
+if(timer%90===0){stars.push({x:Math.random()*(W-20),y:-20,r:10,speed:2});}
+bullets.forEach(b=>b.y-=10);
+rocks.forEach(r=>r.y+=r.speed);
+stars.forEach(s=>s.y+=s.speed);
+bullets=bullets.filter(b=>b.y>-20);
+rocks=rocks.filter(r=>r.y<H+40);
+stars=stars.filter(s=>s.y<H+20);
+for(let i=bullets.length-1;i>=0;i--){let b=bullets[i];for(let j=rocks.length-1;j>=0;j--){let r=rocks[j];if(b.x<r.x+r.w&&b.x+b.w>r.x&&b.y<r.y+r.h&&b.y+b.h>r.y){bullets.splice(i,1);rocks.splice(j,1);score+=10;scoreEl.textContent=score;beep(500,0.08);break;}}}
+for(let i=stars.length-1;i>=0;i--){let s=stars[i];if(s.x>player.x-10&&s.x<player.x+player.w+10&&s.y>player.y-10&&s.y<player.y+player.h+10){stars.splice(i,1);score+=20;scoreEl.textContent=score;beep(900,0.1,'sine');}}
+for(let i=rocks.length-1;i>=0;i--){let r=rocks[i];if(r.x<player.x+player.w-6&&r.x+r.w>player.x+6&&r.y<player.y+player.h-6&&r.y+r.h>player.y+6){rocks.splice(i,1);lives--;livesEl.textContent=lives;beep(150,0.3,'sawtooth',0.15);if(lives<=0)endGame();break;}}
+}
+function draw(){
+const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#020617');g.addColorStop(1,'#4c1d95');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ctx.fillStyle='#fff';starsBg.forEach(s=>{ctx.globalAlpha=0.8;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;
+ctx.font='28px Arial';ctx.textAlign='center';
+ctx.fillText('🚀',player.x+player.w/2,player.y+36);
+bullets.forEach(b=>{ctx.fillStyle='#facc15';ctx.fillRect(b.x,b.y,b.w,b.h);ctx.fillStyle='#fff';ctx.fillRect(b.x,b.y,2,b.h);});
+rocks.forEach(r=>{ctx.font=(r.w)+'px Arial';ctx.fillText('☄️',r.x+r.w/2,r.y+r.h/2+8);});
+stars.forEach(s=>{ctx.font='20px Arial';ctx.fillText('⭐',s.x,s.y);});
+}
+function loop(){if(!running)return;update();draw();requestAnimationFrame(loop);}
+function endGame(){running=false;if(score>best){best=score;localStorage.setItem('spaceBest',best);bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انتهت اللعبة!</h2><p>جبت <b style="color:#00e5ff">${score} نقطة</b><br>أعلى نتيجة: ${best}</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}
+leftBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveLeft();},{passive:false});
+rightBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveRight();},{passive:false});
+leftBtn.addEventListener('click',()=>{initAudio();moveLeft();});
+rightBtn.addEventListener('click',()=>{initAudio();moveRight();});
+shootBtn.addEventListener('touchstart',e=>{e.preventDefault();shoot();},{passive:false});
+shootBtn.addEventListener('click',()=>shoot());
+canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;if(x<W/2)moveLeft();else moveRight();},{passive:false});
+document.addEventListener('keydown',e=>{if(e.code==='ArrowLeft')moveLeft();if(e.code==='ArrowRight')moveRight();if(e.code==='Space'){e.preventDefault();shoot();}});
+startBtn.addEventListener('click',()=>{initAudio();resetGame();});
+window.addEventListener('resize',()=>{resize();if(!running)draw();});
+resize();draw();
+</script>
+</body>
+</html>
