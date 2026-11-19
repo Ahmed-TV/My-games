@@ -22,9 +22,7 @@ h1 small { display: block; font-size: 13px; color: #00e5ff; }
 .stat b { display: block; font-size: 16px; color: #00e5ff; }
 .stat span { font-size: 9px; color: #c4b5fd; }
 .how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
-/* الكروم - 320px زي البولينج */
-#game-container { width: 100%; max-width: 500px; height: 320px; position: relative; background: #1a0b00; border: 3px solid #ff6b00; border-radius: 16px; overflow: hidden; touch-action: none; }
-/* التطبيق / الموبايل بس - 400px */
+#game-container { width: 100%; max-width: 500px; height: 290px; position: relative; background: #1a0b00; border: 3px solid #ff6b00; border-radius: 16px; overflow: hidden; touch-action: none; }
 @media (max-width: 600px) {
   #game-container { height: 400px; }
 }
@@ -54,7 +52,7 @@ canvas { width: 100%; height: 100%; display: block; touch-action: none; position
 <script>
 const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');
 const scoreEl=document.getElementById('score'),starsEl=document.getElementById('stars'),bestEl=document.getElementById('best'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),jumpBtn=document.getElementById('jumpBtn'),leftBtn=document.getElementById('leftBtn'),rightBtn=document.getElementById('rightBtn');
-let W=0,H=0,started=false,score=0,starCount=0,groundY=0,player={x:60,y:0,w:30,h:38,vy:0,jumping:false},rocks=[],stars=[],lavaY=0,timer=0,speed=2.5;
+let W=0,H=0,started=false,score=0,starCount=0,groundY=0,player={x:60,y:0,w:30,h:38,vy:0,jumping:false},rocks=[],stars=[],lavaY=0,timer=0,speed=1.4;
 let best=parseInt(localStorage.getItem('volcanoBest')||'0');bestEl.textContent=best;
 let audioCtx=null;
 function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
@@ -62,15 +60,15 @@ function beep(f,d=0.08,type='square',v=0.08){if(!audioCtx)return;const o=audioCt
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('selectstart',e=>e.preventDefault());
 function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;groundY=H-48;player.y=groundY-player.h;draw();}
-function resetGame(){score=0;starCount=0;scoreEl.textContent=0;starsEl.textContent=0;rocks=[];stars=[];timer=0;speed=2.5;player.x=60;player.y=groundY-player.h;player.vy=0;player.jumping=false;started=true;overlay.style.display='none';loop();}
+function resetGame(){score=0;starCount=0;scoreEl.textContent=0;starsEl.textContent=0;rocks=[];stars=[];timer=0;speed=1.4;player.x=60;player.y=groundY-player.h;player.vy=0;player.jumping=false;started=true;overlay.style.display='none';loop();}
 function moveLeft(){player.x=Math.max(8,player.x-24);if(started)draw();}
 function moveRight(){player.x=Math.min(W-player.w-8,player.x+24);if(started)draw();}
 function jump(){if(!started)return;initAudio();if(!player.jumping){player.vy=-13;player.jumping=true;beep(600,0.1,'sine');}}
 function update(){
 timer++;score++;if(timer%10===0)scoreEl.textContent=score;
-if(timer%70===0){rocks.push({x:W+10,y:groundY-28,w:26,h:28});}
+if(timer%110===0){rocks.push({x:W+10,y:groundY-28,w:26,h:28});}
 if(timer%110===0){stars.push({x:W+10,y:groundY-70-Math.random()*60,r:11});}
-if(timer%600===0)speed+=0.4;
+if(timer%900===0)speed+=0.2;
 player.vy+=0.7;player.y+=player.vy;
 if(player.y>=groundY-player.h){player.y=groundY-player.h;player.vy=0;player.jumping=false;}
 rocks.forEach(r=>r.x-=speed);
@@ -82,25 +80,19 @@ for(let i=rocks.length-1;i>=0;i--){let r=rocks[i];if(player.x+player.w-6>r.x&&pl
 }
 function draw(){
 let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#1a0b00');g.addColorStop(0.6,'#3b1200');g.addColorStop(1,'#7c2d12');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-// بركان في الخلف
 ctx.fillStyle='#431407';ctx.beginPath();ctx.moveTo(0,groundY);ctx.lineTo(70,groundY-90);ctx.lineTo(140,groundY);ctx.closePath();ctx.fill();
 ctx.fillStyle='#ef4444';ctx.beginPath();ctx.arc(105,groundY-92,10,0,Math.PI*2);ctx.fill();
 ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(105,groundY-92,5,0,Math.PI*2);ctx.fill();
-// الأرض
 ctx.fillStyle='#292524';ctx.fillRect(0,groundY,W,H-groundY);
 ctx.fillStyle='#44403c';ctx.fillRect(0,groundY,W,6);
-// حمم تحت
 ctx.fillStyle='#dc2626';ctx.fillRect(0,H-10,W,10);
 ctx.fillStyle='#f97316';for(let x=0;x<W;x+=22){ctx.fillRect(x,H-12,10,4);}
-// نجوم
 stars.forEach(s=>{ctx.font='20px Arial';ctx.textAlign='center';ctx.fillText('⭐',s.x,s.y);});
-// صخور - مرسومة تقيلة مش شفافة
 rocks.forEach(r=>{
 ctx.fillStyle='#57534e';ctx.beginPath();ctx.moveTo(r.x+4,r.y+r.h);ctx.lineTo(r.x+8,r.y+6);ctx.lineTo(r.x+16,r.y);ctx.lineTo(r.x+r.w-4,r.y+8);ctx.lineTo(r.x+r.w,r.y+r.h);ctx.closePath();ctx.fill();
 ctx.strokeStyle='#1c1917';ctx.lineWidth=2;ctx.stroke();
 ctx.fillStyle='#dc2626';ctx.beginPath();ctx.arc(r.x+13,r.y+14,3,0,Math.PI*2);ctx.fill();
 });
-// اللاعب - تقيل مش شفاف
 ctx.fillStyle='#22c55e';ctx.beginPath();ctx.arc(player.x+15,player.y+10,10,0,Math.PI*2);ctx.fill();
 ctx.strokeStyle='#14532d';ctx.lineWidth=2;ctx.stroke();
 ctx.fillStyle='#000';ctx.beginPath();ctx.arc(player.x+18,player.y+8,2,0,Math.PI*2);ctx.fill();
@@ -120,25 +112,6 @@ document.addEventListener('keydown',e=>{if(e.code==='ArrowLeft')moveLeft();if(e.
 startBtn.addEventListener('click',()=>{initAudio();resetGame();});
 window.addEventListener('resize',()=>{resize();if(!started)draw();});
 resize();draw();
-</script>
-  <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa=document.getElementById('waBtn');var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
-function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
-function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){wa.style.left=(startLeft+dx)+'px';wa.style.top=(startTop+dy)+'px';wa.style.right='auto';wa.style.bottom='auto';}}
-function endDrag(){if(moved)setTimeout(function(){moved=false},50);dragging=false;}
-wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
-document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
-document.addEventListener('mouseup',function(){endDrag();});
-wa.addEventListener('touchstart',function(e){startDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchmove',function(e){if(dragging)moveDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchend',function(){endDrag();});
-wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
 </script>
 </body>
 </html>
