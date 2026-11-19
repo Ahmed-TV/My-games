@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0a001a">
 <title>الجري والقفز | أحمد عبدالعزيز</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior: none; }
-  body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 8px) 8px calc(env(safe-area-inset-bottom, 8px) + 75px) 8px; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+  /* سكرول شغال */
+  html, body { overflow-y: auto; overflow-x: hidden; }
+  body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 10px 8px 20px 8px; min-height: 100dvh; }
   .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0; }
   .top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
   .logo-wrap { width: 88px; height: 88px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; }
@@ -25,17 +23,16 @@
   .stat b { display: block; font-size: 18px; color: #00e5ff; }
   .stat span { font-size: 10px; color: #c4b5fd; }
   #hearts { font-size: 24px; letter-spacing: 5px; text-align: center; margin-bottom: 5px; }
-  #game-container { width: 100%; max-width: 500px; flex: 1 1 auto; min-height: 0; position: relative; display: flex; flex-direction: column; background: #0f0529; border: 3px solid #ff2d95; border-radius: 20px; overflow: hidden; touch-action: none; }
+  #game-container { width: 100%; max-width: 500px; height: 380px; flex-shrink: 0; position: relative; display: flex; flex-direction: column; background: #0f0529; border: 3px solid #ff2d95; border-radius: 20px; overflow: hidden; touch-action: none; }
   .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; color: rgba(255,255,255,0.08); font-size: 38px; font-weight: 900; pointer-events: none; z-index: 0; white-space: nowrap; }
   canvas { width: 100%; height: 100%; display: block; z-index: 1; touch-action: none; }
-  /* الزرار اللي تحت - ثابت وظاهر في التطبيق */
-  #jumpBtn { position: fixed; bottom: calc(env(safe-area-inset-bottom, 10px) + 8px); left: 50%; transform: translateX(-50%); width: calc(100% - 16px); max-width: 500px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 16px; padding: 20px; font-size: 26px; font-weight: 900; cursor: pointer; z-index: 999; box-shadow: 0 0 20px rgba(255,45,149,0.7); text-shadow: 0 2px 4px #000; touch-action: manipulation; }
-  #jumpBtn:active { transform: translateX(-50%) scale(0.97); }
+  /* الزرار تحت اللعبة - بيتشاف بالسكرول */
+  #jumpBtn { width: 100%; max-width: 500px; margin-top: 12px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 16px; padding: 18px; font-size: 26px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255,45,149,0.7); text-shadow: 0 2px 4px #000; flex-shrink: 0; }
+  #jumpBtn:active { transform: scale(0.97); }
   #overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; gap: 10px; z-index: 10; }
   #overlay h2 { font-size: 26px; color: #ff2d95; }
   #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; }
   .btn-start { background: linear-gradient(90deg,#ff2d95,#00e5ff); color: #fff; border: 2px solid #fff; padding: 15px 30px; border-radius: 14px; font-size: 18px; font-weight: 900; cursor: pointer; width: 80%; max-width: 220px; }
-  .footer { display: none; }
 </style>
 </head>
 <body>
@@ -70,29 +67,8 @@ function loseLife(){if(isHit)return;isHit=true;lives--;updateHearts();playSound(
 function draw(){const grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#0a001a');grad.addColorStop(0.5,'#2a0a5e');grad.addColorStop(1,'#4c1d95');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';stars.forEach(s=>{ctx.globalAlpha=0.8;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;ctx.fillStyle='#fef9c3';ctx.beginPath();ctx.arc(W-70,60,28,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(254,249,195,0.3)';ctx.beginPath();ctx.arc(W-70,60,40,0,Math.PI*2);ctx.fill();buildings.forEach((b,i)=>{ctx.fillStyle=i%2==0?'#1e1b4b':'#312e81';ctx.fillRect(b.x,H-20-b.h,b.w,b.h);ctx.fillStyle=i%2==0?'#ff2d95':'#00e5ff';for(let wy=H-20-b.h+8;wy<H-30;wy+=18){for(let wx=b.x+6;wx<b.x+b.w-8;wx+=14){if(Math.random()>0.6)ctx.fillRect(wx,wy,5,7);}}});ctx.fillStyle='#0f0529';ctx.fillRect(0,H-20,W,20);ctx.fillStyle='#ff2d95';ctx.fillRect(0,H-20,W,3);ctx.fillStyle='#00e5ff';ctx.fillRect(0,H-4,W,4);const px=player.x,py=player.y;ctx.fillStyle=isHit?'rgba(255,0,0,0.6)':'rgba(0,229,255,0.4)';ctx.beginPath();ctx.arc(px+17,py+23,30,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1e1b4b';ctx.fillRect(px-4,py+36,42,7);ctx.fillStyle='#00e5ff';ctx.fillRect(px-4,py+36,42,2);ctx.fillStyle='#ff2d95';ctx.fillRect(px+9,py+10,18,24);ctx.fillStyle='#fcd7d7';ctx.beginPath();ctx.arc(px+18,py+5,10,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1e1b4b';ctx.beginPath();ctx.arc(px+15,py+3,10,0,Math.PI*2);ctx.fill();ctx.fillStyle='#7c3aed';ctx.fillRect(px+8,py-4,20,6);ctx.fillStyle='#0f0529';ctx.fillRect(px+11,py+32,7,8);ctx.fillRect(px+22,py+32,7,8);obstacles.forEach(obs=>{if(!obs.hit){if(obs.kind===0){ctx.fillStyle='#ff2d95';ctx.fillRect(obs.x,obs.y,obs.w,obs.h);ctx.fillStyle='#fff';ctx.fillRect(obs.x+3,obs.y+5,obs.w-6,3);ctx.fillRect(obs.x+3,obs.y+15,obs.w-6,3);}else if(obs.kind===1){ctx.fillStyle='#00e5ff';ctx.beginPath();ctx.arc(obs.x+obs.w/2,obs.y+obs.h/2,obs.w/2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#0f0529';ctx.beginPath();ctx.arc(obs.x+obs.w/2,obs.y+obs.h/2,obs.w/4,0,Math.PI*2);ctx.fill();}else{ctx.fillStyle='#a855f7';ctx.fillRect(obs.x,obs.y,obs.w,obs.h);ctx.fillStyle='#facc15';ctx.fillRect(obs.x+4,obs.y+4,obs.w-8,obs.h-8);}}});}
 function loop(){if(!running)return;update();draw();requestAnimationFrame(loop);}
 function endGame(){running=false;if(score>best){best=score;localStorage.setItem('runnerBest',best);bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">💔</div><h2>خلصت المحاولات!</h2><p>جبت <b style="color:#00e5ff;font-size:22px">${score} نقطة</b><br>أعلى نتيجة: ${best}<br>بيقولك: جرب تاني يا بطل!</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}
-jumpBtn.addEventListener('click',jump);jumpBtn.addEventListener('touchstart',(e)=>{e.preventDefault();jump();},{passive:false});jumpBtn.addEventListener('pointerdown',(e)=>{e.preventDefault();jump();});canvas.addEventListener('touchstart',(e)=>{e.preventDefault();initAudio();jump();},{passive:false});canvas.addEventListener('pointerdown',(e)=>{initAudio();jump();});document.addEventListener('keydown',(e)=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();initAudio();jump();}});startBtn.addEventListener('click',()=>{initAudio();resetGame();});startBtn.addEventListener('touchstart',(e)=>{e.preventDefault();initAudio();resetGame();},{passive:false});window.addEventListener('resize',()=>{resize();if(!running)draw();});if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>{resize();if(!running)draw();});
-document.addEventListener('touchmove',function(e){if(e.target.closest('#game-container')||e.target.closest('#jumpBtn'))e.preventDefault();},{passive:false});
+jumpBtn.addEventListener('click',jump);jumpBtn.addEventListener('touchstart',(e)=>{e.preventDefault();jump();},{passive:false});jumpBtn.addEventListener('pointerdown',(e)=>{e.preventDefault();jump();});canvas.addEventListener('touchstart',(e)=>{e.preventDefault();initAudio();jump();},{passive:false});canvas.addEventListener('pointerdown',(e)=>{initAudio();jump();});document.addEventListener('keydown',(e)=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();initAudio();jump();}});startBtn.addEventListener('click',()=>{initAudio();resetGame();});startBtn.addEventListener('touchstart',(e)=>{e.preventDefault();initAudio();resetGame();},{passive:false});window.addEventListener('resize',()=>{resize();if(!running)draw();});
 resize();draw();document.body.addEventListener('touchstart',initAudio,{once:true});document.body.addEventListener('click',initAudio,{once:true});
-</script>
-    <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa = document.getElementById('waBtn');
-var dragging = false, startX=0, startY=0, startLeft=0, startTop=0, moved=false;
-function startDrag(x,y){ dragging=true; moved=false; startX=x; startY=y; startLeft=wa.offsetLeft; startTop=wa.offsetTop; }
-function moveDrag(x,y){ if(!dragging) return; var dx=x-startX, dy=y-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ moved=true; } if(moved){ wa.style.left=(startLeft+dx)+'px'; wa.style.top=(startTop+dy)+'px'; wa.style.right='auto'; wa.style.bottom='auto'; } }
-function endDrag(){ if(moved){ setTimeout(function(){moved=false},50); } dragging=false; }
-wa.addEventListener('mousedown',function(e){ startDrag(e.clientX,e.clientY); });
-document.addEventListener('mousemove',function(e){ moveDrag(e.clientX,e.clientY); });
-document.addEventListener('mouseup',function(){ endDrag(); });
-wa.addEventListener('touchstart',function(e){ startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
-document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
-document.addEventListener('touchend',function(){ endDrag(); });
-wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
 </script>
 </body>
 </html>
