@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>الهروب من البركان | أحمد عبدالعزيز</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+html, body { overflow-y: auto; overflow-x: hidden; }
+body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 4px 4px 4px; }
+.header { width: 100%; max-width: 500px; text-align: center; }
+.top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
+.logo-wrap { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; flex-shrink: 0; }
+.logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+h1 { font-size: 26px; color: #ff2d95; line-height: 1.2; }
+h1 small { display: block; font-size: 13px; color: #00e5ff; }
+.names { text-align: center; line-height: 1.3; margin-bottom: 6px; }
+.names .ar { display: block; font-size: 22px; color: #facc15; font-weight: 900; }
+.names .en { display: block; font-size: 16px; color: #fff; font-weight: 900; }
+.stats { display: flex; gap: 8px; justify-content: center; margin: 4px 0 6px; }
+.stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 3px 12px; min-width: 85px; text-align: center; }
+.stat b { display: block; font-size: 16px; color: #00e5ff; }
+.stat span { font-size: 9px; color: #c4b5fd; }
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
+/* الكروم - 320px زي البولينج */
+#game-container { width: 100%; max-width: 500px; height: 320px; position: relative; background: #1a0b00; border: 3px solid #ff6b00; border-radius: 16px; overflow: hidden; touch-action: none; }
+/* التطبيق / الموبايل بس - 400px */
+@media (max-width: 600px) {
+  #game-container { height: 400px; }
+}
+.watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.04); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 1; }
+canvas { width: 100%; height: 100%; display: block; touch-action: none; position: relative; z-index: 2; }
+.controls { display: flex; direction: ltr; gap: 6px; width: 100%; max-width: 500px; margin-top: 6px; }
+.ctrl-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #ff6b00; border-radius: 10px; padding: 10px 4px; font-size: 18px; font-weight: 900; cursor: pointer; }
+.ctrl-btn:active { background: #ff2d95; }
+#jumpBtn { width: 100%; max-width: 500px; margin-top: 6px; background: linear-gradient(90deg,#ff6b00,#ff2d95,#7c3aed); color: #fff; border: 2px solid #fff; border-radius: 10px; padding: 8px; font-size: 20px; font-weight: 900; cursor: pointer; }
+#overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; gap: 8px; z-index: 10; }
+#overlay h2 { font-size: 22px; color: #ff6b00; }
+#overlay p { line-height: 1.5; font-size: 13px; color: #fff; }
+.btn-start { background: linear-gradient(90deg,#ff6b00,#ff2d95); color: #fff; border: 2px solid #fff; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
+#game-wrap { position: relative; width: 100%; max-width: 500px; }
+</style>
+</head>
+<body oncontextmenu="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>الهروب من البركان<small>بركان الأبطال</small></h1></div>
+<div class="names"><span class="ar">أحمد عبدالعزيز</span><span class="en">Ahmed TV</span></div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>المسافة 🏃</span></div><div class="stat"><b id="stars">0</b><span>نجوم ⭐</span></div><div class="stat"><b id="best">0</b><span>أفضل مسافة</span></div></div>
+</div>
+<div class="how">اهرب من الحمم 🌋 - نط من فوق الصخور - اجمع النجوم ⭐<br>الشمال شمال - واليمين يمين</div>
+<div id="game-wrap"><div id="game-container"><div class="watermark">أحمد عبدالعزيز</div><canvas id="gameCanvas"></canvas><div id="overlay"><h2>🌋 الهروب من البركان</h2><p>البركان بينفجر وراك!<br>اجري يمين - ونط من فوق الصخور<br>متقعش في الحمم - يلا يا بطل!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div></div>
+<div class="controls"><button class="ctrl-btn" id="leftBtn">◀ شمال</button><button class="ctrl-btn" id="rightBtn">يمين ▶</button></div>
+<button id="jumpBtn">⬆️ نط</button>
+<script>
+const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');
+const scoreEl=document.getElementById('score'),starsEl=document.getElementById('stars'),bestEl=document.getElementById('best'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),jumpBtn=document.getElementById('jumpBtn'),leftBtn=document.getElementById('leftBtn'),rightBtn=document.getElementById('rightBtn');
+let W=0,H=0,started=false,score=0,starCount=0,groundY=0,player={x:60,y:0,w:30,h:38,vy:0,jumping:false},rocks=[],stars=[],lavaY=0,timer=0,speed=2.5;
+let best=parseInt(localStorage.getItem('volcanoBest')||'0');bestEl.textContent=best;
+let audioCtx=null;
+function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
+function beep(f,d=0.08,type='square',v=0.08){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;groundY=H-48;player.y=groundY-player.h;draw();}
+function resetGame(){score=0;starCount=0;scoreEl.textContent=0;starsEl.textContent=0;rocks=[];stars=[];timer=0;speed=2.5;player.x=60;player.y=groundY-player.h;player.vy=0;player.jumping=false;started=true;overlay.style.display='none';loop();}
+function moveLeft(){player.x=Math.max(8,player.x-24);if(started)draw();}
+function moveRight(){player.x=Math.min(W-player.w-8,player.x+24);if(started)draw();}
+function jump(){if(!started)return;initAudio();if(!player.jumping){player.vy=-13;player.jumping=true;beep(600,0.1,'sine');}}
+function update(){
+timer++;score++;if(timer%10===0)scoreEl.textContent=score;
+if(timer%70===0){rocks.push({x:W+10,y:groundY-28,w:26,h:28});}
+if(timer%110===0){stars.push({x:W+10,y:groundY-70-Math.random()*60,r:11});}
+if(timer%600===0)speed+=0.4;
+player.vy+=0.7;player.y+=player.vy;
+if(player.y>=groundY-player.h){player.y=groundY-player.h;player.vy=0;player.jumping=false;}
+rocks.forEach(r=>r.x-=speed);
+stars.forEach(s=>s.x-=speed);
+rocks=rocks.filter(r=>r.x>-40);
+stars=stars.filter(s=>s.x>-20);
+for(let i=stars.length-1;i>=0;i--){let s=stars[i];if(Math.abs(s.x-(player.x+15))<22&&Math.abs(s.y-(player.y+18))<28){stars.splice(i,1);starCount++;starsEl.textContent=starCount;score+=50;scoreEl.textContent=score;beep(900,0.1,'sine');}}
+for(let i=rocks.length-1;i>=0;i--){let r=rocks[i];if(player.x+player.w-6>r.x&&player.x+6<r.x+r.w&&player.y+player.h-4>r.y&&player.y+4<r.y+r.h){endGame();return;}}
+}
+function draw(){
+let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#1a0b00');g.addColorStop(0.6,'#3b1200');g.addColorStop(1,'#7c2d12');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+// بركان في الخلف
+ctx.fillStyle='#431407';ctx.beginPath();ctx.moveTo(0,groundY);ctx.lineTo(70,groundY-90);ctx.lineTo(140,groundY);ctx.closePath();ctx.fill();
+ctx.fillStyle='#ef4444';ctx.beginPath();ctx.arc(105,groundY-92,10,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(105,groundY-92,5,0,Math.PI*2);ctx.fill();
+// الأرض
+ctx.fillStyle='#292524';ctx.fillRect(0,groundY,W,H-groundY);
+ctx.fillStyle='#44403c';ctx.fillRect(0,groundY,W,6);
+// حمم تحت
+ctx.fillStyle='#dc2626';ctx.fillRect(0,H-10,W,10);
+ctx.fillStyle='#f97316';for(let x=0;x<W;x+=22){ctx.fillRect(x,H-12,10,4);}
+// نجوم
+stars.forEach(s=>{ctx.font='20px Arial';ctx.textAlign='center';ctx.fillText('⭐',s.x,s.y);});
+// صخور - مرسومة تقيلة مش شفافة
+rocks.forEach(r=>{
+ctx.fillStyle='#57534e';ctx.beginPath();ctx.moveTo(r.x+4,r.y+r.h);ctx.lineTo(r.x+8,r.y+6);ctx.lineTo(r.x+16,r.y);ctx.lineTo(r.x+r.w-4,r.y+8);ctx.lineTo(r.x+r.w,r.y+r.h);ctx.closePath();ctx.fill();
+ctx.strokeStyle='#1c1917';ctx.lineWidth=2;ctx.stroke();
+ctx.fillStyle='#dc2626';ctx.beginPath();ctx.arc(r.x+13,r.y+14,3,0,Math.PI*2);ctx.fill();
+});
+// اللاعب - تقيل مش شفاف
+ctx.fillStyle='#22c55e';ctx.beginPath();ctx.arc(player.x+15,player.y+10,10,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle='#14532d';ctx.lineWidth=2;ctx.stroke();
+ctx.fillStyle='#000';ctx.beginPath();ctx.arc(player.x+18,player.y+8,2,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#16a34a';ctx.fillRect(player.x+5,player.y+18,20,20);
+ctx.fillStyle='#14532d';ctx.fillRect(player.x+5,player.y+30,8,8);ctx.fillRect(player.x+17,player.y+30,8,8);
+}
+function loop(){if(!started)return;update();draw();requestAnimationFrame(loop);}
+function endGame(){started=false;if(score>best){best=score;localStorage.setItem('volcanoBest',best);bestEl.textContent=best;}beep(150,0.3,'sawtooth');overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">🌋</div><h2>البركان مسكك!</h2><p>جريت <b style="color:#00e5ff">${score} متر</b><br>وجمعت <b>${starCount} نجمة</b><br>أفضل مسافة: ${best}</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}
+leftBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveLeft();},{passive:false});
+rightBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveRight();},{passive:false});
+leftBtn.addEventListener('click',()=>{initAudio();moveLeft();});
+rightBtn.addEventListener('click',()=>{initAudio();moveRight();});
+jumpBtn.addEventListener('touchstart',e=>{e.preventDefault();jump();},{passive:false});
+jumpBtn.addEventListener('click',()=>jump());
+canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;if(x<W/2)moveLeft();else jump();},{passive:false});
+document.addEventListener('keydown',e=>{if(e.code==='ArrowLeft')moveLeft();if(e.code==='ArrowRight')moveRight();if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump();}});
+startBtn.addEventListener('click',()=>{initAudio();resetGame();});
+window.addEventListener('resize',()=>{resize();if(!started)draw();});
+resize();draw();
+</script>
+</body>
+</html>
