@@ -22,7 +22,8 @@ h1 small { display: block; font-size: 13px; color: #00e5ff; }
 .stat b { display: block; font-size: 16px; color: #00e5ff; }
 .stat span { font-size: 9px; color: #c4b5fd; }
 .how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
-#game-container { width: 100%; max-width: 500px; height: 340px; position: relative; background: #fef3c7; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; touch-action: none; }
+/* طوّلت اللعبة - 460 بدل 360 - عشان التطبيق */
+#game-container { width: 100%; max-width: 500px; height: 460px; min-height: 460px; position: relative; background: #fef3c7; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; touch-action: none; }
 .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(0,0,0,0.05); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 1; }
 canvas { width: 100%; height: 100%; display: block; touch-action: none; position: relative; z-index: 2; }
 .controls { display: flex; direction: ltr; gap: 6px; width: 100%; max-width: 500px; margin-top: 6px; }
@@ -49,7 +50,7 @@ canvas { width: 100%; height: 100%; display: block; touch-action: none; position
 <script>
 const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');
 const scoreEl=document.getElementById('score'),throwsEl=document.getElementById('throws'),strikesEl=document.getElementById('strikes'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),throwBtn=document.getElementById('throwBtn'),leftBtn=document.getElementById('leftBtn'),rightBtn=document.getElementById('rightBtn');
-let W=0,H=0,started=false,score=0,throws=0,strikes=0,ballX=0,ballY=0,rolling=false,pins=[],msg='',msgTimer=0;
+let W=0,H=0,started=false,score=0,throws=0,strikes=0,ballX=0,ballY=0,rolling=false,pins=[],msg='';
 let audioCtx=null;
 function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
 function beep(f,d=0.1,type='square',v=0.1){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
@@ -57,46 +58,43 @@ document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('selectstart',e=>e.preventDefault());
 function setupPins(){
 pins=[];
-let rows=[[0],[ -18,18],[ -36,0,36],[ -54,-18,18,54]];
-let baseY=62;
+let rows=[[0],[ -26,26],[ -52,0,52],[ -78,-26,26,78]];
+let baseY=72;
 rows.forEach((row,ri)=>{
-let y=baseY+ri*26;
+let y=baseY+ri*38;
 row.forEach(dx=>{pins.push({x:W/2+dx,y:y,down:false,rx:0,ry:0,rot:0});});
 });
 }
-function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;ballX=W/2;ballY=H-40;setupPins();draw();}
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;ballX=W/2;ballY=H-56;setupPins();draw();}
 function draw(){
 ctx.fillStyle='#fef3c7';ctx.fillRect(0,0,W,H);
-ctx.fillStyle='#d97706';
-ctx.fillRect(W/2-28,10,W/2+28- (W/2-28),H-20);
 ctx.fillStyle='#fde68a';
-ctx.fillRect(W/2-24,12,48,H-24);
-ctx.strokeStyle='#92400e';ctx.lineWidth=2;
-for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(W/2-24,20+i*60);ctx.lineTo(W/2+24,20+i*60);ctx.stroke();}
+ctx.fillRect(W/2-110,10,220,H-20);
+ctx.strokeStyle='#92400e';ctx.lineWidth=3;
+ctx.strokeRect(W/2-110,10,220,H-20);
 ctx.fillStyle='rgba(0,0,0,0.05)';ctx.font='900 24px Tahoma';ctx.textAlign='center';ctx.fillText('أحمد عبدالعزيز',W/2,H/2+8);
 pins.forEach(p=>{
-if(p.down){ctx.save();ctx.translate(p.x+p.rx,p.y+p.ry);ctx.rotate(p.rot);ctx.font='18px Arial';ctx.fillText('🎳',0,6);ctx.restore();}
-else {ctx.font='22px Arial';ctx.fillText('🎳',p.x,p.y+8);}
+if(p.down){ctx.save();ctx.translate(p.x+p.rx,p.y+p.ry);ctx.rotate(p.rot);ctx.font='30px Arial';ctx.textAlign='center';ctx.fillText('🎳',0,10);ctx.restore();}
+else {ctx.font='36px Arial';ctx.textAlign='center';ctx.fillText('🎳',p.x,p.y+12);}
 });
-if(!rolling){ctx.font='30px Arial';ctx.fillText('🎱',ballX,ballY+10);}
-else {ctx.font='30px Arial';ctx.fillText('🎱',ballX,ballY+10);}
-ctx.fillStyle='#000';ctx.font='900 16px Tahoma';ctx.textAlign='center';
+ctx.font='48px Arial';ctx.textAlign='center';ctx.fillText('🎱',ballX,ballY+16);
+ctx.fillStyle='#000';ctx.font='900 18px Tahoma';ctx.textAlign='center';
 if(msg)ctx.fillText(msg,W/2,28);
 }
-function moveLeft(){if(rolling)return;ballX=Math.max(W/2-60,ballX-22);draw();}
-function moveRight(){if(rolling)return;ballX=Math.min(W/2+60,ballX+22);draw();}
+function moveLeft(){if(rolling)return;ballX=Math.max(W/2-70,ballX-22);draw();}
+function moveRight(){if(rolling)return;ballX=Math.min(W/2+70,ballX+22);draw();}
 function throwBall(){
 if(!started||rolling)return;initAudio();rolling=true;throws++;throwsEl.textContent=throws;beep(400,0.1);msg='';
 let startY=ballY;let step=0;
 let iv=setInterval(()=>{
-step++;ballY-=12;beep(300+step*5,0.02,'sine',0.03);draw();
-if(ballY<=85){
+step++;ballY-=14;beep(300+step*5,0.02,'sine',0.03);draw();
+if(ballY<=115){
 clearInterval(iv);
 let knocked=0;
 pins.forEach(p=>{
 let dist=Math.abs(p.x-ballX);
-let chance=dist<10?0.95:dist<25?0.8:dist<40?0.55:dist<60?0.3:0.1;
-if(Math.random()<chance){p.down=true;p.rx=(Math.random()-0.5)*40;p.ry=Math.random()*18;p.rot=(Math.random()-0.5)*1.5;knocked++;}
+let chance=dist<14?0.95:dist<32?0.8:dist<55?0.55:dist<80?0.3:0.1;
+if(Math.random()<chance){p.down=true;p.rx=(Math.random()-0.5)*50;p.ry=Math.random()*22;p.rot=(Math.random()-0.5)*1.5;knocked++;}
 });
 score+=knocked*10;scoreEl.textContent=score;
 if(knocked===10){strikes++;strikesEl.textContent=strikes;msg='🔥 سترايك! +100';score+=100;scoreEl.textContent=score;beep(600,0.1);setTimeout(()=>beep(800,0.1),100);setTimeout(()=>beep(1000,0.2),200);}
@@ -109,37 +107,18 @@ setTimeout(()=>{ballY=startY;ballX=W/2;rolling=false;msg='';if(knocked===10||thr
 }
 },30);
 }
-function startGame(){initAudio();started=true;score=0;throws=0;strikes=0;scoreEl.textContent=0;throwsEl.textContent=0;strikesEl.textContent=0;overlay.style.display='none';ballX=W/2;ballY=H-40;setupPins();draw();}
+function startGame(){initAudio();started=true;score=0;throws=0;strikes=0;scoreEl.textContent=0;throwsEl.textContent=0;strikesEl.textContent=0;overlay.style.display='none';ballX=W/2;ballY=H-56;setupPins();draw();}
 leftBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveLeft();},{passive:false});
 rightBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveRight();},{passive:false});
 leftBtn.addEventListener('click',()=>{initAudio();moveLeft();});
 rightBtn.addEventListener('click',()=>{initAudio();moveRight();});
 throwBtn.addEventListener('touchstart',e=>{e.preventDefault();throwBall();},{passive:false});
 throwBtn.addEventListener('click',()=>throwBall());
-canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;ballX=Math.max(W/2-60,Math.min(W/2+60,x));draw();},{passive:false});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;ballX=Math.max(W/2-70,Math.min(W/2+70,x));draw();},{passive:false});
 document.addEventListener('keydown',e=>{if(e.code==='ArrowLeft')moveLeft();if(e.code==='ArrowRight')moveRight();if(e.code==='Space'){e.preventDefault();throwBall();}});
 startBtn.addEventListener('click',()=>startGame());
 window.addEventListener('resize',()=>resize());
 resize();draw();
-</script>
-  <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa=document.getElementById('waBtn');var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
-function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
-function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){wa.style.left=(startLeft+dx)+'px';wa.style.top=(startTop+dy)+'px';wa.style.right='auto';wa.style.bottom='auto';}}
-function endDrag(){if(moved)setTimeout(function(){moved=false},50);dragging=false;}
-wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
-document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
-document.addEventListener('mouseup',function(){endDrag();});
-wa.addEventListener('touchstart',function(e){startDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchmove',function(e){if(dragging)moveDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchend',function(){endDrag();});
-wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
 </script>
 </body>
 </html>
