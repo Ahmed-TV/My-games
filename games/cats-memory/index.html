@@ -1,346 +1,93 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>ذاكرة القطط | Ahmed TV</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>ذاكرة القطط | Ahmed TV</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  
-  html, body { 
-    height: 100vh; 
-    height: 100dvh; 
-    overflow: hidden; 
-    position: fixed; 
-    width: 100%;
-  }
-  
-  body {
-    font-family: Tahoma, Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
-  }
-
-  .header { width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex-shrink: 0; padding-bottom: 3px;}
-  .logo-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
-  .header-text { text-align: center; }
-  .header-text h1 { font-size: 16px; color: #facc15; margin: 0;}
-  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
-  .header-text .names b { color: #facc15; font-size: 13px;}
-
-  .stats { display: flex; gap: 8px; justify-content: center; margin-bottom: 3px;}
-  .stat { background: #1e293b; border-radius: 6px; padding: 1px 8px; min-width: 50px; text-align: center; border: 1px solid #334155;}
-  .stat b { display: block; font-size: 12px; color: #facc15; }
-  .stat span { font-size: 8px; color: #94a3b8; }
-
-  #game-container {
-    width: 100%; max-width: 600px; flex-grow: 1; min-height: 0;
-    position: relative; display: flex; flex-direction: column;
-    background: #1e293b; 
-    border: 3px solid #f59e0b; border-radius: 12px;
-    overflow: hidden;
-    padding: 5px;
-  }
-
-  .watermark {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center; color: rgba(255, 255, 255, 0.1); font-size: 40px; font-weight: 900;
-    pointer-events: none; z-index: 0; white-space: nowrap;
-    letter-spacing: 2px;
-  }
-
-  #board {
-    flex-grow: 1; min-height: 0;
-    display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr);
-    gap: 5px; z-index: 1;
-  }
-
-  .card {
-    background: #f59e0b;
-    border-radius: 8px;
-    display: flex; justify-content: center; align-items: center;
-    cursor: pointer; user-select: none;
-    transition: transform 0.3s, background 0.3s;
-    position: relative;
-    transform-style: preserve-3d;
-    border: 2px solid #b45309;
-    overflow: hidden;
-  }
-
-  .card.flipped { background: #fff; border-color: #fff; transform: rotateY(180deg); }
-  .card.flipped::before { content: ''; position: absolute; inset: 0; background: #fff; border-radius: 6px; z-index: 1;}
-  .card.matched { background: #22c55e; border-color: #16a34a; pointer-events: none; opacity: 0.6; }
-
-  .card .front { display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; z-index: 2;}
-  .card.flipped .front { display: block; }
-  .card.flipped .back { display: none; }
-  .card .back { font-size: 30px; color: #fff; z-index: 3;}
-
-  #overlay {
-    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 10px; z-index: 10;
-  }
-  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
-  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
-  .btn-start {
-    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
-    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
-    width: 80%; max-width: 200px;
-  }
-  .btn-start:active { transform: scale(0.95); }
-
-  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
-  .footer a { color: #facc15; text-decoration: none; }
-</style>
-</head>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overflow-y:auto;overflow-x:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 5px}
+.header{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex-shrink:0;padding-bottom:3px}
+.logo-img{width:88px;height:88px;border-radius:50%;border:4px solid #facc15;object-fit:cover;background:#fff;box-shadow:0 0 22px rgba(250,204,21,.5)}
+.header-text{text-align:center}
+.header-text h1{font-size:22px;color:#facc15;margin:0}
+.header-text .names{font-size:22px;color:#fff;font-weight:900;margin-top:2px}
+.header-text .names small{display:block;font-size:16px;color:#facc15;font-weight:900}
+.stats{display:flex;gap:8px;justify-content:center;margin-bottom:4px}
+.stat{background:#1e293b;border-radius:6px;padding:1px 8px;min-width:50px;text-align:center;border:1px solid #334155}
+.stat b{display:block;font-size:12px;color:#facc15}
+.stat span{font-size:8px;color:#94a3b8}
+#game-container{width:100%;max-width:600px;height:320px;position:relative;display:flex;flex-direction:column;background:#1e293b;border:3px solid #f59e0b;border-radius:12px;overflow:hidden;padding:5px;flex-shrink:0}
+.watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(255,255,255,0.1);font-size:40px;font-weight:900;pointer-events:none;z-index:0;white-space:nowrap;letter-spacing:2px}
+#board{flex-grow:1;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:5px;z-index:1}
+.card{background:#f59e0b;border-radius:8px;display:flex;justify-content:center;align-items:center;cursor:pointer;user-select:none;transition:transform 0.3s,background 0.3s;position:relative;transform-style:preserve-3d;border:2px solid #b45309;overflow:hidden}
+.card.flipped{background:#fff;border-color:#fff;transform:rotateY(180deg)}
+.card.flipped::before{content:'';position:absolute;inset:0;background:#fff;border-radius:6px;z-index:1}
+.card.matched{background:#22c55e;border-color:#16a34a;pointer-events:none;opacity:0.6}
+.card .front{display:none;width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:2}
+.card.flipped .front{display:block}
+.card.flipped .back{display:none}
+.card .back{font-size:30px;color:#fff;z-index:3}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
+#overlay h2{font-size:24px;margin-bottom:5px;color:#facc15}
+#overlay p{line-height:1.6;font-size:14px;color:#e2e8f0;margin-bottom:10px}
+.btn-start{background:#f59e0b;color:#000;border:none;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:200px}
+.btn-start:active{transform:scale(0.95)}
+.footer{font-size:11px;color:#94a3b8;text-align:center;flex-shrink:0;margin-top:6px;padding-bottom:6px}
+.footer a{color:#facc15;text-decoration:none}
+@media(max-width:600px){#game-container{height:400px}}
+</style></head>
 <body>
-
-  <div class="header">
-    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
-    <div class="header-text">
-        <h1>ذاكرة القطط</h1>
-        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><b id="moves">0</b><span>الحركات</span></div>
-    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
-  </div>
-
-  <div id="game-container">
-    <div class="watermark">Ahmed TV</div>
-    <div id="board"></div>
-
-    <div id="overlay">
-      <h2>ذاكرة القطط</h2>
-      <p>
-        <b>Ahmed TV</b> - طابق القطط!<br>
-        افتح كرتين .. لو ليهم نفس القطة، هيتطابقوا
-      </p>
-      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
-    </div>
-  </div>
-
-  <div class="footer">
-    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
-  </div>
-
-<!-- ملف صوت مواء القطط -->
+<div class="header">
+<img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+<div class="header-text"><h1>ذاكرة القطط</h1><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></div>
+</div>
+<div class="stats">
+<div class="stat"><b id="moves">0</b><span>الحركات</span></div>
+<div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+</div>
+<div id="game-container">
+<div class="watermark">Ahmed TV</div>
+<div id="board"></div>
+<div id="overlay"><h2>ذاكرة القطط</h2><p><b>Ahmed TV</b> - طابق القطط!<br>افتح كرتين .. لو ليهم نفس القطة، هيتطابقوا</p><button class="btn-start" id="startBtn">ابدأ اللعب</button></div>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
 <audio id="meowSound" src="https://www.soundjay.com/animal/cat-meow-8.mp3" preload="auto"></audio>
-
 <script>
-const boardEl = document.getElementById('board');
-const movesEl = document.getElementById('moves');
-const bestEl = document.getElementById('best');
-const overlay = document.getElementById('overlay');
-const startBtn = document.getElementById('startBtn');
-const meowSound = document.getElementById('meowSound');
-
-let cards = [];
-let flippedCards = [];
-let moves = 0;
-let matchedPairs = 0;
-let totalPairs = 8;
-let lockBoard = false;
-let running = false;
-let best = parseInt(localStorage.getItem('catsBest') || '0');
-let audioCtx = null;
-bestEl.textContent = best;
-
-const CAT_IMAGES = [
-  'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=200&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=200&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=200&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=200&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=200&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=200&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=200&h=200&fit=crop'
-];
-
-function playMeow() {
-  if (meowSound) {
-    meowSound.currentTime = 0; // إعادة الصوت من الأول
-    meowSound.play().catch(e => console.log("الصوت محتاج تفاعل من المستخدم"));
-  }
-}
-
-// باقي الأصوات (نغمات التطابق والفوز) بنفس الكود القديم
-function initAudio() {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-}
-
-function playMatchSound() {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.type = 'triangle';
-  osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
-  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-  osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-}
-
-function playWinSound() {
-  if (!audioCtx) return;
-  const notes = [523, 659, 784, 1047];
-  notes.forEach((freq, i) => {
-    setTimeout(() => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-      osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-    }, i * 150);
-  });
-}
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function createBoard() {
-  boardEl.innerHTML = '';
-  cards = [];
-  flippedCards = [];
-  moves = 0;
-  matchedPairs = 0;
-  lockBoard = false;
-  movesEl.textContent = moves;
-
-  let deck = [...CAT_IMAGES, ...CAT_IMAGES];
-  deck = shuffle(deck);
-
-  deck.forEach((imgUrl, index) => {
-    let card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.image = imgUrl;
-    card.dataset.index = index;
-    card.innerHTML = `
-      <span class="back">❓</span>
-      <img class="front" src="${imgUrl}" alt="قطة">
-    `;
-    card.addEventListener('click', () => flipCard(card));
-    boardEl.appendChild(card);
-    cards.push(card);
-  });
-}
-
-function flipCard(card) {
-  if (!running || lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
-
-  playMeow(); // تشغيل صوت المواء
-  card.classList.add('flipped');
-  flippedCards.push(card);
-
-  if (flippedCards.length === 2) {
-    moves++;
-    movesEl.textContent = moves;
-    lockBoard = true;
-    checkMatch();
-  }
-}
-
-function checkMatch() {
-  const [card1, card2] = flippedCards;
-  const img1 = card1.dataset.image;
-  const img2 = card2.dataset.image;
-
-  if (img1 === img2) {
-    playMatchSound();
-    setTimeout(() => {
-      card1.classList.add('matched');
-      card2.classList.add('matched');
-      matchedPairs++;
-      flippedCards = [];
-      lockBoard = false;
-      
-      if (matchedPairs === totalPairs) {
-        endGame();
-      }
-    }, 300);
-  } else {
-    setTimeout(() => {
-      card1.classList.remove('flipped');
-      card2.classList.remove('flipped');
-      flippedCards = [];
-      lockBoard = false;
-    }, 1000);
-  }
-}
-
-function endGame() {
-  running = false;
-  playWinSound();
-  
-  if (best === 0 || moves < best) {
-    best = moves;
-    localStorage.setItem('catsBest', best);
-    bestEl.textContent = best;
-  }
-
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `
-    <div style="font-size:35px">🏆</div>
-    <h2>مبروك! طابقت كل القطط!</h2>
-    <p>خلصتها في <b style="color:#facc15;font-size:22px">${moves}</b> حركة<br>
-    أعلى نتيجة: ${best}<br>
-    أحمد TV بيقولك: إنت خبير قطط!</p>
-    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
-  `;
-  document.getElementById('againBtn').onclick = startGame;
-}
-
-function startGame() {
-  initAudio();
-  overlay.style.display = 'none';
-  running = true;
-  createBoard();
-}
-
-startBtn.onclick = startGame;
-
-document.body.addEventListener('touchstart', initAudio, { once: true });
-document.body.addEventListener('click', initAudio, { once: true });
+const boardEl=document.getElementById('board');const movesEl=document.getElementById('moves');const bestEl=document.getElementById('best');const overlay=document.getElementById('overlay');const startBtn=document.getElementById('startBtn');const meowSound=document.getElementById('meowSound');
+let cards=[];let flippedCards=[];let moves=0;let matchedPairs=0;let totalPairs=8;let lockBoard=false;let running=false;let best=parseInt(localStorage.getItem('catsBest')||'0');let audioCtx=null;bestEl.textContent=best;
+const CAT_IMAGES=['https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&h=200&fit=crop','https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=200&h=200&fit=crop','https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=200&h=200&fit=crop','https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=200&h=200&fit=crop','https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=200&h=200&fit=crop','https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=200&h=200&fit=crop','https://images.unsplash.com/photo-1574158622682-e40e69881006?w=200&h=200&fit=crop','https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=200&h=200&fit=crop'];
+function playMeow(){if(meowSound){meowSound.currentTime=0;meowSound.play().catch(()=>{});}}
+function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
+function playMatchSound(){if(!audioCtx)return;const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);osc.type='triangle';osc.frequency.setValueAtTime(600,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(1000,audioCtx.currentTime+0.2);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.3);osc.start();osc.stop(audioCtx.currentTime+0.3);}
+function playWinSound(){if(!audioCtx)return;const notes=[523,659,784,1047];notes.forEach((freq,i)=>{setTimeout(()=>{const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);osc.type='sine';osc.frequency.setValueAtTime(freq,audioCtx.currentTime);gain.gain.setValueAtTime(0.15,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.3);osc.start();osc.stop(audioCtx.currentTime+0.3);},i*150);});}
+function shuffle(array){for(let i=array.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[array[i],array[j]]=[array[j],array[i]];}return array;}
+function createBoard(){boardEl.innerHTML='';cards=[];flippedCards=[];moves=0;matchedPairs=0;lockBoard=false;movesEl.textContent=moves;let deck=[...CAT_IMAGES,...CAT_IMAGES];deck=shuffle(deck);deck.forEach((imgUrl,index)=>{let card=document.createElement('div');card.className='card';card.dataset.image=imgUrl;card.dataset.index=index;card.innerHTML='<span class="back">❓</span><img class="front" src="'+imgUrl+'" alt="قطة">';card.addEventListener('click',()=>flipCard(card));boardEl.appendChild(card);cards.push(card);});}
+function flipCard(card){if(!running||lockBoard||card.classList.contains('flipped')||card.classList.contains('matched'))return;playMeow();card.classList.add('flipped');flippedCards.push(card);if(flippedCards.length===2){moves++;movesEl.textContent=moves;lockBoard=true;checkMatch();}}
+function checkMatch(){const [card1,card2]=flippedCards;const img1=card1.dataset.image;const img2=card2.dataset.image;if(img1===img2){playMatchSound();setTimeout(()=>{card1.classList.add('matched');card2.classList.add('matched');matchedPairs++;flippedCards=[];lockBoard=false;if(matchedPairs===totalPairs){endGame();}},300);}else{setTimeout(()=>{card1.classList.remove('flipped');card2.classList.remove('flipped');flippedCards=[];lockBoard=false;},1000);}}
+function endGame(){running=false;playWinSound();if(best===0||moves<best){best=moves;localStorage.setItem('catsBest',best);bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML='<div style="font-size:35px">🏆</div><h2>مبروك! طابقت كل القطط!</h2><p>خلصتها في <b style="color:#facc15;font-size:22px">'+moves+'</b> حركة<br>أعلى نتيجة: '+best+'<br>إنت خبير قطط!</p><button class="btn-start" id="againBtn">العب تاني</button>';document.getElementById('againBtn').onclick=startGame;}
+function startGame(){initAudio();overlay.style.display='none';running=true;createBoard();}
+startBtn.onclick=startGame;
+document.body.addEventListener('touchstart',initAudio,{once:true});
+document.body.addEventListener('click',initAudio,{once:true});
 </script>
- <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20Ahmed%20TV%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
+<a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;">
 <span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
 </span>
 <span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
 </a>
-
 <script>
-var wa = document.getElementById('waBtn');
-var dragging = false, startX=0, startY=0, startLeft=0, startTop=0, moved=false;
-function startDrag(x,y){ dragging=true; moved=false; startX=x; startY=y; startLeft=wa.offsetLeft; startTop=wa.offsetTop; }
-function moveDrag(x,y){ if(!dragging) return; var dx=x-startX, dy=y-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ moved=true; } if(moved){ wa.style.left=(startLeft+dx)+'px'; wa.style.top=(startTop+dy)+'px'; wa.style.right='auto'; wa.style.bottom='auto'; } }
-function endDrag(){ if(moved){ setTimeout(function(){moved=false},50); } dragging=false; }
-wa.addEventListener('mousedown',function(e){ startDrag(e.clientX,e.clientY); });
-document.addEventListener('mousemove',function(e){ moveDrag(e.clientX,e.clientY); });
-document.addEventListener('mouseup',function(){ endDrag(); });
-wa.addEventListener('touchstart',function(e){ startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
-document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
-document.addEventListener('touchend',function(){ endDrag(); });
-wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
+(function(){
+var wa=document.getElementById('waBtn');
+var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
+function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
+function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>6||Math.abs(dy)>6)moved=true;if(moved){var nx=startLeft+dx,ny=startTop+dy;nx=Math.max(0,Math.min(window.innerWidth-60,nx));ny=Math.max(0,Math.min(window.innerHeight-80,ny));wa.style.left=nx+'px';wa.style.top=ny+'px';wa.style.right='auto';wa.style.bottom='auto';}}
+function endDrag(){if(moved){setTimeout(function(){moved=false},80);}dragging=false;}
+wa.addEventListener('touchstart',function(e){if(e.touches.length===1){startDrag(e.touches[0].clientX,e.touches[0].clientY);}}, {passive:true});
+document.addEventListener('touchmove',function(e){if(!dragging)return;if(e.cancelable)e.preventDefault();if(e.touches.length===1){moveDrag(e.touches[0].clientX,e.touches[0].clientY);}}, {passive:false});
+document.addEventListener('touchend',function(){endDrag();});
+wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
+document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
+document.addEventListener('mouseup',function(){endDrag();});
+wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
+})();
 </script>
-</body>
-</html>
+</body></html>
