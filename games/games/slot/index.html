@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ماكينة الحظ | أحمد عبدالعزيز</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+html, body { overflow-y: auto; overflow-x: hidden; }
+body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 6px 6px 12px 6px; }
+.header { width: 100%; max-width: 500px; text-align: center; }
+.top-row { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.logo-wrap { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 3px solid #facc15; background: #000; flex-shrink: 0; }
+.logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+h1 { font-size: 20px; color: #ff2d95; line-height: 1.1; }
+h1 small { display: block; font-size: 11px; color: #00e5ff; }
+.names { text-align: center; line-height: 1.2; margin: 2px 0 4px; }
+.names .ar { font-size: 16px; color: #facc15; font-weight: 900; }
+.names .en { font-size: 12px; color: #fff; font-weight: 900; }
+.stats { display: flex; gap: 6px; justify-content: center; margin: 2px 0 6px; }
+.stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 3px 10px; min-width: 80px; text-align: center; }
+.stat b { display: block; font-size: 15px; color: #00e5ff; }
+.stat span { font-size: 9px; color: #c4b5fd; }
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.5; margin-bottom: 6px; }
+#game-container { width: 100%; max-width: 500px; background: #fff; border: 3px solid #facc15; border-radius: 16px; padding: 12px; position: relative; overflow: hidden; }
+.machine { background: linear-gradient(180deg,#7c3aed,#1e1b4b); border: 4px solid #facc15; border-radius: 16px; padding: 14px; text-align: center; }
+.machine h2 { color: #facc15; font-size: 20px; margin-bottom: 10px; text-shadow: 0 2px 4px #000; }
+.reels { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
+.reel { flex: 1; background: #fff; border: 3px solid #facc15; border-radius: 12px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 52px; }
+.reel.spin { animation: shake 0.1s infinite; }
+@keyframes shake { 0%{transform:translateY(-3px)} 50%{transform:translateY(3px)} 100%{transform:translateY(-3px)} }
+#result { min-height: 28px; font-size: 16px; font-weight: 900; color: #facc15; margin-bottom: 8px; }
+.pay { background: rgba(0,0,0,0.3); border-radius: 10px; padding: 8px; font-size: 12px; line-height: 1.6; color: #fff; }
+.pay b { color: #facc15; }
+#hint { text-align: center; font-size: 11px; color: #e2e8f0; margin-top: 6px; line-height: 1.4; }
+#spinBtn { width: 100%; max-width: 500px; margin-top: 8px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 12px; padding: 14px; font-size: 22px; font-weight: 900; cursor: pointer; }
+#spinBtn:disabled { opacity: .5; }
+#overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; gap: 8px; z-index: 10; }
+#overlay h2 { font-size: 22px; color: #ff2d95; }
+#overlay p { line-height: 1.6; font-size: 13px; color: #fff; }
+.btn-start { background: linear-gradient(90deg,#ff2d95,#00e5ff); color: #fff; border: 2px solid #fff; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
+#game-wrap { position: relative; width: 100%; max-width: 500px; }
+</style>
+</head>
+<body oncontextmenu="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>ماكينة الحظ<small>حظ الأبطال</small></h1></div>
+<div class="names"><span class="ar">أحمد عبدالعزيز</span> <span class="en">Ahmed TV</span></div>
+<div class="stats"><div class="stat"><b id="coins">100</b><span>عملاتك 🪙</span></div><div class="stat"><b id="wins">0</b><span>مرات الفوز</span></div><div class="stat"><b id="best">0</b><span>أعلى مكسب</span></div></div>
+</div>
+<div class="how">دوس لف 🎰 - لو طلع 3 زي بعض تكسب!<br>3 سبعات = 100 عملة 🔥</div>
+<div id="game-wrap"><div id="game-container"><div class="machine"><h2>🎰 ماكينة الحظ 🎰</h2><div class="reels"><div class="reel" id="r1">🍒</div><div class="reel" id="r2">🍋</div><div class="reel" id="r3">⭐</div></div><div id="result">دوس لف وجرب حظك!</div><div class="pay">🎁 <b>الجوايز:</b><br>7️⃣7️⃣7️⃣ = +100 &nbsp;|&nbsp; 💎💎💎 = +80<br>⭐⭐⭐ = +50 &nbsp;|&nbsp; 🍒🍒🍒 = +30<br>أي 2 زي بعض = +10 &nbsp;|&nbsp; اللفة = -5</div></div></div><div id="overlay"><h2>🎰 ماكينة الحظ</h2><p>معاك 100 عملة<br>دوس لف - كل لفة بـ 5 عملات<br>لو طلع 3 زي بعض تكسب!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div>
+<div id="hint">كل لفة بـ 5 عملات - لو خلصت عملاتك دوس لعبة جديدة وهتاخد 100 تاني</div>
+<button id="spinBtn">🎰 لف</button>
+<script>
+const r1=document.getElementById('r1'),r2=document.getElementById('r2'),r3=document.getElementById('r3'),resultEl=document.getElementById('result'),coinsEl=document.getElementById('coins'),winsEl=document.getElementById('wins'),bestEl=document.getElementById('best');
+const overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),spinBtn=document.getElementById('spinBtn');
+let coins=100,wins=0,best=parseInt(localStorage.getItem('slotBest')||'0');bestEl.textContent=best;let spinning=false,started=false;
+let audioCtx=null;
+function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
+function beep(f,d=0.12,type='square',v=0.1){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
+function winSound(){beep(600,0.1);setTimeout(()=>beep(800,0.1),120);setTimeout(()=>beep(1000,0.2),240);}
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+const symbols=['🍒','🍋','⭐','💎','7️⃣','🍇','🔔'];
+function randomSym(){return symbols[Math.floor(Math.random()*symbols.length)];}
+function spin(){
+if(!started||spinning)return;
+if(coins<5){resultEl.textContent='❌ خلصت عملاتك! دوس لعبة جديدة';beep(150,0.3,'sawtooth');overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">😢</div><h2>خلصت العملات!</h2><p>كسبت ${wins} مرة<br>أعلى مكسب: ${best}</p><button class="btn-start" id="againBtn">🔄 العب تاني - 100 عملة</button>`;document.getElementById('againBtn').onclick=()=>{coins=100;wins=0;coinsEl.textContent=coins;winsEl.textContent=wins;started=true;overlay.style.display='none';};return;}
+initAudio();spinning=true;spinBtn.disabled=true;coins-=5;coinsEl.textContent=coins;resultEl.textContent='بتلف... 🎰';beep(300,0.1);
+[r1,r2,r3].forEach(r=>r.classList.add('spin'));
+let ticks=0;let iv=setInterval(()=>{
+r1.textContent=randomSym();r2.textContent=randomSym();r3.textContent=randomSym();beep(400+Math.random()*200,0.05);ticks++;
+if(ticks>12){clearInterval(iv);[r1,r2,r3].forEach(r=>r.classList.remove('spin'));finishSpin();}
+},90);
+}
+function finishSpin(){
+let a=r1.textContent,b=r2.textContent,c=r3.textContent;let win=0,msg='';
+if(a==='7️⃣'&&b==='7️⃣'&&c==='7️⃣'){win=100;msg='🔥🔥 3 سبعات! +100 عملة!';}
+else if(a==='💎'&&b==='💎'&&c==='💎'){win=80;msg='💎💎💎 جوهرة! +80 عملة!';}
+else if(a==='⭐'&&b==='⭐'&&c==='⭐'){win=50;msg='⭐⭐⭐ نجوم! +50 عملة!';}
+else if(a===b&&b===c){win=30;msg='🎉 3 زي بعض! +30 عملة!';}
+else if(a===b||b===c||a===c){win=10;msg='👏 2 زي بعض! +10 عملة';}
+else {msg='😢 مفيش حظ المرة دي - جرب تاني!';}
+if(win>0){coins+=win;wins++;winsEl.textContent=wins;if(win>best){best=win;localStorage.setItem('slotBest',best);bestEl.textContent=best;}winSound();resultEl.style.color='#22c55e';}
+else {beep(200,0.2,'sawtooth',0.08);resultEl.style.color='#facc15';}
+coinsEl.textContent=coins;resultEl.textContent=msg;spinning=false;spinBtn.disabled=false;
+}
+startBtn.onclick=()=>{initAudio();started=true;overlay.style.display='none';};
+spinBtn.onclick=()=>spin();
+spinBtn.addEventListener('touchstart',e=>{e.preventDefault();spin();},{passive:false});
+</script>
+</body>
+</html>
