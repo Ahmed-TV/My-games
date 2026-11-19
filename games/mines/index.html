@@ -21,16 +21,18 @@ h1 small { display: block; font-size: 11px; color: #00e5ff; }
 .stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 3px 10px; min-width: 80px; text-align: center; }
 .stat b { display: block; font-size: 15px; color: #00e5ff; }
 .stat span { font-size: 9px; color: #c4b5fd; }
-.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.5; margin-bottom: 6px; }
 .modes { display: flex; gap: 6px; justify-content: center; margin-bottom: 6px; width: 100%; max-width: 500px; }
-.mode-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #7c3aed; padding: 10px; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 16px; }
+.mode-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #7c3aed; padding: 10px; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 15px; }
 .mode-btn.active { background: #ff2d95; border-color: #fff; }
+.mode-btn.hint { background: #16a34a; border-color: #fff; }
 #game-container { width: 100%; max-width: 500px; background: #fff; border: 3px solid #facc15; border-radius: 16px; padding: 6px; overflow: hidden; }
 #board { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; width: 100%; }
-.cell { aspect-ratio: 1; background: #7c3aed; border: 2px solid #fff; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; cursor: pointer; color: #fff; width: 100%; min-width: 0; }
+.cell { aspect-ratio: 1; background: #7c3aed; border: 2px solid #fff; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; cursor: pointer; color: #fff; width: 100%; min-width: 0; touch-action: none; }
 .cell.open { background: #e2e8f0; color: #000; border-color: #94a3b8; }
-.cell.flag { background: #facc15; }
+.cell.flag { background: #facc15; border-color: #fff; }
 .cell.mine { background: #ef4444; }
+.cell.safe-hint { border: 3px solid #16a34a; box-shadow: 0 0 8px #16a34a; }
 .cell.n1 { color: #2563eb; } .cell.n2 { color: #16a34a; } .cell.n3 { color: #dc2626; } .cell.n4 { color: #7c3aed; } .cell.n5 { color: #ea580c; }
 #hint { text-align: center; font-size: 11px; color: #e2e8f0; margin-top: 6px; line-height: 1.4; }
 #resetBtn { width: 100%; max-width: 500px; margin-top: 8px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 12px; padding: 12px; font-size: 20px; font-weight: 900; cursor: pointer; }
@@ -45,63 +47,71 @@ h1 small { display: block; font-size: 11px; color: #00e5ff; }
 <div class="header">
 <div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>الألغام<small>ألغام الأبطال</small></h1></div>
 <div class="names"><span class="ar">أحمد عبدالعزيز</span> <span class="en">Ahmed TV</span></div>
-<div class="stats"><div class="stat"><b id="flags">10</b><span>ألغام فاضلة</span></div><div class="stat"><b id="opened">0</b><span>مربع اتفتح</span></div><div class="stat"><b id="best">0</b><span>فوز</span></div></div>
+<div class="stats"><div class="stat"><b id="flags">8</b><span>ألغام فاضلة</span></div><div class="stat"><b id="opened">0</b><span>مربع اتفتح</span></div><div class="stat"><b id="best">0</b><span>فوز</span></div></div>
 </div>
-<div class="how">دوس على مربع بنفسجي عشان تفتحه - الرقم = كام لغم حواليه - دوس 🚩 الأول لو شاكك في لغم</div>
-<div class="modes"><button class="mode-btn active" id="digBtn">⛏️ حفر</button><button class="mode-btn" id="flagBtn">🚩 علم</button></div>
-<div id="game-wrap"><div id="game-container"><div id="board"></div></div><div id="overlay"><h2>💣 الألغام</h2><p>دوس على أي مربع بنفسجي عشان تفتحه<br>لو طلع رقم 1 = فيه لغم واحد حواليه<br>متدوسش على اللغم 💥</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div>
-<div id="hint">المربعات البنفسجي دي هي اللعبة - دوس عليها</div>
+<div class="how">لو طلعلك رقم 1 = فيه لغم واحد بس في الـ 8 اللي حواليه<br>مش عارف انهي واحد؟ دوس 💡 تلميح - هيعلمك على اللغم الصح</div>
+<div class="modes"><button class="mode-btn active" id="digBtn">⛏️ حفر</button><button class="mode-btn" id="flagBtn">🚩 علم</button><button class="mode-btn hint" id="hintBtn">💡 تلميح (<span id="hintsLeft">3</span>)</button></div>
+<div id="game-wrap"><div id="game-container"><div id="board"></div></div><div id="overlay"><h2>💣 الألغام</h2><p>دوس على مربع بنفسجي = يفتح<br>لو طلع رقم 1 = فيه لغم واحد حواليه<br>مش عارف انهي واحد؟ دوس 💡 تلميح<br>هيعلمك على اللغم الصح بالظبط</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div>
+<div id="hint">دوسة عادية = حفر - دوسة طويلة = علم 🚩 - 💡 تلميح = يعلمك على لغم صح</div>
 <button id="resetBtn">🔄 لعبة جديدة</button>
 <script>
-const board=document.getElementById('board'),flagsEl=document.getElementById('flags'),openedEl=document.getElementById('opened'),bestEl=document.getElementById('best');
-const overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),resetBtn=document.getElementById('resetBtn'),digBtn=document.getElementById('digBtn'),flagBtn=document.getElementById('flagBtn');
-let SIZE=8,MINES=10,cells=[],gameOver=false,opened=0,flagsUsed=0,mode='dig',firstClick=true;
+const board=document.getElementById('board'),flagsEl=document.getElementById('flags'),openedEl=document.getElementById('opened'),bestEl=document.getElementById('best'),hintsLeftEl=document.getElementById('hintsLeft');
+const overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),resetBtn=document.getElementById('resetBtn'),digBtn=document.getElementById('digBtn'),flagBtn=document.getElementById('flagBtn'),hintBtn=document.getElementById('hintBtn');
+let SIZE=8,MINES=8,cells=[],gameOver=false,opened=0,flagsUsed=0,mode='dig',firstClick=true,hints=3;
 let wins=parseInt(localStorage.getItem('minesWins')||'0');bestEl.textContent=wins;
 let audioCtx=null;
 function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
 function beep(f,d=0.1,type='sine',v=0.12){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('selectstart',e=>e.preventDefault());
-function resetGame(){cells=[];gameOver=false;opened=0;flagsUsed=0;firstClick=true;flagsEl.textContent=MINES;openedEl.textContent=0;board.innerHTML='';
+function setMode(m){mode=m;digBtn.classList.toggle('active',m==='dig');flagBtn.classList.toggle('active',m==='flag');}
+function resetGame(){cells=[];gameOver=false;opened=0;flagsUsed=0;firstClick=true;hints=3;hintsLeftEl.textContent=3;flagsEl.textContent=MINES;openedEl.textContent=0;board.innerHTML='';setMode('dig');
 for(let i=0;i<SIZE*SIZE;i++)cells.push({mine:false,open:false,flag:false,num:0,el:null});
 let placed=0;while(placed<MINES){let r=Math.floor(Math.random()*cells.length);if(!cells[r].mine){cells[r].mine=true;placed++;}}
-cells.forEach((c,i)=>{let r=Math.floor(i/SIZE),col=i%SIZE;let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE&&cells[nr*SIZE+nc].mine)n++;}c.num=n;let d=document.createElement('div');d.className='cell';d.textContent='?';d.onclick=()=>{initAudio();clickCell(i);};c.el=d;board.appendChild(d);});
+cells.forEach((c,i)=>{let r=Math.floor(i/SIZE),col=i%SIZE;let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE&&cells[nr*SIZE+nc].mine)n++;}c.num=n;let d=document.createElement('div');d.className='cell';d.textContent='?';
+let pressTimer=null,longPressed=false;
+d.addEventListener('touchstart',e=>{e.preventDefault();initAudio();longPressed=false;pressTimer=setTimeout(()=>{longPressed=true;toggleFlag(i);},400);},{passive:false});
+d.addEventListener('touchend',e=>{e.preventDefault();clearTimeout(pressTimer);if(!longPressed)clickCell(i);},{passive:false});
+d.addEventListener('mousedown',e=>{initAudio();if(e.button===2){toggleFlag(i);return;}clickCell(i);});
+d.addEventListener('contextmenu',e=>{e.preventDefault();toggleFlag(i);});
+c.el=d;board.appendChild(d);});
 overlay.style.display='none';}
-function clickCell(i){if(gameOver)return;let c=cells[i];if(c.open)return;
-if(mode==='flag'){if(!c.flag&&flagsUsed>=MINES)return;c.flag=!c.flag;flagsUsed+=c.flag?1:-1;flagsEl.textContent=MINES-flagsUsed;c.el.classList.toggle('flag',c.flag);c.el.textContent=c.flag?'🚩':'?';beep(500,0.08);return;}
-if(c.flag)return;
+function toggleFlag(i,auto=false){if(gameOver)return;let c=cells[i];if(c.open)return;if(!c.flag&&flagsUsed>=MINES)return;c.flag=!c.flag;flagsUsed+=c.flag?1:-1;flagsEl.textContent=MINES-flagsUsed;c.el.classList.toggle('flag',c.flag);c.el.textContent=c.flag?'🚩':'?';beep(500,0.08);if(!auto)setMode('dig');}
+// زرار التلميح - يعلم على لغم صح 100%
+function useHint(){if(gameOver||hints<=0)return;initAudio();
+let unflaggedMines=cells.filter(c=>c.mine&&!c.flag);
+if(unflaggedMines.length===0)return;
+let target=unflaggedMines[Math.floor(Math.random()*unflaggedMines.length)];
+let idx=cells.indexOf(target);
+hints--;hintsLeftEl.textContent=hints;
+toggleFlag(idx,true);
+target.el.style.boxShadow='0 0 12px #16a34a';
+setTimeout(()=>{if(target.el)target.el.style.boxShadow='';},1500);
+beep(900,0.15);
+// لو علمت على كل الألغام صح - افتح الباقي واكسب
+if(cells.filter(c=>c.mine&&!c.flag).length===0){cells.forEach((c,j)=>{if(!c.mine&&!c.open)openCell(j);});checkWin();}
+}
+function clickCell(i){if(gameOver)return;let c=cells[i];if(c.open){
+// لو دوست على رقم مفتوح - وكان عدد الأعلام حواليه = الرقم - افتح الباقي الآمن لوحده
+let r=Math.floor(i/SIZE),col=i%SIZE;let flagsAround=0,closed=[];
+for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE){let nb=cells[nr*SIZE+nc];if(nb.flag)flagsAround++;if(!nb.open&&!nb.flag)closed.push(nr*SIZE+nc);}}
+if(flagsAround===c.num&&closed.length>0){closed.forEach(j=>{let cc=cells[j];if(!cc.mine)openCell(j);else{revealAll();gameOver=true;overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انفجرت!</h2><p>الأعلام كانت غلط!</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}});checkWin();}
+return;}
+if(mode==='flag'){toggleFlag(i);return;}
+if(c.flag){beep(200,0.1);return;}
 if(firstClick&&c.mine){c.mine=false;let idx=cells.findIndex(x=>!x.mine&&!x.open);cells[idx].mine=true;cells.forEach((cc,j)=>{let r=Math.floor(j/SIZE),col=j%SIZE;let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE&&cells[nr*SIZE+nc].mine)n++;}cc.num=n;});}
 firstClick=false;
-if(c.mine){revealAll();gameOver=true;beep(100,0.5,'sawtooth',0.2);overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انفجرت!</h2><p>دوست على لغم!<br>فتحت ${opened} مربع</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;return;}
-openCell(i);
-if(opened===SIZE*SIZE-MINES){gameOver=true;wins++;localStorage.setItem('minesWins',wins);bestEl.textContent=wins;beep(800,0.2);overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">🏆</div><h2>كسبت يا بطل!</h2><p>فتحت كل المربعات!<br>فوز: ${wins}</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}
-}
+if(c.mine){revealAll();gameOver=true;beep(100,0.5,'sawtooth',0.2);overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انفجرت!</h2><p>دوست على لغم!<br>فتحت ${opened} مربع<br>استخدم 💡 تلميح عشان تعرف اللغم الصح</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;return;}
+openCell(i);checkWin();}
 function openCell(i){let c=cells[i];if(c.open||c.flag||c.mine)return;c.open=true;opened++;openedEl.textContent=opened;c.el.classList.add('open');if(c.num>0){c.el.textContent=c.num;c.el.classList.add('n'+c.num);beep(600,0.05);}else{c.el.textContent='';let r=Math.floor(i/SIZE),col=i%SIZE;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE)openCell(nr*SIZE+nc);}}}
+function checkWin(){if(opened===SIZE*SIZE-MINES&&!gameOver){gameOver=true;wins++;localStorage.setItem('minesWins',wins);bestEl.textContent=wins;beep(800,0.2);overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">🏆</div><h2>كسبت يا بطل!</h2><p>فتحت كل المربعات!<br>فوز: ${wins}</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}}
 function revealAll(){cells.forEach(c=>{if(c.mine){c.el.classList.add('mine');c.el.textContent='💣';}});}
-digBtn.onclick=()=>{mode='dig';digBtn.classList.add('active');flagBtn.classList.remove('active');};
-flagBtn.onclick=()=>{mode='flag';flagBtn.classList.add('active');digBtn.classList.remove('active');};
+digBtn.onclick=()=>setMode('dig');
+flagBtn.onclick=()=>setMode('flag');
+hintBtn.onclick=()=>useHint();
 startBtn.onclick=()=>{initAudio();resetGame();};
 resetBtn.onclick=()=>{initAudio();resetGame();};
 resetGame();
-</script>
-  <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa=document.getElementById('waBtn');var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
-function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
-function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){wa.style.left=(startLeft+dx)+'px';wa.style.top=(startTop+dy)+'px';wa.style.right='auto';wa.style.bottom='auto';}}
-function endDrag(){if(moved)setTimeout(function(){moved=false},50);dragging=false;}
-wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
-document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
-document.addEventListener('mouseup',function(){endDrag();});
-wa.addEventListener('touchstart',function(e){startDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchmove',function(e){if(dragging)moveDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchend',function(){endDrag();});
-wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
 </script>
 </body>
 </html>
