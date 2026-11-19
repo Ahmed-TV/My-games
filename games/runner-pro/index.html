@@ -6,21 +6,21 @@
 <title>جري الأبطال - بنك الألعاب</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
-  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden;overflow-y:auto}
   .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
-  .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
+  .logo{width:88px;height:88px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
   .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
-  .my-name{font-size:15px;font-weight:900;color:#c40000}
+  .my-name{font-size:22px;font-weight:900;color:#c40000}
+  .my-name small{display:block;font-size:16px;color:#FF0000;font-weight:900}
   .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
   .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:10px;width:100%}
-  .game-area{position:relative;width:100%;height:280px;background:linear-gradient(to bottom,#87CEEB 0%,#E0F7FF 70%,#8BC34A 70%,#4CAF50 100%);border-radius:12px;overflow:hidden;touch-action:none;border:3px solid #fff;direction:ltr}
+  .game-area{position:relative;width:100%;height:320px;background:linear-gradient(to bottom,#87CEEB 0%,#E0F7FF 70%,#8BC34A 70%,#4CAF50 100%);border-radius:12px;overflow:hidden;touch-action:manipulation;border:3px solid #fff;direction:ltr}
   .ground{position:absolute;bottom:0;left:0;width:100%;height:30px;background:#4CAF50;border-top:3px solid #2E7D32}
-  /* قلبنا الراجل - وشه بقى مظبوط - ناحية الحواجز */
   .player{position:absolute;bottom:30px;left:40px;width:50px;height:50px;font-size:42px;display:flex;align-items:center;justify-content:center;transform:scaleX(-1);direction:ltr}
   .obs{position:absolute;bottom:30px;width:40px;height:50px;font-size:36px;display:flex;align-items:center;justify-content:center;direction:ltr}
   .coin{position:absolute;width:34px;height:34px;font-size:28px;display:flex;align-items:center;justify-content:center;direction:ltr}
-  .controls{display:flex;justify-content:center;gap:6px;margin:8px 0}
-  .btn{background:#FFD700;color:#000;border:none;padding:14px 18px;font-size:19px;font-weight:900;border-radius:10px;cursor:pointer;flex:1;max-width:180px}
+  .controls{display:flex;justify-content:center;gap:6px;margin:8px 0;direction:ltr}
+  .btn{background:#FFD700;color:#000;border:none;padding:14px 18px;font-size:19px;font-weight:900;border-radius:10px;cursor:pointer;flex:1;max-width:180px;touch-action:manipulation}
   .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:8px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
   #msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
   .score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
@@ -29,8 +29,8 @@
 <body oncontextmenu="return false" onselectstart="return false">
 <div class="top-box">
   <img class="logo" src="../../logo.png">
-  <div class="game-title">🏃 جري الأبطال 🏃</div>
-  <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
+  <div class="game-title">جري الأبطال</div>
+  <div class="my-name">أحمد عبدالعزيز<small>Ahmed TV</small></div>
   <div class="bank">بنك الألعاب</div>
 </div>
 <div class="board">
@@ -40,43 +40,44 @@
     <div class="player" id="player">🏃‍♂️</div>
   </div>
   <div class="controls">
-    <button class="btn" onclick="startGame()">ابدأ ▶️</button>
-    <button class="btn" onclick="jump()">⬆️ نط!</button>
+    <button class="btn" onclick="startGame()">ابدأ</button>
+    <button class="btn" onclick="jump()">نط!</button>
   </div>
-  <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button>
+  <button class="sound-btn" id="soundBtn" onclick="toggleSound()">الصوت: شغال</button>
   <div class="score">النقط: <span id="score">0</span> | العملات: <span id="coins">0</span> | أحسن نتيجة: <span id="best">0</span></div>
-  <button class="btn" style="max-width:160px;font-size:15px;" onclick="location.reload()">لعبة جديدة 🔁</button>
+  <button class="btn" style="max-width:160px;font-size:15px;" onclick="location.reload()">لعبة جديدة</button>
   <div style="font-size:13px;margin-top:6px;">دوس نط أو دوس على الشاشة - لو خبطت في حاجز تخسر!</div>
 </div>
-
 <script>
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
 var audioCtx=null, soundOn=true;
-function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; }
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? 'الصوت: شغال' : 'الصوت: مقفول'; }
 function beep(f,d,t){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); var o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=t||'sine'; o.frequency.value=f; g.gain.value=0.25; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d); }catch(e){} }
 function soundJump(){ beep(600,0.15,'sine'); setTimeout(function(){beep(800,0.15,'sine');},80); }
 function soundCoin(){ beep(1000,0.1,'sine'); setTimeout(function(){beep(1400,0.15,'sine');},80); }
 function soundHit(){ beep(200,0.4,'sawtooth'); }
 </script>
-
 <script>
-var playing=false, over=false, score=0, coins=0, best=0, speed=2.2, playerY=30, vy=0, jumping=false, obs=[], coinItems=[], spawnTimer=null, animId=null, frame=0;
+var playing=false, over=false, score=0, coins=0, best=0, speed=1.6, playerY=30, vy=0, jumping=false, obs=[], coinItems=[], spawnTimer=null, animId=null, frame=0;
 function startGame(){
   if(playing) return;
-  playing=true; over=false; score=0; coins=0; speed=2.2; playerY=30; vy=0; jumping=false; obs=[]; coinItems=[]; frame=0;
+  playing=true; over=false; score=0; coins=0; speed=1.6; playerY=30; vy=0; jumping=false; obs=[]; coinItems=[]; frame=0;
   document.getElementById('score').textContent='0';
   document.getElementById('coins').textContent='0';
-  document.getElementById('msg').textContent='يلا اجري! 🏃';
+  document.getElementById('msg').textContent='يلا اجري!';
   var area=document.getElementById('area');
   var olds=area.querySelectorAll('.obs,.coin');
   for(var i=0;i<olds.length;i++) olds[i].remove();
   document.getElementById('player').style.bottom='30px';
   document.getElementById('player').textContent='🏃‍♂️';
-  spawnTimer=setInterval(spawnObs, 1600);
+  spawnTimer=setInterval(spawnObs, 1900);
   animate();
 }
 function jump(){
   if(!playing || jumping) return;
-  jumping=true; vy=17; soundJump();
+  jumping=true; vy=24; soundJump();
   document.getElementById('player').textContent='🦘';
 }
 function spawnObs(){
@@ -104,11 +105,11 @@ function animate(){
   if(!playing) return;
   frame++;
   score++;
-  if(frame%400===0) speed+=0.2;
+  if(frame%500===0) speed+=0.1;
   document.getElementById('score').textContent=Math.floor(score/10);
   var p=document.getElementById('player');
   if(jumping){
-    playerY+=vy; vy-=1.2;
+    playerY+=vy; vy-=0.9;
     if(playerY<=30){ playerY=30; jumping=false; vy=0; p.textContent='🏃‍♂️'; }
     p.style.bottom=playerY+'px';
   }
@@ -116,7 +117,7 @@ function animate(){
     var o=obs[i];
     o.x-=speed;
     o.el.style.left=o.x+'px';
-    if(o.x>30 && o.x<80 && playerY<75){ hit(); return; }
+    if(o.x>35 && o.x<70 && playerY<55){ hit(); return; }
     if(o.x<-50){ o.el.remove(); obs.splice(i,1); }
   }
   for(var j=coinItems.length-1;j>=0;j--){
@@ -126,7 +127,7 @@ function animate(){
     if(co.x>30 && co.x<90 && playerY+40>co.y && playerY<co.y+34){
       coins++; soundCoin();
       document.getElementById('coins').textContent=coins;
-      document.getElementById('msg').textContent='عاش! خدت عملة! 🪙 +10';
+      document.getElementById('msg').textContent='عاش! خدت عملة! +10';
       co.el.remove(); coinItems.splice(j,1);
       score+=100;
     } else if(co.x<-50){ co.el.remove(); coinItems.splice(j,1); }
@@ -140,12 +141,12 @@ function hit(){
   var finalScore=Math.floor(score/10);
   if(finalScore>best){ best=finalScore; document.getElementById('best').textContent=best; }
   document.getElementById('player').textContent='😵';
-  document.getElementById('msg').textContent='خبطت! 😢 النقط: '+finalScore+' - العملات: '+coins+' - دوس ابدأ تاني!';
+  document.getElementById('msg').textContent='خبطت! النقط: '+finalScore+' - العملات: '+coins+' - دوس ابدأ تاني!';
 }
 document.getElementById('area').addEventListener('pointerdown', function(){ if(playing) jump(); else startGame(); });
 document.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='ArrowUp'){ e.preventDefault(); if(!playing) startGame(); else jump(); } });
 </script>
- <div id="waBox" style="position:fixed; top:10px; left:10px; z-index:999999; text-align:center; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none;">
+<div id="waBox" style="position:fixed; top:10px; left:10px; z-index:999999; text-align:center; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none;">
   <div id="waDrag" style="width:60px; height:60px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,.5);">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:35px; height:35px; pointer-events:none;">
   </div>
