@@ -22,11 +22,11 @@ h1 small { display: block; font-size: 13px; color: #00e5ff; }
 .stat b { display: block; font-size: 16px; color: #00e5ff; }
 .stat span { font-size: 9px; color: #c4b5fd; }
 .how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
-/* زي الأول في الكروم - 360px */
-#game-container { width: 100%; max-width: 500px; height: 360px; position: relative; background: #fef3c7; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; touch-action: none; }
-/* في التطبيق / الموبايل بس - يطول لوحده */
+/* الكروم - زي الأول - 340px */
+#game-container { width: 100%; max-width: 500px; height: 340px; position: relative; background: #fef3c7; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; touch-action: none; }
+/* التطبيق / الموبايل بس - جديد - 430px */
 @media (max-width: 600px) {
-  #game-container { height: 62vh; min-height: 380px; max-height: 460px; }
+  #game-container { height: 430px; }
 }
 .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(0,0,0,0.04); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 1; }
 canvas { width: 100%; height: 100%; display: block; touch-action: none; position: relative; z-index: 2; }
@@ -62,61 +62,76 @@ document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('selectstart',e=>e.preventDefault());
 function setupPins(){
 pins=[];
-let rows=[[0],[ -30,30],[ -60,0,60],[ -90,-30,30,90]];
-let baseY=64;
+let rows=[[0],[ -32,32],[ -64,0,64],[ -96,-32,32,96]];
+let baseY=58;
 rows.forEach((row,ri)=>{
 let y=baseY+ri*36;
 row.forEach(dx=>{pins.push({x:W/2+dx,y:y,down:false,rx:0,ry:0,rot:0});});
 });
 }
-function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;ballX=W/2;ballY=H-52;setupPins();draw();}
-// رسم القارورة - أبيض تقيل مش شفاف
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;ballX=W/2;ballY=H-46;setupPins();draw();}
+// شكل البولينج الجديد - زي الحقيقي - راس مدورة - رقبة رفيعة - جسم عريض - قاعدة
 function drawPin(x,y,rot){
 ctx.save();ctx.translate(x,y);ctx.rotate(rot);
-ctx.fillStyle='#ffffff';ctx.strokeStyle='#000';ctx.lineWidth=2;
-ctx.beginPath();ctx.arc(0,-12,9,0,Math.PI*2);ctx.fill();ctx.stroke();
-ctx.fillRect(-7,-6,14,22);
-ctx.beginPath();ctx.arc(0,16,8,0,Math.PI*2);ctx.fill();ctx.stroke();
-ctx.fillStyle='#dc2626';ctx.fillRect(-7,-2,14,5);
+ctx.fillStyle='#ffffff';ctx.strokeStyle='#1f2937';ctx.lineWidth=2;
+// الجسم
+ctx.beginPath();
+ctx.moveTo(-6,-18);
+ctx.bezierCurveTo(-7,-12,-10,-8,-11,0);
+ctx.bezierCurveTo(-12,8,-10,14,-7,18);
+ctx.lineTo(7,18);
+ctx.bezierCurveTo(10,14,12,8,11,0);
+ctx.bezierCurveTo(10,-8,7,-12,6,-18);
+ctx.closePath();ctx.fill();ctx.stroke();
+// الراس
+ctx.beginPath();ctx.arc(0,-20,7,0,Math.PI*2);ctx.fill();ctx.stroke();
+// خطين حمر زي الحقيقي
+ctx.fillStyle='#dc2626';
+ctx.fillRect(-7,-10,14,3);
+ctx.fillRect(-8,-5,16,2);
 ctx.restore();
 }
-// رسم الكورة - سودا تقيلة مش شفافة
 function drawBall(x,y){
 ctx.save();
-ctx.fillStyle='#111111';ctx.beginPath();ctx.arc(x,y,24,0,Math.PI*2);ctx.fill();
+let g=ctx.createRadialGradient(x-8,y-8,4,x,y,26);
+g.addColorStop(0,'#4b5563');g.addColorStop(0.5,'#111827');g.addColorStop(1,'#000000');
+ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,24,0,Math.PI*2);ctx.fill();
 ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();
-ctx.fillStyle='#ffffff';
-ctx.beginPath();ctx.arc(x-6,y-6,3,0,Math.PI*2);ctx.fill();
-ctx.beginPath();ctx.arc(x+4,y-8,3,0,Math.PI*2);ctx.fill();
-ctx.beginPath();ctx.arc(x-1,y-1,3,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#e5e7eb';
+ctx.beginPath();ctx.arc(x-6,y-7,3.2,0,Math.PI*2);ctx.fill();
+ctx.beginPath();ctx.arc(x+4,y-9,3.2,0,Math.PI*2);ctx.fill();
+ctx.beginPath();ctx.arc(x-1,y-1,3.2,0,Math.PI*2);ctx.fill();
 ctx.restore();
 }
 function draw(){
 ctx.fillStyle='#fef3c7';ctx.fillRect(0,0,W,H);
-ctx.fillStyle='#fde68a';ctx.fillRect(W/2-120,10,240,H-20);
-ctx.strokeStyle='#92400e';ctx.lineWidth=3;ctx.strokeRect(W/2-120,10,240,H-20);
+ctx.fillStyle='#fde68a';ctx.fillRect(W/2-125,8,250,H-16);
+ctx.strokeStyle='#92400e';ctx.lineWidth=3;ctx.strokeRect(W/2-125,8,250,H-16);
+// خطوط الممر
+ctx.strokeStyle='rgba(146,64,14,0.25)';ctx.lineWidth=1;
+for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(W/2-125+i*62,8);ctx.lineTo(W/2-125+i*62,H-8);ctx.stroke();}
 pins.forEach(p=>{
 if(p.down){drawPin(p.x+p.rx,p.y+p.ry,p.rot);}
 else {drawPin(p.x,p.y,0);}
 });
 drawBall(ballX,ballY);
 ctx.fillStyle='#000';ctx.font='900 18px Tahoma';ctx.textAlign='center';
-if(msg)ctx.fillText(msg,W/2,28);
+if(msg)ctx.fillText(msg,W/2,26);
 }
-function moveLeft(){if(rolling)return;ballX=Math.max(W/2-80,ballX-22);draw();}
-function moveRight(){if(rolling)return;ballX=Math.min(W/2+80,ballX+22);draw();}
+function moveLeft(){if(rolling)return;ballX=Math.max(W/2-85,ballX-22);draw();}
+function moveRight(){if(rolling)return;ballX=Math.min(W/2+85,ballX+22);draw();}
 function throwBall(){
 if(!started||rolling)return;initAudio();rolling=true;throws++;throwsEl.textContent=throws;beep(400,0.1);msg='';
 let startY=ballY;let step=0;
 let iv=setInterval(()=>{
 step++;ballY-=13;beep(300+step*5,0.02,'sine',0.03);draw();
-if(ballY<=110){
+if(ballY<=108){
 clearInterval(iv);
 let knocked=0;
 pins.forEach(p=>{
 let dist=Math.abs(p.x-ballX);
 let chance=dist<16?0.95:dist<36?0.8:dist<60?0.55:dist<90?0.3:0.1;
-if(Math.random()<chance){p.down=true;p.rx=(Math.random()-0.5)*50;p.ry=Math.random()*22;p.rot=(Math.random()-0.5)*1.5;knocked++;}
+if(Math.random()<chance){p.down=true;p.rx=(Math.random()-0.5)*50;p.ry=Math.random()*22;p.rot=(Math.random()-0.5)*1.6;knocked++;}
 });
 score+=knocked*10;scoreEl.textContent=score;
 if(knocked===10){strikes++;strikesEl.textContent=strikes;msg='🔥 سترايك! +100';score+=100;scoreEl.textContent=score;beep(600,0.1);setTimeout(()=>beep(800,0.1),100);setTimeout(()=>beep(1000,0.2),200);}
@@ -129,37 +144,18 @@ setTimeout(()=>{ballY=startY;ballX=W/2;rolling=false;msg='';if(knocked===10||thr
 }
 },30);
 }
-function startGame(){initAudio();started=true;score=0;throws=0;strikes=0;scoreEl.textContent=0;throwsEl.textContent=0;strikesEl.textContent=0;overlay.style.display='none';ballX=W/2;ballY=H-52;setupPins();draw();}
+function startGame(){initAudio();started=true;score=0;throws=0;strikes=0;scoreEl.textContent=0;throwsEl.textContent=0;strikesEl.textContent=0;overlay.style.display='none';ballX=W/2;ballY=H-46;setupPins();draw();}
 leftBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveLeft();},{passive:false});
 rightBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveRight();},{passive:false});
 leftBtn.addEventListener('click',()=>{initAudio();moveLeft();});
 rightBtn.addEventListener('click',()=>{initAudio();moveRight();});
 throwBtn.addEventListener('touchstart',e=>{e.preventDefault();throwBall();},{passive:false});
 throwBtn.addEventListener('click',()=>throwBall());
-canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;ballX=Math.max(W/2-80,Math.min(W/2+80,x));draw();},{passive:false});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;ballX=Math.max(W/2-85,Math.min(W/2+85,x));draw();},{passive:false});
 document.addEventListener('keydown',e=>{if(e.code==='ArrowLeft')moveLeft();if(e.code==='ArrowRight')moveRight();if(e.code==='Space'){e.preventDefault();throwBall();}});
 startBtn.addEventListener('click',()=>startGame());
 window.addEventListener('resize',()=>resize());
 resize();draw();
-</script>
-  <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa=document.getElementById('waBtn');var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
-function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
-function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){wa.style.left=(startLeft+dx)+'px';wa.style.top=(startTop+dy)+'px';wa.style.right='auto';wa.style.bottom='auto';}}
-function endDrag(){if(moved)setTimeout(function(){moved=false},50);dragging=false;}
-wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
-document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
-document.addEventListener('mouseup',function(){endDrag();});
-wa.addEventListener('touchstart',function(e){startDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchmove',function(e){if(dragging)moveDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchend',function(){endDrag();});
-wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
 </script>
 </body>
 </html>
