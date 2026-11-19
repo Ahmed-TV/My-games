@@ -49,23 +49,23 @@
   <div id="game-container">
     <div class="watermark">أحمد عبدالعزيز</div>
     <canvas id="gameCanvas"></canvas>
-    <div id="overlay"><h2>🎱 البلياردو</h2><p>اسحب بصبعك من الكورة البيضا<br>وحدد الاتجاه .. وسيب عشان تضرب!<br>دخل كل الكور في الفتحات بأقل ضربات</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div>
+    <div id="overlay"><h2>🎱 البلياردو</h2><p>المس الشاشة واسحب في أي اتجاه<br>الخط هيوريك هتضرب فين .. سيب عشان تضرب!<br>دخل كل الكور في الفتحات بأقل ضربات</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div>
   </div>
   <div class="power-wrap"><span>💪 قوة الضربة</span><input type="range" id="power" min="5" max="25" value="15"></div>
-  <div id="hint">👆 اسحب من الكورة البيضا للورا .. وسيب .. هتضرب<br>دخل كل الكور 🎯</div>
+  <div id="hint">👆 المس أي حتة في الطاولة واسحب - الخط الأبيض هو اتجاه الضربة<br>سيب صبعك عشان تضرب - أو دوس زرار اضرب</div>
   <button id="shootBtn">🎱 اضرب</button>
 <script>
 const canvas=document.getElementById('gameCanvas');const ctx=canvas.getContext('2d');
 const scoreEl=document.getElementById('score'),shotsEl=document.getElementById('shots'),bestEl=document.getElementById('best');
 const overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),shootBtn=document.getElementById('shootBtn'),powerEl=document.getElementById('power');
-let W=0,H=0,running=false,balls=[],pockets=[],aiming=false,aimX=0,aimY=0,score=0,shots=0;
+let W=0,H=0,running=false,balls=[],pockets=[],aiming=false,aimX=0,aimY=0,score=0,shots=0,lastAngle=0;
 let best=parseInt(localStorage.getItem('billiardBest')||'0');bestEl.textContent=best;
 let audioCtx=null;
 function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
 function beep(f,d=0.1,type='sine',v=0.12){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
 function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;setupPockets();if(!running)draw();}
 function setupPockets(){const m=14;pockets=[{x:m,y:m,r:18},{x:W/2,y:8,r:16},{x:W-m,y:m,r:18},{x:m,y:H-m,r:18},{x:W/2,y:H-8,r:16},{x:W-m,y:H-m,r:18}];}
-function resetGame(){score=0;shots=0;scoreEl.textContent=0;shotsEl.textContent=0;balls=[];
+function resetGame(){score=0;shots=0;scoreEl.textContent=0;shotsEl.textContent=0;balls=[];lastAngle=0;
 balls.push({x:W*0.25,y:H/2,vx:0,vy:0,color:'#fff',cue:true,r:11});
 const colors=['#ff2d95','#facc15','#00e5ff','#a855f7','#22c55e','#f97316','#ef4444','#3b82f6'];
 let idx=0;for(let row=0;row<3;row++){for(let c=0;c<=row;c++){balls.push({x:W*0.65+row*24,y:H/2+(c-row/2)*24,vx:0,vy:0,color:colors[idx%colors.length],cue:false,r:11,num:idx+1});idx++;}}
@@ -78,7 +78,8 @@ ctx.fillStyle='#15803d';ctx.fillRect(12,12,W-24,H-24);
 ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(W/2,12);ctx.lineTo(W/2,H-12);ctx.stroke();ctx.setLineDash([]);
 pockets.forEach(p=>{ctx.fillStyle='#000';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#facc15';ctx.lineWidth=2;ctx.stroke();});
 balls.forEach(b=>{ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=4;ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='rgba(255,255,255,0.7)';ctx.beginPath();ctx.arc(b.x-3,b.y-4,3,0,Math.PI*2);ctx.fill();if(!b.cue){ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(b.x,b.y,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#000';ctx.font='bold 8px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(b.num,b.x,b.y);}});
-if(aiming&&!isMoving()){const cue=balls.find(b=>b.cue);if(cue){const dx=aimX-cue.x,dy=aimY-cue.y;const len=Math.sqrt(dx*dx+dy*dy)||1;const ux=dx/len,uy=dy/len;ctx.strokeStyle='rgba(255,255,255,0.9)';ctx.lineWidth=2;ctx.setLineDash([8,6]);ctx.beginPath();ctx.moveTo(cue.x+ux*15,cue.y+uy*15);ctx.lineTo(cue.x+ux*80,cue.y+uy*80);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#ff2d95';ctx.beginPath();ctx.arc(cue.x-ux*20,cue.y-uy*20,4,0,Math.PI*2);ctx.fill();}}
+// خط التصويب - بيتحرك في كل الاتجاهات
+if(aiming){const cue=balls.find(b=>b.cue);if(cue){ctx.strokeStyle='rgba(255,255,255,0.95)';ctx.lineWidth=3;ctx.setLineDash([10,6]);ctx.beginPath();ctx.moveTo(cue.x+Math.cos(lastAngle)*16,cue.y+Math.sin(lastAngle)*16);ctx.lineTo(cue.x+Math.cos(lastAngle)*90,cue.y+Math.sin(lastAngle)*90);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(cue.x+Math.cos(lastAngle)*95,cue.y+Math.sin(lastAngle)*95,6,0,Math.PI*2);ctx.fill();}}
 }
 function update(){
 balls.forEach(b=>{b.x+=b.vx;b.y+=b.vy;b.vx*=0.98;b.vy*=0.98;if(Math.abs(b.vx)<0.05)b.vx=0;if(Math.abs(b.vy)<0.05)b.vy=0;if(b.x<b.r+12){b.x=b.r+12;b.vx=Math.abs(b.vx)*0.8;beep(200,0.05);}if(b.x>W-b.r-12){b.x=W-b.r-12;b.vx=-Math.abs(b.vx)*0.8;beep(200,0.05);}if(b.y<b.r+12){b.y=b.r+12;b.vy=Math.abs(b.vy)*0.8;beep(200,0.05);}if(b.y>H-b.r-12){b.y=H-b.r-12;b.vy=-Math.abs(b.vy)*0.8;beep(200,0.05);}});
@@ -86,38 +87,19 @@ for(let i=0;i<balls.length;i++){for(let j=i+1;j<balls.length;j++){let a=balls[i]
 for(let i=balls.length-1;i>=0;i--){let b=balls[i];for(let p of pockets){let dx=b.x-p.x,dy=b.y-p.y;if(Math.sqrt(dx*dx+dy*dy)<p.r){if(b.cue){b.x=W*0.25;b.y=H/2;b.vx=0;b.vy=0;beep(150,0.3,'sawtooth',0.15);}else{balls.splice(i,1);score++;scoreEl.textContent=score;beep(700,0.15,'sine',0.15);if(score>=8)endGame();}break;}}}
 }
 function loop(){if(!running)return;update();draw();if(isMoving()||aiming)requestAnimationFrame(loop);else draw();}
-function shoot(){if(!running||isMoving())return;const cue=balls.find(b=>b.cue);if(!cue)return;let angle=0;if(aiming){let dx=aimX-cue.x,dy=aimY-cue.y;if(Math.sqrt(dx*dx+dy*dy)>5)angle=Math.atan2(dy,dx);}else{angle=-Math.PI/2;}let power=parseInt(powerEl.value);cue.vx=Math.cos(angle)*power*0.6;cue.vy=Math.sin(angle)*power*0.6;shots++;shotsEl.textContent=shots;aiming=false;beep(300,0.1,'square',0.1);loop();}
+function updateAim(x,y){const cue=balls.find(b=>b.cue);if(!cue)return;let dx=x-cue.x,dy=y-cue.y;if(Math.sqrt(dx*dx+dy*dy)>5){lastAngle=Math.atan2(dy,dx);aimX=x;aimY=y;}}
+function shoot(){if(!running||isMoving())return;const cue=balls.find(b=>b.cue);if(!cue)return;let power=parseInt(powerEl.value);cue.vx=Math.cos(lastAngle)*power*0.6;cue.vy=Math.sin(lastAngle)*power*0.6;shots++;shotsEl.textContent=shots;aiming=false;beep(300,0.1,'square',0.1);loop();}
 function endGame(){running=false;let msg=shots<=12?'🔥 أسطورة البلياردو!':'👏 عاش يا بطل!';if(shots<best||best===0){best=shots;localStorage.setItem('billiardBest',shots);bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">🎱</div><h2>${msg}</h2><p>دخلت 8 كور في <b style="color:#00e5ff">${shots} ضربة</b><br>أقل ضربات: ${best}</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}
-canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();const p=getPos(e);aiming=true;aimX=p.x;aimY=p.y;draw();},{passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();if(aiming){const p=getPos(e);aimX=p.x;aimY=p.y;draw();}},{passive:false});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();const p=getPos(e);aiming=true;updateAim(p.x,p.y);draw();},{passive:false});
+canvas.addEventListener('touchmove',e=>{e.preventDefault();if(aiming){const p=getPos(e);updateAim(p.x,p.y);draw();}},{passive:false});
 canvas.addEventListener('touchend',e=>{e.preventDefault();if(aiming){aiming=false;shoot();}},{passive:false});
-canvas.addEventListener('mousedown',e=>{initAudio();const p=getPos(e);aiming=true;aimX=p.x;aimY=p.y;draw();});
-canvas.addEventListener('mousemove',e=>{if(aiming){const p=getPos(e);aimX=p.x;aimY=p.y;draw();}});
+canvas.addEventListener('mousedown',e=>{initAudio();const p=getPos(e);aiming=true;updateAim(p.x,p.y);draw();});
+canvas.addEventListener('mousemove',e=>{if(aiming){const p=getPos(e);updateAim(p.x,p.y);draw();}});
 canvas.addEventListener('mouseup',()=>{if(aiming){aiming=false;shoot();}});
 shootBtn.addEventListener('click',()=>{initAudio();shoot();});
 startBtn.addEventListener('click',()=>{initAudio();resetGame();});
 window.addEventListener('resize',()=>{resize();if(!running)draw();});
 resize();draw();
-</script>
-    <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa = document.getElementById('waBtn');
-var dragging = false, startX=0, startY=0, startLeft=0, startTop=0, moved=false;
-function startDrag(x,y){ dragging=true; moved=false; startX=x; startY=y; startLeft=wa.offsetLeft; startTop=wa.offsetTop; }
-function moveDrag(x,y){ if(!dragging) return; var dx=x-startX, dy=y-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ moved=true; } if(moved){ wa.style.left=(startLeft+dx)+'px'; wa.style.top=(startTop+dy)+'px'; wa.style.right='auto'; wa.style.bottom='auto'; } }
-function endDrag(){ if(moved){ setTimeout(function(){moved=false},50); } dragging=false; }
-wa.addEventListener('mousedown',function(e){ startDrag(e.clientX,e.clientY); });
-document.addEventListener('mousemove',function(e){ moveDrag(e.clientX,e.clientY); });
-document.addEventListener('mouseup',function(){ endDrag(); });
-wa.addEventListener('touchstart',function(e){ startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
-document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
-document.addEventListener('touchend',function(){ endDrag(); });
-wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
 </script>
 </body>
 </html>
