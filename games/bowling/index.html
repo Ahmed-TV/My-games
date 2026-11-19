@@ -22,9 +22,13 @@ h1 small { display: block; font-size: 13px; color: #00e5ff; }
 .stat b { display: block; font-size: 16px; color: #00e5ff; }
 .stat span { font-size: 9px; color: #c4b5fd; }
 .how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
-/* طوّلت اللعبة - 460 بدل 360 - عشان التطبيق */
-#game-container { width: 100%; max-width: 500px; height: 460px; min-height: 460px; position: relative; background: #fef3c7; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; touch-action: none; }
-.watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(0,0,0,0.05); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 1; }
+/* زي الأول في الكروم - 360px */
+#game-container { width: 100%; max-width: 500px; height: 360px; position: relative; background: #fef3c7; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; touch-action: none; }
+/* في التطبيق / الموبايل بس - يطول لوحده */
+@media (max-width: 600px) {
+  #game-container { height: 62vh; min-height: 380px; max-height: 460px; }
+}
+.watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(0,0,0,0.04); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 1; }
 canvas { width: 100%; height: 100%; display: block; touch-action: none; position: relative; z-index: 2; }
 .controls { display: flex; direction: ltr; gap: 6px; width: 100%; max-width: 500px; margin-top: 6px; }
 .ctrl-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #f59e0b; border-radius: 10px; padding: 10px 4px; font-size: 18px; font-weight: 900; cursor: pointer; }
@@ -58,42 +62,60 @@ document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('selectstart',e=>e.preventDefault());
 function setupPins(){
 pins=[];
-let rows=[[0],[ -26,26],[ -52,0,52],[ -78,-26,26,78]];
-let baseY=72;
+let rows=[[0],[ -30,30],[ -60,0,60],[ -90,-30,30,90]];
+let baseY=64;
 rows.forEach((row,ri)=>{
-let y=baseY+ri*38;
+let y=baseY+ri*36;
 row.forEach(dx=>{pins.push({x:W/2+dx,y:y,down:false,rx:0,ry:0,rot:0});});
 });
 }
-function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;ballX=W/2;ballY=H-56;setupPins();draw();}
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;ballX=W/2;ballY=H-52;setupPins();draw();}
+// رسم القارورة - أبيض تقيل مش شفاف
+function drawPin(x,y,rot){
+ctx.save();ctx.translate(x,y);ctx.rotate(rot);
+ctx.fillStyle='#ffffff';ctx.strokeStyle='#000';ctx.lineWidth=2;
+ctx.beginPath();ctx.arc(0,-12,9,0,Math.PI*2);ctx.fill();ctx.stroke();
+ctx.fillRect(-7,-6,14,22);
+ctx.beginPath();ctx.arc(0,16,8,0,Math.PI*2);ctx.fill();ctx.stroke();
+ctx.fillStyle='#dc2626';ctx.fillRect(-7,-2,14,5);
+ctx.restore();
+}
+// رسم الكورة - سودا تقيلة مش شفافة
+function drawBall(x,y){
+ctx.save();
+ctx.fillStyle='#111111';ctx.beginPath();ctx.arc(x,y,24,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke();
+ctx.fillStyle='#ffffff';
+ctx.beginPath();ctx.arc(x-6,y-6,3,0,Math.PI*2);ctx.fill();
+ctx.beginPath();ctx.arc(x+4,y-8,3,0,Math.PI*2);ctx.fill();
+ctx.beginPath();ctx.arc(x-1,y-1,3,0,Math.PI*2);ctx.fill();
+ctx.restore();
+}
 function draw(){
 ctx.fillStyle='#fef3c7';ctx.fillRect(0,0,W,H);
-ctx.fillStyle='#fde68a';
-ctx.fillRect(W/2-110,10,220,H-20);
-ctx.strokeStyle='#92400e';ctx.lineWidth=3;
-ctx.strokeRect(W/2-110,10,220,H-20);
-ctx.fillStyle='rgba(0,0,0,0.05)';ctx.font='900 24px Tahoma';ctx.textAlign='center';ctx.fillText('أحمد عبدالعزيز',W/2,H/2+8);
+ctx.fillStyle='#fde68a';ctx.fillRect(W/2-120,10,240,H-20);
+ctx.strokeStyle='#92400e';ctx.lineWidth=3;ctx.strokeRect(W/2-120,10,240,H-20);
 pins.forEach(p=>{
-if(p.down){ctx.save();ctx.translate(p.x+p.rx,p.y+p.ry);ctx.rotate(p.rot);ctx.font='30px Arial';ctx.textAlign='center';ctx.fillText('🎳',0,10);ctx.restore();}
-else {ctx.font='36px Arial';ctx.textAlign='center';ctx.fillText('🎳',p.x,p.y+12);}
+if(p.down){drawPin(p.x+p.rx,p.y+p.ry,p.rot);}
+else {drawPin(p.x,p.y,0);}
 });
-ctx.font='48px Arial';ctx.textAlign='center';ctx.fillText('🎱',ballX,ballY+16);
+drawBall(ballX,ballY);
 ctx.fillStyle='#000';ctx.font='900 18px Tahoma';ctx.textAlign='center';
 if(msg)ctx.fillText(msg,W/2,28);
 }
-function moveLeft(){if(rolling)return;ballX=Math.max(W/2-70,ballX-22);draw();}
-function moveRight(){if(rolling)return;ballX=Math.min(W/2+70,ballX+22);draw();}
+function moveLeft(){if(rolling)return;ballX=Math.max(W/2-80,ballX-22);draw();}
+function moveRight(){if(rolling)return;ballX=Math.min(W/2+80,ballX+22);draw();}
 function throwBall(){
 if(!started||rolling)return;initAudio();rolling=true;throws++;throwsEl.textContent=throws;beep(400,0.1);msg='';
 let startY=ballY;let step=0;
 let iv=setInterval(()=>{
-step++;ballY-=14;beep(300+step*5,0.02,'sine',0.03);draw();
-if(ballY<=115){
+step++;ballY-=13;beep(300+step*5,0.02,'sine',0.03);draw();
+if(ballY<=110){
 clearInterval(iv);
 let knocked=0;
 pins.forEach(p=>{
 let dist=Math.abs(p.x-ballX);
-let chance=dist<14?0.95:dist<32?0.8:dist<55?0.55:dist<80?0.3:0.1;
+let chance=dist<16?0.95:dist<36?0.8:dist<60?0.55:dist<90?0.3:0.1;
 if(Math.random()<chance){p.down=true;p.rx=(Math.random()-0.5)*50;p.ry=Math.random()*22;p.rot=(Math.random()-0.5)*1.5;knocked++;}
 });
 score+=knocked*10;scoreEl.textContent=score;
@@ -107,37 +129,18 @@ setTimeout(()=>{ballY=startY;ballX=W/2;rolling=false;msg='';if(knocked===10||thr
 }
 },30);
 }
-function startGame(){initAudio();started=true;score=0;throws=0;strikes=0;scoreEl.textContent=0;throwsEl.textContent=0;strikesEl.textContent=0;overlay.style.display='none';ballX=W/2;ballY=H-56;setupPins();draw();}
+function startGame(){initAudio();started=true;score=0;throws=0;strikes=0;scoreEl.textContent=0;throwsEl.textContent=0;strikesEl.textContent=0;overlay.style.display='none';ballX=W/2;ballY=H-52;setupPins();draw();}
 leftBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveLeft();},{passive:false});
 rightBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();moveRight();},{passive:false});
 leftBtn.addEventListener('click',()=>{initAudio();moveLeft();});
 rightBtn.addEventListener('click',()=>{initAudio();moveRight();});
 throwBtn.addEventListener('touchstart',e=>{e.preventDefault();throwBall();},{passive:false});
 throwBtn.addEventListener('click',()=>throwBall());
-canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;ballX=Math.max(W/2-70,Math.min(W/2+70,x));draw();},{passive:false});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();initAudio();let x=e.touches[0].clientX-canvas.getBoundingClientRect().left;ballX=Math.max(W/2-80,Math.min(W/2+80,x));draw();},{passive:false});
 document.addEventListener('keydown',e=>{if(e.code==='ArrowLeft')moveLeft();if(e.code==='ArrowRight')moveRight();if(e.code==='Space'){e.preventDefault();throwBall();}});
 startBtn.addEventListener('click',()=>startGame());
 window.addEventListener('resize',()=>resize());
 resize();draw();
-</script>
-  <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
-<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
-</span>
-<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
-</a>
-<script>
-var wa=document.getElementById('waBtn');var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
-function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
-function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){wa.style.left=(startLeft+dx)+'px';wa.style.top=(startTop+dy)+'px';wa.style.right='auto';wa.style.bottom='auto';}}
-function endDrag(){if(moved)setTimeout(function(){moved=false},50);dragging=false;}
-wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
-document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
-document.addEventListener('mouseup',function(){endDrag();});
-wa.addEventListener('touchstart',function(e){startDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchmove',function(e){if(dragging)moveDrag(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
-document.addEventListener('touchend',function(){endDrag();});
-wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
 </script>
 </body>
 </html>
