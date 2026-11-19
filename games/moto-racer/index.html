@@ -5,403 +5,142 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>لعبة الموتوسيكلات | Ahmed TV</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  
-  /* قفل الشاشة بالكامل */
-  html, body { 
-    height: 100vh; 
-    height: 100dvh; 
-    overflow: hidden; 
-    position: fixed; 
-    width: 100%;
-  }
-  
-  body {
-    font-family: Tahoma, Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
-  }
-
-  /* الهيدر */
-  .header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 2px;}
-  .logo-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #facc15; object-fit: cover;}
-  .header-text { text-align: right; }
-  .header-text h1 { font-size: 14px; color: #facc15; margin: 0;}
-  .header-text .names { font-size: 9px; color: #cbd5e1; font-weight: bold;}
-  .header-text .names b { color: #facc15;}
-
-  /* الإحصائيات */
-  .stats { display: flex; gap: 8px; justify-content: center; margin-bottom: 3px;}
-  .stat { background: #1e293b; border-radius: 6px; padding: 1px 8px; min-width: 50px; text-align: center; border: 1px solid #334155;}
-  .stat b { display: block; font-size: 12px; color: #facc15; }
-  .stat span { font-size: 8px; color: #94a3b8; }
-
-  /* الحاوية الرئيسية */
-  #game-container {
-    width: 100%; max-width: 600px; flex-grow: 1; min-height: 0;
-    position: relative; display: flex; flex-direction: column;
-    background: #1e293b; 
-    border: 3px solid #f59e0b; border-radius: 12px;
-    overflow: hidden;
-    padding: 5px;
-  }
-
-  .watermark {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 30px; font-weight: 900;
-    pointer-events: none; z-index: 0; white-space: nowrap;
-  }
-
-  canvas { 
-    width: 100%; 
-    flex-grow: 1; 
-    display: block; 
-    z-index: 1; 
-    min-height: 0;
-    border-radius: 8px;
-    background: #334155;
-  }
-
-  /* أزرار التحكم (كبيرة وثابتة تحت الكانفس) */
-  .controls {
-    display: flex; gap: 10px; justify-content: center; padding: 8px 0 0 0;
-    z-index: 3; flex-shrink: 0; /* عشان ميطغاش على الكانفس */
-  }
-  .ctrl-btn {
-    background: #f59e0b; color: #fff; border: 2px solid #b45309; border-radius: 12px;
-    font-size: 35px; width: 100px; height: 60px; display: flex; justify-content: center; align-items: center;
-    cursor: pointer; user-select: none;
-    box-shadow: 0 4px 0 #b45309;
-  }
-  .ctrl-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #b45309; background: #d97706; }
-
-  #overlay {
-    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 10px; z-index: 10;
-  }
-  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
-  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
-  .btn-start {
-    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
-    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
-    width: 80%; max-width: 200px;
-  }
-  .btn-start:active { transform: scale(0.95); }
-
-  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
-  .footer a { color: #facc15; text-decoration: none; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overflow-y:auto;overflow-x:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:5px}
+.header{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex-shrink:0;padding-bottom:2px;text-align:center}
+.logo-img{width:88px;height:88px;border-radius:50%;border:4px solid #facc15;object-fit:cover;background:#000}
+.header-text{text-align:center}
+.header-text h1{font-size:22px;color:#facc15;margin:0}
+.header-text .names{font-size:22px;color:#fff;font-weight:900}
+.header-text .names small{display:block;font-size:16px;color:#facc15;font-weight:900}
+.stats{display:flex;gap:8px;justify-content:center;margin-bottom:3px}
+.stat{background:#1e293b;border-radius:6px;padding:1px 8px;min-width:50px;text-align:center;border:1px solid #334155}
+.stat b{display:block;font-size:12px;color:#facc15}
+.stat span{font-size:8px;color:#94a3b8}
+#game-container{width:100%;max-width:600px;position:relative;display:flex;flex-direction:column;background:#1e293b;border:3px solid #f59e0b;border-radius:12px;overflow:hidden;padding:5px}
+.watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(255,255,255,0.05);font-size:30px;font-weight:900;pointer-events:none;z-index:0;white-space:nowrap}
+canvas{width:100%;height:320px;display:block;z-index:1;border-radius:8px;background:#334155}
+.controls{display:flex;gap:10px;justify-content:center;padding:8px 0 2px 0;z-index:3;flex-shrink:0;direction:ltr}
+.ctrl-btn{background:#f59e0b;color:#fff;border:2px solid #b45309;border-radius:12px;font-size:22px;font-weight:900;width:120px;height:60px;display:flex;justify-content:center;align-items:center;gap:6px;cursor:pointer;box-shadow:0 4px 0 #b45309;font-family:inherit}
+.ctrl-btn:active{transform:translateY(4px);box-shadow:0 0 0 #b45309;background:#d97706}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
+#overlay h2{font-size:24px;margin-bottom:5px;color:#facc15}
+#overlay p{line-height:1.6;font-size:14px;color:#e2e8f0;margin-bottom:10px}
+.btn-start{background:#f59e0b;color:#000;border:none;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:200px;font-family:inherit}
+.btn-start:active{transform:scale(0.95)}
+.footer{font-size:11px;color:#94a3b8;text-align:center;flex-shrink:0;margin-top:4px;padding-bottom:4px}
+.footer a{color:#facc15;text-decoration:none}
 </style>
 </head>
 <body>
-
-  <div class="header">
-    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
-    <div class="header-text">
-        <h1>لعبة الموتوسيكلات</h1>
-        <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
-    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
-    <div class="stat"><b id="speed">1x</b><span>السرعة</span></div>
-  </div>
-
-  <div id="game-container">
-    <div class="watermark">Ahmed TV</div>
-    <canvas id="gameCanvas"></canvas>
-    
-    <!-- أزرار التحكم فوق وتحت -->
-    <div class="controls">
-      <button class="ctrl-btn" id="upBtn">⬆️</button>
-      <button class="ctrl-btn" id="downBtn">⬇️</button>
-    </div>
-
-    <div id="overlay">
-      <h2>لعبة الموتوسيكلات</h2>
-      <p>
-        <b>Ahmed TV</b> - تفادى العربيات!<br>
-        استخدم الأزرار عشان تتحرك
-      </p>
-      <button class="btn-start" id="startBtn">▶ ابدأ القيادة</button>
-    </div>
-  </div>
-
-  <div class="footer">
-    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
-  </div>
-
+<div class="header">
+<img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
+<div class="header-text"><h1>لعبة الموتوسيكلات</h1><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></div>
+</div>
+<div class="stats">
+<div class="stat"><b id="score">0</b><span>النقاط</span></div>
+<div class="stat"><b id="best">0</b><span>الأفضل</span></div>
+<div class="stat"><b id="speed">1x</b><span>السرعة</span></div>
+</div>
+<div id="game-container">
+<div class="watermark">Ahmed TV</div>
+<canvas id="gameCanvas"></canvas>
+<div class="controls">
+<button class="ctrl-btn" id="upBtn">فوق</button>
+<button class="ctrl-btn" id="downBtn">تحت</button>
+</div>
+<div id="overlay"><h2>لعبة الموتوسيكلات</h2><p><b>Ahmed TV</b> - تفادى العربيات!<br>استخدم الأزرار عشان تتحرك</p><button class="btn-start" id="startBtn">ابدأ القيادة</button></div>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
 <script>
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const scoreEl = document.getElementById('score');
-const bestEl = document.getElementById('best');
-const speedEl = document.getElementById('speed');
-const overlay = document.getElementById('overlay');
-const startBtn = document.getElementById('startBtn');
-const upBtn = document.getElementById('upBtn');
-const downBtn = document.getElementById('downBtn');
-
-let W = 0, H = 0;
-let running = false;
-let score = 0;
-let best = parseInt(localStorage.getItem('motoBest') || '0');
-bestEl.textContent = best;
-let audioCtx = null;
-
-// اللاعب (عرض الموتوسيكل أكبر من الطول)
-let player = { x: 0, y: 0, width: 60, height: 35, speed: 8 };
-let enemies = [];
-let roadOffset = 0;
-let baseSpeed = 1.5; 
-let currentSpeed = baseSpeed;
-
-let upPressed = false;
-let downPressed = false;
-
-function initAudio() {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-}
-
-function playSound(type) {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  
-  if (type === 'score') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-  } else if (type === 'crash') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
-  }
-}
-
-// ضبط أبعاد الكانفس
-function resize() {
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width;
-  canvas.height = rect.height;
-  W = canvas.width;
-  H = canvas.height;
-  
-  if(!running) {
-    player.x = 50; // اللاعب على الشمال
-    player.y = H / 2 - player.height / 2; // في النص
-    draw();
-  }
-}
-
-function createEnemy() {
-  const laneHeight = H / 3; // 3 حارات (لأن الطريق بالعرض)
-  const lane = Math.floor(Math.random() * 3); // 0, 1, 2
-  const y = lane * laneHeight + (laneHeight - player.height) / 2;
-  
-  enemies.push({
-    x: W + 50, // يبدأ من بره الشاشة (يمين)
-    y: y,
-    width: 60,
-    height: 35,
-    speed: currentSpeed,
-    passed: false
-  });
-}
-
-function draw() {
-  // خلفية الطريق
-  ctx.fillStyle = '#334155';
-  ctx.fillRect(0, 0, W, H);
-  
-  // خطوط الطريق (أفقية)
-  ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 3;
-  ctx.setLineDash([20, 20]);
-  ctx.lineDashOffset = -roadOffset;
-  
-  // 3 حارات
-  ctx.beginPath(); ctx.moveTo(0, H/3); ctx.lineTo(W, H/3); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0, H*2/3); ctx.lineTo(W, H*2/3); ctx.stroke();
-  ctx.setLineDash([]);
-
-  // اللاعب
-  ctx.font = '40px Arial';
-  ctx.textAlign = 'center';
-  ctx.fillText('🏍️', player.x + player.width/2, player.y + player.height/2 + 10);
-
-  // الأعداء
-  enemies.forEach(e => {
-    ctx.font = '40px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('🚗', e.x + e.width/2, e.y + e.height/2 + 10);
-  });
-}
-
-function update() {
-  if (!running) return;
-
-  // حركة خطوط الطريق
-  roadOffset += currentSpeed * 2;
-  if (roadOffset > 40) roadOffset = 0;
-
-  // حركة اللاعب
-  if (upPressed) {
-    player.y -= player.speed;
-    if (player.y < 0) player.y = 0;
-  }
-  if (downPressed) {
-    player.y += player.speed;
-    if (player.y + player.height > H) player.y = H - player.height;
-  }
-
-  // حركة الأعداء (بتجي من اليمين للشمال)
-  for (let i = enemies.length - 1; i >= 0; i--) {
-    let e = enemies[i];
-    e.x -= e.speed;
-
-    if (e.x + e.width < 0) {
-      enemies.splice(i, 1);
-      if (!e.passed) {
-        score++;
-        scoreEl.textContent = score;
-        playSound('score');
-        if (score % 10 === 0) {
-          currentSpeed += 0.2;
-          speedEl.textContent = currentSpeed.toFixed(1) + 'x';
-        }
-      }
-      continue;
-    }
-
-    // تصادم
-    if (
-      player.x < e.x + e.width &&
-      player.x + player.width > e.x &&
-      player.y < e.y + e.height &&
-      player.y + player.height > e.y
-    ) {
-      endGame();
-      return;
-    }
-  }
-}
-
-function loop() {
-  update();
-  draw();
-  requestAnimationFrame(loop);
-}
-
-function setupControls() {
-  upBtn.addEventListener('mousedown', () => upPressed = true);
-  upBtn.addEventListener('touchstart', (e) => { e.preventDefault(); upPressed = true; }, {passive: false});
-  upBtn.addEventListener('mouseup', () => upPressed = false);
-  upBtn.addEventListener('touchend', () => upPressed = false);
-  upBtn.addEventListener('mouseleave', () => upPressed = false);
-  
-  downBtn.addEventListener('mousedown', () => downPressed = true);
-  downBtn.addEventListener('touchstart', (e) => { e.preventDefault(); downPressed = true; }, {passive: false});
-  downBtn.addEventListener('mouseup', () => downPressed = false);
-  downBtn.addEventListener('touchend', () => downPressed = false);
-  downBtn.addEventListener('mouseleave', () => downPressed = false);
-  
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowUp') upPressed = true;
-    if (e.key === 'ArrowDown') downPressed = true;
-  });
-  document.addEventListener('keyup', (e) => {
-    if (e.key === 'ArrowUp') upPressed = false;
-    if (e.key === 'ArrowDown') downPressed = false;
-  });
+const canvas=document.getElementById('gameCanvas');
+const ctx=canvas.getContext('2d');
+const scoreEl=document.getElementById('score');
+const bestEl=document.getElementById('best');
+const speedEl=document.getElementById('speed');
+const overlay=document.getElementById('overlay');
+const startBtn=document.getElementById('startBtn');
+const upBtn=document.getElementById('upBtn');
+const downBtn=document.getElementById('downBtn');
+let W=0,H=0,running=false,score=0;
+let best=parseInt(localStorage.getItem('motoBest')||'0');
+bestEl.textContent=best;
+let audioCtx=null;
+let player={x:0,y:0,width:60,height:35,speed:8};
+let enemies=[];
+let roadOffset=0;
+let baseSpeed=1.5;
+let currentSpeed=baseSpeed;
+let upPressed=false,downPressed=false;
+let spawnTimer=null,rafId=null;
+function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
+function playSound(type){if(!audioCtx)return;const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);if(type==='score'){osc.type='sine';osc.frequency.setValueAtTime(600,audioCtx.currentTime);gain.gain.setValueAtTime(0.1,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.1);osc.start();osc.stop(audioCtx.currentTime+0.1);}else if(type==='crash'){osc.type='sawtooth';osc.frequency.setValueAtTime(200,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(50,audioCtx.currentTime+0.4);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.4);osc.start();osc.stop(audioCtx.currentTime+0.4);}}
+function resize(){const rect=canvas.getBoundingClientRect();canvas.width=rect.width;canvas.height=rect.height;W=canvas.width;H=canvas.height;if(!running){player.x=50;player.y=H/2-player.height/2;draw();}}
+function createEnemy(){const laneHeight=H/3;const lane=Math.floor(Math.random()*3);const y=lane*laneHeight+(laneHeight-player.height)/2;enemies.push({x:W+50,y:y,width:60,height:35,speed:currentSpeed,passed:false});}
+function draw(){ctx.fillStyle='#334155';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.setLineDash([20,20]);ctx.lineDashOffset=-roadOffset;ctx.beginPath();ctx.moveTo(0,H/3);ctx.lineTo(W,H/3);ctx.stroke();ctx.beginPath();ctx.moveTo(0,H*2/3);ctx.lineTo(W,H*2/3);ctx.stroke();ctx.setLineDash([]);ctx.font='40px Arial';ctx.textAlign='center';ctx.fillText('🏍️',player.x+player.width/2,player.y+player.height/2+10);enemies.forEach(e=>{ctx.font='40px Arial';ctx.textAlign='center';ctx.fillText('🚗',e.x+e.width/2,e.y+e.height/2+10);});}
+function update(){if(!running)return;roadOffset+=currentSpeed*2;if(roadOffset>40)roadOffset=0;if(upPressed){player.y-=player.speed;if(player.y<0)player.y=0;}if(downPressed){player.y+=player.speed;if(player.y+player.height>H)player.y=H-player.height;}for(let i=enemies.length-1;i>=0;i--){let e=enemies[i];e.x-=e.speed;if(e.x+e.width<0){enemies.splice(i,1);if(!e.passed){score++;scoreEl.textContent=score;playSound('score');if(score%10===0){currentSpeed+=0.2;speedEl.textContent=currentSpeed.toFixed(1)+'x';}}continue;}if(player.x<e.x+e.width&&player.x+player.width>e.x&&player.y<e.y+e.height&&player.y+player.height>e.y){endGame();return;}}}
+function loop(){update();draw();if(running)rafId=requestAnimationFrame(loop);}
+function setupControls(){
+upBtn.addEventListener('mousedown',()=>upPressed=true);
+upBtn.addEventListener('touchstart',(e)=>{e.preventDefault();upPressed=true;},{passive:false});
+upBtn.addEventListener('mouseup',()=>upPressed=false);
+upBtn.addEventListener('touchend',()=>upPressed=false);
+upBtn.addEventListener('mouseleave',()=>upPressed=false);
+downBtn.addEventListener('mousedown',()=>downPressed=true);
+downBtn.addEventListener('touchstart',(e)=>{e.preventDefault();downPressed=true;},{passive:false});
+downBtn.addEventListener('mouseup',()=>downPressed=false);
+downBtn.addEventListener('touchend',()=>downPressed=false);
+downBtn.addEventListener('mouseleave',()=>downPressed=false);
+document.addEventListener('keydown',(e)=>{if(e.key==='ArrowUp')upPressed=true;if(e.key==='ArrowDown')downPressed=true;});
+document.addEventListener('keyup',(e)=>{if(e.key==='ArrowUp')upPressed=false;if(e.key==='ArrowDown')downPressed=false;});
 }
 setupControls();
-
-function startGame() {
-  initAudio();
-  overlay.style.display = 'none';
-  score = 0;
-  scoreEl.textContent = 0;
-  currentSpeed = baseSpeed;
-  speedEl.textContent = '1.5x';
-  enemies = [];
-  player.y = H / 2 - player.height / 2;
-  running = true;
-  
-  setInterval(() => {
-    if (running) createEnemy();
-  }, 2500); // عربيات قليلة جداً
-
-  loop();
+function startGame(){
+initAudio();
+overlay.style.display='none';
+score=0;scoreEl.textContent=0;currentSpeed=baseSpeed;speedEl.textContent='1.5x';enemies=[];
+player.y=H/2-player.height/2;running=true;
+if(spawnTimer)clearInterval(spawnTimer);
+spawnTimer=setInterval(()=>{if(running)createEnemy();},2500);
+if(rafId)cancelAnimationFrame(rafId);
+loop();
 }
-
-function endGame() {
-  running = false;
-  playSound('crash');
-  
-  if (score > best) {
-    best = score;
-    localStorage.setItem('motoBest', best);
-    bestEl.textContent = best;
-  }
-
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `
-    <div style="font-size:35px">💥</div>
-    <h2>خبطت!</h2>
-    <p>جبت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
-    أعلى نتيجة: ${best}<br>
-    أحمد TV بيقولك: حاول تاني!</p>
-    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
-  `;
-  document.getElementById('againBtn').onclick = startGame;
+function endGame(){
+running=false;playSound('crash');
+if(spawnTimer)clearInterval(spawnTimer);
+if(score>best){best=score;localStorage.setItem('motoBest',best);bestEl.textContent=best;}
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:35px">💥</div><h2>خبطت!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+' نقطة</b><br>أعلى نتيجة: '+best+'<br>أحمد TV بيقولك: حاول تاني!</p><button class="btn-start" id="againBtn">العب تاني</button>';
+document.getElementById('againBtn').onclick=startGame;
 }
-
-startBtn.onclick = startGame;
-
-window.addEventListener('resize', () => { resize(); if(!running) draw(); });
-
-resize();
-draw();
-
-document.body.addEventListener('touchstart', initAudio, { once: true });
-document.body.addEventListener('click', initAudio, { once: true });
+startBtn.onclick=startGame;
+window.addEventListener('resize',()=>{resize();if(!running)draw();});
+resize();draw();
+document.body.addEventListener('touchstart',initAudio,{once:true});
+document.body.addEventListener('click',initAudio,{once:true});
 </script>
- <a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20Ahmed%20TV%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;">
+<a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;">
 <span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
 </span>
 <span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
 </a>
-
 <script>
-var wa = document.getElementById('waBtn');
-var dragging = false, startX=0, startY=0, startLeft=0, startTop=0, moved=false;
-function startDrag(x,y){ dragging=true; moved=false; startX=x; startY=y; startLeft=wa.offsetLeft; startTop=wa.offsetTop; }
-function moveDrag(x,y){ if(!dragging) return; var dx=x-startX, dy=y-startY; if(Math.abs(dx)>5||Math.abs(dy)>5){ moved=true; } if(moved){ wa.style.left=(startLeft+dx)+'px'; wa.style.top=(startTop+dy)+'px'; wa.style.right='auto'; wa.style.bottom='auto'; } }
-function endDrag(){ if(moved){ setTimeout(function(){moved=false},50); } dragging=false; }
-wa.addEventListener('mousedown',function(e){ startDrag(e.clientX,e.clientY); });
-document.addEventListener('mousemove',function(e){ moveDrag(e.clientX,e.clientY); });
-document.addEventListener('mouseup',function(){ endDrag(); });
-wa.addEventListener('touchstart',function(e){ startDrag(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
-document.addEventListener('touchmove',function(e){ if(dragging){ moveDrag(e.touches[0].clientX,e.touches[0].clientY); } },{passive:true});
-document.addEventListener('touchend',function(){ endDrag(); });
-wa.addEventListener('click',function(e){ if(moved){ e.preventDefault(); } });
+(function(){
+var wa=document.getElementById('waBtn');
+var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
+function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
+function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>6||Math.abs(dy)>6)moved=true;if(moved){var nx=startLeft+dx,ny=startTop+dy;nx=Math.max(0,Math.min(window.innerWidth-60,nx));ny=Math.max(0,Math.min(window.innerHeight-80,ny));wa.style.left=nx+'px';wa.style.top=ny+'px';wa.style.right='auto';wa.style.bottom='auto';}}
+function endDrag(){if(moved){setTimeout(function(){moved=false},80);}dragging=false;}
+wa.addEventListener('touchstart',function(e){if(e.touches.length===1){startDrag(e.touches[0].clientX,e.touches[0].clientY);}}, {passive:true});
+document.addEventListener('touchmove',function(e){if(!dragging)return;if(e.cancelable)e.preventDefault();if(e.touches.length===1){moveDrag(e.touches[0].clientX,e.touches[0].clientY);}}, {passive:false});
+document.addEventListener('touchend',function(){endDrag();});
+wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
+document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
+document.addEventListener('mouseup',function(){endDrag();});
+wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
+})();
 </script>
 </body>
 </html>
