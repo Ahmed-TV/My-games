@@ -68,7 +68,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#082f49;color:#fff;display:f
 <button class="ctrl-btn" id="rightBtn">يمين ▶</button>
 <button class="ctrl-btn pause" id="pauseBtn">وقف</button>
 </div>
-<div id="overlay"><img class="overlay-img" src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=600&q=80" alt="قطار"><h2>سباق القطار</h2><p><b>Ahmed TV</b> - سوق القطر!<br>عدي بين القطرات - لم النجوم - دوس نيترو</p><button class="btn-start" id="startBtn">ابدأ السباق</button><div style="font-size:11px;color:#bae6fd">بتشتغل من غير نت - 3 قضبان - نيترو - نجوم - مراحل</div></div>
+<div id="overlay"><img class="overlay-img" src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=600&q=80" alt="قطار"><h2>سباق القطار</h2><p><b>Ahmed TV</b> - سوق القطر!<br>عدي بين القطرات - لم النجوم - دوس نيترو</p><button class="btn-start" id="startBtn" onclick="startGame()">ابدأ السباق</button><div style="font-size:11px;color:#bae6fd">بتشتغل من غير نت - 3 قضبان - نيترو - نجوم - مراحل</div></div>
 </div>
 <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
 <script>
@@ -120,3 +120,64 @@ var bx=px*W,by=H*0.78;
 drawTrain(bx,by,52,95,'#7c3aed',false);
 ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(6,6,70,22);ctx.fillStyle='#22d3ee';ctx.font='12px Arial';ctx.textAlign='left';ctx.fillText('Ahmed TV',10,21);
 }
+  function loop(){
+tick++;
+if(running&&!paused){
+px+=(targetPx-px)*0.2;
+var cur=(nitroOn&&nitro>0)?2.0:1.1;
+if(nitroOn&&nitro>0)nitro=Math.max(0,nitro-0.8);else nitro=Math.min(100,nitro+0.2);
+nitroFill.style.width=nitro+'%';
+dist+=cur*0.05;score+=nitroOn?2:1;level=1+Math.floor(dist/400);
+scoreEl.textContent=score;distEl.textContent=Math.floor(dist)+'م';levelEl.textContent=level;speedEl.textContent=Math.round(cur*15);
+if(comboT>0){comboT--;if(comboT===0){combo=0;comboEl.style.display='none';}}
+if(tick%Math.max(100,150-level*5)===0){var l=Math.floor(Math.random()*3);enemies.push({x:(l+0.5)/3*W,y:-100,col:['#1d4ed8','#0f766e','#7c3aed','#be185d','#155e75'][Math.floor(Math.random()*5)]});}
+if(tick%80===0){var l2=Math.floor(Math.random()*3);stars.push({x:(l2+0.5)/3*W,y:-40});}
+for(var i=poles.length-1;i>=0;i--){poles[i].y+=cur;if(poles[i].y>H+22)poles[i].y=-22;}
+for(var j=enemies.length-1;j>=0;j--){var en=enemies[j];en.y+=cur;if(en.y>H+100){enemies.splice(j,1);var near=Math.abs(en.x-px*W);if(near>55&&near<120){combo++;comboT=100;score+=combo*50;comboTxt.textContent='كومبو x'+(combo+1)+' +'+combo*50;comboEl.style.display='block';tone(500,0.08,'square',0.08);showMsg('قربت! +'+combo*50);}continue;}if(Math.abs(en.x-px*W)<44&&Math.abs(en.y-H*0.78)<75){if(running)endGame();break;}}
+for(var k=stars.length-1;k>=0;k--){var st=stars[k];st.y+=cur;if(st.y>H){stars.splice(k,1);continue;}if(Math.abs(st.x-px*W)<35&&Math.abs(st.y-H*0.78)<55){stars.splice(k,1);coins++;score+=100;nitro=Math.min(100,nitro+15);coinsEl.textContent=coins;tone(900,0.12,'sine',0.15);setTimeout(function(){tone(1400,0.15,'sine',0.15)},70);showMsg('⭐ +100');}}
+for(var p2=parts.length-1;p2>=0;p2--){var pt=parts[p2];pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=0.2;if(pt.y>H){parts.splice(p2,1);}}
+}
+draw();requestAnimationFrame(loop);
+}
+var ended=false;
+function endGame(){
+if(ended)return;ended=true;
+running=false;tone(200,0.5,'sawtooth',0.25);
+var bx=px*W,by=H*0.78;
+for(var i=0;i<18;i++)parts.push({x:bx,y:by,vx:(Math.random()-0.5)*6,vy:Math.random()*-4,col:['#a855f7','#22d3ee','#fb923c'][i%3]});
+setTimeout(function(){
+if(score>best){best=score;try{localStorage.setItem('trainBest',best);}catch(e){}bestEl.textContent=best;}
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:35px">💥</div><h2>خبطت!</h2><p>جبت <b style="color:#22d3ee;font-size:22px">'+score+' نقطة</b> و '+coins+' نجمة<br>وصلت '+Math.floor(dist)+' متر - المرحلة '+level+'<br>أعلى نتيجة: '+best+'</p><button class="btn-start" id="againBtn" onclick="startGame()">العب تاني</button>';
+},500);
+}
+function startGame(){
+ended=false;
+act();overlay.style.display='none';score=0;coins=0;dist=0;level=1;combo=0;nitro=100;lane=1;px=0.5;targetPx=0.5;enemies=[];stars=[];parts=[];paused=false;document.getElementById('pauseBtn').textContent='وقف';scoreEl.textContent='0';coinsEl.textContent='0';distEl.textContent='0م';levelEl.textContent='1';running=true;showMsg('يلااا!');
+}
+loop();
+</script>
+<a id="waBtn" href="https://wa.me/201551668092?text=أهلا%20أحمد%20عبدالعزيز%20عايز%20ألعب" target="_blank" style="position:fixed;top:20px;left:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;">
+<span style="width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);pointer-events:none;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:36px;height:36px;pointer-events:none;" alt="واتساب">
+</span>
+<span style="color:#fff;font-family:Tahoma,Arial;font-size:14px;font-weight:bold;white-space:nowrap;text-shadow:1px 1px 3px #000;pointer-events:none;">كلمنا واتساب</span>
+</a>
+<script>
+(function(){
+var wa=document.getElementById('waBtn');
+var dragging=false,startX=0,startY=0,startLeft=0,startTop=0,moved=false;
+function startDrag(x,y){dragging=true;moved=false;startX=x;startY=y;startLeft=wa.offsetLeft;startTop=wa.offsetTop;}
+function moveDrag(x,y){if(!dragging)return;var dx=x-startX,dy=y-startY;if(Math.abs(dx)>6||Math.abs(dy)>6)moved=true;if(moved){var nx=startLeft+dx,ny=startTop+dy;nx=Math.max(0,Math.min(window.innerWidth-60,nx));ny=Math.max(0,Math.min(window.innerHeight-80,ny));wa.style.left=nx+'px';wa.style.top=ny+'px';wa.style.right='auto';wa.style.bottom='auto';}}
+function endDrag(){if(moved){setTimeout(function(){moved=false},80);}dragging=false;}
+wa.addEventListener('touchstart',function(e){if(e.touches.length===1){startDrag(e.touches[0].clientX,e.touches[0].clientY);}}, {passive:true});
+document.addEventListener('touchmove',function(e){if(!dragging)return;if(e.cancelable)e.preventDefault();if(e.touches.length===1){moveDrag(e.touches[0].clientX,e.touches[0].clientY);}}, {passive:false});
+document.addEventListener('touchend',function(){endDrag();});
+wa.addEventListener('mousedown',function(e){startDrag(e.clientX,e.clientY);});
+document.addEventListener('mousemove',function(e){moveDrag(e.clientX,e.clientY);});
+document.addEventListener('mouseup',function(){endDrag();});
+wa.addEventListener('click',function(e){if(moved)e.preventDefault();});
+})();
+</script>
+</body>
+</html>
