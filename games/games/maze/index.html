@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة المتاهة | أحمد عبدالعزيز</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+html, body { overflow-y: auto; overflow-x: hidden; }
+body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 4px 4px 4px; }
+.header { width: 100%; max-width: 500px; text-align: center; }
+.top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
+.logo-wrap { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; flex-shrink: 0; }
+.logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+h1 { font-size: 26px; color: #ff2d95; line-height: 1.2; }
+h1 small { display: block; font-size: 13px; color: #00e5ff; }
+.names { text-align: center; line-height: 1.3; margin-bottom: 6px; }
+.names .ar { display: block; font-size: 22px; color: #facc15; font-weight: 900; }
+.names .en { display: block; font-size: 16px; color: #fff; font-weight: 900; }
+.stats { display: flex; gap: 8px; justify-content: center; margin: 4px 0 6px; }
+.stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 3px 12px; min-width: 85px; text-align: center; }
+.stat b { display: block; font-size: 16px; color: #00e5ff; }
+.stat span { font-size: 9px; color: #c4b5fd; }
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
+#game-container { width: 100%; max-width: 500px; height: 340px; position: relative; background: #fff; border: 3px solid #00e5ff; border-radius: 16px; overflow: hidden; touch-action: none; }
+.watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(0,0,0,0.05); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 1; }
+canvas { width: 100%; height: 100%; display: block; touch-action: none; position: relative; z-index: 2; }
+/* الشمال شمال - واليمين يمين */
+.controls { display: flex; direction: ltr; gap: 6px; width: 100%; max-width: 500px; margin-top: 6px; }
+.ctrl-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #00e5ff; border-radius: 10px; padding: 10px 4px; font-size: 18px; font-weight: 900; cursor: pointer; }
+.ctrl-btn:active { background: #ff2d95; }
+#newBtn { width: 100%; max-width: 500px; margin-top: 6px; background: linear-gradient(90deg,#00e5ff,#7c3aed,#ff2d95); color: #fff; border: 2px solid #fff; border-radius: 10px; padding: 8px; font-size: 18px; font-weight: 900; cursor: pointer; }
+#overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; gap: 8px; z-index: 10; }
+#overlay h2 { font-size: 22px; color: #00e5ff; }
+#overlay p { line-height: 1.5; font-size: 13px; color: #fff; }
+.btn-start { background: linear-gradient(90deg,#00e5ff,#ff2d95); color: #fff; border: 2px solid #fff; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
+#game-wrap { position: relative; width: 100%; max-width: 500px; }
+</style>
+</head>
+<body oncontextmenu="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>لعبة المتاهة<small>متاهة الأبطال</small></h1></div>
+<div class="names"><span class="ar">أحمد عبدالعزيز</span><span class="en">Ahmed TV</span></div>
+<div class="stats"><div class="stat"><b id="level">1</b><span>المرحلة</span></div><div class="stat"><b id="time">60</b><span>الوقت ⏰</span></div><div class="stat"><b id="wins">0</b><span>متاهات خلصت</span></div></div>
+</div>
+<div class="how">وصّل 🟢 للـ 🏁 قبل ما الوقت يخلص<br>الشمال شمال - واليمين يمين - دوس على الزراير أو اسحب بصباعك</div>
+<div id="game-wrap"><div id="game-container"><div class="watermark">أحمد عبدالعزيز</div><canvas id="gameCanvas"></canvas><div id="overlay"><h2>🎮 لعبة المتاهة</h2><p>وصّل النقطة الخضرا للعلم 🏁<br>متخبطش في الحيطة السودا<br>عندك 60 ثانية لكل متاهة!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div></div>
+<div class="controls"><button class="ctrl-btn" id="leftBtn">◀ شمال</button><button class="ctrl-btn" id="upBtn">🔼 فوق</button><button class="ctrl-btn" id="downBtn">🔽 تحت</button><button class="ctrl-btn" id="rightBtn">يمين ▶</button></div>
+<button id="newBtn">🔄 متاهة جديدة</button>
+<script>
+const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');
+const levelEl=document.getElementById('level'),timeEl=document.getElementById('time'),winsEl=document.getElementById('wins'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),newBtn=document.getElementById('newBtn');
+const leftBtn=document.getElementById('leftBtn'),rightBtn=document.getElementById('rightBtn'),upBtn=document.getElementById('upBtn'),downBtn=document.getElementById('downBtn');
+let W=0,H=0,ROWS=11,COLS=11,cell=0,maze=[],px=0,py=0,level=1,wins=0,timeLeft=60,timer=null,started=false;
+let audioCtx=null;
+function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
+function beep(f,d=0.08,type='square',v=0.08){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+function genMaze(){
+maze=Array.from({length:ROWS},()=>Array(COLS).fill(1));
+let stack=[[1,1]];maze[1][1]=0;
+let dirs=[[0,2],[0,-2],[2,0],[-2,0]];
+while(stack.length){
+let [x,y]=stack[stack.length-1];
+let opts=dirs.filter(([dx,dy])=>{let nx=x+dx,ny=y+dy;return nx>0&&nx<COLS-1&&ny>0&&ny<ROWS-1&&maze[ny][nx]===1;});
+if(!opts.length){stack.pop();continue;}
+let [dx,dy]=opts[Math.floor(Math.random()*opts.length)];
+maze[y+dy/2][x+dx/2]=0;maze[y+dy][x+dx]=0;stack.push([x+dx,y+dy]);
+}
+maze[ROWS-2][COLS-2]=0;px=1;py=1;
+}
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;cell=Math.floor(Math.min(W/COLS,H/ROWS));draw();}
+function draw(){
+ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+let ox=(W-cell*COLS)/2,oy=(H-cell*ROWS)/2;
+for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
+if(maze[y][x]===1){ctx.fillStyle='#1e293b';ctx.fillRect(ox+x*cell,oy+y*cell,cell,cell);}
+}
+ctx.fillStyle='#facc15';ctx.fillRect(ox+(COLS-2)*cell,oy+(ROWS-2)*cell,cell,cell);
+ctx.font=(cell-4)+'px Arial';ctx.textAlign='center';ctx.fillText('🏁',ox+(COLS-2)*cell+cell/2,oy+(ROWS-2)*cell+cell-4);
+ctx.fillStyle='#22c55e';ctx.beginPath();ctx.arc(ox+px*cell+cell/2,oy+py*cell+cell/2,cell/2-3,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ox+px*cell+cell/2-3,oy+py*cell+cell/2-3,3,0,Math.PI*2);ctx.fill();
+}
+function tryMove(dx,dy){
+if(!started)return;
+let nx=px+dx,ny=py+dy;
+if(nx<0||nx>=COLS||ny<0||ny>=ROWS)return;
+if(maze[ny][nx]===1){beep(120,0.08,'sawtooth');return;}
+px=nx;py=ny;beep(500,0.05);draw();
+if(px===COLS-2&&py===ROWS-2){winLevel();}
+}
+function winLevel(){
+wins++;winsEl.textContent=wins;beep(600,0.1);setTimeout(()=>beep(800,0.1),100);setTimeout(()=>beep(1000,0.15),200);
+level++;levelEl.textContent=level;timeLeft=60;timeEl.textContent=60;genMaze();draw();
+}
+function startGame(){
+initAudio();started=true;level=1;wins=0;timeLeft=60;levelEl.textContent=1;winsEl.textContent=0;timeEl.textContent=60;overlay.style.display='none';genMaze();draw();
+clearInterval(timer);timer=setInterval(()=>{
+timeLeft--;timeEl.textContent=timeLeft;
+if(timeLeft<=10)beep(800,0.05);
+if(timeLeft<=0){clearInterval(timer);started=false;overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">⏰</div><h2>خلص الوقت!</h2><p>خلصت <b>${wins} متاهة</b><br>ووصلت للمرحلة <b>${level}</b></p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=startGame;}
+},1000);
+}
+function bind(btn,fn){btn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();fn();},{passive:false});btn.addEventListener('click',()=>{initAudio();fn();});}
+bind(leftBtn,()=>tryMove(-1,0));
+bind(rightBtn,()=>tryMove(1,0));
+bind(upBtn,()=>tryMove(0,-1));
+bind(downBtn,()=>tryMove(0,1));
+newBtn.addEventListener('click',()=>{initAudio();if(!started)startGame();else{genMaze();draw();}});
+let sx=0,sy=0;
+canvas.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+canvas.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)<15&&Math.abs(dy)<15)return;if(Math.abs(dx)>Math.abs(dy))tryMove(dx>0?1:-1,0);else tryMove(0,dy>0?1:-1);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.code==='ArrowLeft')tryMove(-1,0);if(e.code==='ArrowRight')tryMove(1,0);if(e.code==='ArrowUp')tryMove(0,-1);if(e.code==='ArrowDown')tryMove(0,1);});
+startBtn.addEventListener('click',()=>startGame());
+window.addEventListener('resize',()=>resize());
+genMaze();resize();draw();
+</script>
+</body>
+</html>
