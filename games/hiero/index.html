@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - لعبة الهيروغليفية</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - حروف الهيروغليفية</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Egyptian+Hieroglyphs&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
@@ -18,14 +18,18 @@ header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;t
 .stat{flex:1;background:#fff;border:1.5px solid #8B4513;border-radius:9px;padding:2px 1px;text-align:center;line-height:1.1}
 .stat b{display:block;font-size:14px;color:#8B4513}
 .stat span{font-size:9px;font-weight:800;color:#666}
-#view{width:100%;height:auto;min-height:340px;background:#FFF8DC;border:2px solid #8B4513;border-radius:16px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px;text-align:center}
-#bigSym{font-family:'Noto Sans Egyptian Hieroglyphs',Tahoma,sans-serif;font-size:95px;line-height:1.1;min-height:105px;display:flex;align-items:center;justify-content:center;color:#000}
+#view{width:100%;height:auto;min-height:340px;background:#FFF8DC;border:2px solid #8B4513;border-radius:16px;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px;text-align:center}
+#pair{display:flex;gap:10px;width:100%;justify-content:center;align-items:center;margin:6px 0}
+.pBox{flex:1;background:#fff;border:2px solid #8B4513;border-radius:14px;padding:8px 2px;text-align:center}
+.pBox span{display:block;font-size:10px;font-weight:900;color:#888}
+#arabicLetter{font-size:80px;line-height:1;color:#8B4513;font-weight:900}
+#hieroLetter{font-family:'Noto Sans Egyptian Hieroglyphs',Tahoma,sans-serif;font-size:80px;line-height:1;color:#000}
 #bigName{font-size:22px;font-weight:900;color:#8B4513;margin:4px 0 2px}
 #pronounce{font-size:13px;font-weight:900;color:#A0522D;background:#FFE4B5;padding:2px 10px;border-radius:20px;margin:2px 0}
 #bigMean{font-size:14px;font-weight:800;color:#333;line-height:1.6}
 #example{font-size:12px;color:#555;background:#fff;border:1px dashed #8B4513;border-radius:10px;padding:6px;margin-top:6px;line-height:1.6;width:100%}
-#opts{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:8px;padding-bottom:4px}
-.opt{width:100%;padding:12px 8px;border-radius:12px;border:2px solid #8B4513;background:#fff;color:#333;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;display:block}
+#opts{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:8px}
+.opt{width:100%;padding:12px 8px;border-radius:12px;border:2px solid #8B4513;background:#fff;color:#333;font-weight:900;font-size:18px;cursor:pointer;font-family:inherit;display:block}
 .opt.correct{background:#4CAF50;color:#fff;border-color:#4CAF50}
 .opt.wrong{background:#F44336;color:#fff;border-color:#F44336}
 .feedback{min-height:18px;font-size:12px;font-weight:800;color:#8B4513;text-align:center;margin:3px 0 2px}
@@ -36,64 +40,59 @@ footer{text-align:center;color:#8B4513;font-size:10px;margin-top:2px;padding-bot
 footer a{color:#8B4513;text-decoration:none;font-weight:700}
 </style></head>
 <body oncontextmenu="return false"><div class="game">
-<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">لعبة الهيروغليفية</div><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></header>
-<div class="modes"><button class="mode active" id="mLearn" onclick="setMode('learn')">تعلم - 30 رمز</button><button class="mode" id="mQuiz" onclick="setMode('quiz')">تحدي</button><button class="mode" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button></div>
-<div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="qNum">1 / 30</b><span>السؤال</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
-<div id="view"><div id="bigSym">𓀀</div><div id="bigName">رجل</div><div id="pronounce">النطق: سا</div><div id="bigMean">الرمز ده معناه رجل</div><div id="example">مثال: الفرعون رجل قوي - كانوا بيرسموا الرجل كده</div><div id="opts" style="display:none"></div></div>
-<div class="feedback" id="feedback">احفظ الرمز والنطق والمثال - وبعدين دوس تحدي!</div>
-<div class="btn-row"><button class="skipbtn" onclick="prevCard()">اللي قبله</button><button class="mainbtn" onclick="nextCard()">اللي بعده / سؤال جديد</button></div>
+<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">حروف الهيروغليفية</div><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></header>
+<div class="modes"><button class="mode active" id="mLearn" onclick="setMode('learn')">تعلم - 28 حرف</button><button class="mode" id="mQuiz" onclick="setMode('quiz')">تحدي</button><button class="mode" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button></div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="qNum">1 / 28</b><span>الحرف</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
+<div id="view"><div id="pair"><div class="pBox"><span>الحرف العربي</span><div id="arabicLetter">أ</div></div><div style="font-size:28px;font-weight:900;color:#8B4513;">=</div><div class="pBox"><span>الحرف الهيروغليفي</span><div id="hieroLetter">𓄿</div></div></div><div id="bigName">ألف - نسر</div><div id="pronounce">النطق: آ</div><div id="bigMean">حرف الألف بالهيروغليفي هو النسر</div><div id="example">مثال: أسد - أرنب - أحمد</div><div id="opts" style="display:none"></div></div>
+<div class="feedback" id="feedback">احفظ الحرف العربي والحرف الهيروغليفي اللي جنبه!</div>
+<div class="btn-row"><button class="skipbtn" onclick="prevCard()">اللي قبله</button><button class="mainbtn" onclick="nextCard()">اللي بعده / حرف جديد</button></div>
 <footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
-document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
 var soundOn=true, actx=null;
-function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; if(soundOn) playBeep(600,0.15); }
-function playBeep(freq,dur){ if(!soundOn) return; try{ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); var o=actx.createOscillator(), g=actx.createGain(); o.type='sine'; o.frequency.value=freq; g.gain.setValueAtTime(0.25,actx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,actx.currentTime+(dur||0.2)); o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+(dur||0.2)); }catch(e){} }
-function playCorrect(){ if(!soundOn) return; playBeep(523,0.15); setTimeout(function(){playBeep(659,0.15);},150); setTimeout(function(){playBeep(784,0.25);},300); speak('صح! عاش'); }
-function playWrong(){ if(!soundOn) return; playBeep(200,0.3); speak('غلط! حاول تاني'); }
-function speak(txt){ if(!soundOn) return; try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(txt); u.lang='ar-EG'; u.rate=0.9; window.speechSynthesis.speak(u); } }catch(e){} }
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; }
+function playBeep(f,d){ if(!soundOn) return; try{ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); var o=actx.createOscillator(), g=actx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0.25,actx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,actx.currentTime+(d||0.2)); o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+(d||0.2)); }catch(e){} }
+function speak(t){ if(!soundOn) return; try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(t); u.lang='ar-EG'; u.rate=0.9; window.speechSynthesis.speak(u); } }catch(e){} }
 var data=[
-{sym:'𓀀',name:'رجل',pron:'النطق: سا',mean:'الرمز ده معناه رجل - كانوا بيرسموا الإنسان كده',ex:'مثال: الفرعون رجل قوي وحكيم'},
-{sym:'𓂀',name:'عين حورس',pron:'النطق: وجات',mean:'عين حورس - بتحمي صاحبها - رمز الحماية والحظ',ex:'مثال: كانوا بيلبسوها تميمة تحميهم من الحسد'},
-{sym:'𓅓',name:'بومة',pron:'النطق: م',mean:'البومة معناها حرف الميم - وكانت رمز الحكمة والهدوء',ex:'مثال: كلمة أم تبدأ بحرف الميم - البومة'},
-{sym:'𓆣',name:'جعران',pron:'النطق: خبر',mean:'الجعران - رمز الشمس والبعث من جديد - كانوا بيعملوه تميمة',ex:'مثال: الجعران بيطلع من الرمل - زي الشمس بتطلع الصبح'},
-{sym:'𓋹',name:'عنخ - مفتاح الحياة',pron:'النطق: عنخ',mean:'عنخ - مفتاح الحياة - رمز الخلود والحياة الأبدية',ex:'مثال: الملوك كانوا ماسكين العنخ في إيدهم'},
-{sym:'𓆓',name:'حية الكوبرا',pron:'النطق: جت',mean:'الكوبرا الصح - رمز الحماية - وكانت على تاج الملك',ex:'مثال: الكوبرا بتحمي الفرعون من الأعداء'},
-{sym:'𓆑',name:'صقر حورس',pron:'النطق: حور',mean:'صقر حورس الصح - إله السماء - وحامي الفرعون',ex:'مثال: حورس طار في السماء وحمى مصر'},
-{sym:'𓈖',name:'موجة مية',pron:'النطق: ن',mean:'الموجة دي معناها مية - نهر النيل - سر الحياة',ex:'مثال: النيل مية - والمية حياة'},
-{sym:'𓇳',name:'شمس',pron:'النطق: رع',mean:'الشمس - الإله رع - مصدر النور والحياة',ex:'مثال: رع بيطلع الصبح وينور الدنيا'},
-{sym:'𓏏',name:'رغيف عيش',pron:'النطق: ت',mean:'الرغيف ده معناه عيش - وكان أهم أكل عندهم',ex:'مثال: العيش كان بيتعمل من القمح'},
-{sym:'𓂋',name:'بق - فم',pron:'النطق: ر',mean:'البق معناها فم - وكانوا بيقولوا بيه الكلام',ex:'مثال: بالفم بنتكلم ونغني'},
-{sym:'𓆑',name:'صقر - تاني',pron:'النطق: بيك',mean:'الصقر التاني - رمز السرعة والقوة',ex:'مثال: الصقر أسرع طير'},
-{sym:'𓀭',name:'فرعون',pron:'النطق: نسو',mean:'الفرعون - ملك مصر - ابن الإله',ex:'مثال: توت عنخ آمون كان فرعون صغير'},
-{sym:'𓃠',name:'قطة',pron:'النطق: ميو',mean:'القطة الصح - الإلهة باستت - كانت مقدسة عندهم',ex:'مثال: القطة بتحمي البيت من الفيران'},
-{sym:'𓃭',name:'أسد',pron:'النطق: ماو',mean:'الأسد الصح - رمز القوة والشجاعة - ملك الغابة',ex:'مثال: الأسد قوي وشجاع'},
-{sym:'𓅱',name:'سمان',pron:'النطق: و',mean:'السمان ده معناه حرف الواو',ex:'مثال: كلمة ورد تبدأ بحرف الواو'},
-{sym:'𓇬',name:'زهرة اللوتس',pron:'النطق: سشن',mean:'زهرة اللوتس - رمز الجمال والنقاء - بتفتح الصبح',ex:'مثال: اللوتس بتطلع من المية نظيفة'},
-{sym:'𓊵',name:'هرم',pron:'النطق: مر',mean:'الهرم - بيت الملك بعد الموت - مقبرة الفرعون',ex:'مثال: هرم خوفو أكبر هرم في العالم'},
-{sym:'𓋴',name:'قماش',pron:'النطق: س',mean:'القماش ده معناه حرف السين - وكانوا بيعملوا منه الهدوم',ex:'مثال: الهدوم بتتعمل من القماش'},
-{sym:'𓍯',name:'نجمة',pron:'النطق: سبا',mean:'النجمة - رمز السماء والليل - بتهدي المسافرين',ex:'مثال: النجوم بتنور السماء بالليل'},
-{sym:'𓂧',name:'أذن',pron:'النطق: سدجم',mean:'الأذن - بنسمع بيها - رمز السمع',ex:'مثال: بالأذن بنسمع الكلام'},
-{sym:'𓁛',name:'عين',pron:'النطق: إرت',mean:'العين - بنشوف بيها - رمز الرؤية',ex:'مثال: بالعين بنشوف الدنيا'},
-{sym:'𓄿',name:'قلب',pron:'النطق: إيب',mean:'القلب - رمز الحب والمشاعر',ex:'مثال: القلب بيحب'},
-{sym:'𓇌',name:'يد',pron:'النطق: دجرت',mean:'اليد - بنمسك بيها - رمز العمل',ex:'مثال: باليد بنكتب ونرسم'},
-{sym:'𓂸',name:'رجل - قدم',pron:'النطق: رد',mean:'القدم - بنمشي بيها - رمز المشي',ex:'مثال: بالقدم بنمشي ونجري'},
-{sym:'𓆼',name:'تمساح',pron:'النطق: مسح',mean:'التمساح - كان عايش في النيل - رمز القوة',ex:'مثال: التمساح قوي وسريع في المية'},
-{sym:'𓇋',name:'بوص - نبات',pron:'النطق: إ',mean:'البوص - نبات كان بيطلع جنب النيل',ex:'مثال: البوص بيتعمل منه الورق'},
-{sym:'𓏊',name:'سلة',pron:'النطق: نب',mean:'السلة - كانوا بيشيلوا فيها الأكل',ex:'مثال: السلة فيها عيش وفاكهة'},
-{sym:'𓈗',name:'أرض',pron:'النطق: تا',mean:'الأرض - رمز مصر - أرض النيل',ex:'مثال: أرض مصر طيبة'},
-{sym:'𓀔',name:'كاتب',pron:'النطق: سش',mean:'الكاتب - اللي بيكتب الهيروغليفي - كان شغلانة مهمة',ex:'مثال: الكاتب بيكتب على ورق البردي'}
+{ar:'أ',hiero:'𓄿',name:'ألف - نسر',pron:'النطق: آ',mean:'حرف الألف بالهيروغليفي هو النسر',ex:'مثال: أسد - أرنب - أحمد'},
+{ar:'ب',hiero:'𓃀',name:'باء - قدم',pron:'النطق: ب',mean:'حرف الباء بالهيروغليفي هو القدم',ex:'مثال: باب - بطة - بحر'},
+{ar:'ت',hiero:'𓏏',name:'تاء - رغيف عيش',pron:'النطق: ت',mean:'حرف التاء بالهيروغليفي هو رغيف العيش',ex:'مثال: تفاح - تمر - تاج'},
+{ar:'ث',hiero:'𓏏',name:'ثاء - رغيف عيش',pron:'النطق: ت - زي التاء',mean:'الثاء ملهاش رمز لوحدها - بتتكتب زي التاء عند الفراعنة',ex:'مثال: ثعلب - ثوب - ثمر'},
+{ar:'ج',hiero:'𓆓',name:'جيم - كوبرا',pron:'النطق: ج',mean:'حرف الجيم بالهيروغليفي هو الكوبرا',ex:'مثال: جمل - جبل - جنة'},
+{ar:'ح',hiero:'𓎛',name:'حاء - حبل',pron:'النطق: ح',mean:'حرف الحاء بالهيروغليفي هو الحبل الملفوف',ex:'مثال: حصان - حمام - حب'},
+{ar:'خ',hiero:'𓐍',name:'خاء - غربال',pron:'النطق: خ',mean:'حرف الخاء بالهيروغليفي هو الغربال',ex:'مثال: خروف - خبز - خيمة'},
+{ar:'د',hiero:'𓂧',name:'دال - يد',pron:'النطق: د',mean:'حرف الدال بالهيروغليفي هو اليد',ex:'مثال: دار - دب - دجاجة'},
+{ar:'ذ',hiero:'𓆑',name:'ذال - صقر',pron:'النطق: د - زي الدال',mean:'الذال ملهاش رمز لوحدها - بتتكتب زي الدال والصقر',ex:'مثال: ذهب - ذرة - ذئب'},
+{ar:'ر',hiero:'𓂋',name:'راء - فم',pron:'النطق: ر',mean:'حرف الراء بالهيروغليفي هو الفم',ex:'مثال: رجل - رمل - رعد'},
+{ar:'ز',hiero:'𓊃',name:'زاي - قفل',pron:'النطق: ز',mean:'حرف الزاي بالهيروغليفي هو قفل الباب',ex:'مثال: زهرة - زرافة - زيت'},
+{ar:'س',hiero:'𓋴',name:'سين - قماش',pron:'النطق: س',mean:'حرف السين بالهيروغليفي هو القماش المطوي',ex:'مثال: سمك - شمس - سيف'},
+{ar:'ش',hiero:'𓈙',name:'شين - بركة',pron:'النطق: ش',mean:'حرف الشين بالهيروغليفي هو بركة المية',ex:'مثال: شمس - شجرة - شهر'},
+{ar:'ص',hiero:'𓊃',name:'صاد - قفل',pron:'النطق: ص - زي الزاي',mean:'الصاد بتتكتب زي الزاي عند الفراعنة - قفل الباب',ex:'مثال: صقر - صديق - صباح'},
+{ar:'ض',hiero:'𓂧',name:'ضاد - يد',pron:'النطق: د - زي الدال',mean:'الضاد بتتكتب زي الدال - اليد',ex:'مثال: ضابط - ضوء - ضيف'},
+{ar:'ط',hiero:'𓏏',name:'طاء - رغيف',pron:'النطق: ت - زي التاء',mean:'الطاء بتتكتب زي التاء - رغيف العيش',ex:'مثال: طائرة - طفل - طماطم'},
+{ar:'ظ',hiero:'𓊃',name:'ظاء - قفل',pron:'النطق: ز - زي الزاي',mean:'الظاء بتتكتب زي الزاي - قفل الباب',ex:'مثال: ظرف - ظهر - ظل'},
+{ar:'ع',hiero:'𓂝',name:'عين - ذراع',pron:'النطق: ع',mean:'حرف العين بالهيروغليفي هو الذراع',ex:'مثال: عين - علم - عصفور'},
+{ar:'غ',hiero:'𓂝',name:'غين - ذراع',pron:'النطق: ع - زي العين',mean:'الغين بتتكتب زي العين - الذراع',ex:'مثال: غيمة - غزال - غروب'},
+{ar:'ف',hiero:'𓆑',name:'فاء - صقر',pron:'النطق: ف',mean:'حرف الفاء بالهيروغليفي هو الصقر الصغير',ex:'مثال: فاكهة - فراشة - فيل'},
+{ar:'ق',hiero:'𓈎',name:'قاف - تلة',pron:'النطق: ق',mean:'حرف القاف بالهيروغليفي هو التلة',ex:'مثال: قمر - قلم - قطار'},
+{ar:'ك',hiero:'𓎎',name:'كاف - سلة',pron:'النطق: ك',mean:'حرف الكاف بالهيروغليفي هو السلة',ex:'مثال: كتاب - كلب - كعبة'},
+{ar:'ل',hiero:'𓂋',name:'لام - فم',pron:'النطق: ر - زي الراء',mean:'اللام بتتكتب زي الراء عند الفراعنة - الفم',ex:'مثال: ليمون - ليل - لعبة'},
+{ar:'م',hiero:'𓅓',name:'ميم - بومة',pron:'النطق: م',mean:'حرف الميم بالهيروغليفي هو البومة',ex:'مثال: ماما - موز - مدرسة'},
+{ar:'ن',hiero:'𓈖',name:'نون - موجة',pron:'النطق: ن',mean:'حرف النون بالهيروغليفي هو موجة المية',ex:'مثال: نيل - نجم - نور'},
+{ar:'هـ',hiero:'𓎛',name:'هاء - حبل',pron:'النطق: هـ',mean:'حرف الهاء بالهيروغليفي هو الحبل',ex:'مثال: هلال - هدهد - هواء'},
+{ar:'و',hiero:'𓅱',name:'واو - سمان',pron:'النطق: و',mean:'حرف الواو بالهيروغليفي هو طائر السمان',ex:'مثال: ورد - ولد - وطن'},
+{ar:'ي',hiero:'𓇋',name:'ياء - بوص',pron:'النطق: ي',mean:'حرف الياء بالهيروغليفي هو نبات البوص',ex:'مثال: يد - ياسمين - يوسف'}
 ];
-let mode='learn', idx=0, score=0, best=+(localStorage.getItem('ahmed_hiero_best')||0);
+let mode='learn', idx=0, score=0, best=+(localStorage.getItem('ahmed_letters_best')||0);
 document.getElementById('best').textContent=best;
-function setMode(m){ mode=m; document.getElementById('mLearn').classList.toggle('active',m==='learn'); document.getElementById('mQuiz').classList.toggle('active',m==='quiz'); playBeep(500,0.1); if(m==='learn'){ showLearn(); } else { newQuiz(); } }
-function showLearn(){ document.getElementById('opts').style.display='none'; document.getElementById('pronounce').style.display='block'; document.getElementById('example').style.display='block'; let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('bigName').textContent=d.name; document.getElementById('pronounce').textContent=d.pron; document.getElementById('bigMean').textContent=d.mean; document.getElementById('example').textContent=d.ex; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length; document.getElementById('feedback').textContent='احفظ الرمز والنطق والمثال - وبعدين دوس تحدي!'; speak(d.name); document.getElementById('view').scrollTop=0; }
-function newQuiz(){ let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('bigName').textContent='ده معناه إيه؟'; document.getElementById('pronounce').style.display='none'; document.getElementById('example').style.display='none'; document.getElementById('bigMean').textContent='اختار الإجابة الصح!'; document.getElementById('opts').style.display='flex'; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length;
-let opts=[d.name]; while(opts.length<4){ let r=data[Math.floor(Math.random()*data.length)].name; if(!opts.includes(r)) opts.push(r); } opts.sort(()=>Math.random()-0.5);
-let box=document.getElementById('opts'); box.innerHTML=''; opts.forEach(function(o){ let b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=function(){ checkAns(o,d.name,b); }; box.appendChild(b); }); document.getElementById('feedback').textContent='ركز - الرمز ده شوفته في التعلم!'; document.getElementById('view').scrollTop=0; }
-function checkAns(pick,correct,btn){ playBeep(400,0.1); if(pick===correct){ btn.classList.add('correct'); score+=10; document.getElementById('score').textContent=score; document.getElementById('feedback').textContent='صح! عاش يا فرعون صغير! +10'; playCorrect(); if(score>best){ best=score; localStorage.setItem('ahmed_hiero_best',best); document.getElementById('best').textContent=best; } setTimeout(nextCard,1200); } else { btn.classList.add('wrong'); document.getElementById('feedback').textContent='غلط! الصح هو: '+correct; playWrong(); setTimeout(nextCard,1600); } }
-function nextCard(){ idx=(idx+1)%data.length; playBeep(500,0.08); if(mode==='learn') showLearn(); else newQuiz(); }
-function prevCard(){ idx=(idx-1+data.length)%data.length; playBeep(500,0.08); if(mode==='learn') showLearn(); else newQuiz(); }
+function setMode(m){ mode=m; document.getElementById('mLearn').classList.toggle('active',m==='learn'); document.getElementById('mQuiz').classList.toggle('active',m==='quiz'); if(m==='learn') showLearn(); else newQuiz(); }
+function showLearn(){ document.getElementById('opts').style.display='none'; document.getElementById('pronounce').style.display='block'; document.getElementById('example').style.display='block'; document.getElementById('pair').style.display='flex'; let d=data[idx]; document.getElementById('arabicLetter').textContent=d.ar; document.getElementById('hieroLetter').textContent=d.hiero; document.getElementById('bigName').textContent=d.name; document.getElementById('pronounce').textContent=d.pron; document.getElementById('bigMean').textContent=d.mean; document.getElementById('example').textContent=d.ex; document.getElementById('qNum').textContent=(idx+1)+' / 28'; document.getElementById('feedback').textContent='احفظ الحرف العربي والهيروغليفي اللي جنبه!'; speak('حرف '+d.ar); }
+function newQuiz(){ let d=data[idx]; document.getElementById('pair').style.display='flex'; document.getElementById('arabicLetter').textContent='؟'; document.getElementById('hieroLetter').textContent=d.hiero; document.getElementById('bigName').textContent='الحرف الهيروغليفي ده يقابله أي حرف عربي؟'; document.getElementById('pronounce').style.display='none'; document.getElementById('example').style.display='none'; document.getElementById('bigMean').textContent='اختار الحرف العربي الصح!'; document.getElementById('opts').style.display='flex'; document.getElementById('qNum').textContent=(idx+1)+' / 28';
+let opts=[d.ar]; while(opts.length<4){ let r=data[Math.floor(Math.random()*data.length)].ar; if(!opts.includes(r)) opts.push(r); } opts.sort(()=>Math.random()-0.5);
+let box=document.getElementById('opts'); box.innerHTML=''; opts.forEach(function(o){ let b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=function(){ checkAns(o,d.ar,b); }; box.appendChild(b); }); document.getElementById('feedback').textContent='ركز - شفت الحرف ده في التعلم!'; }
+function checkAns(pick,correct,btn){ if(pick===correct){ btn.classList.add('correct'); score+=10; document.getElementById('score').textContent=score; document.getElementById('feedback').textContent='صح! عاش! +10'; playBeep(784,0.25); speak('صح'); if(score>best){ best=score; localStorage.setItem('ahmed_letters_best',best); document.getElementById('best').textContent=best; } setTimeout(nextCard,1200); } else { btn.classList.add('wrong'); document.getElementById('feedback').textContent='غلط! الصح هو حرف: '+correct; playBeep(200,0.3); speak('غلط'); setTimeout(nextCard,1600); } }
+function nextCard(){ idx=(idx+1)%data.length; if(mode==='learn') showLearn(); else newQuiz(); }
+function prevCard(){ idx=(idx-1+data.length)%data.length; if(mode==='learn') showLearn(); else newQuiz(); }
 showLearn();
 </script>
 </body></html>
