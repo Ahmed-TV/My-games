@@ -17,24 +17,24 @@ header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;t
 .stat{flex:1;background:#fff;border:1.5px solid #8B4513;border-radius:9px;padding:2px 1px;text-align:center;line-height:1.1}
 .stat b{display:block;font-size:14px;color:#8B4513}
 .stat span{font-size:9px;font-weight:800;color:#666}
-#view{width:100%;height:320px;flex-shrink:0;background:#FFF8DC;border:2px solid #8B4513;border-radius:16px;overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;text-align:center}
-#bigSym{font-size:90px;line-height:1.1}
+#view{width:100%;height:auto;min-height:380px;background:#FFF8DC;border:2px solid #8B4513;border-radius:16px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px;text-align:center}
+#bigSym{font-size:70px;line-height:1.1;min-height:80px;display:flex;align-items:center;justify-content:center}
 #bigName{font-size:22px;font-weight:900;color:#8B4513;margin:6px 0 2px}
-#bigMean{font-size:15px;font-weight:800;color:#333;line-height:1.5;min-height:44px}
-#opts{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:6px}
-.opt{width:100%;padding:10px 8px;border-radius:12px;border:2px solid #8B4513;background:#fff;color:#333;font-weight:900;font-size:14px;cursor:pointer;font-family:inherit}
+#bigMean{font-size:15px;font-weight:800;color:#333;line-height:1.5;min-height:22px}
+#opts{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:8px;padding-bottom:4px}
+.opt{width:100%;padding:12px 8px;border-radius:12px;border:2px solid #8B4513;background:#fff;color:#333;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;display:block}
 .opt.correct{background:#4CAF50;color:#fff;border-color:#4CAF50}
 .opt.wrong{background:#F44336;color:#fff;border-color:#F44336}
 .feedback{min-height:18px;font-size:12px;font-weight:800;color:#8B4513;text-align:center;margin:3px 0 2px}
 .btn-row{display:flex;gap:6px;width:100%;margin-top:4px}
-.mainbtn{flex:2;font-family:inherit;font-weight:900;border:0;border-radius:18px;padding:8px 10px;background:#8B4513;color:#fff;cursor:pointer;font-size:13px}
-.skipbtn{flex:1;font-family:inherit;font-weight:800;border:2px solid #8B4513;border-radius:18px;padding:8px 6px;background:#fff;color:#8B4513;cursor:pointer;font-size:13px}
+.mainbtn{flex:2;font-family:inherit;font-weight:900;border:0;border-radius:18px;padding:10px;background:#8B4513;color:#fff;cursor:pointer;font-size:13px}
+.skipbtn{flex:1;font-family:inherit;font-weight:800;border:2px solid #8B4513;border-radius:18px;padding:10px 6px;background:#fff;color:#8B4513;cursor:pointer;font-size:13px}
 footer{text-align:center;color:#8B4513;font-size:10px;margin-top:2px;padding-bottom:2px}
 footer a{color:#8B4513;text-decoration:none;font-weight:700}
 </style></head>
 <body oncontextmenu="return false"><div class="game">
 <header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">لعبة الهيروغليفية</div><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></header>
-<div class="modes"><button class="mode active" id="mLearn" onclick="setMode('learn')">تعلم</button><button class="mode" id="mQuiz" onclick="setMode('quiz')">تحدي</button></div>
+<div class="modes"><button class="mode active" id="mLearn" onclick="setMode('learn')">تعلم</button><button class="mode" id="mQuiz" onclick="setMode('quiz')">تحدي</button><button class="mode" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button></div>
 <div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="qNum">1 / 20</b><span>السؤال</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
 <div id="view"><div id="bigSym">𓀀</div><div id="bigName">رجل</div><div id="bigMean">الرمز ده معناه رجل - كانوا بيكتبوه كده من 5000 سنة!</div><div id="opts" style="display:none"></div></div>
 <div class="feedback" id="feedback">دوس تحدي واختبر نفسك في الهيروغليفي!</div>
@@ -43,6 +43,12 @@ footer a{color:#8B4513;text-decoration:none;font-weight:700}
 <script>
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
+var soundOn=true, actx=null;
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; if(soundOn) playBeep(600,0.15); }
+function playBeep(freq,dur){ if(!soundOn) return; try{ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); var o=actx.createOscillator(), g=actx.createGain(); o.type='sine'; o.frequency.value=freq; g.gain.setValueAtTime(0.25,actx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,actx.currentTime+(dur||0.2)); o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+(dur||0.2)); }catch(e){} }
+function playCorrect(){ if(!soundOn) return; playBeep(523,0.15); setTimeout(function(){playBeep(659,0.15);},150); setTimeout(function(){playBeep(784,0.25);},300); speak('صح! عاش'); }
+function playWrong(){ if(!soundOn) return; playBeep(200,0.3); speak('غلط! حاول تاني'); }
+function speak(txt){ if(!soundOn) return; try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(txt); u.lang='ar-EG'; u.rate=0.9; window.speechSynthesis.speak(u); } }catch(e){} }
 var data=[
 {sym:'𓀀',name:'رجل',mean:'الرمز ده معناه رجل - كانوا بيكتبوه كده من 5000 سنة!'},
 {sym:'𓂀',name:'عين حورس',mean:'عين حورس - بتحمي صاحبها - وبتجيب الحظ!'},
@@ -67,14 +73,14 @@ var data=[
 ];
 let mode='learn', idx=0, score=0, best=+(localStorage.getItem('ahmed_hiero_best')||0);
 document.getElementById('best').textContent=best;
-function setMode(m){ mode=m; document.getElementById('mLearn').classList.toggle('active',m==='learn'); document.getElementById('mQuiz').classList.toggle('active',m==='quiz'); if(m==='learn'){ showLearn(); } else { newQuiz(); } }
-function showLearn(){ document.getElementById('opts').style.display='none'; let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('bigName').textContent=d.name; document.getElementById('bigMean').textContent=d.mean; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length; document.getElementById('feedback').textContent='احفظ الرمز ده - وبعدين دوس تحدي!'; }
+function setMode(m){ mode=m; document.getElementById('mLearn').classList.toggle('active',m==='learn'); document.getElementById('mQuiz').classList.toggle('active',m==='quiz'); playBeep(500,0.1); if(m==='learn'){ showLearn(); } else { newQuiz(); } }
+function showLearn(){ document.getElementById('opts').style.display='none'; let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('bigName').textContent=d.name; document.getElementById('bigMean').textContent=d.mean; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length; document.getElementById('feedback').textContent='احفظ الرمز ده - وبعدين دوس تحدي!'; speak(d.name); document.getElementById('view').scrollTop=0; }
 function newQuiz(){ let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('bigName').textContent='ده معناه إيه؟'; document.getElementById('bigMean').textContent='اختار الإجابة الصح!'; document.getElementById('opts').style.display='flex'; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length;
 let opts=[d.name]; while(opts.length<4){ let r=data[Math.floor(Math.random()*data.length)].name; if(!opts.includes(r)) opts.push(r); } opts.sort(()=>Math.random()-0.5);
-let box=document.getElementById('opts'); box.innerHTML=''; opts.forEach(function(o){ let b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=function(){ checkAns(o,d.name,b); }; box.appendChild(b); }); document.getElementById('feedback').textContent='ركز - الرمز ده شوفته في التعلم!'; }
-function checkAns(pick,correct,btn){ if(pick===correct){ btn.classList.add('correct'); score+=10; document.getElementById('score').textContent=score; document.getElementById('feedback').textContent='صح! عاش يا فرعون صغير! +10'; if(score>best){ best=score; localStorage.setItem('ahmed_hiero_best',best); document.getElementById('best').textContent=best; } setTimeout(nextCard,900); } else { btn.classList.add('wrong'); document.getElementById('feedback').textContent='غلط! الصح هو: '+correct; setTimeout(nextCard,1200); } }
-function nextCard(){ idx=(idx+1)%data.length; if(mode==='learn') showLearn(); else newQuiz(); }
-function prevCard(){ idx=(idx-1+data.length)%data.length; if(mode==='learn') showLearn(); else newQuiz(); }
+let box=document.getElementById('opts'); box.innerHTML=''; opts.forEach(function(o){ let b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=function(){ checkAns(o,d.name,b); }; box.appendChild(b); }); document.getElementById('feedback').textContent='ركز - الرمز ده شوفته في التعلم!'; document.getElementById('view').scrollTop=0; }
+function checkAns(pick,correct,btn){ playBeep(400,0.1); if(pick===correct){ btn.classList.add('correct'); score+=10; document.getElementById('score').textContent=score; document.getElementById('feedback').textContent='صح! عاش يا فرعون صغير! +10'; playCorrect(); if(score>best){ best=score; localStorage.setItem('ahmed_hiero_best',best); document.getElementById('best').textContent=best; } setTimeout(nextCard,1200); } else { btn.classList.add('wrong'); document.getElementById('feedback').textContent='غلط! الصح هو: '+correct; playWrong(); setTimeout(nextCard,1600); } }
+function nextCard(){ idx=(idx+1)%data.length; playBeep(500,0.08); if(mode==='learn') showLearn(); else newQuiz(); }
+function prevCard(){ idx=(idx-1+data.length)%data.length; playBeep(500,0.08); if(mode==='learn') showLearn(); else newQuiz(); }
 showLearn();
 </script>
 </body></html>
