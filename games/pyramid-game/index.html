@@ -4,55 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>بناء الهرم | Ahmed TV</title>
-<meta name="description" content="بناء الهرم - Ahmed TV - نزل الحجر وابني الهرم">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;height:100dvh;overflow:hidden}
 body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#FEF3C7;color:#451a03;display:flex;flex-direction:column;align-items:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom));overflow:hidden}
 .header{width:100%;max-width:520px;text-align:center;flex-shrink:0}
 .top-row{display:flex;align-items:center;justify-content:center;gap:10px}
-/* اللوجو بتاعك */
-.my-logo{width:58px;height:58px;flex-shrink:0;border-radius:50%;border:3px solid #92400e;object-fit:cover;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.my-logo{width:58px;height:58px;flex-shrink:0;border-radius:50%;border:3px solid #92400e;object-fit:cover;background:#fff}
 .titles{text-align:right}
 .titles h1{font-size:20px;line-height:1.1;color:#78350f}
-.titles small{display:block;font-size:11px;color:#92400e;letter-spacing:1px;font-weight:800}
-.subtitle{font-size:12.5px;color:#78350f;line-height:1.5;margin:4px 0 2px}
-.subtitle b{color:#451a03}
-.how-line{font-size:12px;color:#451a03;background:#fff;border:1px solid #d97706;border-radius:10px;padding:6px 8px;margin:4px 0 6px;line-height:1.7;text-align:right}
-.how-line b{color:#92400e}
+.titles small{display:block;font-size:11px;color:#92400e;font-weight:800}
+.subtitle{font-size:12.5px;color:#78350f;margin:4px 0 2px}
+.how-line{font-size:12px;background:#fff;border:1px solid #d97706;border-radius:10px;padding:6px 8px;margin:4px 0 6px;line-height:1.7;text-align:right}
 .how-line summary{cursor:pointer;font-weight:800;color:#92400e;list-style:none}
 .how-line summary::-webkit-details-marker{display:none}
-.bar{display:flex;gap:6px;justify-content:center;align-items:center;margin-bottom:6px}
+.bar{display:flex;gap:6px;justify-content:center;margin-bottom:6px}
 .bar .sc{background:#fff;border:1px solid #d97706;border-radius:12px;padding:4px 8px;min-width:78px;text-align:center}
-.bar .sc b{display:block;font-size:16px;color:#92400e;line-height:1}
+.bar .sc b{display:block;font-size:16px;color:#92400e}
 .bar .sc span{font-size:10px;color:#78350f}
-#soundBtn{background:#92400e;color:#fff;border:none;padding:7px 12px;border-radius:20px;font-weight:900;font-size:12px;cursor:pointer;white-space:nowrap}
+#soundBtn{background:#92400e;color:#fff;border:none;padding:7px 12px;border-radius:20px;font-weight:900;font-size:12px;cursor:pointer}
 #wrap{width:100%;max-width:520px;flex:1;min-height:0;background:#1e3a8a;border:2px solid #92400e;border-radius:16px;overflow:hidden;position:relative;display:flex}
 canvas{width:100%;height:100%;display:block;touch-action:none;flex:1}
 #overlay{position:absolute;inset:0;background:rgba(0,0,0,.72);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;gap:8px;z-index:5;color:#fff}
 #overlay h2{font-size:22px}
 #overlay p{color:#e2e8f0;line-height:1.6;font-size:13.5px}
-#overlay .big{font-size:36px}
 #startBtn{background:#f59e0b;color:#111;border:none;padding:12px 24px;border-radius:12px;font-size:17px;font-weight:900;cursor:pointer}
-/* الزراير مظبوطة - الشمال شمال واليمين يمين */
-.controls{display:flex;direction:ltr;gap:8px;justify-content:center;margin-top:6px;width:100%;max-width:520px;flex-shrink:0}
-.controls button{flex:1;background:#92400e;color:#fff;border:1px solid #78350f;border-radius:12px;padding:10px 0;font-size:16px;font-weight:900;cursor:pointer;touch-action:manipulation}
-.controls button:active{background:#f59e0b;color:#111}
-.footer{font-size:11px;color:#78350f;margin-top:4px;flex-shrink:0}
-.footer b{color:#92400e}
+.controls{display:flex;direction:ltr;gap:8px;justify-content:center;margin-top:6px;width:100%;max-width:520px}
+.controls button{flex:1;background:#92400e;color:#fff;border:1px solid #78350f;border-radius:12px;padding:10px 0;font-size:16px;font-weight:900;cursor:pointer}
+.footer{font-size:11px;color:#78350f;margin-top:4px}
 .footer a{color:#92400e;text-decoration:none}
-@media(min-width:700px){body{padding:10px}.titles h1{font-size:24px}.my-logo{width:60px;height:60px}}
 </style>
 </head>
 <body>
 <div class="header">
   <div class="top-row">
-    <!-- اللوجو بتاعك -->
     <img class="my-logo" src="../../logo.png" alt="Ahmed TV">
     <div class="titles"><h1>🔺 بناء الهرم<small>AHMED TV PYRAMID GAME</small></h1></div>
   </div>
   <p class="subtitle"><b>أحمد TV</b> بيقدملك لعبة بناء الهرم!</p>
-  <details class="how-line"><summary>🎮 إزاي تلعب؟ دوس هنا 👇</summary><div style="margin-top:4px"><b>الهدف:</b> نزل الحجر في مكانه وابني الهرم دور فوق دور!<br>1 - الحجر 🧱 بيتحرك فوق يمين وشمال<br>2 - استنى لما ييجي فوق الهرم بالظبط<br>3 - دوس ↓ نزل الحجر ↓ بسرعة<br>4 - لو نزل مظبوط تكسب - لو وقع بره تخسر<br>5 - كل مرحلة الحجر بيجري أسرع!<br><br><b>المراحل:</b><br>المرحلة 1: بطيء - للمبتدئين<br>المرحلة 2: أسرع شوية<br>المرحلة 3: سريع<br>المرحلة 4: سريع جدا<br>المرحلة 5: صاروخ 🚀 - للأبطال بس</div></details>
+  <details class="how-line"><summary>🎮 إزاي تلعب؟ دوس هنا 👇</summary><div style="margin-top:4px">1 - الحجر 🧱 بيتحرك فوق يمين وشمال<br>2 - استنى لما ييجي فوق الهرم بالظبط<br>3 - دوس ↓ نزل الحجر ↓ بسرعة<br>4 - لو نزل مظبوط تكسب - لو وقع بره تخسر<br>5 - كل مرحلة الحجر بيجري أسرع!</div></details>
   <div class="bar">
     <div class="sc"><b id="score">0</b><span>الحجارة 🧱</span></div>
     <div class="sc"><b id="level">1 / 5</b><span>المرحلة</span></div>
@@ -60,16 +50,12 @@ canvas{width:100%;height:100%;display:block;touch-action:none;flex:1}
     <button id="soundBtn">🔊 الصوت: شغال</button>
   </div>
 </div>
-
 <div id="wrap">
   <canvas id="game" width="420" height="560"></canvas>
   <div id="overlay"><div class="big">🔺🧱</div><h2>بناء الهرم</h2><p><b>Ahmed TV</b> - نزل الحجر في مكانه!<br>ابني الهرم دور فوق دور واوعى توقعه!</p><button id="startBtn">▶ ابدأ البناء - START</button><p style="font-size:12px;color:#94a3b8">موبايل: دوس نزل الحجر | كمبيوتر: دوس مسافة</p></div>
 </div>
-
-<!-- الزراير مظبوطة -->
 <div class="controls"><button id="leftBtn">⬅️ شمال</button><button id="dropBtn">⬇️ نزل الحجر ⬇️</button><button id="rightBtn">يمين ➡️</button></div>
 <div class="footer"><b>Ahmed TV</b> - <a href="https://ahmed-tv.github.io/My-games/">⬅ كل ألعاب Ahmed TV</a></div>
-
 <script>
 const canvas=document.getElementById('game');const ctx=canvas.getContext('2d');
 const scoreEl=document.getElementById('score');const levelEl=document.getElementById('level');const bestEl=document.getElementById('best');
@@ -78,93 +64,60 @@ function resizeCanvas(){const r=canvas.parentElement.getBoundingClientRect();can
 let audioCtx=null,soundOn=true;
 function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return;}}if(audioCtx.state==='suspended')audioCtx.resume();}
 function playTone(f,d,t='square',v=0.15,s=null){if(!soundOn||!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.setValueAtTime(f,audioCtx.currentTime);if(s)o.frequency.exponentialRampToValueAtTime(s,audioCtx.currentTime+d);g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);}
-function playDrop(){playTone(300,0.12,'square',0.15,80);}
 function playGood(){playTone(523,0.12,'sine',0.25,784);setTimeout(()=>playTone(784,0.15,'sine',0.25,1046),80);}
+// صوت الست اللي بتتكلم
+function speak(text){
+  if(!soundOn) return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ar-EG'; u.rate=1; u.pitch=1.1;
+    const voices=speechSynthesis.getVoices();
+    const female=voices.find(v=>v.lang.includes('ar') && v.name.toLowerCase().includes('female')) || voices.find(v=>v.lang.includes('ar'));
+    if(female) u.voice=female;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function playDrop(){playTone(300,0.12,'square',0.15,80);}
 function playBad(){playTone(200,0.4,'sawtooth',0.3,40);}
 function playClick(){playTone(600,0.08,'square',0.12,900);}
-function playWin(){playTone(523,0.15,'sine',0.2);setTimeout(()=>playTone(659,0.15,'sine',0.2),150);setTimeout(()=>playTone(784,0.15,'sine',0.2),300);setTimeout(()=>playTone(1046,0.3,'sine',0.25),450);}
+function playWin(){playTone(523,0.15,'sine',0.2);setTimeout(()=>playTone(659,0.15,'sine',0.2),150);setTimeout(()=>playTone(784,0.15,'sine',0.2),300);}
 document.addEventListener('click',initAudio,{once:true});document.addEventListener('touchstart',initAudio,{once:true});
 let W=420,H=560,stone,stack,score,level,speed,running,raf,dir=1;
 let best=parseInt(localStorage.getItem('ahmedPyramidBest')||'0');bestEl.textContent=best;
-function stoneWidth(){return Math.max(40, W*0.55 - stack.length*18);}
-function reset(){
-  resizeCanvas();W=canvas.width;H=canvas.height;
-  stack=[];score=0;level=1;speed=1.6;dir=1;
-  scoreEl.textContent='0';levelEl.textContent='1 / 5';
-  newStone();
-}
-function newStone(){
-  const w=stoneWidth();
-  stone={x:10,y:30,w:w,h:34,vx:speed*dir};
-  if(Math.random()<0.5) dir*=-1;
-}
+// الحجر مش هيصغر أوي زي الأول
+function stoneWidth(){return Math.max(70, W*0.55 - stack.length*10);}
+function reset(){resizeCanvas();W=canvas.width;H=canvas.height;stack=[];score=0;level=1;speed=1.4;dir=1;scoreEl.textContent='0';levelEl.textContent='1 / 5';newStone();}
+function newStone(){const w=stoneWidth();stone={x:10,y:30,w:w,h:34,vx:speed*dir};if(Math.random()<0.5) dir*=-1;}
 function draw(){
   const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#FF5E8A');g.addColorStop(0.5,'#A855F7');g.addColorStop(1,'#1E3A8A');
   ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
   ctx.fillStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.arc(W*0.5,40,18,0,Math.PI*2);ctx.arc(W*0.5+22,46,14,0,Math.PI*2);ctx.arc(W*0.5-22,46,14,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#F59E0B';ctx.fillRect(0,H-40,W,40);
-  ctx.fillStyle='#D97706';ctx.fillRect(0,H-40,W,6);
+  ctx.fillStyle='#F59E0B';ctx.fillRect(0,H-40,W,40);ctx.fillStyle='#D97706';ctx.fillRect(0,H-40,W,6);
   const baseY=H-40;
-  stack.forEach((s,i)=>{
-    ctx.fillStyle='#F59E0B';ctx.fillRect(s.x, baseY - (i+1)*34, s.w, 32);
-    ctx.fillStyle='#D97706';ctx.fillRect(s.x, baseY - (i+1)*34, s.w, 4);
-    ctx.fillStyle='rgba(0,0,0,.15)';ctx.fillRect(s.x, baseY - (i+1)*34 + 16, s.w, 2);
-    ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('🧱', s.x+s.w/2, baseY - (i+1)*34 + 22);
-  });
-  if(stone && running){
-    ctx.fillStyle='#fff';ctx.fillRect(stone.x-2, stone.y-2, stone.w+4, stone.h+4);
-    ctx.fillStyle='#A16207';ctx.fillRect(stone.x, stone.y, stone.w, stone.h);
-    ctx.fillStyle='#FDE68A';ctx.fillRect(stone.x, stone.y, stone.w, 6);
-    ctx.fillStyle='#fff';ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('🧱', stone.x+stone.w/2, stone.y+24);
-  }
+  stack.forEach((s,i)=>{ctx.fillStyle='#F59E0B';ctx.fillRect(s.x, baseY - (i+1)*34, s.w, 32);ctx.fillStyle='#D97706';ctx.fillRect(s.x, baseY - (i+1)*34, s.w, 4);ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('🧱', s.x+s.w/2, baseY - (i+1)*34 + 22);});
+  if(stone && running){ctx.fillStyle='#fff';ctx.fillRect(stone.x-2, stone.y-2, stone.w+4, stone.h+4);ctx.fillStyle='#A16207';ctx.fillRect(stone.x, stone.y, stone.w, stone.h);ctx.fillStyle='#FDE68A';ctx.fillRect(stone.x, stone.y, stone.w, 6);ctx.fillStyle='#fff';ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('🧱', stone.x+stone.w/2, stone.y+24);}
   if(!running){ctx.fillStyle='rgba(255,255,255,.25)';ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('Ahmed TV',W/2,H/2);}
 }
-function loop(){
-  if(!running) return;
-  if(stone){
-    stone.x+=stone.vx;
-    if(stone.x<=0){stone.x=0;stone.vx=Math.abs(stone.vx);}
-    if(stone.x+stone.w>=W){stone.x=W-stone.w;stone.vx=-Math.abs(stone.vx);}
-  }
-  draw();raf=requestAnimationFrame(loop);
-}
+function loop(){if(!running) return;if(stone){stone.x+=stone.vx;if(stone.x<=0){stone.x=0;stone.vx=Math.abs(stone.vx);}if(stone.x+stone.w>=W){stone.x=W-stone.w;stone.vx=-Math.abs(stone.vx);}}draw();raf=requestAnimationFrame(loop);}
 function drop(){
-  if(!running||!stone) return;
-  playDrop();
-  const baseY=H-40;
-  let targetX, targetW;
-  if(stack.length===0){targetX=W/2 - stone.w/2; targetW=stone.w;}
-  else{const last=stack[stack.length-1];targetX=last.x + (last.w - stone.w)/2; targetW=last.w;}
-  const centerStone=stone.x+stone.w/2;
-  const centerTarget=targetX+stone.w/2;
-  const diff=Math.abs(centerStone-centerTarget);
-  if(diff < stone.w*0.35){
-    stone.x=targetX;
-    stack.push({x:stone.x,w:stone.w});
-    score++;scoreEl.textContent=score;playGood();
+  if(!running||!stone) return;playDrop();
+  let targetX;if(stack.length===0){targetX=W/2 - stone.w/2;}else{const last=stack[stack.length-1];targetX=last.x + (last.w - stone.w)/2;}
+  const diff=Math.abs((stone.x+stone.w/2)-(targetX+stone.w/2));
+  // التسامح بقى 55% + لو قريب هيلزق لوحده
+  if(diff < stone.w*0.55){
+    stone.x=targetX;stack.push({x:stone.x,w:stone.w});score++;scoreEl.textContent=score;playGood();
+    if(score>=25){speak('عاش يا أحمد، بنيت الهرم كله');winGame();return;}
+    if(score%5===0){speak('عاش يا أحمد');}
+    else{speak('مظبوط');}
     const newLevel=Math.min(5, Math.floor(score/5)+1);
-    if(newLevel!==level){level=newLevel;levelEl.textContent=level+' / 5';speed=1.6+(level-1)*0.9;playWin();}
-    if(score>=25){winGame();return;}
+    if(newLevel!==level){level=newLevel;levelEl.textContent=level+' / 5';speed=1.4+(level-1)*0.7;playWin();}
     newStone();
-  } else {
-    gameOver();
-  }
+  } else {speak('وقع الحجر، حاول تاني');gameOver();}
 }
-function winGame(){
-  running=false;cancelAnimationFrame(raf);playWin();
-  if(score>best){best=score;localStorage.setItem('ahmedPyramidBest',String(best));bestEl.textContent=best;}
-  overlay.style.display='flex';
-  overlay.innerHTML=`<div class="big">🏆🔺</div><h2>بنيت الهرم كله!</h2><p>حطيت <b style="color:#facc15;font-size:22px">${score} حجر</b><br>ووصلت للمرحلة ${level}<br>Ahmed TV بيقولك: انت فرعون بجد! 👑</p><button id="startBtn2" style="background:#f59e0b;color:#111;border:none;padding:12px 24px;border-radius:12px;font-size:17px;font-weight:900;cursor:pointer">🔄 العب تاني</button>`;
-  document.getElementById('startBtn2').onclick=start;
-}
-function gameOver(){
-  running=false;cancelAnimationFrame(raf);playBad();
-  if(score>best){best=score;localStorage.setItem('ahmedPyramidBest',String(best));bestEl.textContent=best;}
-  overlay.style.display='flex';
-  overlay.innerHTML=`<div class="big">💥🧱</div><h2>وقع الحجر!</h2><p>حطيت <b style="color:#facc15;font-size:22px">${score} حجر</b><br>ووصلت للمرحلة ${level}<br>Ahmed TV بيقولك: حاول تاني .. انت قدها! 💪</p><button id="startBtn2" style="background:#f59e0b;color:#111;border:none;padding:12px 24px;border-radius:12px;font-size:17px;font-weight:900;cursor:pointer">🔄 العب تاني</button>`;
-  document.getElementById('startBtn2').onclick=start;
-}
-function start(){initAudio();playClick();reset();overlay.style.display='none';running=true;loop();}
+function winGame(){running=false;cancelAnimationFrame(raf);playWin();if(score>best){best=score;localStorage.setItem('ahmedPyramidBest',String(best));bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML=`<div class="big">🏆🔺</div><h2>بنيت الهرم كله!</h2><p>حطيت <b style="color:#facc15;font-size:22px">${score} حجر</b><br>Ahmed TV بيقولك: انت فرعون بجد! 👑</p><button id="startBtn2" style="background:#f59e0b;color:#111;border:none;padding:12px 24px;border-radius:12px;font-size:17px;font-weight:900;cursor:pointer">🔄 العب تاني</button>`;document.getElementById('startBtn2').onclick=start;}
+function gameOver(){running=false;cancelAnimationFrame(raf);playBad();if(score>best){best=score;localStorage.setItem('ahmedPyramidBest',String(best));bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML=`<div class="big">💥🧱</div><h2>وقع الحجر!</h2><p>حطيت <b style="color:#facc15;font-size:22px">${score} حجر</b><br>Ahmed TV بيقولك: حاول تاني .. انت قدها! 💪</p><button id="startBtn2" style="background:#f59e0b;color:#111;border:none;padding:12px 24px;border-radius:12px;font-size:17px;font-weight:900;cursor:pointer">🔄 العب تاني</button>`;document.getElementById('startBtn2').onclick=start;}
+function start(){initAudio();playClick();speak('يلا نبدأ بناء الهرم');reset();overlay.style.display='none';running=true;loop();}
 startBtn.onclick=start;
 document.getElementById('dropBtn').onclick=drop;
 document.getElementById('leftBtn').onclick=()=>{if(stone) stone.x=Math.max(0,stone.x-22);};
