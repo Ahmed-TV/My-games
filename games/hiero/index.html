@@ -17,9 +17,10 @@ header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;t
 .stat{flex:1;background:#fff;border:1.5px solid #8B4513;border-radius:9px;padding:2px 1px;text-align:center;line-height:1.1}
 .stat b{display:block;font-size:14px;color:#8B4513}
 .stat span{font-size:9px;font-weight:800;color:#666}
-#view{width:100%;height:auto;min-height:380px;background:#FFF8DC;border:2px solid #8B4513;border-radius:16px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px;text-align:center}
-#bigSym{font-size:70px;line-height:1.1;min-height:80px;display:flex;align-items:center;justify-content:center}
-#bigName{font-size:22px;font-weight:900;color:#8B4513;margin:6px 0 2px}
+#view{width:100%;height:auto;min-height:300px;background:#FFF8DC;border:2px solid #8B4513;border-radius:16px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px;text-align:center}
+#bigSym{font-size:80px;line-height:1.1;min-height:90px;display:flex;align-items:center;justify-content:center}
+#hieroSmall{font-size:26px;color:#8B4513;line-height:1;margin:2px 0}
+#bigName{font-size:22px;font-weight:900;color:#8B4513;margin:4px 0 2px}
 #bigMean{font-size:15px;font-weight:800;color:#333;line-height:1.5;min-height:22px}
 #opts{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:8px;padding-bottom:4px}
 .opt{width:100%;padding:12px 8px;border-radius:12px;border:2px solid #8B4513;background:#fff;color:#333;font-weight:900;font-size:15px;cursor:pointer;font-family:inherit;display:block}
@@ -36,7 +37,7 @@ footer a{color:#8B4513;text-decoration:none;font-weight:700}
 <header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">لعبة الهيروغليفية</div><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></header>
 <div class="modes"><button class="mode active" id="mLearn" onclick="setMode('learn')">تعلم</button><button class="mode" id="mQuiz" onclick="setMode('quiz')">تحدي</button><button class="mode" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button></div>
 <div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="qNum">1 / 20</b><span>السؤال</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
-<div id="view"><div id="bigSym">𓀀</div><div id="bigName">رجل</div><div id="bigMean">الرمز ده معناه رجل - كانوا بيكتبوه كده من 5000 سنة!</div><div id="opts" style="display:none"></div></div>
+<div id="view"><div id="bigSym">👨</div><div id="hieroSmall">𓀀</div><div id="bigName">رجل</div><div id="bigMean">الرمز ده معناه رجل - كانوا بيكتبوه كده من 5000 سنة!</div><div id="opts" style="display:none"></div></div>
 <div class="feedback" id="feedback">دوس تحدي واختبر نفسك في الهيروغليفي!</div>
 <div class="btn-row"><button class="skipbtn" onclick="prevCard()">اللي قبله</button><button class="mainbtn" onclick="nextCard()">اللي بعده / سؤال جديد</button></div>
 <footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
@@ -50,32 +51,32 @@ function playCorrect(){ if(!soundOn) return; playBeep(523,0.15); setTimeout(func
 function playWrong(){ if(!soundOn) return; playBeep(200,0.3); speak('غلط! حاول تاني'); }
 function speak(txt){ if(!soundOn) return; try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(txt); u.lang='ar-EG'; u.rate=0.9; window.speechSynthesis.speak(u); } }catch(e){} }
 var data=[
-{sym:'𓀀',name:'رجل',mean:'الرمز ده معناه رجل - كانوا بيكتبوه كده من 5000 سنة!'},
-{sym:'𓂀',name:'عين حورس',mean:'عين حورس - بتحمي صاحبها - وبتجيب الحظ!'},
-{sym:'𓅓',name:'بومة',mean:'البومة معناها حرف الميم - وكانت رمز الحكمة!'},
-{sym:'𓆣',name:'جعران',mean:'الجعران - رمز الشمس والبعث من جديد!'},
-{sym:'𓋹',name:'عنخ - مفتاح الحياة',mean:'عنخ - مفتاح الحياة - رمز الخلود عند الفراعنة!'},
-{sym:'𓇋',name:'حية الكوبرا',mean:'الكوبرا - رمز الحماية - وكانت على تاج الملك!'},
-{sym:'𓆑',name:'صقر حورس',mean:'صقر حورس - إله السماء - وحامي الفرعون!'},
-{sym:'𓈖',name:'موجة مية',mean:'الموجة دي معناها مية - نهر النيل!'},
-{sym:'𓇳',name:'شمس',mean:'الشمس - الإله رع - مصدر النور والحياة!'},
-{sym:'𓏏',name:'رغيف عيش',mean:'الرغيف ده معناه عيش - وكان أهم أكل عندهم!'},
-{sym:'𓂋',name:'بق',mean:'البق معناها فم - وكانوا بيقولوا بيه الكلام!'},
-{sym:'𓆓',name:'ثعبان',mean:'الثعبان معناه حرف الجيم - وكان رمز القوة!'},
-{sym:'𓀭',name:'فرعون',mean:'الفرعون - ملك مصر - ابن الإله!'},
-{sym:'𓁛',name:'قطة',mean:'القطة - الإلهة باستت - كانت مقدسة عندهم!'},
-{sym:'𓃥',name:'أسد',mean:'الأسد - رمز القوة والشجاعة!'},
-{sym:'𓅱',name:'سمان',mean:'السمان ده معناه حرف الواو!'},
-{sym:'𓇬',name:'زهرة اللوتس',mean:'زهرة اللوتس - رمز الجمال والنقاء!'},
-{sym:'𓊵',name:'هرم',mean:'الهرم - بيت الملك بعد الموت!'},
-{sym:'𓋴',name:'قماش',mean:'القماش ده معناه حرف السين!'},
-{sym:'𓍯',name:'نجمة',mean:'النجمة - رمز السماء والليل!'}
+{sym:'👨',hiero:'𓀀',name:'رجل',mean:'الرمز ده معناه رجل - كانوا بيكتبوه كده من 5000 سنة!'},
+{sym:'👁️',hiero:'𓂀',name:'عين حورس',mean:'عين حورس - بتحمي صاحبها - وبتجيب الحظ!'},
+{sym:'🦉',hiero:'𓅓',name:'بومة',mean:'البومة معناها حرف الميم - وكانت رمز الحكمة!'},
+{sym:'🪲',hiero:'𓆣',name:'جعران',mean:'الجعران - رمز الشمس والبعث من جديد!'},
+{sym:'☥',hiero:'𓋹',name:'عنخ - مفتاح الحياة',mean:'عنخ - مفتاح الحياة - رمز الخلود عند الفراعنة!'},
+{sym:'🐍',hiero:'𓇋',name:'حية الكوبرا',mean:'الكوبرا - رمز الحماية - وكانت على تاج الملك!'},
+{sym:'🦅',hiero:'𓆑',name:'صقر حورس',mean:'صقر حورس - إله السماء - وحامي الفرعون!'},
+{sym:'🌊',hiero:'𓈖',name:'موجة مية',mean:'الموجة دي معناها مية - نهر النيل!'},
+{sym:'☀️',hiero:'𓇳',name:'شمس',mean:'الشمس - الإله رع - مصدر النور والحياة!'},
+{sym:'🍞',hiero:'𓏏',name:'رغيف عيش',mean:'الرغيف ده معناه عيش - وكان أهم أكل عندهم!'},
+{sym:'👄',hiero:'𓂋',name:'بق',mean:'البق معناها فم - وكانوا بيقولوا بيه الكلام!'},
+{sym:'🐉',hiero:'𓆓',name:'ثعبان',mean:'الثعبان معناه حرف الجيم - وكان رمز القوة!'},
+{sym:'👑',hiero:'𓀭',name:'فرعون',mean:'الفرعون - ملك مصر - ابن الإله!'},
+{sym:'🐱',hiero:'𓁛',name:'قطة',mean:'القطة - الإلهة باستت - كانت مقدسة عندهم!'},
+{sym:'🦁',hiero:'𓃥',name:'أسد',mean:'الأسد - رمز القوة والشجاعة!'},
+{sym:'🐦',hiero:'𓅱',name:'سمان',mean:'السمان ده معناه حرف الواو!'},
+{sym:'🌸',hiero:'𓇬',name:'زهرة اللوتس',mean:'زهرة اللوتس - رمز الجمال والنقاء!'},
+{sym:'🔺',hiero:'𓊵',name:'هرم',mean:'الهرم - بيت الملك بعد الموت!'},
+{sym:'🧵',hiero:'𓋴',name:'قماش',mean:'القماش ده معناه حرف السين!'},
+{sym:'⭐',hiero:'𓍯',name:'نجمة',mean:'النجمة - رمز السماء والليل!'}
 ];
 let mode='learn', idx=0, score=0, best=+(localStorage.getItem('ahmed_hiero_best')||0);
 document.getElementById('best').textContent=best;
 function setMode(m){ mode=m; document.getElementById('mLearn').classList.toggle('active',m==='learn'); document.getElementById('mQuiz').classList.toggle('active',m==='quiz'); playBeep(500,0.1); if(m==='learn'){ showLearn(); } else { newQuiz(); } }
-function showLearn(){ document.getElementById('opts').style.display='none'; let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('bigName').textContent=d.name; document.getElementById('bigMean').textContent=d.mean; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length; document.getElementById('feedback').textContent='احفظ الرمز ده - وبعدين دوس تحدي!'; speak(d.name); document.getElementById('view').scrollTop=0; }
-function newQuiz(){ let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('bigName').textContent='ده معناه إيه؟'; document.getElementById('bigMean').textContent='اختار الإجابة الصح!'; document.getElementById('opts').style.display='flex'; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length;
+function showLearn(){ document.getElementById('opts').style.display='none'; let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('hieroSmall').textContent=d.hiero; document.getElementById('bigName').textContent=d.name; document.getElementById('bigMean').textContent=d.mean; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length; document.getElementById('feedback').textContent='احفظ الرمز ده - وبعدين دوس تحدي!'; speak(d.name); document.getElementById('view').scrollTop=0; }
+function newQuiz(){ let d=data[idx]; document.getElementById('bigSym').textContent=d.sym; document.getElementById('hieroSmall').textContent=d.hiero; document.getElementById('bigName').textContent='ده معناه إيه؟'; document.getElementById('bigMean').textContent='اختار الإجابة الصح!'; document.getElementById('opts').style.display='flex'; document.getElementById('qNum').textContent=(idx+1)+' / '+data.length;
 let opts=[d.name]; while(opts.length<4){ let r=data[Math.floor(Math.random()*data.length)].name; if(!opts.includes(r)) opts.push(r); } opts.sort(()=>Math.random()-0.5);
 let box=document.getElementById('opts'); box.innerHTML=''; opts.forEach(function(o){ let b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=function(){ checkAns(o,d.name,b); }; box.appendChild(b); }); document.getElementById('feedback').textContent='ركز - الرمز ده شوفته في التعلم!'; document.getElementById('view').scrollTop=0; }
 function checkAns(pick,correct,btn){ playBeep(400,0.1); if(pick===correct){ btn.classList.add('correct'); score+=10; document.getElementById('score').textContent=score; document.getElementById('feedback').textContent='صح! عاش يا فرعون صغير! +10'; playCorrect(); if(score>best){ best=score; localStorage.setItem('ahmed_hiero_best',best); document.getElementById('best').textContent=best; } setTimeout(nextCard,1200); } else { btn.classList.add('wrong'); document.getElementById('feedback').textContent='غلط! الصح هو: '+correct; playWrong(); setTimeout(nextCard,1600); } }
