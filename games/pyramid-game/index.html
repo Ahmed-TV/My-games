@@ -11,10 +11,8 @@ html,body{height:100%;height:100dvh;overflow:hidden}
 body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#FEF3C7;color:#451a03;display:flex;flex-direction:column;align-items:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom));overflow:hidden}
 .header{width:100%;max-width:520px;text-align:center;flex-shrink:0}
 .top-row{display:flex;align-items:center;justify-content:center;gap:10px}
-.logo-circle{width:54px;height:54px;flex-shrink:0;background:radial-gradient(circle at 30% 30%,#fde047,#f59e0b 55%,#b45309);border:3px solid #fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#111;box-shadow:0 4px 14px rgba(245,158,11,.45);position:relative;overflow:hidden}
-.logo-circle b{font-size:11px;line-height:1}
-.logo-circle span{font-size:8px;font-weight:900}
-.logo-circle i{position:absolute;top:-4px;right:-2px;background:#ef4444;color:#fff;font-style:normal;font-size:8px;padding:1px 5px;border-radius:20px;z-index:2}
+/* اللوجو بتاعك */
+.my-logo{width:58px;height:58px;flex-shrink:0;border-radius:50%;border:3px solid #92400e;object-fit:cover;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25)}
 .titles{text-align:right}
 .titles h1{font-size:20px;line-height:1.1;color:#78350f}
 .titles small{display:block;font-size:11px;color:#92400e;letter-spacing:1px;font-weight:800}
@@ -36,19 +34,21 @@ canvas{width:100%;height:100%;display:block;touch-action:none;flex:1}
 #overlay p{color:#e2e8f0;line-height:1.6;font-size:13.5px}
 #overlay .big{font-size:36px}
 #startBtn{background:#f59e0b;color:#111;border:none;padding:12px 24px;border-radius:12px;font-size:17px;font-weight:900;cursor:pointer}
-.controls{display:flex;gap:8px;justify-content:center;margin-top:6px;width:100%;max-width:520px;flex-shrink:0}
+/* الزراير مظبوطة - الشمال شمال واليمين يمين */
+.controls{display:flex;direction:ltr;gap:8px;justify-content:center;margin-top:6px;width:100%;max-width:520px;flex-shrink:0}
 .controls button{flex:1;background:#92400e;color:#fff;border:1px solid #78350f;border-radius:12px;padding:10px 0;font-size:16px;font-weight:900;cursor:pointer;touch-action:manipulation}
 .controls button:active{background:#f59e0b;color:#111}
 .footer{font-size:11px;color:#78350f;margin-top:4px;flex-shrink:0}
 .footer b{color:#92400e}
 .footer a{color:#92400e;text-decoration:none}
-@media(min-width:700px){body{padding:10px}.titles h1{font-size:24px}.logo-circle{width:60px;height:60px}}
+@media(min-width:700px){body{padding:10px}.titles h1{font-size:24px}.my-logo{width:60px;height:60px}}
 </style>
 </head>
 <body>
 <div class="header">
   <div class="top-row">
-    <div class="logo-circle"><i>▶</i><b>Ahmed</b><span>TV 📺</span></div>
+    <!-- اللوجو بتاعك -->
+    <img class="my-logo" src="../../logo.png" alt="Ahmed TV">
     <div class="titles"><h1>🔺 بناء الهرم<small>AHMED TV PYRAMID GAME</small></h1></div>
   </div>
   <p class="subtitle"><b>أحمد TV</b> بيقدملك لعبة بناء الهرم!</p>
@@ -66,7 +66,8 @@ canvas{width:100%;height:100%;display:block;touch-action:none;flex:1}
   <div id="overlay"><div class="big">🔺🧱</div><h2>بناء الهرم</h2><p><b>Ahmed TV</b> - نزل الحجر في مكانه!<br>ابني الهرم دور فوق دور واوعى توقعه!</p><button id="startBtn">▶ ابدأ البناء - START</button><p style="font-size:12px;color:#94a3b8">موبايل: دوس نزل الحجر | كمبيوتر: دوس مسافة</p></div>
 </div>
 
-<div class="controls"><button id="leftBtn">⬅️ يمين</button><button id="dropBtn">⬇️ نزل الحجر ⬇️</button><button id="rightBtn">شمال ➡️</button></div>
+<!-- الزراير مظبوطة -->
+<div class="controls"><button id="leftBtn">⬅️ شمال</button><button id="dropBtn">⬇️ نزل الحجر ⬇️</button><button id="rightBtn">يمين ➡️</button></div>
 <div class="footer"><b>Ahmed TV</b> - <a href="https://ahmed-tv.github.io/My-games/">⬅ كل ألعاب Ahmed TV</a></div>
 
 <script>
@@ -98,31 +99,24 @@ function newStone(){
   if(Math.random()<0.5) dir*=-1;
 }
 function draw(){
-  // سماء
   const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#FF5E8A');g.addColorStop(0.5,'#A855F7');g.addColorStop(1,'#1E3A8A');
   ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-  // سحابة
   ctx.fillStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.arc(W*0.5,40,18,0,Math.PI*2);ctx.arc(W*0.5+22,46,14,0,Math.PI*2);ctx.arc(W*0.5-22,46,14,0,Math.PI*2);ctx.fill();
-  // أرض
   ctx.fillStyle='#F59E0B';ctx.fillRect(0,H-40,W,40);
   ctx.fillStyle='#D97706';ctx.fillRect(0,H-40,W,6);
-  // خط الهدف
   const baseY=H-40;
-  // الهرم اللي اتبنى
   stack.forEach((s,i)=>{
     ctx.fillStyle='#F59E0B';ctx.fillRect(s.x, baseY - (i+1)*34, s.w, 32);
     ctx.fillStyle='#D97706';ctx.fillRect(s.x, baseY - (i+1)*34, s.w, 4);
     ctx.fillStyle='rgba(0,0,0,.15)';ctx.fillRect(s.x, baseY - (i+1)*34 + 16, s.w, 2);
     ctx.fillStyle='#fff';ctx.font='bold 12px Arial';ctx.textAlign='center';ctx.fillText('🧱', s.x+s.w/2, baseY - (i+1)*34 + 22);
   });
-  // الحجر اللي بيتحرك
   if(stone && running){
     ctx.fillStyle='#fff';ctx.fillRect(stone.x-2, stone.y-2, stone.w+4, stone.h+4);
     ctx.fillStyle='#A16207';ctx.fillRect(stone.x, stone.y, stone.w, stone.h);
     ctx.fillStyle='#FDE68A';ctx.fillRect(stone.x, stone.y, stone.w, 6);
     ctx.fillStyle='#fff';ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('🧱', stone.x+stone.w/2, stone.y+24);
   }
-  // Ahmed TV في النص
   if(!running){ctx.fillStyle='rgba(255,255,255,.25)';ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('Ahmed TV',W/2,H/2);}
 }
 function loop(){
@@ -144,12 +138,10 @@ function drop(){
   const centerStone=stone.x+stone.w/2;
   const centerTarget=targetX+stone.w/2;
   const diff=Math.abs(centerStone-centerTarget);
-  // لو مظبوط
   if(diff < stone.w*0.35){
     stone.x=targetX;
     stack.push({x:stone.x,w:stone.w});
     score++;scoreEl.textContent=score;playGood();
-    // مرحلة جديدة كل 5 حجارة
     const newLevel=Math.min(5, Math.floor(score/5)+1);
     if(newLevel!==level){level=newLevel;levelEl.textContent=level+' / 5';speed=1.6+(level-1)*0.9;playWin();}
     if(score>=25){winGame();return;}
