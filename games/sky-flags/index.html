@@ -176,6 +176,7 @@ function catchFlag(flagObj) {
   if (flagObj.caught || !playing) return;
   flagObj.caught = true;
   score += 10;
+ new Audio('../../sounds/sah.mp3').play().catch(()=>{});
   scoreEl.textContent = score;
   
   const pop = document.createElement('div');
