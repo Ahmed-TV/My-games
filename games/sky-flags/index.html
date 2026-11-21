@@ -222,6 +222,7 @@ function startGame() {
   timerEl.textContent = timeLeft;
   
   document.getElementById('startScreen').classList.add('hidden');
+ new Audio(score >= 100 ? '../../sounds/kesebt.mp3' : '../../sounds/hawel.mp3').play().catch(()=>{});
   document.getElementById('endScreen').classList.add('hidden');
   
   createFlag();
