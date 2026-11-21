@@ -213,9 +213,11 @@ function animate(timestamp) {
 }
 
 function startGame() {
+ new Audio('../../sounds/ahla.mp3').play().catch(()=>{});
   flags.forEach(f => f.el.remove());
   flags = [];
   score = 0; timeLeft = 30; playing = true; lastTime = 0;
+ new Audio('../../sounds/sah.mp3').play().catch(()=>{});
   scoreEl.textContent = score;
   timerEl.textContent = timeLeft;
   
