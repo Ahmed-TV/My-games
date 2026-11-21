@@ -6,9 +6,9 @@
 <title>Ahmed TV - خمن الشعار</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html, body { height: 100svh!important; max-height: 100svh!important; overflow: hidden!important; position: fixed!important; width: 100%; }
+html,body{height:100svh!important;max-height:100svh!important;overflow:hidden!important;position:fixed!important;width:100%}
 body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',Tahoma,system-ui;height:100svh;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:5px}
-.container{width:100%;max-width:450px;height:100%;max-height:100svh;display:flex;flex-direction:column;background:#111;border-radius:16px;border:2px solid #222;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.8);position:relative;}
+.container{width:100%;max-width:450px;height:100%;max-height:100svh;display:flex;flex-direction:column;background:#111;border-radius:16px;border:2px solid #222;overflow:hidden;position:relative}
 .header{background:linear-gradient(135deg,#8FFF00,#5cb71a 50%,#4CAF50);padding:10px;text-align:center;border-bottom:2px solid #000;flex-shrink:0}
 .logo-img{width:50px;height:50px;margin:0 auto 5px;background:#fff;border-radius:50%;object-fit:cover;display:block;border:2px solid #fff}
 .main-title{color:#000;font-weight:900;font-size:16px}
@@ -17,28 +17,25 @@ body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',Tahoma,system-ui;heigh
 .progress{padding:8px 12px;background:#1a1a1a;display:flex;justify-content:space-between;font-size:14px;color:#7ED321;font-weight:800;border-bottom:1px solid #222;flex-shrink:0}
 .bar{height:6px;background:#333;margin:0 12px;border-radius:4px;overflow:hidden;flex-shrink:0}
 .fill{height:100%;background:#7ED321;width:0%;transition:.4s;border-radius:4px}
-.card{padding:8px 10px;display:flex;flex-direction:column;flex-grow:1;justify-content:space-evenly;overflow:hidden;}
-.imgBox{width:100%;height:220px;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border-radius:12px;border:2px solid #333;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:inset 0 0 20px rgba(0,0,0,0.9);padding:10px;flex-shrink:0}
-.club-flag{font-size:60px;line-height:1;filter:drop-shadow(0 5px 10px rgba(0,0,0,0.6));margin-bottom:8px}
-.club-letters{color:#7ED321;font-size:28px;font-weight:900;letter-spacing:5px;text-shadow:0 0 20px rgba(126,211,33,0.5);margin-bottom:8px}
+.card{padding:8px 10px;display:flex;flex-direction:column;flex-grow:1;justify-content:space-evenly;overflow:hidden}
+.imgBox{width:100%;height:220px;background:linear-gradient(145deg,#1a1a1a,#0a0a0a);border-radius:12px;border:2px solid #333;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:10px;flex-shrink:0}
+.club-flag{font-size:60px;line-height:1;margin-bottom:8px}
+.club-letters{color:#7ED321;font-size:28px;font-weight:900;letter-spacing:5px;margin-bottom:8px}
 .club-specs{display:grid;grid-template-columns:1fr 1fr;gap:4px;width:100%;max-width:280px}
 .spec{background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:6px;padding:4px 6px;text-align:center}
 .spec-label{color:#888;font-size:10px;font-weight:700}
 .spec-value{color:#fff;font-size:12px;font-weight:900}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
-.opt{background:#222;border:1px solid #333;border-radius:8px;padding:10px 4px;text-align:center;font-size:14px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;transition:all 0.2s}
-.opt:hover{border-color:#7ED321;background:#2a2a2a}
+.opt{background:#222;border:1px solid #333;border-radius:8px;padding:10px 4px;text-align:center;font-size:14px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit}
 .opt:active{transform:scale(0.97)}
-.opt:disabled{opacity:0.3;cursor:default}
+.opt:disabled{opacity:0.3}
 .hints{display:flex;gap:4px;margin-top:6px}
-.hbtn{flex:1;background:#1e1e1e;border:1px solid #333;border-radius:6px;padding:8px 2px;font-size:10px;font-weight:800;color:#ccc;cursor:pointer;font-family:inherit;transition:all 0.2s}
-.hbtn:not(:disabled):hover{background:#2a2a2a;color:#fff;border-color:#7ED321}
+.hbtn{flex:1;background:#1e1e1e;border:1px solid #333;border-radius:6px;padding:8px 2px;font-size:10px;font-weight:800;color:#ccc;cursor:pointer;font-family:inherit}
 .hbtn:disabled{opacity:0.3}
-.skipBtn{width:100%;margin-top:6px;background:#2a2a2a;border:1px solid #444;border-radius:8px;padding:10px;font-size:13px;font-weight:800;color:#bbb;cursor:pointer;font-family:inherit;transition:background 0.2s;flex-shrink:0}
-.skipBtn:hover{background:#333}
+.skipBtn{width:100%;margin-top:6px;background:#2a2a2a;border:1px solid #444;border-radius:8px;padding:10px;font-size:13px;font-weight:800;color:#bbb;cursor:pointer;font-family:inherit;flex-shrink:0}
 .hintBox{text-align:center;margin-top:6px;color:#7ED321;font-weight:800;font-size:12px;min-height:20px;background:rgba(126,211,33,0.1);border-radius:6px;padding:4px;border:1px dashed #444}
 .hintBox:empty{background:transparent;border:none}
-.footer{text-align:center;padding:6px;font-size:10px;color:#666;flex-shrink:0;background:#111;}
+.footer{text-align:center;padding:6px;font-size:10px;color:#666;flex-shrink:0;background:#111}
 .end-screen{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:16px;z-index:100;text-align:center;padding:20px}
 .end-screen h2{color:#7ED321;font-size:28px;margin-bottom:15px}
 .end-screen p{font-size:18px;font-weight:800;margin-bottom:20px;line-height:1.4}
@@ -47,153 +44,93 @@ body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',Tahoma,system-ui;heigh
 </head>
 <body>
 <div class="container" id="mainContainer">
-  <div class="header">
-    <img src="../../logo.png" alt="Ahmed TV" class="logo-img">
-    <div class="main-title">Ahmed TV - خمن الشعار 🏆</div>
-    <div class="sub-title">🎮 <b>40 نادي مختلف - 80 تحدي</b><br>شوف علم الدولة ومواصفات النادي وخمنه!<br>⚽ فكرة وتقديم: أحمد - Ahmed TV</div>
-    <div class="brand">© تصميم وتقديم: أحمد - Ahmed TV - 2026</div>
-    <button id="soundBtn" style="font-family:inherit;font-weight:800;border:2px solid #000;border-radius:20px;padding:4px 16px;background:#fff;color:#000;cursor:pointer;font-size:11px;margin-top:4px">🔊 الصوت: شغال</button>
-  </div>
-  <div class="progress"><span id="qn">1 / 80</span><span id="sc">0 نقطة</span></div>
-  <div class="bar"><div class="fill" id="fill"></div></div>
-  <div class="card">
-    <div class="imgBox" id="logoBox">
-      <div class="club-flag" id="logoFlag">🇪🇸</div>
-      <div class="club-letters" id="logoLetters">RMA</div>
-      <div class="club-specs">
-        <div class="spec"><div class="spec-label">الدولة</div><div class="spec-value" id="specCountry">إسبانيا</div></div>
-        <div class="spec"><div class="spec-label">التأسيس</div><div class="spec-value" id="specYear">1902</div></div>
-        <div class="spec"><div class="spec-label">اللقب</div><div class="spec-value" id="specNick">الملكي</div></div>
-        <div class="spec"><div class="spec-label">البطولات</div><div class="spec-value" id="specTitles">14 أبطال</div></div>
-      </div>
-    </div>
-    <div class="hints">
-      <button class="hbtn" id="h1" onclick="hintClear()">خمن أكتر 🔍 -5</button>
-      <button class="hbtn" id="h2" onclick="hintText()">تلميح 💡 -5</button>
-      <button class="hbtn" id="h3" onclick="hintDel()">احذف 2 ❌ -10</button>
-    </div>
-    <div class="hintBox" id="hintBox"></div>
-    <div class="opts" id="opts"></div>
-    <button class="skipBtn" onclick="skipLevel()">تخطي المرحلة ⏭️</button>
-  </div>
-  <div class="footer">Ahmed TV - 40 نادي مختلف - 80 مرحلة</div>
+<div class="header">
+<img src="../../logo.png" alt="Ahmed TV" class="logo-img">
+<div class="main-title">Ahmed TV - خمن الشعار 🏆</div>
+<div class="sub-title">🎮 <b>40 نادي مختلف - 80 تحدي</b><br>شوف علم الدولة ومواصفات النادي وخمنه!<br>⚽ فكرة وتقديم: أحمد - Ahmed TV</div>
+<div class="brand">© تصميم وتقديم: أحمد - Ahmed TV - 2026</div>
+<button id="soundBtn" style="font-family:inherit;font-weight:800;border:2px solid #000;border-radius:20px;padding:4px 16px;background:#fff;color:#000;cursor:pointer;font-size:11px;margin-top:4px">🔊 الصوت: شغال</button>
+</div>
+<div class="progress"><span id="qn">1 / 80</span><span id="sc">0 نقطة</span></div>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<div class="card">
+<div class="imgBox">
+<div class="club-flag" id="logoFlag">🇪🇸</div>
+<div class="club-letters" id="logoLetters">RMA</div>
+<div class="club-specs">
+<div class="spec"><div class="spec-label">الدولة</div><div class="spec-value" id="specCountry">إسبانيا</div></div>
+<div class="spec"><div class="spec-label">التأسيس</div><div class="spec-value" id="specYear">1902</div></div>
+<div class="spec"><div class="spec-label">اللقب</div><div class="spec-value" id="specNick">الملكي</div></div>
+<div class="spec"><div class="spec-label">البطولات</div><div class="spec-value" id="specTitles">14 أبطال</div></div>
+</div>
+</div>
+<div class="hints">
+<button class="hbtn" id="h1" onclick="hintClear()">خمن أكتر 🔍 -5</button>
+<button class="hbtn" id="h2" onclick="hintText()">تلميح 💡 -5</button>
+<button class="hbtn" id="h3" onclick="hintDel()">احذف 2 ❌ -10</button>
+</div>
+<div class="hintBox" id="hintBox"></div>
+<div class="opts" id="opts"></div>
+<button class="skipBtn" onclick="skipLevel()">تخطي المرحلة ⏭️</button>
+</div>
+<div class="footer">Ahmed TV - 40 نادي مختلف - 80 مرحلة</div>
 </div>
 <script>
 let soundOn=true;
 function playAhmedVoice(t){try{if(!soundOn)return;if(!t)return;var file='';if(t.indexOf('صح')>=0)file='sah.mp3';else if(t.indexOf('غلط')>=0)file='ghalat.mp3';else if(t.indexOf('حاول')>=0)file='hawel.mp3';else if(t.indexOf('كسبت')>=0)file='kesebt.mp3';else if(t.indexOf('ابدأ')>=0)file='ebda.mp3';if(!file)return;var a=new Audio('https://ahmed-tv.github.io/My-games/sounds/'+file);a.play().catch(function(){var b=new Audio('../../sounds/'+file);b.play().catch(function(){});});}catch(e){}}
 function speak(t){try{playAhmedVoice(t);}catch(e){}}
-var clubs = [
-{name:'\u0631\u064a\u0627\u0644 \u0645\u062f\u0631\u064a\u062f', flag:'🇪🇸', letters:'RMA', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1902', nick:'\u0627\u0644\u0645\u0644\u0643\u064a', titles:'14 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u0627\u0646\u062a\u064a\u0627\u063a\u0648 \u0628\u0631\u0646\u0627\u0628\u064a\u0648 - \u0645\u062f\u0631\u064a\u062f'},
-  {name:'\u0628\u0631\u0634\u0644\u0648\u0646\u0629', flag:'🇪🇸', letters:'FCB', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1899', nick:'\u0627\u0644\u0628\u0644\u0648\u062c\u0631\u0627\u0646\u0627', titles:'5 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0643\u0627\u0645\u0628 \u0646\u0648 - \u0628\u0631\u0634\u0644\u0648\u0646\u0629'},
-  {name:'\u0627\u0644\u0623\u0647\u0644\u064a', flag:'🇪🇬', letters:'AHLY', country:'\u0645\u0635\u0631', year:'1907', nick:'\u0646\u0627\u062f\u064a \u0627\u0644\u0642\u0631\u0646', titles:'11 \u0623\u0628\u0637\u0627\u0644 \u0623\u0641\u0631\u064a\u0642\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0642\u0627\u0647\u0631\u0629 \u0627\u0644\u062f\u0648\u0644\u064a - \u0627\u0644\u0642\u0627\u0647\u0631\u0629'},
-  {name:'\u0627\u0644\u0632\u0645\u0627\u0644\u0643', flag:'🇪🇬', letters:'ZSC', country:'\u0645\u0635\u0631', year:'1911', nick:'\u0627\u0644\u0642\u0644\u0639\u0629 \u0627\u0644\u0628\u064a\u0636\u0627\u0621', titles:'5 \u0623\u0628\u0637\u0627\u0644 \u0623\u0641\u0631\u064a\u0642\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0642\u0627\u0647\u0631\u0629 \u0627\u0644\u062f\u0648\u0644\u064a - \u0627\u0644\u0642\u0627\u0647\u0631\u0629'},
-  {name:'\u0644\u064a\u0641\u0631\u0628\u0648\u0644', flag:'🇬🇧', letters:'LFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1892', nick:'\u0627\u0644\u0631\u064a\u062f\u0632', titles:'6 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0646\u0641\u064a\u0644\u062f - \u0644\u064a\u0641\u0631\u0628\u0648\u0644'},
-  {name:'\u0645\u0627\u0646 \u064a\u0648\u0646\u0627\u064a\u062a\u062f', flag:'🇬🇧', letters:'MUFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1878', nick:'\u0627\u0644\u0634\u064a\u0627\u0637\u064a\u0646 \u0627\u0644\u062d\u0645\u0631', titles:'3 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0648\u0644\u062f \u062a\u0631\u0627\u0641\u0648\u0631\u062f - \u0645\u0627\u0646\u0634\u0633\u062a\u0631'},
-  {name:'\u0623\u0631\u0633\u0646\u0627\u0644', flag:'🇬🇧', letters:'AFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1886', nick:'\u0627\u0644\u0645\u062f\u0641\u0639\u062c\u064a\u0629', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a - \u0644\u0646\u062f\u0646'},
-  {name:'\u062a\u0634\u064a\u0644\u0633\u064a', flag:'🇬🇧', letters:'CFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1905', nick:'\u0627\u0644\u0632\u0631\u0642', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u062a\u0627\u0645\u0641\u0648\u0631\u062f \u0628\u0631\u064a\u062f\u062c - \u0644\u0646\u062f\u0646'},
-  {name:'\u064a\u0648\u0641\u0646\u062a\u0648\u0633', flag:'🇮🇹', letters:'JUVE', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1897', nick:'\u0627\u0644\u0633\u064a\u062f\u0629 \u0627\u0644\u0639\u062c\u0648\u0632', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0644\u064a\u0627\u0646\u0632 - \u062a\u0648\u0631\u064a\u0646\u0648'},
-  {name:'\u0628\u0627\u064a\u0631\u0646 \u0645\u064a\u0648\u0646\u062e', flag:'🇩🇪', letters:'FCB', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'1900', nick:'\u0627\u0644\u0628\u0627\u0641\u0627\u0631\u064a', titles:'6 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0644\u064a\u0627\u0646\u0632 \u0623\u0631\u064a\u0646\u0627 - \u0645\u064a\u0648\u0646\u062e'},
-  {name:'\u0645\u0627\u0646 \u0633\u064a\u062a\u064a', flag:'🇬🇧', letters:'MCFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1880', nick:'\u0627\u0644\u0633\u0645\u0627\u0648\u064a', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0627\u062a\u062d\u0627\u062f - \u0645\u0627\u0646\u0634\u0633\u062a\u0631'},
-  {name:'\u0628\u0627\u0631\u064a\u0633 \u0633\u0627\u0646 \u062c\u064a\u0631\u0645\u0627\u0646', flag:'🇫🇷', letters:'PSG', country:'\u0641\u0631\u0646\u0633\u0627', year:'1970', nick:'\u062d\u062f\u064a\u0642\u0629 \u0627\u0644\u0623\u0645\u0631\u0627\u0621', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062d\u062f\u064a\u0642\u0629 \u0627\u0644\u0623\u0645\u0631\u0627\u0621 - \u0628\u0627\u0631\u064a\u0633'},
-  {name:'\u0625\u0646\u062a\u0631 \u0645\u064a\u0644\u0627\u0646', flag:'🇮🇹', letters:'INTER', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1908', nick:'\u0627\u0644\u0646\u064a\u0631\u0627\u062a\u0632\u0648\u0631\u064a', titles:'3 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u0627\u0646 \u0633\u064a\u0631\u0648 - \u0645\u064a\u0644\u0627\u0646\u0648'},
-  {name:'\u0645\u064a\u0644\u0627\u0646', flag:'🇮🇹', letters:'ACM', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1899', nick:'\u0627\u0644\u0631\u0648\u0633\u0648\u0646\u064a\u0631\u064a', titles:'7 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u0627\u0646 \u0633\u064a\u0631\u0648 - \u0645\u064a\u0644\u0627\u0646\u0648'},
-  {name:'\u062f\u0648\u0631\u062a\u0645\u0648\u0646\u062f', flag:'🇩🇪', letters:'BVB', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'1909', nick:'\u0627\u0644\u0646\u062d\u0644 \u0627\u0644\u0623\u0635\u0641\u0631', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u064a\u062c\u0646\u0627\u0644 \u0625\u064a\u062f\u0648\u0646\u0627 - \u062f\u0648\u0631\u062a\u0645\u0648\u0646\u062f'},
-  {name:'\u0627\u0644\u0647\u0644\u0627\u0644', flag:'🇸🇦', letters:'HILAL', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1957', nick:'\u0627\u0644\u0632\u0639\u064a\u0645', titles:'4 \u0623\u0628\u0637\u0627\u0644 \u0622\u0633\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0645\u0645\u0644\u0643\u0629 \u0623\u0631\u064a\u0646\u0627 - \u0627\u0644\u0631\u064a\u0627\u0636'},
-  {name:'\u0627\u0644\u0627\u062a\u062d\u0627\u062f', flag:'🇸🇦', letters:'ITTIHAD', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1927', nick:'\u0627\u0644\u0639\u0645\u064a\u062f', titles:'2 \u0623\u0628\u0637\u0627\u0644 \u0622\u0633\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062c\u0648\u0647\u0631\u0629 - \u062c\u062f\u0629'},
-  {name:'\u0623\u062a\u0644\u062a\u064a\u0643\u0648 \u0645\u062f\u0631\u064a\u062f', flag:'🇪🇸', letters:'ATM', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1903', nick:'\u0627\u0644\u0631\u0648\u062e\u064a\u0628\u0644\u0627\u0646\u0643\u0648\u0633', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0645\u064a\u062a\u0631\u0648\u0628\u0648\u0644\u064a\u062a\u0627\u0646\u0648 - \u0645\u062f\u0631\u064a\u062f'},
-  {name:'\u0646\u0627\u0628\u0648\u0644\u064a', flag:'🇮🇹', letters:'NAP', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1926', nick:'\u0627\u0644\u0628\u0644\u0627\u0648', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062f\u064a\u064a\u063a\u0648 \u0645\u0627\u0631\u0627\u062f\u0648\u0646\u0627 - \u0646\u0627\u0628\u0648\u0644\u064a'},
-  {name:'\u062a\u0648\u062a\u0646\u0647\u0627\u0645', flag:'🇬🇧', letters:'THFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1882', nick:'\u0627\u0644\u062f\u064a\u0648\u0643', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062a\u0648\u062a\u0646\u0647\u0627\u0645 \u0647\u0648\u062a\u0633\u0628\u064a\u0631 - \u0644\u0646\u062f\u0646'},
-  {name:'\u0628\u0648\u0631\u062a\u0648', flag:'🇵🇹', letters:'FCP', country:'\u0627\u0644\u0628\u0631\u062a\u063a\u0627\u0644', year:'1893', nick:'\u0627\u0644\u062a\u0646\u0627\u0646\u064a\u0646', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062a\u0646\u064a\u0646 - \u0628\u0648\u0631\u062a\u0648'},
-  {name:'\u0628\u0646\u0641\u064a\u0643\u0627', flag:'🇵🇹', letters:'SLB', country:'\u0627\u0644\u0628\u0631\u062a\u063a\u0627\u0644', year:'1904', nick:'\u0627\u0644\u0646\u0633\u0648\u0631', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0646\u0648\u0631 - \u0644\u0634\u0628\u0648\u0646\u0629'},
-  {name:'\u0623\u064a\u0627\u0643\u0633', flag:'🇳🇱', letters:'AFC', country:'\u0647\u0648\u0644\u0646\u062f\u0627', year:'1900', nick:'\u0627\u0644\u0623\u0628\u0646\u0627\u0621', titles:'4 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u064a\u0648\u0647\u0627\u0646 \u0643\u0631\u0648\u064a\u0641 - \u0623\u0645\u0633\u062a\u0631\u062f\u0627\u0645'},
-  {name:'\u0641\u064a\u0646\u0648\u0631\u062f', flag:'🇳🇱', letters:'Feyenoord', country:'\u0647\u0648\u0644\u0646\u062f\u0627', year:'1908', nick:'\u0627\u0644\u0641\u0631\u064a\u0642', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062f\u064a \u0643\u0648\u064a\u0628 - \u0631\u0648\u062a\u0631\u062f\u0627\u0645'},
-  {name:'\u0625\u0634\u0628\u064a\u0644\u064a\u0629', flag:'🇪🇸', letters:'SEV', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1890', nick:'\u0627\u0644\u0646\u0627\u062f\u064a \u0627\u0644\u0623\u0646\u062f\u0644\u0633\u064a', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0631\u0627\u0645\u0648\u0646 \u0633\u0627\u0646\u0634\u064a\u0632 - \u0625\u0634\u0628\u064a\u0644\u064a\u0629'},
-  {name:'\u0641\u0627\u0644\u0646\u0633\u064a\u0627', flag:'🇪🇸', letters:'VCF', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1919', nick:'\u0627\u0644\u062e\u0641\u0627\u0641\u064a\u0634', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0645\u064a\u0633\u062a\u0627\u064a\u0627 - \u0641\u0627\u0644\u0646\u0633\u064a\u0627'},
-  {name:'\u0644\u064a\u0648\u0646', flag:'🇫🇷', letters:'OL', country:'\u0641\u0631\u0646\u0633\u0627', year:'1950', nick:'\u0627\u0644\u0623\u0633\u0648\u062f', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u063a\u0631\u0648\u0628\u0627\u0645\u0627 - \u0644\u064a\u0648\u0646'},
-  {name:'\u0645\u0627\u0631\u0633\u064a\u0644\u064a\u0627', flag:'🇫🇷', letters:'OM', country:'\u0641\u0631\u0646\u0633\u0627', year:'1899', nick:'\u0627\u0644\u0623\u0648\u0644\u0645\u0628\u064a', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0641\u064a\u0644\u0648\u062f\u0631\u0648\u0645 - \u0645\u0627\u0631\u0633\u064a\u0644\u064a\u0627'},
-  {name:'\u0627\u0644\u0646\u0635\u0631', flag:'🇸🇦', letters:'ALNASSR', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1955', nick:'\u0627\u0644\u0639\u0627\u0644\u0645\u064a', titles:'1 \u0623\u0628\u0637\u0627\u0644 \u0622\u0633\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0623\u0648\u0644 \u0628\u0627\u0631\u0643 - \u0627\u0644\u0631\u064a\u0627\u0636'},
-  {name:'\u0627\u0644\u0623\u0647\u0644\u064a \u0627\u0644\u0633\u0639\u0648\u062f\u064a', flag:'🇸🇦', letters:'AHS', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1937', nick:'\u0627\u0644\u0631\u0627\u0642\u064a', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062c\u0648\u0647\u0631\u0629 - \u062c\u062f\u0629'},
-  {name:'\u0628\u064a\u0631\u0627\u0645\u064a\u062f\u0632', flag:'🇪🇬', letters:'PYR', country:'\u0645\u0635\u0631', year:'2008', nick:'\u0627\u0644\u0633\u0645\u0627\u0621', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u062c\u0648\u064a - \u0627\u0644\u0642\u0627\u0647\u0631\u0629'},
-  {name:'\u0627\u0644\u0645\u0635\u0631\u064a', flag:'🇪🇬', letters:'MASRY', country:'\u0645\u0635\u0631', year:'1920', nick:'\u0627\u0644\u0641\u0644\u0627\u062d\u064a\u0646', titles:'1 \u0643\u0623\u0633', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0628\u0648\u0631\u0633\u0639\u064a\u062f - \u0628\u0648\u0631\u0633\u0639\u064a\u062f'},
-  {name:'\u0631\u0648\u0645\u0627', flag:'🇮🇹', letters:'ASR', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1927', nick:'\u0627\u0644\u0630\u0626\u0627\u0628', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0623\u0648\u0644\u0645\u0628\u064a - \u0631\u0648\u0645\u0627'},
-  {name:'\u0644\u0627\u062a\u0633\u064a\u0648', flag:'🇮🇹', letters:'SSL', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1900', nick:'\u0627\u0644\u0646\u0633\u0648\u0631', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0623\u0648\u0644\u0645\u0628\u064a - \u0631\u0648\u0645\u0627'},
-  {name:'\u0644\u0627\u064a\u0628\u0632\u064a\u062c', flag:'🇩🇪', letters:'RBL', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'2009', nick:'\u0627\u0644\u062b\u064a\u0631\u0627\u0646', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0631\u064a\u062f \u0628\u064f\u0644 - \u0644\u0627\u064a\u0628\u0632\u064a\u062c'},
-  {name:'\u0644\u064a\u0641\u0631\u0643\u0648\u0632\u0646', flag:'🇩🇪', letters:'B04', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'1904', nick:'\u0627\u0644\u0635\u064a\u0627\u062f\u0644\u0629', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0628\u0627\u064a \u0623\u0631\u064a\u0646\u0627 - \u0644\u064a\u0641\u0631\u0643\u0648\u0632\u0646'}
-];
-var idx = 0;
-var score = 0;
-var levels = [];
+function F(){return String.fromCharCode.apply(null,arguments)}
+var C=[];
+C[0]={n:F(1585,1610,1575,1604,32,1605,1583,1585,1610,1583),f:'🇪🇸',l:'RMA',c:F(1573,1587,1576,1575,1606,1610,1575),y:'1902',k:F(1575,1604,1605,1604,1603,1610),t:F(49,52,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1587,1575,1606,1578,1610,1575,1594,1608,32,1576,1585,1606,1575,1576,1610,1608,32,45,32,1605,1583,1585,1610,1583)},
+C[1]={n:F(1576,1585,1588,1604,1608,1606,1577),f:'🇪🇸',l:'FCB',c:F(1573,1587,1576,1575,1606,1610,1575),y:'1899',k:F(1575,1604,1576,1604,1608,1580,1585,1575,1606,1575),t:F(53,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1603,1575,1605,1576,32,1606,1608,32,45,32,1576,1585,1588,1604,1608,1606,1577)},
+C[2]={n:F(1575,1604,1571,1607,1604,1610),f:'🇪🇬',l:'AHLY',c:F(1605,1589,1585),y:'1907',k:F(1606,1575,1583,1610,32,1575,1604,1602,1585,1606),t:F(49,49,32,1571,1576,1591,1575,1604,32,1571,1601,1585,1610,1602,1610,1575),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1602,1575,1607,1585,1577,32,1575,1604,1583,1608,1604,1610,32,45,32,1575,1604,1602,1575,1607,1585,1577)},
+C[3]={n:F(1575,1604,1586,1605,1575,1604,1603),f:'🇪🇬',l:'ZSC',c:F(1605,1589,1585),y:'1911',k:F(1575,1604,1602,1604,1593,1577,32,1575,1604,1576,1610,1590,1575,1569),t:F(53,32,1571,1576,1591,1575,1604,32,1571,1601,1585,1610,1602,1610,1575),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1602,1575,1607,1585,1577,32,1575,1604,1583,1608,1604,1610,32,45,32,1575,1604,1602,1575,1607,1585,1577)},
+C[4]={n:F(1604,1610,1601,1585,1576,1608,1604),f:'🇬🇧',l:'LFC',c:F(1573,1606,1580,1604,1578,1585,1575),y:'1892',k:F(1575,1604,1585,1610,1583,1586),t:F(54,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1571,1606,1601,1610,1604,1583,32,45,32,1604,1610,1601,1585,1576,1608,1604)},
+C[5]={n:F(1605,1575,1606,32,1610,1608,1606,1575,1610,1578,1583),f:'🇬🇧',l:'MUFC',c:F(1573,1606,1580,1604,1578,1585,1575),y:'1878',k:F(1575,1604,1588,1610,1575,1591,1610,1606,32,1575,1604,1581,1605,1585),t:F(51,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1571,1608,1604,1583,32,1578,1585,1575,1601,1608,1585,1583,32,45,32,1605,1575,1606,1588,1587,1578,1585)},
+C[6]={n:F(1571,1585,1587,1606,1575,1604),f:'🇬🇧',l:'AFC',c:F(1573,1606,1580,1604,1578,1585,1575),y:'1886',k:F(1575,1604,1605,1583,1601,1593,1580,1610,1577),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1573,1605,1575,1585,1575,1578,32,45,32,1604,1606,1583,1606)},
+C[7]={n:F(1578,1588,1610,1604,1587,1610),f:'🇬🇧',l:'CFC',c:F(1573,1606,1580,1604,1578,1585,1575),y:'1905',k:F(1575,1604,1586,1585,1602),t:F(50,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1587,1578,1575,1605,1601,1608,1585,1583,32,1576,1585,1610,1583,1580,32,45,32,1604,1606,1583,1606)},
+C[8]={n:F(1610,1608,1601,1606,1578,1608,1587),f:'🇮🇹',l:'JUVE',c:F(1573,1610,1591,1575,1604,1610,1575),y:'1897',k:F(1575,1604,1587,1610,1583,1577,32,1575,1604,1593,1580,1608,1586),t:F(50,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1571,1604,1610,1575,1606,1586,32,45,32,1578,1608,1585,1610,1606,1608)},
+  C[9]={n:F(1576,1575,1610,1585,1606,32,1605,1610,1608,1606,1582),f:'🇩🇪',l:'FCB',c:F(1571,1604,1605,1575,1606,1610,1575),y:'1900',k:F(1575,1604,1576,1575,1601,1575,1585,1610),t:F(54,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1571,1604,1610,1575,1606,1586,32,1571,1585,1610,1606,1575,32,45,32,1605,1610,1608,1606,1582)},
+C[10]={n:F(1605,1575,1606,32,1587,1610,1578,1610),f:'🇬🇧',l:'MCFC',c:F(1573,1606,1580,1604,1578,1585,1575),y:'1880',k:F(1575,1604,1587,1605,1575,1608,1610),t:F(49,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1575,1578,1581,1575,1583,32,45,32,1605,1575,1606,1588,1587,1578,1585)},
+C[11]={n:F(1576,1575,1585,1610,1587,32,1587,1575,1606,32,1580,1610,1585,1605,1575,1606),f:'🇫🇷',l:'PSG',c:F(1601,1585,1606,1587,1575),y:'1970',k:F(1581,1583,1610,1602,1577,32,1575,1604,1571,1605,1585,1575,1569),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1581,1583,1610,1602,1577,32,1575,1604,1571,1605,1585,1575,1569,32,45,32,1576,1575,1585,1610,1587)},
+C[12]={n:F(1573,1606,1578,1585,32,1605,1610,1604,1575,1606),f:'🇮🇹',l:'INTER',c:F(1573,1610,1591,1575,1604,1610,1575),y:'1908',k:F(1575,1604,1606,1610,1585,1575,1586,1608,1585,1610),t:F(51,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1587,1575,1606,32,1587,1610,1585,1608,32,45,32,1605,1610,1604,1575,1606,1608)},
+C[13]={n:F(1605,1610,1604,1575,1606),f:'🇮🇹',l:'ACM',c:F(1573,1610,1591,1575,1604,1610,1575),y:'1899',k:F(1575,1604,1585,1608,1587,1608,1606,1610,1585,1610),t:F(55,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1587,1575,1606,32,1587,1610,1585,1608,32,45,32,1605,1610,1604,1575,1606,1608)},
+C[14]={n:F(1583,1608,1585,1578,1605,1608,1606,1583),f:'🇩🇪',l:'BVB',c:F(1571,1604,1605,1575,1606,1610,1575),y:'1909',k:F(1575,1604,1606,1581,1604,32,1575,1604,1571,1589,1601,1585),t:F(49,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1587,1610,1580,1606,1575,1604,32,1573,1610,1583,1608,1606,1575,32,45,32,1583,1608,1585,1578,1605,1608,1606,1583)},
+C[15]={n:F(1575,1604,1607,1604,1575,1604),f:'🇸🇦',l:'HILAL',c:F(1575,1604,1587,1593,1608,1583,1610,1577),y:'1957',k:F(1575,1604,1586,1593,1610,1605),t:F(52,32,1571,1576,1591,1575,1604,32,1570,1587,1610,1575),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1605,1605,1604,1603,1577,32,1571,1585,1610,1606,1575,32,45,32,1575,1604,1585,1610,1575,1590)},
+C[16]={n:F(1575,1604,1575,1578,1581,1575,1583),f:'🇸🇦',l:'ITTIHAD',c:F(1575,1604,1587,1593,1608,1583,1610,1577),y:'1927',k:F(1575,1604,1593,1605,1610,1583),t:F(50,32,1571,1576,1591,1575,1604,32,1570,1587,1610,1575),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1580,1608,1607,1585,1577,32,45,32,1580,1583,1577)},
+C[17]={n:F(1571,1578,1604,1578,1610,1603,1608,32,1605,1583,1585,1610,1583),f:'🇪🇸',l:'ATM',c:F(1573,1587,1576,1575,1606,1610,1575),y:'1903',k:F(1575,1604,1585,1608,1582,1610,1576,1604,1575,1606,1603,1608,1587),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1605,1610,1578,1585,1608,1576,1608,1604,1610,1578,1575,1606,1608,32,45,32,1605,1583,1585,1610,1583)},
+  C[18]={n:F(1606,1575,1576,1608,1604,1610),f:'🇮🇹',l:'NAP',c:F(1573,1610,1591,1575,1604,1610,1575),y:'1926',k:F(1575,1604,1576,1604,1575,1608),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1583,1610,1610,1594,1608,32,1605,1575,1585,1575,1583,1608,1606,1575,32,45,32,1606,1575,1576,1608,1604,1610)},
+C[19]={n:F(1578,1608,1578,1606,1607,1575,1605),f:'🇬🇧',l:'THFC',c:F(1573,1606,1580,1604,1578,1585,1575),y:'1882',k:F(1575,1604,1583,1610,1608,1603),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1578,1608,1578,1606,1607,1575,1605,32,1607,1608,1578,1587,1576,1610,1585,32,45,32,1604,1606,1583,1606)},
+C[20]={n:F(1576,1608,1585,1578,1608),f:'🇵🇹',l:'FCP',c:F(1575,1604,1576,1585,1578,1594,1575,1604),y:'1893',k:F(1575,1604,1578,1606,1575,1606,1610,1606),t:F(50,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1578,1606,1610,1606,32,45,32,1576,1608,1585,1578,1608)},
+C[21]={n:F(1576,1606,1601,1610,1603,1575),f:'🇵🇹',l:'SLB',c:F(1575,1604,1576,1585,1578,1594,1575,1604),y:'1904',k:F(1575,1604,1606,1587,1608,1585),t:F(50,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1606,1608,1585,32,45,32,1604,1588,1576,1608,1606,1577)},
+C[22]={n:F(1571,1610,1575,1603,1587),f:'🇳🇱',l:'AFC',c:F(1607,1608,1604,1606,1583,1575),y:'1900',k:F(1575,1604,1571,1576,1606,1575,1569),t:F(52,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1610,1608,1607,1575,1606,32,1603,1585,1608,1610,1601,32,45,32,1571,1605,1587,1578,1585,1583,1575,1605)},
+C[23]={n:F(1601,1610,1606,1608,1585,1583),f:'🇳🇱',l:'【entity-Feyenoord¦canonical_name=Feyenoord】',c:F(1607,1608,1604,1606,1583,1575),y:'1908',k:F(1575,1604,1601,1585,1610,1602),t:F(49,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1583,1610,32,1603,1608,1610,1576,32,45,32,1585,1608,1578,1585,1583,1575,1605)},
+C[24]={n:F(1573,1588,1576,1610,1604,1610,1577),f:'🇪🇸',l:'SEV',c:F(1573,1587,1576,1575,1606,1610,1575),y:'1890',k:F(1575,1604,1606,1575,1583,1610,32,1575,1604,1571,1606,1583,1604,1587,1610),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1585,1575,1605,1608,1606,32,1587,1575,1606,1588,1610,1586,32,45,32,1573,1588,1576,1610,1604,1610,1577)},
+C[25]={n:F(1601,1575,1604,1606,1587,1610,1575),f:'🇪🇸',l:'VCF',c:F(1573,1587,1576,1575,1606,1610,1575),y:'1919',k:F(1575,1604,1582,1601,1575,1601,1610,1588),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1605,1610,1587,1578,1575,1610,1575,32,45,32,1601,1575,1604,1606,1587,1610,1575)},
+C[26]={n:F(1604,1610,1608,1606),f:'🇫🇷',l:'OL',c:F(1601,1585,1606,1587,1575),y:'1950',k:F(1575,1604,1571,1587,1608,1583),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1594,1585,1608,1576,1575,1605,1575,32,45,32,1604,1610,1608,1606)},
+  C[27]={n:F(1605,1575,1585,1587,1610,1604,1610,1575),f:'🇫🇷',l:'OM',c:F(1601,1585,1606,1587,1575),y:'1899',k:F(1575,1604,1571,1608,1604,1605,1576,1610),t:F(49,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1601,1610,1604,1608,1583,1585,1608,1605,32,45,32,1605,1575,1585,1587,1610,1604,1610,1575)},
+C[28]={n:F(1575,1604,1606,1589,1585),f:'🇸🇦',l:'ALNASSR',c:F(1575,1604,1587,1593,1608,1583,1610,1577),y:'1955',k:F(1575,1604,1593,1575,1604,1605,1610),t:F(49,32,1571,1576,1591,1575,1604,32,1570,1587,1610,1575),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1571,1608,1604,32,1576,1575,1585,1603,32,45,32,1575,1604,1585,1610,1575,1590)},
+C[29]={n:F(1575,1604,1571,1607,1604,1610,32,1575,1604,1587,1593,1608,1583,1610),f:'🇸🇦',l:'AHS',c:F(1575,1604,1587,1593,1608,1583,1610,1577),y:'1937',k:F(1575,1604,1585,1575,1602,1610),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1580,1608,1607,1585,1577,32,45,32,1580,1583,1577)},
+C[30]={n:F(1576,1610,1585,1575,1605,1610,1583,1586),f:'🇪🇬',l:'PYR',c:F(1605,1589,1585),y:'2008',k:F(1575,1604,1587,1605,1575,1569),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1583,1601,1575,1593,32,1575,1604,1580,1608,1610,32,45,32,1575,1604,1602,1575,1607,1585,1577)},
+C[31]={n:F(1575,1604,1605,1589,1585,1610),f:'🇪🇬',l:'MASRY',c:F(1605,1589,1585),y:'1920',k:F(1575,1604,1601,1604,1575,1581,1610,1606),t:F(49,32,1603,1571,1587),e:F(1575,1604,1605,1604,1593,1576,58,32,1576,1608,1585,1587,1593,1610,1583,32,45,32,1576,1608,1585,1587,1593,1610,1583)},
+C[32]={n:F(1585,1608,1605,1575),f:'🇮🇹',l:'ASR',c:F(1573,1610,1591,1575,1604,1610,1575),y:'1927',k:F(1575,1604,1584,1574,1575,1576),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1571,1608,1604,1605,1576,1610,32,45,32,1585,1608,1605,1575)},
+C[33]={n:F(1604,1575,1578,1587,1610,1608),f:'🇮🇹',l:'SSL',c:F(1573,1610,1591,1575,1604,1610,1575),y:'1900',k:F(1575,1604,1606,1587,1608,1585),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1575,1604,1571,1608,1604,1605,1576,1610,32,45,32,1585,1608,1605,1575)},
+C[34]={n:F(1604,1575,1610,1576,1586,1610,1580),f:'🇩🇪',l:'RBL',c:F(1571,1604,1605,1575,1606,1610,1575),y:'2009',k:F(1575,1604,1579,1610,1585,1575,1606),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1585,1610,1583,32,1576,1615,1604,32,45,32,1604,1575,1610,1576,1586,1610,1580)},
+C[35]={n:F(1604,1610,1601,1585,1603,1608,1586,1606),f:'🇩🇪',l:'B04',c:F(1571,1604,1605,1575,1606,1610,1575),y:'1904',k:F(1575,1604,1589,1610,1575,1583,1604,1577),t:F(48,32,1571,1576,1591,1575,1604),e:F(1575,1604,1605,1604,1593,1576,58,32,1576,1575,1610,32,1571,1585,1610,1606,1575,32,45,32,1604,1610,1601,1585,1603,1608,1586,1606)},
+var clubs=C.map(function(o){return{name:o.n,flag:o.f,letters:o.l,country:o.c,year:o.y,nick:o.k,titles:o.t,extra:o.e}});
+var idx=0;var score=0;var levels=[];
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function generateLevels() {
-  levels = [];
-  var pool = shuffle(clubs.slice());
-  for (var i = 0; i < 80; i++) {
-    if (pool.length === 0) {
-      var lastClub = levels.length > 0 ? levels[levels.length - 1].name : '';
-      do { pool = shuffle(clubs.slice()); } while (pool[pool.length - 1].name === lastClub);
-    }
-    var club = pool.pop();
-    if (levels.length > 0) {
-      var prev = levels[levels.length - 1];
-      if (club.name === prev.name || club.country === prev.country) {
-        for (var k = pool.length - 1; k >= 0; k--) {
-          if (pool[k].name !== prev.name && pool[k].country !== prev.country) { var temp = pool[k]; pool[k] = club; club = temp; break; }
-        }
-      }
-    }
-    var wrongs = clubs.filter(function(c){return c.name !== club.name;});
-    wrongs = shuffle(wrongs).slice(0, 3);
-    var opts = shuffle([club.name].concat(wrongs.map(function(c){return c.name;})));
-    levels.push({name: club.name, flag: club.flag, letters: club.letters, country: club.country, year: club.year, nick: club.nick, titles: club.titles, extra: club.extra, opts: opts});
-  }
-}
+function generateLevels(){levels=[];var pool=shuffle(clubs.slice());for(var i=0;i<80;i++){if(pool.length===0){var lastClub=levels.length>0?levels[levels.length-1].name:'';do{pool=shuffle(clubs.slice());}while(pool[pool.length-1].name===lastClub);}var club=pool.pop();if(levels.length>0){var prev=levels[levels.length-1];if(club.name===prev.name||club.country===prev.country){for(var k=pool.length-1;k>=0;k--){if(pool[k].name!==prev.name&&pool[k].country!==prev.country){var temp=pool[k];pool[k]=club;club=temp;break;}}}}var wrongs=clubs.filter(function(c){return c.name!==club.name;});wrongs=shuffle(wrongs).slice(0,3);var opts=shuffle([club.name].concat(wrongs.map(function(c){return c.name;})));levels.push({name:club.name,flag:club.flag,letters:club.letters,country:club.country,year:club.year,nick:club.nick,titles:club.titles,extra:club.extra,opts:opts});}}
 generateLevels();
-function render() {
-  var cur = levels[idx];
-  document.getElementById('qn').textContent = (idx + 1) + ' / ' + levels.length;
-  document.getElementById('sc').textContent = score + ' نقطة';
-  document.getElementById('fill').style.width = (idx / levels.length * 100) + '%';
-  document.getElementById('logoFlag').textContent = cur.flag;
-  document.getElementById('logoLetters').textContent = cur.letters;
-  document.getElementById('specCountry').textContent = cur.country;
-  document.getElementById('specYear').textContent = cur.year;
-  document.getElementById('specNick').textContent = cur.nick;
-  document.getElementById('specTitles').textContent = cur.titles;
-  document.getElementById('hintBox').textContent = '';
-  document.getElementById('h1').disabled = false;
-  document.getElementById('h2').disabled = false;
-  document.getElementById('h3').disabled = false;
-  var optsEl = document.getElementById('opts');
-  optsEl.innerHTML = '';
-  cur.opts.forEach(function(t) {
-    var b = document.createElement('button');
-    b.className = 'opt';
-    b.textContent = t;
-    b.onclick = function() { handleAnswer(t, b); };
-    optsEl.appendChild(b);
-  });
-}
-function handleAnswer(selected, btn) {
-  var allBtns = document.querySelectorAll('.opt');
-  allBtns.forEach(function(b) { b.disabled = true; });
-  var cur = levels[idx];
-  if (selected === cur.name) {
-    score += 20;
-    document.getElementById('sc').textContent = score + ' نقطة';
-    btn.style.background = '#7ED321'; btn.style.color = '#000'; btn.style.borderColor = '#fff';
-    document.getElementById('hintBox').textContent = '✅ إجابة صحيحة! +20';
-    speak('صح');
-    setTimeout(function() { idx++; if (idx < levels.length) render(); else endGame(); }, 800);
-  } else {
-    btn.style.background = '#ff4444'; btn.style.color = '#fff'; btn.style.borderColor = '#ff4444';
-    allBtns.forEach(function(b) { if (b.textContent === cur.name) { b.style.background = '#7ED321'; b.style.color = '#000'; b.style.borderColor = '#fff'; } });
-    document.getElementById('hintBox').textContent = '❌ خطأ! الصح: ' + cur.name;
-    speak('غلط');
-    setTimeout(function() { idx++; if (idx < levels.length) render(); else endGame(); }, 1500);
-  }
-}
-function hintClear() { if (document.getElementById('h1').disabled) return; score = Math.max(0, score - 5); document.getElementById('sc').textContent = score + ' نقطة'; document.getElementById('h1').disabled = true; document.getElementById('hintBox').textContent = '🔍 ' + levels[idx].extra; speak('حاول'); }
-function hintText() { if (document.getElementById('h2').disabled) return; score = Math.max(0, score - 5); document.getElementById('sc').textContent = score + ' نقطة'; document.getElementById('h2').disabled = true; document.getElementById('hintBox').textContent = '💡 اللقب: ' + levels[idx].nick + ' - تأسس ' + levels[idx].year; speak('حاول'); }
-function hintDel() { if (document.getElementById('h3').disabled) return; score = Math.max(0, score - 10); document.getElementById('sc').textContent = score + ' نقطة'; document.getElementById('h3').disabled = true; var cur = levels[idx]; var allBtns = Array.from(document.querySelectorAll('.opt')); var removed = 0; allBtns.forEach(function(b) { if (b.textContent !== cur.name && removed < 2) { b.disabled = true; b.style.opacity = '0.2'; removed++; } }); document.getElementById('hintBox').textContent = '❌ تم حذف إجابتين خاطئتين'; speak('حاول'); }
-function skipLevel() { speak('حاول'); idx++; if (idx < levels.length) render(); else endGame(); }
-function endGame() { speak('كسبت'); var container = document.getElementById('mainContainer'); var endScreen = document.createElement('div'); endScreen.className = 'end-screen'; endScreen.innerHTML = `<h2>🏆 انتهت اللعبة!</h2><p>لقد جمعت <b>${score}</b> نقطة<br>من أصل ${levels.length * 20} نقطة</p><button class="end-btn" onclick="loc
+function render(){var cur=levels[idx];document.getElementById('qn').textContent=(idx+1)+' / '+levels.length;document.getElementById('sc').textContent=score+' نقطة';document.getElementById('fill').style.width=(idx/levels.length*100)+'%';document.getElementById('logoFlag').textContent=cur.flag;document.getElementById('logoLetters').textContent=cur.letters;document.getElementById('specCountry').textContent=cur.country;document.getElementById('specYear').textContent=cur.year;document.getElementById('specNick').textContent=cur.nick;document.getElementById('specTitles').textContent=cur.titles;document.getElementById('hintBox').textContent='';document.getElementById('h1').disabled=false;document.getElementById('h2').disabled=false;document.getElementById('h3').disabled=false;var optsEl=document.getElementById('opts');optsEl.innerHTML='';cur.opts.forEach(function(t){var b=document.createElement('button');b.className='opt';b.textContent=t;b.onclick=function(){handleAnswer(t,b);};optsEl.appendChild(b);});}
+function handleAnswer(selected,btn){var allBtns=document.querySelectorAll('.opt');allBtns.forEach(function(b){b.disabled=true;});var cur=levels[idx];if(selected===cur.name){score+=20;document.getElementById('sc').textContent=score+' نقطة';btn.style.background='#7ED321';btn.style.color='#000';btn.style.borderColor='#fff';document.getElementById('hintBox').textContent='✅ إجابة صحيحة! +20';speak('صح');setTimeout(function(){idx++;if(idx<levels.length)render();else endGame();},800);}else{btn.style.background='#ff4444';btn.style.color='#fff';btn.style.borderColor='#ff4444';allBtns.forEach(function(b){if(b.textContent===cur.name){b.style.background='#7ED321';b.style.color='#000';b.style.borderColor='#fff';}});document.getElementById('hintBox').textContent='❌ خطأ! الصح: '+cur.name;speak('غلط');setTimeout(function(){idx++;if(idx<levels.length)render();else endGame();},1500);}}
+function hintClear(){if(document.getElementById('h1').disabled)return;score=Math.max(0,score-5);document.getElementById('sc').textContent=score+' نقطة';document.getElementById('h1').disabled=true;document.getElementById('hintBox').textContent='🔍 '+levels[idx].extra;speak('حاول');}
+function hintText(){if(document.getElementById('h2').disabled)return;score=Math.max(0,score-5);document.getElementById('sc').textContent=score+' نقطة';document.getElementById('h2').disabled=true;document.getElementById('hintBox').textContent='💡 اللقب: '+levels[idx].nick+' - تأسس '+levels[idx].year;speak('حاول');}
+function hintDel(){if(document.getElementById('h3').disabled)return;score=Math.max(0,score-10);document.getElementById('sc').textContent=score+' نقطة';document.getElementById('h3').disabled=true;var cur=levels[idx];var allBtns=Array.from(document.querySelectorAll('.opt'));var removed=0;allBtns.forEach(function(b){if(b.textContent!==cur.name&&removed<2){b.disabled=true;b.style.opacity='0.2';removed++;}});document.getElementById('hintBox').textContent='❌ تم حذف إجابتين خاطئتين';speak('حاول');}
+function skipLevel(){speak('حاول');idx++;if(idx<levels.length)render();else endGame();}
+function endGame(){speak('كسبت');var container=document.getElementById('mainContainer');var endScreen=document.createElement('div');endScreen.className='end-screen';endScreen.innerHTML='<h2>🏆 انتهت اللعبة!</h2><p>لقد جمعت <b>'+score+'</b> نقطة<br>من أصل '+(levels.length*20)+' نقطة</p><button class="end-btn" onclick="location.reload()">العب تاني 🔄</button>';container.appendChild(endScreen);}
+document.getElementById('soundBtn').onclick=function(){soundOn=!soundOn;this.textContent=soundOn?'🔊 الصوت: شغال':'🔇 الصوت: مطفي';if(soundOn)speak('صح');};
+render();
+</script>
+</body>
+</html>
