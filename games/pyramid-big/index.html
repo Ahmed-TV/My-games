@@ -11,7 +11,6 @@ header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;t
 .names{font-size:22px!important;font-weight:900;color:#B8860B;line-height:1.3;text-align:center}
 .name-en{display:block;font-size:18px!important;font-weight:900;color:#B8860B;line-height:1.2}
 .names small{display:block;font-size:16px!important;color:#A0522D;font-weight:900;line-height:1.2}
-.badge{background:#B8860B;color:#fff;font-size:11px;font-weight:900;padding:2px 12px;border-radius:20px;margin:2px 0}
 .modes{display:flex;gap:5px;width:100%;margin:2px 0}
 .mode{flex:1;padding:6px 2px;border-radius:10px;border:2px solid #B8860B;background:#fff;color:#B8860B;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit}
 .mode.active{background:#B8860B;color:#fff}
@@ -42,17 +41,17 @@ footer{text-align:center;color:#B8860B;font-size:10px;margin-top:2px;padding-bot
 footer a{color:#B8860B;text-decoration:none;font-weight:700}
 </style></head>
 <body oncontextmenu="return false"><div class="game">
-<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">بناء الهرم الكبير</div><div class="names">أحمد عبدالعزيز<span class="name-en">Ahmed Abdelaziz</span><small>Ahmed TV</small></div><div class="badge">⭐ نسخة الشاشة الكبيرة ⭐</div></header>
+<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">بناء الهرم الكبير</div><div class="names">أحمد عبدالعزيز<span class="name-en">Ahmed Abdelaziz</span><small>Ahmed TV</small></div></header>
 <div class="modes"><button class="mode active" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button><button class="mode" onclick="showHow()">❓ شرح اللعبة</button></div>
-<div class="stats"><div class="stat"><b id="stage">المرحلة 1 / 5</b><span>المرحلة</span></div><div class="stat"><b id="score">0</b><span>الحجارة</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
-<div id="view"><div id="msg">ابني الهرم الكبير!</div><div id="ground"></div><div id="tower"></div><div id="moving">🧱</div><div id="falling">🧱</div>
-<div id="overlay"><h2>🔺 بناء الهرم الكبير 🔺</h2><div class="how"><b>ازاي تلعب؟</b><div>1 - الحجر 🧱 بيتحرك فوق يمين وشمال<br>2 - استنى لما ييجي فوق الهرم بالظبط<br>3 - دوس <b>⬇ نزل الحجر ⬇</b> بسرعة<br>4 - لو نزل مظبوط تكسب - لو وقع بره تخسر<br>5 - كل مرحلة الحجر بيجري أسرع!</div></div><button id="startBtn" onclick="startGame()">ابدأ البناء</button></div></div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>الحجارة</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
+<div id="view"><div id="msg">ابني الهرم حجر حجر!</div><div id="ground"></div><div id="tower"></div><div id="moving">🧱</div><div id="falling">🧱</div>
+<div id="overlay"><h2>🔺 بناء الهرم الكبير 🔺</h2><div class="how"><b>ازاي تلعب؟</b><div>1 - الحجر 🧱 بيتحرك فوق يمين وشمال<br>2 - استنى لما ييجي فوق الهرم بالظبط<br>3 - دوس <b>⬇ نزل الحجر ⬇</b><br>4 - لو نزل مظبوط تكسب - لو وقع بره تخسر</div></div><button id="startBtn" onclick="startGame()">ابدأ البناء</button></div></div>
 <div class="controls"><button class="cbtn" onclick="dropBlock()">⬇ نزل الحجر ⬇</button></div>
 <footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 var moving=document.getElementById('moving'), falling=document.getElementById('falling'), tower=document.getElementById('tower'), msg=document.getElementById('msg'), overlay=document.getElementById('overlay');
-var playing=false, mx=10, dir=1, moveTimer=null, need=[5,4,3,2,1], curRow=0, curCount=0, score=0, stage=1, best=+(localStorage.getItem('ahmed_pyramid_big_best')||0);
+var playing=false, mx=10, dir=1, moveTimer=null, need=[5,4,3,2,1], curRow=0, curCount=0, score=0, best=+(localStorage.getItem('ahmed_pyramid_big_best')||0);
 var soundOn=true, actx=null;
 document.getElementById('best').textContent=best;
 function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; if(soundOn) playBeep(600); }
@@ -60,16 +59,13 @@ function playBeep(f,d){ if(!soundOn) return; try{ if(!actx) actx=new (window.Aud
 function playWin(){ playBeep(523,0.15); setTimeout(function(){playBeep(659,0.15);},150); setTimeout(function(){playBeep(784,0.3);},300); }
 function playLose(){ playBeep(300,0.2); setTimeout(function(){playBeep(180,0.4);},180); }
 function speak(t){ if(!soundOn) return; try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(t); u.lang='ar-EG'; u.rate=1; window.speechSynthesis.speak(u); } }catch(e){} }
-function showHow(){ overlay.style.display='flex'; overlay.innerHTML='<h2>❓ شرح اللعبة</h2><div class="how"><b>ازاي تلعب؟</b><div>1 - الحجر 🧱 بيتحرك فوق يمين وشمال<br>2 - استنى لما ييجي فوق الهرم بالظبط<br>3 - دوس نزل الحجر بسرعة<br>4 - لو نزل مظبوط تكسب - لو وقع بره تخسر</div></div><button id="startBtn" onclick="startGame()">فهمت - ابدأ</button>'; }
-function speedForStage(){ if(stage===1) return 2.2; if(stage===2) return 3.2; if(stage===3) return 4.5; if(stage===4) return 6; return 7.5; }
+function showHow(){ overlay.style.display='flex'; overlay.innerHTML='<h2>❓ شرح اللعبة</h2><div class="how"><b>ازاي تلعب؟</b><div>1 - الحجر 🧱 بيتحرك فوق يمين وشمال<br>2 - استنى لما ييجي فوق الهرم بالظبط<br>3 - دوس نزل الحجر<br>4 - لو نزل مظبوط تكسب - لو وقع بره تخسر</div></div><button id="startBtn" onclick="startGame()">فهمت - ابدأ</button>'; }
 function renderTower(){ tower.innerHTML=''; for(var r=0;r<curRow;r++){ var row=document.createElement('div'); row.className='row'; for(var i=0;i<need[r];i++){ var b=document.createElement('div'); b.className='block'; b.textContent='🧱'; row.appendChild(b); } tower.appendChild(row); } if(curCount>0){ var row2=document.createElement('div'); row2.className='row'; for(var j=0;j<curCount;j++){ var b2=document.createElement('div'); b2.className='block'; b2.textContent='🧱'; row2.appendChild(b2); } tower.appendChild(row2); } }
-function startGame(){ curRow=0; curCount=0; score=0; mx=10; dir=1; playing=true; document.getElementById('score').textContent='0'; document.getElementById('stage').textContent='المرحلة '+stage+' / 5'; renderTower(); overlay.style.display='none'; moving.style.display='flex'; msg.textContent='المرحلة '+stage+' - ابني الهرم'; speak('المرحلة '+stage); clearInterval(moveTimer); var sp=speedForStage(); moveTimer=setInterval(function(){ if(!playing) return; mx+=dir*sp; if(mx>88){dir=-1;} if(mx<2){dir=1;} moving.style.left=mx+'%'; },30); }
+function startGame(){ curRow=0; curCount=0; score=0; mx=10; dir=1; playing=true; document.getElementById('score').textContent='0'; renderTower(); overlay.style.display='none'; moving.style.display='flex'; msg.textContent='ابني الهرم حجر حجر!'; speak('ابني الهرم'); clearInterval(moveTimer); moveTimer=setInterval(function(){ if(!playing) return; mx+=dir*1.8; if(mx>88){dir=-1;} if(mx<2){dir=1;} moving.style.left=mx+'%'; },30); }
 function dropBlock(){ if(!playing) return; playBeep(400,0.1); var startX=mx; moving.style.display='none'; falling.style.display='flex'; falling.style.left=startX+'%'; falling.style.top='10px'; var y=10; var fall=setInterval(function(){ y+=9; falling.style.top=y+'px'; if(y>235){ clearInterval(fall); falling.style.display='none'; checkDrop(startX); } },20); }
-function checkDrop(x){ var ok = (x>22 && x<74); if(ok){ curCount++; score++; document.getElementById('score').textContent=score; renderTower(); msg.textContent='عاش! حجر صح! 👏'; playBeep(750,0.2); speak('صح'); if(curCount>=need[curRow]){ curRow++; curCount=0; if(curRow>=5){ stageComplete(); return; } msg.textContent='الدور اللي بعده - عايز '+need[curRow]+' حجارة'; } moving.style.display='flex'; } else { loseGame(); } }
-function stageComplete(){ playing=false; clearInterval(moveTimer); playWin(); speak('عاش كسبت المرحلة'); if(stage>=5){ if(score>best){ best=score; localStorage.setItem('ahmed_pyramid_big_best',best); document.getElementById('best').textContent=best; } tower.innerHTML=tower.innerHTML+'<div class="row"><div class="block gold">👑</div></div>'; overlay.style.display='flex'; overlay.innerHTML='<h2>بطل! خلصت كل المراحل! 👑</h2><p>بنيت الهرم الكبير - 5 مراحل<br>جمعت '+score+' حجرة</p><button id="startBtn" onclick="restartAll()">العب من الأول</button>'; } else { overlay.style.display='flex'; overlay.innerHTML='<h2>خلصت المرحلة '+stage+'! 🎉</h2><p>المرحلة اللي جاية أصعب!<br>جمعت '+score+' حجرة</p><button id="startBtn" onclick="nextStage()">المرحلة اللي بعدها</button>'; } }
-function nextStage(){ stage++; startGame(); }
-function restartAll(){ stage=1; startGame(); }
-function loseGame(){ playing=false; clearInterval(moveTimer); playLose(); speak('الحجر وقع'); overlay.style.display='flex'; overlay.innerHTML='<h2>الحجر وقع! 😢</h2><p>كنت في المرحلة '+stage+' - الدور '+(curRow+1)+'<br>جمعت '+score+' حجرة</p><button id="startBtn" onclick="startGame()">حاول تاني</button>'; }
+function checkDrop(x){ var ok = (x>16 && x<80); if(ok){ curCount++; score++; document.getElementById('score').textContent=score; renderTower(); msg.textContent='عاش! حجر صح! 👏'; playBeep(750,0.2); speak('صح'); if(curCount>=need[curRow]){ curRow++; curCount=0; if(curRow>=5){ winGame(); return; } msg.textContent='الدور اللي بعده - عايز '+need[curRow]+' حجارة'; } moving.style.display='flex'; } else { loseGame(); } }
+function winGame(){ playing=false; clearInterval(moveTimer); playWin(); speak('عاش كسبت'); if(score>best){ best=score; localStorage.setItem('ahmed_pyramid_big_best',best); document.getElementById('best').textContent=best; } tower.innerHTML=tower.innerHTML+'<div class="row"><div class="block gold">👑</div></div>'; overlay.style.display='flex'; overlay.innerHTML='<h2>بطل! بنيت الهرم! 👑</h2><p>جمعت '+score+' حجرة</p><button id="startBtn" onclick="startGame()">العب تاني</button>'; }
+function loseGame(){ playing=false; clearInterval(moveTimer); playLose(); speak('الحجر وقع'); overlay.style.display='flex'; overlay.innerHTML='<h2>الحجر وقع! 😢</h2><p>جمعت '+score+' حجرة</p><button id="startBtn" onclick="startGame()">حاول تاني</button>'; }
 renderTower();
 </script>
 </body></html>
