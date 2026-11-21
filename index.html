@@ -1016,6 +1016,21 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
       el.style.whiteSpace = 'nowrap';
     }
 
-    
+  <script>
+let welcomePlayed = false;
+function playWelcome(){
+  if(welcomePlayed) return;
+  welcomePlayed = true;
+  try{
+    var a = new Audio('https://ahmed-tv.github.io/My-games/sounds/ahla.mp3');
+    a.play().catch(function(){
+      var b = new Audio('sounds/ahla.mp3');
+      b.play().catch(function(){});
+    });
+  }catch(e){}
+}
+document.addEventListener('click', playWelcome, {once:true});
+document.addEventListener('touchstart', playWelcome, {once:true});
+</script>  
 </body>
 </html>
