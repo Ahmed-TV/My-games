@@ -1,81 +1,74 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - بناء الهرم</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - بناء الهرم الكبير</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
-html,body{overflow:hidden!important;height:100%!important;height:100svh!important;max-height:100svh!important;overscroll-behavior:none;position:fixed!important;width:100%}
-body{font-family:Tahoma,Arial,sans-serif;background:#0F172A;display:flex;justify-content:center;padding:0}
-.game{width:100%;max-width:500px;height:100svh;max-height:100svh;min-height:100svh;overflow:hidden!important;display:flex;flex-direction:column;background:linear-gradient(180deg,#1E293B 0%,#0F172A 100%);padding:2px 6px 2px;position:relative}
-header{flex-shrink:0;padding:0;display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1}
-.logo-img{width:110px!important;height:110px!important;min-width:110px;min-height:110px;max-width:110px;max-height:110px;border-radius:50%;border:4px solid #F59E0B;object-fit:cover;background:#fff;display:block}
-.brand{font-size:22px!important;font-weight:900;color:#fff;line-height:1.1}
-.names{font-size:22px!important;font-weight:900;color:#fff;line-height:1.1;text-align:center}
-.name-en{display:block;font-size:18px!important;font-weight:900;color:#FDE68A;line-height:1.1}
-.names small{display:block;font-size:16px!important;color:#F59E0B;font-weight:900;line-height:1.1}
-.topbar{display:flex;gap:4px;width:100%;margin:2px 0;flex-shrink:0;direction:rtl}
-.topbtn{flex:1;padding:5px 2px;border-radius:999px;border:2px solid #F59E0B;background:#fff;color:#0F172A;font-weight:900;font-size:11px;cursor:pointer;font-family:inherit}
-.topbtn.on{background:#F59E0B;color:#fff}
-.bar{display:flex;gap:4px;width:100%;flex-shrink:0;direction:rtl}
-.pill{flex:1;background:#fff;border-radius:999px;padding:2px 4px;text-align:center;line-height:1.1;border:2px solid #F59E0B}
-.pill b{display:block;font-size:12px;color:#0F172A}
+html,body{overflow:hidden!important;height:100%!important;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:#8B4513;display:flex;justify-content:center;padding:3px 6px}
+.game{width:100%;max-width:500px;display:flex;flex-direction:column;background:linear-gradient(180deg,#FFF8DC 0%,#F5DEB3 60%,#DEB887 100%);border:4px solid #8B4513;border-radius:22px;padding:4px 6px 3px}
+header{display:flex;flex-direction:column;align-items:center;text-align:center;line-height:1}
+.logo-img{width:110px!important;height:110px!important;min-width:110px;min-height:110px;max-width:110px;max-height:110px;border-radius:50%;border:4px solid #8B4513;object-fit:cover;background:#fff;display:block}
+.brand{font-size:22px!important;font-weight:900;color:#8B4513;line-height:1.1}
+.names{font-size:22px!important;font-weight:900;color:#8B4513;line-height:1.1;text-align:center}
+.name-en{display:block;font-size:18px!important;font-weight:900;color:#8B4513;line-height:1.1}
+.names small{display:block;font-size:16px!important;color:#A0522D;font-weight:900;line-height:1.1}
+.topbar{display:flex;gap:4px;width:100%;margin:2px 0}
+.topbtn{flex:1;padding:5px 2px;border-radius:10px;border:2px solid #8B4513;background:#fff;color:#8B4513;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit}
+.topbtn.on{background:#8B4513;color:#fff}
+.bar{display:flex;gap:4px;width:100%}
+.pill{flex:1;background:#fff;border:1.5px solid #8B4513;border-radius:9px;padding:2px 1px;text-align:center;line-height:1.1}
+.pill b{display:block;font-size:13px;color:#8B4513}
 .pill span{font-size:9px;font-weight:800;color:#666}
-#view{flex:1;min-height:0;flex-shrink:1;width:100%;background:radial-gradient(circle at 50% 0%,#FDE68A 0%,#F59E0B 25%,#92400E 60%,#451A03 100%);border:3px solid #F59E0B;border-radius:22px;overflow:hidden;position:relative;margin:3px 0}
-#ground{position:absolute;bottom:0;left:0;width:100%;height:18px;background:#451A03;border-top:3px solid #F59E0B;z-index:1}
-#target{position:absolute;bottom:18px;left:30%;width:78px;height:42px;background:rgba(255,255,255,.92);border:3px solid #22C55E;border-radius:12px;z-index:2;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 0 3px rgba(34,197,94,.35),0 0 18px rgba(34,197,94,.8);animation:pulse 0.7s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-#pyramid{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column-reverse;align-items:center;z-index:3;width:100%}
-.py-row{display:flex;justify-content:center;gap:2px;margin:0}
-.py-stone{width:38px;height:28px;background:linear-gradient(180deg,#FFFBEB 0%,#FDE68A 40%,#D97706 100%);clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);display:flex;align-items:flex-end;justify-content:center;font-size:15px;padding-bottom:2px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.4))}
-.py-stone.top{background:linear-gradient(180deg,#FEF08A,#EA580C)}
-#moving{position:absolute;top:8px;left:10px;width:46px;height:32px;background:linear-gradient(180deg,#FFFBEB 0%,#FDE68A 40%,#D97706 100%);clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);display:flex;align-items:flex-end;justify-content:center;font-size:18px;z-index:5;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
-#falling{position:absolute;width:46px;height:32px;background:linear-gradient(180deg,#FFFBEB 0%,#FDE68A 40%,#D97706 100%);clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);display:flex;align-items:flex-end;justify-content:center;font-size:18px;z-index:5;display:none}
-#msg{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#0F172A;color:#FDE68A;font-weight:900;font-size:11px;padding:4px 12px;border-radius:999px;z-index:6;white-space:nowrap;border:2px solid #F59E0B}
-#overlay{position:absolute;inset:0;background:rgba(15,23,42,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;z-index:10;text-align:center;padding:8px;overflow:hidden}
-#overlay h2{color:#fff;font-size:21px;line-height:1.2}
-#overlay p{color:#FDE68A;font-size:12px;font-weight:800;line-height:1.6}
-.how{background:#fff;border-radius:14px;padding:6px 8px;text-align:right;width:100%;max-width:320px}
-.how b{color:#0F172A;font-size:13px}
-.how div{color:#333;font-size:11px;font-weight:700;line-height:1.6}
-#startBtn{font-family:inherit;font-weight:900;border:0;border-radius:999px;padding:10px 24px;background:#22C55E;color:#fff;cursor:pointer;font-size:16px;box-shadow:0 4px 0 #166534}
-.controls{display:flex;gap:6px;width:100%;flex-shrink:0;padding:2px 0 1px;direction:ltr}
-.cbtn{height:50px;border-radius:999px;border:0;cursor:pointer;font-family:inherit;font-weight:900;font-size:15px;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center}
-.cbtn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.3)}
-.cbtn.left{flex:1;background:#0EA5E9;order:1}
-.cbtn.drop{flex:1.6;background:#22C55E;font-size:16px;order:2}
-.cbtn.right{flex:1;background:#0EA5E9;order:3}
-footer{flex-shrink:0;text-align:center;color:#FDE68A;font-size:10px;padding-bottom:1px}
-footer a{color:#FDE68A;text-decoration:none;font-weight:700}
+#view{width:100%;height:260px;background:linear-gradient(180deg,#FFF8DC 0%,#FFE4B5 40%,#DEB887 80%,#C68A3A 100%);border:2px solid #8B4513;border-radius:16px;overflow:hidden;position:relative;margin:3px 0}
+@media(min-width:700px){#view{height:400px}}
+#ground{position:absolute;bottom:0;left:0;width:100%;height:22px;background:#8B4513;border-top:3px solid #5C2E0E;z-index:1}
+#pyramid{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column-reverse;align-items:center;z-index:2;width:100%}
+.py-row{display:flex;justify-content:center;gap:2px;margin:1px 0}
+.py-block{width:36px;height:26px;background:linear-gradient(180deg,#FFF8DC,#DEB887);border:2px solid #8B4513;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.py-block.top{background:linear-gradient(180deg,#FFD700,#FFA500)}
+#moving{position:absolute;top:10px;left:10px;width:42px;height:28px;background:linear-gradient(180deg,#FFF8DC,#DEB887);border:2px solid #8B4513;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:5}
+#falling{position:absolute;width:42px;height:28px;background:linear-gradient(180deg,#FFF8DC,#DEB887);border:2px solid #8B4513;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:5;display:none}
+#msg{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.95);color:#8B4513;font-weight:900;font-size:12px;padding:4px 12px;border-radius:20px;z-index:6;white-space:nowrap}
+#overlay{position:absolute;inset:0;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:10;text-align:center;padding:10px;overflow:hidden}
+#overlay h2{color:#fff;font-size:22px}
+#overlay p{color:#FFE4B5;font-size:12px;font-weight:800;line-height:1.7}
+.how{background:#fff;border-radius:12px;padding:8px 10px;text-align:right;width:100%;max-width:320px}
+.how b{color:#8B4513;font-size:13px}
+.how div{color:#333;font-size:11px;font-weight:700;line-height:1.7}
+#startBtn{font-family:inherit;font-weight:900;border:0;border-radius:18px;padding:11px 26px;background:#FFD700;color:#8B4513;cursor:pointer;font-size:16px}
+.controls{display:flex;gap:6px;width:100%;padding:2px 0 1px}
+.cbtn{flex:1;height:52px;border-radius:14px;border:0;background:#8B4513;color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit}
+footer{text-align:center;color:#8B4513;font-size:10px}
+footer a{color:#8B4513;text-decoration:none;font-weight:700}
 </style></head>
 <body oncontextmenu="return false"><div class="game">
-<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">بناء الهرم</div><div class="names">أحمد عبدالعزيز<span class="name-en">Ahmed Abdelaziz</span><small>Ahmed TV</small></div></header>
+<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">بناء الهرم الكبير</div><div class="names">أحمد عبدالعزيز<span class="name-en">Ahmed Abdelaziz</span><small>Ahmed TV</small></div></header>
 <div class="topbar"><button class="topbtn on" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button><button class="topbtn" onclick="showHow()">❓ شرح اللعبة</button></div>
-<div class="bar"><div class="pill"><b id="stage">المرحلة 1 / 5</b><span>المرحلة</span></div><div class="pill"><b id="score">0 / 10</b><span>حجارة المرحلة</span></div><div class="pill"><b id="lives">❤️❤️❤️</b><span>القلوب</span></div></div>
-<div id="view"><div id="msg">المرحلة 1 - نزل الحجر جوه المربع!</div><div id="ground"></div><div id="target">🎯</div><div id="pyramid"></div><div id="moving">🪨</div><div id="falling">🪨</div>
-<div id="overlay"><h2>🎯 بناء الهرم 🎯</h2><p>5 مراحل - كل مرحلة المربع بيصغر!</p><div class="how"><b>ازاي تلعب؟</b><div>1 - حرك الحجر بالزراير ◀ ▶<br>2 - نزل الحجر جوه المربع الأخضر 🎯<br>3 - كل مرحلة 10 حجارة<br>4 - المرحلة 1 سهلة - المرحلة 5 صعبة!<br>5 - معاك 3 قلوب في كل مرحلة</div><div style="text-align:center;font-size:20px;line-height:1.2;margin-top:3px">🪨<br>🪨🪨<br>🪨🪨🪨</div></div><button id="startBtn" onclick="startGame()">ابدأ - المرحلة 1</button></div></div>
-<div class="controls"><button class="cbtn left" onclick="moveLeft()">◀ شمال</button><button class="cbtn drop" onclick="dropBlock()">⬇ نزل ⬇</button><button class="cbtn right" onclick="moveRight()">يمين ▶</button></div>
+<div class="bar"><div class="pill"><b id="stage">المرحلة 1 / 5</b><span>المرحلة</span></div><div class="pill"><b id="score">0</b><span>الحجارة</span></div><div class="pill"><b id="best">0</b><span>أعلى سكور</span></div></div>
+<div id="view"><div id="msg">المرحلة 1 - سهلة!</div><div id="ground"></div><div id="pyramid"></div><div id="moving">🧱</div><div id="falling">🧱</div>
+<div id="overlay"><h2>🔺 بناء الهرم الكبير 🔺</h2><p style="color:#FFD700;font-weight:900">5 مراحل - كل مرحلة أصعب!</p><div class="how"><b>ازاي تلعب؟</b><div>1 - الحجر 🧱 بيتحرك فوق لوحده<br>2 - استنى لما ييجي فوق الهرم<br>3 - دوس نزل الحجر<br>4 - المرحلة 1 سهلة - المرحلة 5 صعبة!</div><div style="text-align:center;font-size:20px;line-height:1.3">🧱<br>🧱🧱<br>🧱🧱🧱<br>🧱🧱🧱🧱<br>🧱🧱🧱🧱🧱</div></div><button id="startBtn" onclick="startGame()">ابدأ - المرحلة 1</button></div></div>
+<div class="controls"><button class="cbtn" onclick="dropBlock()">⬇ نزل الحجر ⬇</button></div>
 <footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
-var moving=document.getElementById('moving'), falling=document.getElementById('falling'), target=document.getElementById('target'), msg=document.getElementById('msg'), overlay=document.getElementById('overlay'), pyramid=document.getElementById('pyramid');
-var playing=false, mx=40, moveTimer=null, score=0, lives=3, stage=1, targetX=30, targetW=78;
+var moving=document.getElementById('moving'), falling=document.getElementById('falling'), pyramid=document.getElementById('pyramid'), msg=document.getElementById('msg'), overlay=document.getElementById('overlay');
+var playing=false, mx=10, dir=1, moveTimer=null, score=0, stage=1, best=+(localStorage.getItem('ahmed_pyramid_big_best')||0);
 var soundOn=true, actx=null;
+document.getElementById('best').textContent=best;
 function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; if(soundOn) playBeep(600); }
 function playBeep(f,d){ if(!soundOn) return; try{ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); var o=actx.createOscillator(), g=actx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0.3,actx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,actx.currentTime+(d||0.18)); o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+(d||0.18)); }catch(e){} }
 function playWin(){ playBeep(523,0.15); setTimeout(function(){playBeep(659,0.15);},150); setTimeout(function(){playBeep(784,0.3);},300); }
 function playLose(){ playBeep(300,0.2); setTimeout(function(){playBeep(180,0.4);},180); }
 function speak(t){ if(!soundOn) return; try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(t); u.lang='ar-EG'; u.rate=1; window.speechSynthesis.speak(u); } }catch(e){} }
-function showHow(){ overlay.style.display='flex'; overlay.innerHTML='<h2>❓ شرح اللعبة</h2><div class="how"><b>ازاي تلعب؟</b><div>5 مراحل - دوس شمال يروح شمال - دوس يمين يروح يمين - نزله جوه المربع الأخضر</div></div><button id="startBtn" onclick="startGame()">فهمت - ابدأ</button>'; }
-function stageSettings(){ if(stage===1) return {w:78, speed:0, label:'المرحلة 1 - سهلة'}; if(stage===2) return {w:68, speed:1.2, label:'المرحلة 2'}; if(stage===3) return {w:58, speed:1.8, label:'المرحلة 3 - أصعب'}; if(stage===4) return {w:48, speed:2.4, label:'المرحلة 4 - صعبة جدا'}; return {w:40, speed:3.0, label:'المرحلة 5 - الأخيرة!'}; }
-function moveTarget(){ var s=stageSettings(); targetW=s.w; targetX=5+Math.random()*(90-(targetW/300*100)); target.style.left=targetX+'%'; target.style.width=targetW+'px'; }
-function renderPyramid(){ pyramid.innerHTML=''; var needs=[4,3,2,1]; var left=score; for(var r=0;r<needs.length;r++){ if(left<=0) break; var count=Math.min(left, needs[r]); var row=document.createElement('div'); row.className='py-row'; for(var i=0;i<count;i++){ var b=document.createElement('div'); b.className='py-stone'+(r===3?' top':''); b.textContent='🪨'; row.appendChild(b); } pyramid.appendChild(row); left-=count; } }
-function startGame(){ var s=stageSettings(); score=0; lives=3; mx=40; playing=true; document.getElementById('stage').textContent='المرحلة '+stage+' / 5'; document.getElementById('score').textContent='0 / 10'; document.getElementById('lives').textContent='❤️❤️❤️'; renderPyramid(); overlay.style.display='none'; moving.style.display='flex'; moving.style.left=mx+'%'; moveTarget(); msg.textContent=s.label+' - نزل الحجر جوه المربع!'; speak('المرحلة '+stage); clearInterval(moveTimer); if(s.speed>0){ var dir=1; moveTimer=setInterval(function(){ if(!playing) return; mx+=dir*s.speed; if(mx>88){dir=-1;} if(mx<2){dir=1;} moving.style.left=mx+'%'; },30); } }
-function moveLeft(){ if(!playing) return; mx=Math.max(2, mx-7); moving.style.left=mx+'%'; playBeep(500,0.08); }
-function moveRight(){ if(!playing) return; mx=Math.min(88, mx+7); moving.style.left=mx+'%'; playBeep(500,0.08); }
-function dropBlock(){ if(!playing) return; playBeep(400,0.1); var startX=mx; moving.style.display='none'; falling.style.display='flex'; falling.style.left=startX+'%'; falling.style.top='8px'; var y=8; var viewH=document.getElementById('view').offsetHeight; var fall=setInterval(function(){ y+=10; falling.style.top=y+'px'; if(y>viewH-70){ clearInterval(fall); falling.style.display='none'; checkDrop(startX); } },18); }
-function checkDrop(x){ var stoneCenter=x+5; var tLeft=targetX; var tRight=targetX + (targetW/300*100); var ok=(stoneCenter>=tLeft-2 && stoneCenter<=tRight+2); if(ok){ score++; document.getElementById('score').textContent=score+' / 10'; renderPyramid(); msg.textContent='عاش! جوه المربع! 🎯 +1'; playBeep(900,0.25); speak('صح جوه المربع'); if(score>=10){ stageComplete(); return; } moveTarget(); moving.style.display='flex'; } else { lives--; document.getElementById('lives').textContent='❤️'.repeat(Math.max(0,lives)); msg.textContent='بره المربع! خسرت قلب! 😢'; playLose(); speak('بره المربع'); if(lives<=0){ loseGame(); return; } moving.style.display='flex'; } }
-function stageComplete(){ playing=false; clearInterval(moveTimer); playWin(); if(stage>=5){ overlay.style.display='flex'; overlay.innerHTML='<h2>بطل! خلصت الـ 5 مراحل! 👑🎯</h2><p>انت ملك الهدف - خلصت 50 حجرة!</p><button id="startBtn" onclick="restartAll()">العب من الأول</button>'; } else { overlay.style.display='flex'; overlay.innerHTML='<h2>خلصت المرحلة '+stage+'! 🎉</h2><p>فاضل '+(5-stage)+' مراحل - المربع هيصغر!</p><button id="startBtn" onclick="nextStage()">المرحلة اللي بعدها</button>'; } }
+function showHow(){ overlay.style.display='flex'; overlay.innerHTML='<h2>❓ شرح اللعبة</h2><div class="how"><b>ازاي تلعب؟</b><div>عندك 5 مراحل - المرحلة 1 سهلة - المرحلة 5 صعبة - كل مرحلة ابني هرم 15 حجرة</div></div><button id="startBtn" onclick="startGame()">فهمت - ابدأ</button>'; }
+function speedForStage(){ if(stage===1) return 1.4; if(stage===2) return 2.0; if(stage===3) return 2.8; if(stage===4) return 3.6; return 4.5; }
+function renderPyramid(){ pyramid.innerHTML=''; var needs=[5,4,3,2,1]; var left=score; for(var r=0;r<needs.length;r++){ if(left<=0) break; var count=Math.min(left, needs[r]); var row=document.createElement('div'); row.className='py-row'; for(var i=0;i<count;i++){ var b=document.createElement('div'); b.className='py-block'+(r===4?' top':''); b.textContent='🧱'; row.appendChild(b); } pyramid.appendChild(row); left-=count; } }
+function startGame(){ score=0; mx=10; dir=1; playing=true; document.getElementById('score').textContent='0'; document.getElementById('stage').textContent='المرحلة '+stage+' / 5'; renderPyramid(); overlay.style.display='none'; moving.style.display='flex'; msg.textContent='المرحلة '+stage+' من 5'; speak('المرحلة '+stage); clearInterval(moveTimer); var sp=speedForStage(); moveTimer=setInterval(function(){ if(!playing) return; mx+=dir*sp; if(mx>88){dir=-1;} if(mx<2){dir=1;} moving.style.left=mx+'%'; },30); }
+function dropBlock(){ if(!playing) return; playBeep(400,0.1); var startX=mx; moving.style.display='none'; falling.style.display='flex'; falling.style.left=startX+'%'; falling.style.top='10px'; var y=10; var viewH=document.getElementById('view').offsetHeight; var fall=setInterval(function(){ y+=9; falling.style.top=y+'px'; if(y>viewH-70){ clearInterval(fall); falling.style.display='none'; checkDrop(startX); } },20); }
+function checkDrop(x){ var ok=(x>16&&x<80); if(ok){ score++; document.getElementById('score').textContent=score; renderPyramid(); msg.textContent='عاش! حجر في الهرم! 🔺'; playBeep(750,0.2); speak('صح'); if(score>=15){ stageComplete(); return; } moving.style.display='flex'; } else { loseGame(); } }
+function stageComplete(){ playing=false; clearInterval(moveTimer); playWin(); if(stage>=5){ if(score>best){ best=score; localStorage.setItem('ahmed_pyramid_big_best',best); document.getElementById('best').textContent=best; } pyramid.innerHTML=pyramid.innerHTML+'<div class="py-row"><div class="py-block top">👑</div></div>'; overlay.style.display='flex'; overlay.innerHTML='<h2>بطل! خلصت الـ 5 مراحل! 👑</h2><p>بنيت 5 أهرامات - انت ملك الهرم!</p><button id="startBtn" onclick="restartAll()">العب من الأول</button>'; } else { overlay.style.display='flex'; overlay.innerHTML='<h2>خلصت المرحلة '+stage+'! 🎉</h2><p>فاضل '+(5-stage)+' مراحل - اللي جاية أصعب!</p><button id="startBtn" onclick="nextStage()">المرحلة اللي بعدها</button>'; } }
 function nextStage(){ stage++; startGame(); }
 function restartAll(){ stage=1; startGame(); }
-function loseGame(){ playing=false; clearInterval(moveTimer); playLose(); overlay.style.display='flex'; overlay.innerHTML='<h2>خسرت في المرحلة '+stage+' 😢</h2><p>جمعت '+score+' من 10 حجارة</p><button id="startBtn" onclick="startGame()">حاول تاني - نفس المرحلة</button>'; }
+function loseGame(){ playing=false; clearInterval(moveTimer); playLose(); overlay.style.display='flex'; overlay.innerHTML='<h2>الحجر وقع! 😢</h2><p>كنت في المرحلة '+stage+' من 5<br>جمعت '+score+' حجرة</p><button id="startBtn" onclick="startGame()">حاول تاني</button>'; }
 renderPyramid();
 </script>
 </body></html>
