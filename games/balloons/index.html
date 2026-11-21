@@ -250,6 +250,7 @@ function handlePop(e) {
 
 function startGame() {
   initAudio();
+   new Audio('../../sounds/ahla.mp3').play().catch(()=>{});
   overlay.style.display = 'none';
   score = 0;
   scoreEl.textContent = 0;
