@@ -54,10 +54,7 @@ body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',Tahoma,system-ui;heigh
     <div class="brand">© تصميم وتقديم: أحمد - Ahmed TV - 2026</div>
     <button id="soundBtn" style="font-family:inherit;font-weight:800;border:2px solid #000;border-radius:20px;padding:4px 16px;background:#fff;color:#000;cursor:pointer;font-size:11px;margin-top:4px">🔊 الصوت: شغال</button>
   </div>
-  <div class="progress">
-    <span id="qn">1 / 80</span>
-    <span id="sc">0 نقطة</span>
-  </div>
+  <div class="progress"><span id="qn">1 / 80</span><span id="sc">0 نقطة</span></div>
   <div class="bar"><div class="fill" id="fill"></div></div>
   <div class="card">
     <div class="imgBox" id="logoBox">
@@ -86,42 +83,42 @@ let soundOn=true;
 function playAhmedVoice(t){try{if(!soundOn)return;if(!t)return;var file='';if(t.indexOf('صح')>=0)file='sah.mp3';else if(t.indexOf('غلط')>=0)file='ghalat.mp3';else if(t.indexOf('حاول')>=0)file='hawel.mp3';else if(t.indexOf('كسبت')>=0)file='kesebt.mp3';else if(t.indexOf('ابدأ')>=0)file='ebda.mp3';if(!file)return;var a=new Audio('https://ahmed-tv.github.io/My-games/sounds/'+file);a.play().catch(function(){var b=new Audio('../../sounds/'+file);b.play().catch(function(){});});}catch(e){}}
 function speak(t){try{playAhmedVoice(t);}catch(e){}}
 var clubs = [
-  {name:'ريال'+' مدريد', flag:'🇪🇸', letters:'RMA', country:'إسبانيا', year:'1902', nick:'الملكي', titles:'14 أبطال', extra:'الملعب: سانتياغو برنابيو - مدريد'},
-  {name:'برش'+'لونة', flag:'🇪🇸', letters:'FCB', country:'إسبانيا', year:'1899', nick:'البلوجرانا', titles:'5 أبطال', extra:'الملعب: كامب نو - برشلونة'},
-  {name:'الأه'+'لي', flag:'🇪🇬', letters:'AHLY', country:'مصر', year:'1907', nick:'نادي القرن', titles:'11 أبطال أفريقيا', extra:'الملعب: القاهرة الدولي - القاهرة'},
-  {name:'الزم'+'الك', flag:'🇪🇬', letters:'ZSC', country:'مصر', year:'1911', nick:'القلعة البيضاء', titles:'5 أبطال أفريقيا', extra:'الملعب: القاهرة الدولي - القاهرة'},
-  {name:'ليفر'+'بول', flag:'🇬🇧', letters:'LFC', country:'إنجلترا', year:'1892', nick:'الريدز', titles:'6 أبطال', extra:'الملعب: أنفيلد - ليفربول'},
-  {name:'مان'+' يونايتد', flag:'🇬🇧', letters:'MUFC', country:'إنجلترا', year:'1878', nick:'الشياطين الحمر', titles:'3 أبطال', extra:'الملعب: أولد ترافورد - مانشستر'},
-  {name:'أرس'+'نال', flag:'🇬🇧', letters:'AFC', country:'إنجلترا', year:'1886', nick:'المدفعجية', titles:'0 أبطال', extra:'الملعب: الإمارات - لندن'},
-  {name:'تشي'+'لسي', flag:'🇬🇧', letters:'CFC', country:'إنجلترا', year:'1905', nick:'الزرق', titles:'2 أبطال', extra:'الملعب: ستامفورد بريدج - لندن'},
-  {name:'يوفن'+'توس', flag:'🇮🇹', letters:'JUVE', country:'إيطاليا', year:'1897', nick:'السيدة العجوز', titles:'2 أبطال', extra:'الملعب: أليانز - تورينو'},
-  {name:'بايرن'+' ميونخ', flag:'🇩🇪', letters:'FCB', country:'ألمانيا', year:'1900', nick:'البافاري', titles:'6 أبطال', extra:'الملعب: أليانز أرينا - ميونخ'},
-  {name:'مان'+' سيتي', flag:'🇬🇧', letters:'MCFC', country:'إنجلترا', year:'1880', nick:'السماوي', titles:'1 أبطال', extra:'الملعب: الاتحاد - مانشستر'},
-  {name:'باريس'+' سان جيرمان', flag:'🇫🇷', letters:'PSG', country:'فرنسا', year:'1970', nick:'حديقة الأمراء', titles:'0 أبطال', extra:'الملعب: حديقة الأمراء - باريس'},
-  {name:'إنتر'+' ميلان', flag:'🇮🇹', letters:'INTER', country:'إيطاليا', year:'1908', nick:'النيراتزوري', titles:'3 أبطال', extra:'الملعب: سان سيرو - ميلانو'},
-  {name:'مي'+'لان', flag:'🇮🇹', letters:'ACM', country:'إيطاليا', year:'1899', nick:'الروسونيري', titles:'7 أبطال', extra:'الملعب: سان سيرو - ميلانو'},
-  {name:'دورت'+'موند', flag:'🇩🇪', letters:'【entity-BVB¦canonical_name=BVB】', country:'ألمانيا', year:'1909', nick:'النحل الأصفر', titles:'1 أبطال', extra:'الملعب: سيجنال إيدونا - دورتموند'},
-  {name:'اله'+'لال', flag:'🇸🇦', letters:'【entity-HILAL¦canonical_name=Al Hilal】', country:'السعودية', year:'1957', nick:'الزعيم', titles:'4 أبطال آسيا', extra:'الملعب: المملكة أرينا - الرياض'},
-  {name:'الات'+'حاد', flag:'🇸🇦', letters:'【entity-ITTIHAD¦canonical_name=Al Ittihad】', country:'السعودية', year:'1927', nick:'العميد', titles:'2 أبطال آسيا', extra:'الملعب: الجوهرة - جدة'},
-  {name:'أتلتيكو'+' مدريد', flag:'🇪🇸', letters:'ATM', country:'إسبانيا', year:'1903', nick:'الروخيبلانكوس', titles:'0 أبطال', extra:'الملعب: ميتروبوليتانو - مدريد'},
-  {name:'ناب'+'ولي', flag:'🇮🇹', letters:'NAP', country:'إيطاليا', year:'1926', nick:'البلاو', titles:'0 أبطال', extra:'الملعب: دييغو مارادونا - نابولي'},
-  {name:'توت'+'نهام', flag:'🇬🇧', letters:'THFC', country:'إنجلترا', year:'1882', nick:'الديوك', titles:'0 أبطال', extra:'الملعب: توتنهام هوتسبير - لندن'},
-  {name:'بور'+'تو', flag:'🇵🇹', letters:'FCP', country:'البرتغال', year:'1893', nick:'التنانين', titles:'2 أبطال', extra:'الملعب: التنين - بورتو'},
-  {name:'بنف'+'يكا', flag:'🇵🇹', letters:'SLB', country:'البرتغال', year:'1904', nick:'النسور', titles:'2 أبطال', extra:'الملعب: النور - لشبونة'},
-  {name:'أيا'+'كس', flag:'🇳🇱', letters:'AFC', country:'هولندا', year:'1900', nick:'الأبناء', titles:'4 أبطال', extra:'الملعب: يوهان كرويف - أمستردام'},
-  {name:'فين'+'ورد', flag:'🇳🇱', letters:'Feyenoord', country:'هولندا', year:'1908', nick:'الفريق', titles:'1 أبطال', extra:'الملعب: دي كويب - روتردام'},
-  {name:'إشبي'+'لية', flag:'🇪🇸', letters:'SEV', country:'إسبانيا', year:'1890', nick:'النادي الأندلسي', titles:'0 أبطال', extra:'الملعب: رامون سانشيز - إشبيلية'},
-  {name:'فالن'+'سيا', flag:'🇪🇸', letters:'VCF', country:'إسبانيا', year:'1919', nick:'الخفافيش', titles:'0 أبطال', extra:'الملعب: الميستايا - فالنسيا'},
-  {name:'لي'+'ون', flag:'🇫🇷', letters:'OL', country:'فرنسا', year:'1950', nick:'الأسود', titles:'0 أبطال', extra:'الملعب: غروباما - ليون'},
-  {name:'مارس'+'يليا', flag:'🇫🇷', letters:'OM', country:'فرنسا', year:'1899', nick:'الأولمبي', titles:'1 أبطال', extra:'الملعب: فيلودروم - مارسيليا'},
-  {name:'الن'+'صر', flag:'🇸🇦', letters:'ALNASSR', country:'السعودية', year:'1955', nick:'العالمي', titles:'1 أبطال آسيا', extra:'الملعب: الأول بارك - الرياض'},
-  {name:'الأهلي'+' السعودي', flag:'🇸🇦', letters:'AHS', country:'السعودية', year:'1937', nick:'الراقي', titles:'0 أبطال', extra:'الملعب: الجوهرة - جدة'},
-  {name:'بيرا'+'ميدز', flag:'🇪🇬', letters:'PYR', country:'مصر', year:'2008', nick:'السماء', titles:'0 أبطال', extra:'الملعب: الدفاع الجوي - القاهرة'},
-  {name:'الم'+'صري', flag:'🇪🇬', letters:'MASRY', country:'مصر', year:'1920', nick:'الفلاحين', titles:'1 كأس', extra:'الملعب: بورسعيد - بورسعيد'},
-  {name:'رو'+'ما', flag:'🇮🇹', letters:'ASR', country:'إيطاليا', year:'1927', nick:'الذئاب', titles:'0 أبطال', extra:'الملعب: الأولمبي - روما'},
-  {name:'لات'+'سيو', flag:'🇮🇹', letters:'SSL', country:'إيطاليا', year:'1900', nick:'النسور', titles:'0 أبطال', extra:'الملعب: الأولمبي - روما'},
-  {name:'لايب'+'زيج', flag:'🇩🇪', letters:'RBL', country:'ألمانيا', year:'2009', nick:'الثيران', titles:'0 أبطال', extra:'الملعب: ريد بُل - لايبزيج'},
-  {name:'ليفر'+'كوزن', flag:'🇩🇪', letters:'B04', country:'ألمانيا', year:'1904', nick:'الصيادلة', titles:'0 أبطال', extra:'الملعب: باي أرينا - ليفركوزن'}
+{name:'\u0631\u064a\u0627\u0644 \u0645\u062f\u0631\u064a\u062f', flag:'🇪🇸', letters:'RMA', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1902', nick:'\u0627\u0644\u0645\u0644\u0643\u064a', titles:'14 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u0627\u0646\u062a\u064a\u0627\u063a\u0648 \u0628\u0631\u0646\u0627\u0628\u064a\u0648 - \u0645\u062f\u0631\u064a\u062f'},
+  {name:'\u0628\u0631\u0634\u0644\u0648\u0646\u0629', flag:'🇪🇸', letters:'FCB', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1899', nick:'\u0627\u0644\u0628\u0644\u0648\u062c\u0631\u0627\u0646\u0627', titles:'5 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0643\u0627\u0645\u0628 \u0646\u0648 - \u0628\u0631\u0634\u0644\u0648\u0646\u0629'},
+  {name:'\u0627\u0644\u0623\u0647\u0644\u064a', flag:'🇪🇬', letters:'AHLY', country:'\u0645\u0635\u0631', year:'1907', nick:'\u0646\u0627\u062f\u064a \u0627\u0644\u0642\u0631\u0646', titles:'11 \u0623\u0628\u0637\u0627\u0644 \u0623\u0641\u0631\u064a\u0642\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0642\u0627\u0647\u0631\u0629 \u0627\u0644\u062f\u0648\u0644\u064a - \u0627\u0644\u0642\u0627\u0647\u0631\u0629'},
+  {name:'\u0627\u0644\u0632\u0645\u0627\u0644\u0643', flag:'🇪🇬', letters:'ZSC', country:'\u0645\u0635\u0631', year:'1911', nick:'\u0627\u0644\u0642\u0644\u0639\u0629 \u0627\u0644\u0628\u064a\u0636\u0627\u0621', titles:'5 \u0623\u0628\u0637\u0627\u0644 \u0623\u0641\u0631\u064a\u0642\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0642\u0627\u0647\u0631\u0629 \u0627\u0644\u062f\u0648\u0644\u064a - \u0627\u0644\u0642\u0627\u0647\u0631\u0629'},
+  {name:'\u0644\u064a\u0641\u0631\u0628\u0648\u0644', flag:'🇬🇧', letters:'LFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1892', nick:'\u0627\u0644\u0631\u064a\u062f\u0632', titles:'6 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0646\u0641\u064a\u0644\u062f - \u0644\u064a\u0641\u0631\u0628\u0648\u0644'},
+  {name:'\u0645\u0627\u0646 \u064a\u0648\u0646\u0627\u064a\u062a\u062f', flag:'🇬🇧', letters:'MUFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1878', nick:'\u0627\u0644\u0634\u064a\u0627\u0637\u064a\u0646 \u0627\u0644\u062d\u0645\u0631', titles:'3 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0648\u0644\u062f \u062a\u0631\u0627\u0641\u0648\u0631\u062f - \u0645\u0627\u0646\u0634\u0633\u062a\u0631'},
+  {name:'\u0623\u0631\u0633\u0646\u0627\u0644', flag:'🇬🇧', letters:'AFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1886', nick:'\u0627\u0644\u0645\u062f\u0641\u0639\u062c\u064a\u0629', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0625\u0645\u0627\u0631\u0627\u062a - \u0644\u0646\u062f\u0646'},
+  {name:'\u062a\u0634\u064a\u0644\u0633\u064a', flag:'🇬🇧', letters:'CFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1905', nick:'\u0627\u0644\u0632\u0631\u0642', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u062a\u0627\u0645\u0641\u0648\u0631\u062f \u0628\u0631\u064a\u062f\u062c - \u0644\u0646\u062f\u0646'},
+  {name:'\u064a\u0648\u0641\u0646\u062a\u0648\u0633', flag:'🇮🇹', letters:'JUVE', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1897', nick:'\u0627\u0644\u0633\u064a\u062f\u0629 \u0627\u0644\u0639\u062c\u0648\u0632', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0644\u064a\u0627\u0646\u0632 - \u062a\u0648\u0631\u064a\u0646\u0648'},
+  {name:'\u0628\u0627\u064a\u0631\u0646 \u0645\u064a\u0648\u0646\u062e', flag:'🇩🇪', letters:'FCB', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'1900', nick:'\u0627\u0644\u0628\u0627\u0641\u0627\u0631\u064a', titles:'6 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0623\u0644\u064a\u0627\u0646\u0632 \u0623\u0631\u064a\u0646\u0627 - \u0645\u064a\u0648\u0646\u062e'},
+  {name:'\u0645\u0627\u0646 \u0633\u064a\u062a\u064a', flag:'🇬🇧', letters:'MCFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1880', nick:'\u0627\u0644\u0633\u0645\u0627\u0648\u064a', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0627\u062a\u062d\u0627\u062f - \u0645\u0627\u0646\u0634\u0633\u062a\u0631'},
+  {name:'\u0628\u0627\u0631\u064a\u0633 \u0633\u0627\u0646 \u062c\u064a\u0631\u0645\u0627\u0646', flag:'🇫🇷', letters:'PSG', country:'\u0641\u0631\u0646\u0633\u0627', year:'1970', nick:'\u062d\u062f\u064a\u0642\u0629 \u0627\u0644\u0623\u0645\u0631\u0627\u0621', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062d\u062f\u064a\u0642\u0629 \u0627\u0644\u0623\u0645\u0631\u0627\u0621 - \u0628\u0627\u0631\u064a\u0633'},
+  {name:'\u0625\u0646\u062a\u0631 \u0645\u064a\u0644\u0627\u0646', flag:'🇮🇹', letters:'INTER', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1908', nick:'\u0627\u0644\u0646\u064a\u0631\u0627\u062a\u0632\u0648\u0631\u064a', titles:'3 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u0627\u0646 \u0633\u064a\u0631\u0648 - \u0645\u064a\u0644\u0627\u0646\u0648'},
+  {name:'\u0645\u064a\u0644\u0627\u0646', flag:'🇮🇹', letters:'ACM', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1899', nick:'\u0627\u0644\u0631\u0648\u0633\u0648\u0646\u064a\u0631\u064a', titles:'7 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u0627\u0646 \u0633\u064a\u0631\u0648 - \u0645\u064a\u0644\u0627\u0646\u0648'},
+  {name:'\u062f\u0648\u0631\u062a\u0645\u0648\u0646\u062f', flag:'🇩🇪', letters:'BVB', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'1909', nick:'\u0627\u0644\u0646\u062d\u0644 \u0627\u0644\u0623\u0635\u0641\u0631', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0633\u064a\u062c\u0646\u0627\u0644 \u0625\u064a\u062f\u0648\u0646\u0627 - \u062f\u0648\u0631\u062a\u0645\u0648\u0646\u062f'},
+  {name:'\u0627\u0644\u0647\u0644\u0627\u0644', flag:'🇸🇦', letters:'HILAL', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1957', nick:'\u0627\u0644\u0632\u0639\u064a\u0645', titles:'4 \u0623\u0628\u0637\u0627\u0644 \u0622\u0633\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0645\u0645\u0644\u0643\u0629 \u0623\u0631\u064a\u0646\u0627 - \u0627\u0644\u0631\u064a\u0627\u0636'},
+  {name:'\u0627\u0644\u0627\u062a\u062d\u0627\u062f', flag:'🇸🇦', letters:'ITTIHAD', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1927', nick:'\u0627\u0644\u0639\u0645\u064a\u062f', titles:'2 \u0623\u0628\u0637\u0627\u0644 \u0622\u0633\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062c\u0648\u0647\u0631\u0629 - \u062c\u062f\u0629'},
+  {name:'\u0623\u062a\u0644\u062a\u064a\u0643\u0648 \u0645\u062f\u0631\u064a\u062f', flag:'🇪🇸', letters:'ATM', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1903', nick:'\u0627\u0644\u0631\u0648\u062e\u064a\u0628\u0644\u0627\u0646\u0643\u0648\u0633', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0645\u064a\u062a\u0631\u0648\u0628\u0648\u0644\u064a\u062a\u0627\u0646\u0648 - \u0645\u062f\u0631\u064a\u062f'},
+  {name:'\u0646\u0627\u0628\u0648\u0644\u064a', flag:'🇮🇹', letters:'NAP', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1926', nick:'\u0627\u0644\u0628\u0644\u0627\u0648', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062f\u064a\u064a\u063a\u0648 \u0645\u0627\u0631\u0627\u062f\u0648\u0646\u0627 - \u0646\u0627\u0628\u0648\u0644\u064a'},
+  {name:'\u062a\u0648\u062a\u0646\u0647\u0627\u0645', flag:'🇬🇧', letters:'THFC', country:'\u0625\u0646\u062c\u0644\u062a\u0631\u0627', year:'1882', nick:'\u0627\u0644\u062f\u064a\u0648\u0643', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062a\u0648\u062a\u0646\u0647\u0627\u0645 \u0647\u0648\u062a\u0633\u0628\u064a\u0631 - \u0644\u0646\u062f\u0646'},
+  {name:'\u0628\u0648\u0631\u062a\u0648', flag:'🇵🇹', letters:'FCP', country:'\u0627\u0644\u0628\u0631\u062a\u063a\u0627\u0644', year:'1893', nick:'\u0627\u0644\u062a\u0646\u0627\u0646\u064a\u0646', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062a\u0646\u064a\u0646 - \u0628\u0648\u0631\u062a\u0648'},
+  {name:'\u0628\u0646\u0641\u064a\u0643\u0627', flag:'🇵🇹', letters:'SLB', country:'\u0627\u0644\u0628\u0631\u062a\u063a\u0627\u0644', year:'1904', nick:'\u0627\u0644\u0646\u0633\u0648\u0631', titles:'2 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0646\u0648\u0631 - \u0644\u0634\u0628\u0648\u0646\u0629'},
+  {name:'\u0623\u064a\u0627\u0643\u0633', flag:'🇳🇱', letters:'AFC', country:'\u0647\u0648\u0644\u0646\u062f\u0627', year:'1900', nick:'\u0627\u0644\u0623\u0628\u0646\u0627\u0621', titles:'4 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u064a\u0648\u0647\u0627\u0646 \u0643\u0631\u0648\u064a\u0641 - \u0623\u0645\u0633\u062a\u0631\u062f\u0627\u0645'},
+  {name:'\u0641\u064a\u0646\u0648\u0631\u062f', flag:'🇳🇱', letters:'Feyenoord', country:'\u0647\u0648\u0644\u0646\u062f\u0627', year:'1908', nick:'\u0627\u0644\u0641\u0631\u064a\u0642', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u062f\u064a \u0643\u0648\u064a\u0628 - \u0631\u0648\u062a\u0631\u062f\u0627\u0645'},
+  {name:'\u0625\u0634\u0628\u064a\u0644\u064a\u0629', flag:'🇪🇸', letters:'SEV', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1890', nick:'\u0627\u0644\u0646\u0627\u062f\u064a \u0627\u0644\u0623\u0646\u062f\u0644\u0633\u064a', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0631\u0627\u0645\u0648\u0646 \u0633\u0627\u0646\u0634\u064a\u0632 - \u0625\u0634\u0628\u064a\u0644\u064a\u0629'},
+  {name:'\u0641\u0627\u0644\u0646\u0633\u064a\u0627', flag:'🇪🇸', letters:'VCF', country:'\u0625\u0633\u0628\u0627\u0646\u064a\u0627', year:'1919', nick:'\u0627\u0644\u062e\u0641\u0627\u0641\u064a\u0634', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0645\u064a\u0633\u062a\u0627\u064a\u0627 - \u0641\u0627\u0644\u0646\u0633\u064a\u0627'},
+  {name:'\u0644\u064a\u0648\u0646', flag:'🇫🇷', letters:'OL', country:'\u0641\u0631\u0646\u0633\u0627', year:'1950', nick:'\u0627\u0644\u0623\u0633\u0648\u062f', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u063a\u0631\u0648\u0628\u0627\u0645\u0627 - \u0644\u064a\u0648\u0646'},
+  {name:'\u0645\u0627\u0631\u0633\u064a\u0644\u064a\u0627', flag:'🇫🇷', letters:'OM', country:'\u0641\u0631\u0646\u0633\u0627', year:'1899', nick:'\u0627\u0644\u0623\u0648\u0644\u0645\u0628\u064a', titles:'1 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0641\u064a\u0644\u0648\u062f\u0631\u0648\u0645 - \u0645\u0627\u0631\u0633\u064a\u0644\u064a\u0627'},
+  {name:'\u0627\u0644\u0646\u0635\u0631', flag:'🇸🇦', letters:'ALNASSR', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1955', nick:'\u0627\u0644\u0639\u0627\u0644\u0645\u064a', titles:'1 \u0623\u0628\u0637\u0627\u0644 \u0622\u0633\u064a\u0627', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0623\u0648\u0644 \u0628\u0627\u0631\u0643 - \u0627\u0644\u0631\u064a\u0627\u0636'},
+  {name:'\u0627\u0644\u0623\u0647\u0644\u064a \u0627\u0644\u0633\u0639\u0648\u062f\u064a', flag:'🇸🇦', letters:'AHS', country:'\u0627\u0644\u0633\u0639\u0648\u062f\u064a\u0629', year:'1937', nick:'\u0627\u0644\u0631\u0627\u0642\u064a', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062c\u0648\u0647\u0631\u0629 - \u062c\u062f\u0629'},
+  {name:'\u0628\u064a\u0631\u0627\u0645\u064a\u062f\u0632', flag:'🇪🇬', letters:'PYR', country:'\u0645\u0635\u0631', year:'2008', nick:'\u0627\u0644\u0633\u0645\u0627\u0621', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u062c\u0648\u064a - \u0627\u0644\u0642\u0627\u0647\u0631\u0629'},
+  {name:'\u0627\u0644\u0645\u0635\u0631\u064a', flag:'🇪🇬', letters:'MASRY', country:'\u0645\u0635\u0631', year:'1920', nick:'\u0627\u0644\u0641\u0644\u0627\u062d\u064a\u0646', titles:'1 \u0643\u0623\u0633', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0628\u0648\u0631\u0633\u0639\u064a\u062f - \u0628\u0648\u0631\u0633\u0639\u064a\u062f'},
+  {name:'\u0631\u0648\u0645\u0627', flag:'🇮🇹', letters:'ASR', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1927', nick:'\u0627\u0644\u0630\u0626\u0627\u0628', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0623\u0648\u0644\u0645\u0628\u064a - \u0631\u0648\u0645\u0627'},
+  {name:'\u0644\u0627\u062a\u0633\u064a\u0648', flag:'🇮🇹', letters:'SSL', country:'\u0625\u064a\u0637\u0627\u0644\u064a\u0627', year:'1900', nick:'\u0627\u0644\u0646\u0633\u0648\u0631', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0627\u0644\u0623\u0648\u0644\u0645\u0628\u064a - \u0631\u0648\u0645\u0627'},
+  {name:'\u0644\u0627\u064a\u0628\u0632\u064a\u062c', flag:'🇩🇪', letters:'RBL', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'2009', nick:'\u0627\u0644\u062b\u064a\u0631\u0627\u0646', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0631\u064a\u062f \u0628\u064f\u0644 - \u0644\u0627\u064a\u0628\u0632\u064a\u062c'},
+  {name:'\u0644\u064a\u0641\u0631\u0643\u0648\u0632\u0646', flag:'🇩🇪', letters:'B04', country:'\u0623\u0644\u0645\u0627\u0646\u064a\u0627', year:'1904', nick:'\u0627\u0644\u0635\u064a\u0627\u062f\u0644\u0629', titles:'0 \u0623\u0628\u0637\u0627\u0644', extra:'\u0627\u0644\u0645\u0644\u0639\u0628: \u0628\u0627\u064a \u0623\u0631\u064a\u0646\u0627 - \u0644\u064a\u0641\u0631\u0643\u0648\u0632\u0646'}
 ];
 var idx = 0;
 var score = 0;
@@ -133,38 +130,21 @@ function generateLevels() {
   for (var i = 0; i < 80; i++) {
     if (pool.length === 0) {
       var lastClub = levels.length > 0 ? levels[levels.length - 1].name : '';
-      do {
-        pool = shuffle(clubs.slice());
-      } while (pool[pool.length - 1].name === lastClub);
+      do { pool = shuffle(clubs.slice()); } while (pool[pool.length - 1].name === lastClub);
     }
     var club = pool.pop();
     if (levels.length > 0) {
       var prev = levels[levels.length - 1];
       if (club.name === prev.name || club.country === prev.country) {
         for (var k = pool.length - 1; k >= 0; k--) {
-          if (pool[k].name !== prev.name && pool[k].country !== prev.country) {
-            var temp = pool[k];
-            pool[k] = club;
-            club = temp;
-            break;
-          }
+          if (pool[k].name !== prev.name && pool[k].country !== prev.country) { var temp = pool[k]; pool[k] = club; club = temp; break; }
         }
       }
     }
     var wrongs = clubs.filter(function(c){return c.name !== club.name;});
     wrongs = shuffle(wrongs).slice(0, 3);
     var opts = shuffle([club.name].concat(wrongs.map(function(c){return c.name;})));
-    levels.push({
-      name: club.name,
-      flag: club.flag,
-      letters: club.letters,
-      country: club.country,
-      year: club.year,
-      nick: club.nick,
-      titles: club.titles,
-      extra: club.extra,
-      opts: opts
-    });
+    levels.push({name: club.name, flag: club.flag, letters: club.letters, country: club.country, year: club.year, nick: club.nick, titles: club.titles, extra: club.extra, opts: opts});
   }
 }
 generateLevels();
@@ -200,81 +180,20 @@ function handleAnswer(selected, btn) {
   if (selected === cur.name) {
     score += 20;
     document.getElementById('sc').textContent = score + ' نقطة';
-    btn.style.background = '#7ED321';
-    btn.style.color = '#000';
-    btn.style.borderColor = '#fff';
+    btn.style.background = '#7ED321'; btn.style.color = '#000'; btn.style.borderColor = '#fff';
     document.getElementById('hintBox').textContent = '✅ إجابة صحيحة! +20';
     speak('صح');
     setTimeout(function() { idx++; if (idx < levels.length) render(); else endGame(); }, 800);
   } else {
-    btn.style.background = '#ff4444';
-    btn.style.color = '#fff';
-    btn.style.borderColor = '#ff4444';
-    allBtns.forEach(function(b) {
-      if (b.textContent === cur.name) {
-        b.style.background = '#7ED321';
-        b.style.color = '#000';
-        b.style.borderColor = '#fff';
-      }
-    });
+    btn.style.background = '#ff4444'; btn.style.color = '#fff'; btn.style.borderColor = '#ff4444';
+    allBtns.forEach(function(b) { if (b.textContent === cur.name) { b.style.background = '#7ED321'; b.style.color = '#000'; b.style.borderColor = '#fff'; } });
     document.getElementById('hintBox').textContent = '❌ خطأ! الصح: ' + cur.name;
     speak('غلط');
     setTimeout(function() { idx++; if (idx < levels.length) render(); else endGame(); }, 1500);
   }
 }
-function hintClear() {
-  if (document.getElementById('h1').disabled) return;
-  score = Math.max(0, score - 5);
-  document.getElementById('sc').textContent = score + ' نقطة';
-  document.getElementById('h1').disabled = true;
-  document.getElementById('hintBox').textContent = '🔍 ' + levels[idx].extra;
-  speak('حاول');
-}
-function hintText() {
-  if (document.getElementById('h2').disabled) return;
-  score = Math.max(0, score - 5);
-  document.getElementById('sc').textContent = score + ' نقطة';
-  document.getElementById('h2').disabled = true;
-  document.getElementById('hintBox').textContent = '💡 اللقب: ' + levels[idx].nick + ' - تأسس ' + levels[idx].year;
-  speak('حاول');
-}
-function hintDel() {
-  if (document.getElementById('h3').disabled) return;
-  score = Math.max(0, score - 10);
-  document.getElementById('sc').textContent = score + ' نقطة';
-  document.getElementById('h3').disabled = true;
-  var cur = levels[idx];
-  var allBtns = Array.from(document.querySelectorAll('.opt'));
-  var removed = 0;
-  allBtns.forEach(function(b) {
-    if (b.textContent !== cur.name && removed < 2) {
-      b.disabled = true;
-      b.style.opacity = '0.2';
-      removed++;
-    }
-  });
-  document.getElementById('hintBox').textContent = '❌ تم حذف إجابتين خاطئتين';
-  speak('حاول');
-}
-function skipLevel() {
-  speak('حاول');
-  idx++;
-  if (idx < levels.length) render(); else endGame();
-}
-function endGame() {
-  speak('كسبت');
-  var container = document.getElementById('mainContainer');
-  var endScreen = document.createElement('div');
-  endScreen.className = 'end-screen';
-  endScreen.innerHTML = `
-    <h2>🏆 انتهت اللعبة!</h2>
-    <p>لقد جمعت <b>${score}</b> نقطة<br>من أصل ${levels.length * 20} نقطة</p>
-    <button class="end-btn" onclick="location.reload()">العب تاني 🔄</button>
-  `;
-  container.appendChild(endScreen);
-}
-document.getElementById('soundBtn').onclick=function(){soundOn=!soundOn;this.textContent=soundOn?'🔊 الصوت: شغال':'🔇 الصوت: مطفي';if(soundOn)speak('صح');};
-render();
-</script>
-</body>
-</html>
+function hintClear() { if (document.getElementById('h1').disabled) return; score = Math.max(0, score - 5); document.getElementById('sc').textContent = score + ' نقطة'; document.getElementById('h1').disabled = true; document.getElementById('hintBox').textContent = '🔍 ' + levels[idx].extra; speak('حاول'); }
+function hintText() { if (document.getElementById('h2').disabled) return; score = Math.max(0, score - 5); document.getElementById('sc').textContent = score + ' نقطة'; document.getElementById('h2').disabled = true; document.getElementById('hintBox').textContent = '💡 اللقب: ' + levels[idx].nick + ' - تأسس ' + levels[idx].year; speak('حاول'); }
+function hintDel() { if (document.getElementById('h3').disabled) return; score = Math.max(0, score - 10); document.getElementById('sc').textContent = score + ' نقطة'; document.getElementById('h3').disabled = true; var cur = levels[idx]; var allBtns = Array.from(document.querySelectorAll('.opt')); var removed = 0; allBtns.forEach(function(b) { if (b.textContent !== cur.name && removed < 2) { b.disabled = true; b.style.opacity = '0.2'; removed++; } }); document.getElementById('hintBox').textContent = '❌ تم حذف إجابتين خاطئتين'; speak('حاول'); }
+function skipLevel() { speak('حاول'); idx++; if (idx < levels.length) render(); else endGame(); }
+function endGame() { speak('كسبت'); var container = document.getElementById('mainContainer'); var endScreen = document.createElement('div'); endScreen.className = 'end-screen'; endScreen.innerHTML = `<h2>🏆 انتهت اللعبة!</h2><p>لقد جمعت <b>${score}</b> نقطة<br>من أصل ${levels.length * 20} نقطة</p><button class="end-btn" onclick="loc
