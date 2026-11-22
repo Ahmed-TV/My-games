@@ -1,73 +1,76 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>توقع الكارت - بنك الألعاب</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>حروف الأبطال - Ahmed TV</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
-body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:Tahoma,sans-serif;text-align:center;color:#fff;padding:6px 8px 4px 8px;touch-action:manipulation;display:flex;flex-direction:column;align-items:center}
-.top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;width:100%;margin:0 auto;padding:5px 6px 5px;box-shadow:0 0 15px rgba(0,0,0,.4);flex-shrink:0}
-.logo{width:52px;height:52px;border-radius:50%;border:3px solid #c40000;object-fit:cover;background:#fff}
-.game-title{font-size:19px;font-weight:900;color:#c40000;margin:1px 0 0}
-.my-name{font-size:19px;font-weight:900;color:#c40000}
-.my-name small{display:block;font-size:13px;color:#c40000}
-.bank{font-size:15px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
-.board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;width:100%;margin:6px auto 0;padding:10px;flex-grow:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
-.cards{display:flex;justify-content:center;gap:12px;margin:10px 0}
-.card{width:90px;height:130px;background:#fff;border-radius:10px;border:3px solid #000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#000;font-weight:900;box-shadow:0 4px 10px rgba(0,0,0,.4);transition:transform 0.5s}
-.card.red{color:#c40000}
-.card .big{font-size:38px}
-.card .small{font-size:16px}
-.card.back{background:linear-gradient(135deg,#c40000,#2d0a4a);color:#FFD700;font-size:40px;border-color:#FFD700}
-.card.flip{transform:rotateY(360deg)}
-.btn{background:#FFD700;color:#000;border:none;padding:12px 20px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;margin:5px}
-.sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:7px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
-#msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
-.score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
-.footer{font-size:11px;color:#fff;margin-top:6px;text-shadow:1px 1px 2px #000;flex-shrink:0}
-.footer a{color:#FFD700;text-decoration:none;font-weight:900}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;justify-content:center;padding:4px 6px env(safe-area-inset-bottom,4px) 6px}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:#1e293b;border:3px solid #facc15;border-radius:16px;padding:6px 8px;overflow:hidden}
+header{display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;padding-bottom:3px}
+.logo-img{width:48px;height:48px;border-radius:50%;border:3px solid #facc15;object-fit:cover;background:#fff}
+header h1{font-size:19px;color:#facc15;line-height:1.2}
+header small{display:block;font-size:11px;color:#cbd5e1}
+.stats{display:flex;gap:6px;width:100%;flex-shrink:0;margin-bottom:5px}
+.stat{flex:1;background:#0f172a;border:1px solid #334155;border-radius:9px;padding:3px 2px;text-align:center;line-height:1.1}
+.stat b{display:block;font-size:15px;color:#facc15}
+.stat span{font-size:9px;color:#94a3b8}
+.letter-box{background:#facc15;color:#000;border-radius:12px;padding:5px 8px;text-align:center;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:10px}
+.letter-box .big{font-size:38px;font-weight:900;line-height:1}
+.letter-box .txt{font-size:13px;font-weight:900;line-height:1.3;text-align:right}
+.letter-box .timer{font-size:16px;font-weight:900;background:#000;color:#facc15;border-radius:8px;padding:4px 10px}
+.cats{flex-grow:1;min-height:0;display:flex;flex-direction:column;gap:5px;margin-top:6px;overflow:hidden}
+.cat{display:flex;align-items:center;gap:6px;background:#0f172a;border:2px solid #334155;border-radius:10px;padding:5px 7px;flex:1;min-height:0}
+.cat .icon{font-size:20px;width:30px;text-align:center;flex-shrink:0}
+.cat label{font-size:13px;font-weight:900;width:58px;flex-shrink:0;color:#e2e8f0}
+.cat input{flex:1;min-width:0;border:0;outline:0;background:#fff;color:#000;font-family:inherit;font-size:15px;font-weight:800;border-radius:8px;padding:7px 8px;text-align:right}
+.cat.ok{border-color:#22c55e;background:#14532d}
+.cat.bad{border-color:#ef4444;background:#7f1d1d}
+.cat .mark{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.feedback{min-height:16px;font-size:11px;font-weight:800;color:#facc15;text-align:center;margin:4px 0 2px;flex-shrink:0}
+.btn-row{display:flex;gap:6px;flex-shrink:0}
+.btn{flex:1;font-family:inherit;font-weight:900;border:0;border-radius:12px;padding:11px 6px;font-size:15px;cursor:pointer}
+.btn-check{background:#22c55e;color:#fff}
+.btn-stop{background:#ef4444;color:#fff}
+.btn-new{background:#facc15;color:#000}
+.btn-letter{background:#3b82f6;color:#fff}
+#overlay{position:fixed;inset:0;background:rgba(15,23,42,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:8px;z-index:10}
+#overlay h2{font-size:24px;color:#facc15}
+#overlay p{font-size:14px;line-height:1.6;color:#e2e8f0}
+.btn-start{background:#facc15;color:#000;border:0;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:220px}
+footer{text-align:center;font-size:9px;color:#94a3b8;margin-top:4px;flex-shrink:0}
+footer a{color:#facc15;text-decoration:none}
 </style></head>
-<body>
-<div class="top-box">
-<img class="logo" src="../../logo.png" alt="Ahmed TV">
-<div class="game-title">توقع الكارت</div>
-<div class="my-name">أحمد عبدالعزيز<small>Ahmed TV</small></div>
-<div class="bank">بنك الألعاب</div>
+<body><div class="game">
+<header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div><h1>🏆 حروف الأبطال</h1><small>أحمد عبدالعزيز • Ahmed TV</small></div></header>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="round">1</b><span>الجولة</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
+<div class="letter-box"><div class="big" id="letter">؟</div><div class="txt">الحرف ده<br>املى كل الخانات بيه</div><div class="timer" id="timer">⏱ 3:00</div></div>
+<div class="cats" id="cats"></div>
+<div class="feedback" id="feedback">دوس ابدأ - هيطلعلك حرف - املى الخانات كلها بيه!</div>
+<div class="btn-row"><button class="btn btn-check" id="checkBtn">✅ صحح إجابتي</button><button class="btn btn-stop" id="stopBtn">🛑 ستوب</button></div>
+<div class="btn-row" style="margin-top:5px"><button class="btn btn-letter" id="newLetterBtn">🔄 حرف جديد</button><button class="btn btn-new" id="newGameBtn">لعبة جديدة</button></div>
+<footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer>
 </div>
-<div class="board">
-<div id="msg">توقع الكارت الجاي أعلى ولا أقل؟</div>
-<div class="cards">
-<div class="card" id="myCard"><div class="small">انت</div><div class="big" id="myVal">؟</div><div class="small" id="mySuit">-</div></div>
-<div class="card back" id="midCard">🃏</div>
-<div class="card" id="pcCard"><div class="small">الكمبيوتر</div><div class="big" id="pcVal">؟</div><div class="small" id="pcSuit">-</div></div>
-</div>
-<div style="font-weight:900;">الكارت اللي في النص ده - اللي هييجي؟</div>
-<div style="margin:8px 0;">
-<button class="btn" onclick="guess('up')">أعلى</button>
-<button class="btn" onclick="guess('down')">أقل</button>
-</div>
-<button class="sound-btn" id="soundBtn" onclick="toggleSound()">الصوت: شغال</button>
-<div class="score">نقطك: <span id="score">0</span> | نقط الكمبيوتر: <span id="pcScore">0</span> | الدور: <span id="round">1</span> / 10</div>
-<button class="btn" onclick="location.reload()">لعبة جديدة</button>
-<div style="font-size:13px;margin-top:6px;">لو توقعت صح - هتاخد نقطة! اللي يوصل 10 الأول يكسب!</div>
-</div>
-<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
+<div id="overlay"><h2>🏆 حروف الأبطال</h2><p>هيطلعلك حرف من الـ 28 حرف<br>املى كل الخانات بنفس الحرف<br>اسم - بلد - حيوان - أكلة - مهنة - نبات<br>خلص معاك 3 دقايق لكل حرف - قبل ما الوقت يخلص!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div>
 <script>
-var soundOn=true;
-var _ahmedAudio=null;
-var _ahlaPlayed=false;
-function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
-function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
-document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
-function toggleSound(){soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'الصوت: شغال':'الصوت: مقفول';}
-function soundFlip(){}
-function soundWin(){playAhmedVoice('sah');}
-function soundLose(){playAhmedVoice('ghalat');}
-var suits=['♥','♦','♣','♠'];var values=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
-function valNum(v){if(v==='J')return 11;if(v==='Q')return 12;if(v==='K')return 13;if(v==='A')return 14;return parseInt(v);}
-function randCard(){var s=suits[Math.floor(Math.random()*4)];var v=values[Math.floor(Math.random()*values.length)];return {s:s,v:v,n:valNum(v)};}
-var cur=randCard();var score=0,pcScore=0,round=1,locked=false;
-function showMy(){var c=document.getElementById('myCard');c.className='card'+((cur.s==='♥'||cur.s==='♦')?' red':'');document.getElementById('myVal').textContent=cur.v;document.getElementById('mySuit').textContent=cur.s;}
-function resetMid(){var m=document.getElementById('midCard');m.className='card back';m.innerHTML='🃏';}
-function guess(dir){if(locked||round>10)return;locked=true;soundFlip();var next=randCard();var mid=document.getElementById('midCard');mid.classList.add('flip');setTimeout(function(){mid.className='card flip'+((next.s==='♥'||next.s==='♦')?' red':'');mid.innerHTML='<div class="small">اللي جاي</div><div class="big">'+next.v+'</div><div class="small">'+next.s+'</div>';var pc=document.getElementById('pcCard');pc.className='card'+((next.s==='♥'||next.s==='♦')?' red':'');document.getElementById('pcVal').textContent=next.v;document.getElementById('pcSuit').textContent=next.s;var win=(dir==='up'&&next.n>cur.n)||(dir==='down'&&next.n<cur.n);var tie=next.n===cur.n;if(tie){playAhmedVoice('hawel');document.getElementById('msg').textContent='تعادل! نفس الرقم '+next.v+' - كمل!';}else if(win){score++;soundWin();document.getElementById('msg').textContent='صح! اللي جاي كان '+next.v+next.s+' - خدت نقطة!';}else{pcScore++;soundLose();document.getElementById('msg').textContent='غلط! اللي جاي كان '+next.v+next.s+' - الكمبيوتر خد نقطة!';}document.getElementById('score').textContent=score;document.getElementById('pcScore').textContent=pcScore;setTimeout(function(){cur=next;showMy();resetMid();document.getElementById('pcVal').textContent='؟';document.getElementById('pcSuit').textContent='-';document.getElementById('pcCard').className='card';round++;document.getElementById('round').textContent=round>10?10:round;if(round>10){if(score>pcScore){playAhmedVoice('kesebt');document.getElementById('msg').textContent='كسبت يا بطل! '+score+' - '+pcScore;}else if(pcScore>score){playAhmedVoice('khesert');document.getElementById('msg').textContent='الكمبيوتر كسب - حاول تاني! '+score+' - '+pcScore;}else document.getElementById('msg').textContent='تعادل! العب تاني!';}else{document.getElementById('msg').textContent='توقع الكارت الجاي أعلى ولا أقل؟';}locked=false;},1800);},400);}
-showMy();
-</script>
-</body></html>
+const LETTERS=['ا','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','هـ','و','ي'];
+const CATS=[{key:'name',label:'اسم',icon:'👦',hint:'اسم ولد أو بنت'},{key:'country',label:'بلد',icon:'🌍',hint:'مثال: مصر'},{key:'animal',label:'حيوان',icon:'🦁',hint:'مثال: أسد'},{key:'food',label:'أكلة',icon:'🍔',hint:'مثال: كشري'},{key:'job',label:'مهنة',icon:'👨‍🍳',hint:'مثال: طبيب'},{key:'plant',label:'نبات',icon:'🌿',hint:'مثال: موز'}];
+let letter='',score=0,round=1,best=+(localStorage.getItem('busBest')||0),timeLeft=180,timerId=null,playing=false,checked=false;
+document.getElementById('best').textContent=best;
+var soundOn=true;var _ahmedAudio=null;var _ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var pr=a.play();if(pr)pr.catch(function(){});}catch(e){}}
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+function norm(s){return (s||'').trim().replace(/^[أإآ]/,'ا').replace(/ة$/,'ه');}
+function firstChar(s){s=norm(s);return s.charAt(0);}
+function buildCats(){const box=document.getElementById('cats');box.innerHTML='';CATS.forEach(c=>{const d=document.createElement('div');d.className='cat';d.id='cat-'+c.key;d.innerHTML='<span class="icon">'+c.icon+'</span><label>'+c.label+'</label><input type="text" id="in-'+c.key+'" placeholder="'+c.hint+'"><span class="mark" id="mark-'+c.key+'"></span>';box.appendChild(d);});}
+function newLetter(){letter=LETTERS[Math.floor(Math.random()*LETTERS.length)];document.getElementById('letter').textContent=letter;buildCats();checked=false;document.getElementById('feedback').textContent='الحرف: '+letter+' - املى كل الخانات بنفس الحرف!';startTimer();}
+function startTimer(){clearInterval(timerId);timeLeft=180;document.getElementById('timer').textContent='⏱ '+Math.floor(timeLeft/60)+':'+String(timeLeft%60).padStart(2,'0');timerId=setInterval(()=>{if(!playing)return;timeLeft--;document.getElementById('timer').textContent='⏱ '+Math.floor(timeLeft/60)+':'+String(timeLeft%60).padStart(2,'0');if(timeLeft<=0){clearInterval(timerId);timeUp();}},1000);}
+function checkAnswers(){if(!playing||checked)return;checked=true;let ok=0,filled=0;CATS.forEach(c=>{const v=document.getElementById('in-'+c.key).value;const row=document.getElementById('cat-'+c.key);const mark=document.getElementById('mark-'+c.key);if(v.trim()){filled++;if(firstChar(v)===norm(letter)){row.classList.add('ok');row.classList.remove('bad');mark.textContent='✅';ok++;}else{row.classList.add('bad');row.classList.remove('ok');mark.textContent='❌';}}else{row.classList.add('bad');mark.textContent='❌';}});if(filled===0){document.getElementById('feedback').textContent='املى خانة واحدة على الأقل!';checked=false;return;}score+=ok*10;document.getElementById('score').textContent=score;if(ok===CATS.length){playAhmedVoice('kesebt');document.getElementById('feedback').textContent='🎉 كله صح! +'+(ok*10)+' - دوس حرف جديد!';}else if(ok>0){playAhmedVoice('sah');document.getElementById('feedback').textContent='✅ '+ok+' صح من '+CATS.length+' - +'+(ok*10)+' - كمّل الباقي ودوس صحح تاني!';checked=false;CATS.forEach(c=>{const row=document.getElementById('cat-'+c.key);if(row.classList.contains('ok')){document.getElementById('in-'+c.key).disabled=true;}});}else{playAhmedVoice('ghalat');document.getElementById('feedback').textContent='❌ ولا واحدة صح - كلهم لازم يبدأوا بحرف '+letter;checked=false;}if(score>best){best=score;localStorage.setItem('busBest',best);document.getElementById('best').textContent=best;}}
+function timeUp(){playing=false;playAhmedVoice('khesert');document.getElementById('feedback').textContent='⏰ الوقت خلص! دوس حرف جديد!';}
+function startGame(){playAhmedVoice('ebda');score=0;round=1;document.getElementById('score').textContent=0;document.getElementById('round').textContent=1;document.getElementById('overlay').style.display='none';playing=true;newLetter();}
+document.getElementById('startBtn').onclick=startGame;
+document.getElementById('checkBtn').onclick=checkAnswers;
+document.getElementById('stopBtn').onclick=()=>{if(!playing)return;clearInterval(timerId);checkAnswers();document.getElementById('feedback').textContent='🛑 ستوب! '+document.getElementById('feedback').textContent;};
+document.getElementById('newLetterBtn').onclick=()=>{if(!playing)return;round++;document.getElementById('round').textContent=round;playAhmedVoice('ebda');newLetter();};
+document.getElementById('newGameBtn').onclick=()=>{clearInterval(timerId);startGame();};
+buildCats();
+</script></body></html>
