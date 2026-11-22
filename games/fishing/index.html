@@ -6,7 +6,7 @@
 <title>صيد السمك | Ahmed TV</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
+  html, body { height: 100%!important; height: 100svh!important; max-height: 100svh!important; overflow: hidden!important; overscroll-behavior:none; }
   body {
     font-family: Tahoma, Arial, sans-serif;
     background: #0f172a;
@@ -14,45 +14,29 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
+    padding: env(safe-area-inset-top, 6px) 8px env(safe-area-inset-bottom, 4px) 8px;
   }
-
   .header { width: 100%; max-width: 500px; text-align: center; flex-shrink: 0;}
-  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
-  
-  .logo {
-    width: 60px; height: 60px; flex-shrink: 0;
-    background: linear-gradient(135deg, #0284c7, #0ea5e9); 
-    border: 4px solid #fff; border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #fff; line-height: 1;
-    box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
-  }
-  .logo b { font-size: 12px; }
-  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
-  
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 3px; }
+  .logo-img { width: 60px; height: 60px; flex-shrink: 0; border-radius: 50%; border: 4px solid #fff; object-fit: cover; box-shadow: 0 0 20px rgba(14,165,233,0.5); background:#fff; display:block; }
   h1 { font-size: 20px; line-height: 1.2; color: #facc15;}
   h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
-  
-  .names { font-size: 14px; color: #cbd5e1; margin-bottom: 5px; font-weight: bold;}
+  .names { font-size: 14px; color: #cbd5e1; margin-bottom: 3px; font-weight: bold;}
   .names b { color: #facc15; font-size: 16px;}
-
-  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0; flex-wrap: wrap; }
+  .stats { display: flex; gap: 8px; justify-content: center; margin: 3px 0; flex-wrap: wrap; }
   .stat {
     background: #1e293b; border: 1px solid #334155; border-radius: 10px;
-    padding: 5px 15px; min-width: 80px; text-align: center;
+    padding: 4px 12px; min-width: 78px; text-align: center;
   }
-  .stat b { display: block; font-size: 18px; color: #facc15; }
+  .stat b { display: block; font-size: 17px; color: #facc15; }
   .stat span { font-size: 10px; color: #94a3b8; }
-
   #game-container {
     width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
     position: relative; display: flex; flex-direction: column;
-    background: #0ea5e9; /* لون البحر */
+    background: #0ea5e9;
     border: 4px solid #f59e0b; border-radius: 16px;
     overflow: hidden;
   }
-
   .watermark {
     position: absolute;
     top: 50%; left: 50%;
@@ -65,24 +49,20 @@
     z-index: 0;
     white-space: nowrap;
   }
-
-  canvas { width: 100%; height: 100%; display: block; z-index: 1; }
-
-  /* الأزرار */
+  canvas { width: 100%; height: 100%; display: block; z-index: 1; flex:1; min-height:0; }
   .controls {
-    display: flex; gap: 10px; justify-content: center; padding: 10px;
+    display: flex; gap: 10px; justify-content: center; padding: 8px;
     background: #1e293b; border-radius: 10px; z-index: 3;
     flex-shrink: 0;
   }
   .btn {
-    background: #ef4444; color: #fff; border: none; padding: 15px 25px;
+    background: #ef4444; color: #fff; border: none; padding: 13px 25px;
     border-radius: 10px; font-size: 18px; font-weight: 900; cursor: pointer;
     flex-grow: 1;
     box-shadow: 0 4px 0 #b91c1c;
   }
   .btn:active { transform: translateY(4px); box-shadow: 0 0 0 #b91c1c; }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
   #overlay {
     position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -96,35 +76,29 @@
     width: 80%; max-width: 200px;
   }
   .btn-start:active { transform: scale(0.95); }
-
-  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 4px;}
   .footer a { color: #facc15; text-decoration: none; }
 </style>
 </head>
 <body>
-
   <div class="header">
     <div class="top-row">
-      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
+      <img src="../../logo.png" alt="Ahmed TV" class="logo-img">
       <h1>صيد السمك<small>AHMED TV FISHING</small></h1>
     </div>
     <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
-
     <div class="stats">
       <div class="stat"><b id="score">0</b><span>النقاط</span></div>
       <div class="stat"><b id="time">60</b><span>الوقت</span></div>
       <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
     </div>
   </div>
-
   <div id="game-container">
     <div class="watermark">Ahmed TV</div>
     <canvas id="gameCanvas"></canvas>
-
     <div class="controls">
       <button class="btn" id="catchBtn" disabled>🎣 اصطاد</button>
     </div>
-
     <div id="overlay">
       <h2>لعبة صيد السمك</h2>
       <p>
@@ -134,11 +108,9 @@
       <button class="btn-start" id="startBtn">▶ ابدأ الصيد</button>
     </div>
   </div>
-
   <div class="footer">
     <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
   </div>
-
 <script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -148,73 +120,39 @@ const bestEl = document.getElementById('best');
 const overlay = document.getElementById('overlay');
 const startBtn = document.getElementById('startBtn');
 const catchBtn = document.getElementById('catchBtn');
-
 let W = 0, H = 0;
 let running = false;
 let score = 0;
 let timeLeft = 60;
 let best = parseInt(localStorage.getItem('fishingBest') || '0');
 bestEl.textContent = best;
-let audioCtx = null;
-
-// عناصر اللعبة
+var soundOn=true;
+var _ahmedAudio=null;
+var _ahlaPlayed=false;
+function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
+document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function playSound(type) {
+  if (type === 'catch') playAhmedVoice('sah');
+  else if (type === 'miss') playAhmedVoice('ghalat');
+  else if (type === 'win') playAhmedVoice('kesebt');
+}
 let fish = [];
 let hook = { x: 50, y: 0, targetY: 0, isCatching: false, speed: 10 };
-
-function initAudio() {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-}
-
-function playSound(type) {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  
-  if (type === 'catch') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-  } else if (type === 'miss') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-  } else if (type === 'win') {
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.4);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-  }
-}
-
 function resize() {
   const rect = canvas.parentElement.getBoundingClientRect();
   canvas.width = rect.width;
-  canvas.height = rect.height - 60; // نطرح مساحة الزرار
+  canvas.height = rect.height - 60;
   W = canvas.width;
   H = canvas.height;
-  
   if(!running) draw();
 }
-
-// توليد السمك
 function spawnFish() {
   if (!running) return;
-  const isGood = Math.random() > 0.2; // 80% سمك حلو
+  const isGood = Math.random() > 0.2;
   const size = 20 + Math.random() * 15;
   const y = Math.random() * (H - 100) + 50;
   const speed = 1 + Math.random() * 2;
-  
   fish.push({
     x: W + size,
     y: y,
@@ -224,33 +162,22 @@ function spawnFish() {
     emoji: isGood ? '🐟' : '👟'
   });
 }
-
-// رسم المشهد
 function draw() {
-  // البحر
   ctx.fillStyle = '#0ea5e9';
   ctx.fillRect(0, 0, W, H);
-  
-  // أمواج
   ctx.fillStyle = 'rgba(255,255,255,0.1)';
   ctx.beginPath();
   ctx.arc(W*0.2, H*0.2, 30, 0, Math.PI*2); ctx.fill();
   ctx.beginPath();
   ctx.arc(W*0.7, H*0.3, 40, 0, Math.PI*2); ctx.fill();
-
-  // الأرض
   ctx.fillStyle = '#78350f';
   ctx.fillRect(0, H - 20, W, 20);
-
-  // السمك
   fish.forEach(f => {
     ctx.font = f.size + 'px Arial';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(f.emoji, f.x, f.y);
   });
-
-  // الصنارة
   if (running) {
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 2;
@@ -258,18 +185,12 @@ function draw() {
     ctx.moveTo(W / 2, 0);
     ctx.lineTo(W / 2, hook.y);
     ctx.stroke();
-
-    // الخطاف
     ctx.font = '30px Arial';
     ctx.fillText('🪝', W / 2, hook.y);
   }
 }
-
-// تحديث اللعبة
 function update() {
   if (!running) return;
-
-  // حركة السمك
   for (let i = fish.length - 1; i >= 0; i--) {
     let f = fish[i];
     f.x -= f.speed;
@@ -277,19 +198,12 @@ function update() {
       fish.splice(i, 1);
     }
   }
-
-  // حركة الصنارة (لو بتصطاد)
   if (hook.isCatching) {
     hook.y += hook.speed;
-    
-    // التحقق من الاصطياد
     for (let i = fish.length - 1; i >= 0; i--) {
       let f = fish[i];
-      // المسافة بين الخطاف والسمكة
       let dist = Math.hypot(W/2 - f.x, hook.y - f.y);
-      
       if (dist < f.size / 1.5) {
-        // اصطادها
         if (f.isGood) {
           score += 10;
           scoreEl.textContent = score;
@@ -300,29 +214,24 @@ function update() {
           playSound('miss');
         }
         fish.splice(i, 1);
-        break; // يطلع تاني
+        break;
       }
     }
-
-    // لو الخطاف وصل لآخر الشاشة، يطلع تاني
     if (hook.y > H - 20) {
       hook.isCatching = false;
       catchBtn.disabled = false;
     }
   } else {
-    // لو مش بيصطاد، الخطاف ثابت فوق
     hook.y = 50;
   }
 }
-
 function loop() {
   update();
   draw();
   requestAnimationFrame(loop);
 }
-
 function startGame() {
-  initAudio();
+  playAhmedVoice('ebda');
   overlay.style.display = 'none';
   score = 0;
   scoreEl.textContent = score;
@@ -333,11 +242,7 @@ function startGame() {
   hook.isCatching = false;
   running = true;
   catchBtn.disabled = false;
-  
-  // توليد السمك
   setInterval(spawnFish, 800);
-  
-  // عداد الوقت
   setInterval(() => {
     if (running) {
       timeLeft--;
@@ -345,29 +250,23 @@ function startGame() {
       if (timeLeft <= 0) endGame();
     }
   }, 1000);
-
   loop();
 }
-
 function catchFish() {
   if (!running || hook.isCatching) return;
   hook.isCatching = true;
   hook.y = 50;
   catchBtn.disabled = true;
-  playSound('catch');
 }
-
 function endGame() {
   running = false;
   clearInterval();
   playSound('win');
-  
   if (score > best) {
     best = score;
     localStorage.setItem('fishingBest', best);
     bestEl.textContent = best;
   }
-
   overlay.style.display = 'flex';
   overlay.innerHTML = `
     <div style="font-size:35px">🎣</div>
@@ -379,18 +278,11 @@ function endGame() {
   `;
   document.getElementById('againBtn').onclick = startGame;
 }
-
 catchBtn.onclick = catchFish;
 startBtn.onclick = startGame;
-
 window.addEventListener('resize', () => { resize(); if(!running) draw(); });
-
 resize();
 draw();
-
-document.body.addEventListener('touchstart', initAudio, { once: true });
-document.body.addEventListener('click', initAudio, { once: true });
 </script>
- 
 </body>
 </html>
