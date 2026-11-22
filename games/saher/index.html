@@ -1,1 +1,147 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة الساحر | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:radial-gradient(ellipse at top,#2d1b69 0%,#1a0b2e 50%,#0f0520 100%);color:#fff;display:flex;flex-direction:column;align-items:center;padding:6px 10px;overflow:hidden;position:relative}
+body::before{content:'✦ ⋆ ✧ ⋆ ✦ ⋆ ✧ ⋆ ✦ ⋆ ✧';position:absolute;top:0;left:0;right:0;text-align:center;color:rgba(255,215,0,.25);font-size:18px;letter-spacing:8px;pointer-events:none;z-index:0}
+.header{width:100%;max-width:520px;text-align:center;flex-shrink:0;position:relative;z-index:1}
+.top-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:4px}
+.logo-wrap{width:58px;height:58px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #ffd700;background:#000;box-shadow:0 0 20px rgba(255,215,0,.6)}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:24px;color:#ffd700;line-height:1.2;text-shadow:0 0 12px rgba(255,215,0,.8)}
+h1 small{display:block;font-size:11px;color:#e9d5ff;letter-spacing:2px;margin-top:2px}
+.names{font-size:13px;color:#e9d5ff;font-weight:bold;margin-bottom:6px}
+.names b{color:#ffd700;font-size:15px}
+.score{display:flex;gap:8px;justify-content:center;margin:4px 0 8px}
+.stat{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,215,0,.5);border-radius:14px;padding:6px 12px;min-width:92px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.stat b{display:block;font-size:19px;color:#ffd700}
+.stat span{font-size:10px;color:#e9d5ff}
+#game{width:100%;max-width:520px;flex:1;min-height:0;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:2px solid rgba(255,215,0,.6);border-radius:22px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative;overflow:hidden;z-index:1;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#stage{font-size:13px;color:#ffd700;font-weight:900;background:rgba(0,0,0,.35);padding:5px 14px;border-radius:20px}
+#hats{display:flex;gap:14px;justify-content:center;width:100%}
+.hat{width:104px;height:150px;cursor:pointer;position:relative;transition:transform .35s,filter .3s;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5))}
+.hat:active{transform:scale(.94)}
+.hat .top{width:78px;height:42px;background:linear-gradient(135deg,#1a0b2e,#4c1d95);border:3px solid #ffd700;border-bottom:none;border-radius:10px 10px 0 0;margin:0 auto;position:relative;z-index:2}
+.hat .top::after{content:'✦';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#ffd700;font-size:20px}
+.hat .brim{width:104px;height:18px;background:linear-gradient(135deg,#ffd700,#f59e0b);border-radius:50%;position:relative;z-index:3;box-shadow:0 4px 8px rgba(0,0,0,.4)}
+.hat .body{width:78px;height:78px;background:linear-gradient(135deg,#2d1b69,#7c3aed);border:3px solid #ffd700;border-top:none;margin:0 auto;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;font-size:34px}
+.hat.shuffle{animation:shuffleHat .4s ease-in-out}
+@keyframes shuffleHat{0%{transform:translateX(0) rotate(0)}25%{transform:translateX(-10px) rotate(-6deg)}50%{transform:translateX(10px) rotate(6deg)}75%{transform:translateX(-6px) rotate(-3deg)}100%{transform:translateX(0) rotate(0)}}
+.hat.winner .body{background:linear-gradient(135deg,#ffd700,#f59e0b)}
+.hat.loser .body{background:#475569}
+#msg{font-size:16px;font-weight:900;min-height:24px;text-align:center;color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.6)}
+#timer{font-size:13px;background:#ef4444;padding:4px 12px;border-radius:20px;font-weight:900}
+.btn{background:linear-gradient(135deg,#ffd700,#f59e0b);color:#1a0b2e;border:none;padding:13px 24px;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer;width:82%;max-width:260px;box-shadow:0 6px 16px rgba(255,215,0,.4)}
+.btn:active{transform:scale(.95)}
+.btn2{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,215,0,.5)}
+#overlay{position:absolute;inset:0;background:rgba(15,5,32,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;gap:12px;z-index:10;border-radius:22px}
+#overlay h2{font-size:26px;color:#ffd700;text-shadow:0 0 14px rgba(255,215,0,.8)}
+#overlay p{font-size:14px;line-height:1.8;color:#e9d5ff}
+.footer{font-size:10px;color:#c4b5fd;text-align:center;margin-top:6px;flex-shrink:0;position:relative;z-index:1}
+.footer a{color:#ffd700;text-decoration:none}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<div class="header">
+<div class="top-row">
+<div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div>
+<h1>لعبة الساحر<small>✦ AHMED TV MAGIC ✦</small></h1>
+</div>
+<div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+<div class="score">
+<div class="stat"><b id="score">0</b><span>النقط ⭐</span></div>
+<div class="stat"><b id="tries">3</b><span>المحاولات 🎩</span></div>
+<div class="stat"><b id="level">مستوى 1</b><span>المستوى ✨</span></div>
+</div>
+</div>
+<div id="game">
+<div id="overlay">
+<h2>لعبة الساحر 🧙✨</h2>
+<p><b style="color:#ffd700">Ahmed TV</b> - الساحر خبى الأرنب!<br>الأرنب 🐰 مستخبي تحت قبعة من التلاتة 🎩🎩🎩<br>القبعات هتتلخبط قدامك - ركز وخمن صح!<br>ليك 3 محاولات - كل مستوى القبعات بتتلخبط أسرع!</p>
+<button class="btn" id="startBtn">✨ ابدأ السحر</button>
+</div>
+<div id="stage">✦ ركز.. القبعات هتتلخبط! ✦</div>
+<div id="hats"></div>
+<div id="msg">دوس على القبعة اللي فيها الأرنب!</div>
+<div id="timer">⏰ 20 ثانية</div>
+<button class="btn btn2" id="nextBtn" style="display:none">➡️ المستوى اللي بعده</button>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+<script>
+var score=0,tries=3,level=1,locked=true,timeLeft=20,timer=null,rabbitIdx=0;
+var scoreEl=document.getElementById('score'),triesEl=document.getElementById('tries'),levelEl=document.getElementById('level'),hatsEl=document.getElementById('hats'),msgEl=document.getElementById('msg'),timerEl=document.getElementById('timer'),overlay=document.getElementById('overlay'),nextBtn=document.getElementById('nextBtn'),stageEl=document.getElementById('stage');
+var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function startTimer(){
+stopTimer();timeLeft=20;timerEl.textContent='⏰ '+timeLeft+' ثانية';
+timer=setInterval(function(){timeLeft--;timerEl.textContent='⏰ '+timeLeft+' ثانية';if(timeLeft<=0){stopTimer();if(!locked){locked=true;msgEl.textContent='⏰ خلص الوقت! الأرنب هرب!';playAhmedVoice('khesert');setTimeout(endGame,1000);}}},1000);
+}
+function buildHats(){
+hatsEl.innerHTML='';
+for(var i=0;i<3;i++){
+var h=document.createElement('div');h.className='hat';h.setAttribute('data-idx',i);
+h.innerHTML='<div class="top"></div><div class="body">🎩</div><div class="brim"></div>';
+(function(idx,el){
+el.onpointerdown=function(e){e.preventDefault();if(locked||el.classList.contains('opened'))return;el.classList.add('opened');
+if(idx===rabbitIdx){
+el.classList.add('winner');el.querySelector('.body').textContent='🐰';
+score+=20;scoreEl.textContent=score;msgEl.textContent='🎉 لقيت الأرنب! انت ساحر!';stageEl.textContent='✦ برافو! لقيته! ✦';
+playAhmedVoice('kesebt');locked=true;stopTimer();nextBtn.style.display='block';
+}else{
+el.classList.add('loser');el.querySelector('.body').textContent='🫥';
+tries--;triesEl.textContent=tries;msgEl.textContent='🫥 القبعة فاضية! الأرنب مش هنا!';
+playAhmedVoice('ghalat');
+if(tries<=0){locked=true;stopTimer();reveal();setTimeout(endGame,1000);}
+}
+};
+})(i,h);
+hatsEl.appendChild(h);
+}
+}
+function shuffleVisual(cb){
+var hats=hatsEl.querySelectorAll('.hat');
+var rounds=3+level;
+var count=0;
+stageEl.textContent='✦ القبعات بتتلخبط.. ركز! ✦';
+locked=true;
+var iv=setInterval(function(){
+hats.forEach(function(h){h.classList.remove('shuffle');void h.offsetWidth;h.classList.add('shuffle');});
+count++;
+if(count>=rounds){clearInterval(iv);stageEl.textContent='✦ خلاص.. خمن! ✦';locked=false;if(cb)cb();}
+},450);
+}
+function reveal(){
+var hats=hatsEl.querySelectorAll('.hat');
+hats.forEach(function(h,idx){if(idx===rabbitIdx && !h.classList.contains('opened')){h.querySelector('.body').textContent='🐰';h.classList.add('winner');}});
+}
+function newRound(){
+rabbitIdx=Math.floor(Math.random()*3);
+tries=3;locked=true;triesEl.textContent='3';levelEl.textContent='مستوى '+level;msgEl.textContent='دوس على القبعة اللي فيها الأرنب!';nextBtn.style.display='none';
+buildHats();
+setTimeout(function(){shuffleVisual(function(){startTimer();});},400);
+}
+function endGame(){
+playAhmedVoice('khesert');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:44px">💔</div><h2>الأرنب هرب منك!</h2><p>جبت <b style="color:#ffd700;font-size:22px">'+score+'</b> نقطة<br>ووصلت للمستوى <b style="color:#ffd700">'+level+'</b><br>الساحر بيقولك: ركز أكتر المرة الجاية!</p><button class="btn" id="againBtn">🔄 العب تاني</button>';
+document.getElementById('againBtn').onclick=startGame;
+}
+function startGame(){
+playAhmedVoice('ebda');
+score=0;level=1;scoreEl.textContent='0';
+overlay.style.display='none';newRound();
+}
+document.getElementById('startBtn').onclick=startGame;
+nextBtn.onclick=function(){level++;playAhmedVoice('sah');newRound();};
+</script>
+</body>
+</html>
