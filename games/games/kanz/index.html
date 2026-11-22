@@ -1,1 +1,121 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة الكنز | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation}
+.header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2px}
+.logo-wrap{width:52px;height:52px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#000}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:22px;color:#facc15;line-height:1.2}
+h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2px}
+.names{font-size:13px;color:#cbd5e1;font-weight:bold;margin-bottom:4px}
+.names b{color:#facc15;font-size:15px}
+.score{display:flex;gap:10px;justify-content:center;margin:3px 0 6px}
+.stat{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:4px 14px;min-width:85px;text-align:center}
+.stat b{display:block;font-size:18px;color:#facc15}
+.stat span{font-size:10px;color:#94a3b8}
+#game{width:100%;max-width:500px;flex:1;min-height:0;background:#1e293b;border:4px solid #f59e0b;border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
+#board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:340px}
+.box{background:linear-gradient(135deg,#f59e0b,#d97706);border:3px solid #facc15;border-radius:14px;height:92px;font-size:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.4)}
+.box:active{transform:scale(.94)}
+.box.opened{cursor:default}
+.box.treasure{background:linear-gradient(135deg,#facc15,#f59e0b);border-color:#fff}
+.box.monster{background:#334155;border-color:#ef4444}
+.box.empty{background:#475569;border-color:#94a3b8}
+#msg{font-size:16px;font-weight:900;min-height:24px;text-align:center;color:#facc15}
+.btn{background:#f59e0b;color:#000;border:none;padding:12px 22px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:240px}
+.btn:active{transform:scale(.95)}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
+#overlay h2{font-size:24px;color:#facc15}
+#overlay p{font-size:14px;line-height:1.7;color:#e2e8f0}
+.footer{font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;flex-shrink:0}
+.footer a{color:#facc15;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="top-row">
+<div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div>
+<h1>لعبة الكنز<small>AHMED TV TREASURE</small></h1>
+</div>
+<div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+<div class="score">
+<div class="stat"><b id="score">0</b><span>النقط</span></div>
+<div class="stat"><b id="tries">3</b><span>المحاولات</span></div>
+<div class="stat"><b id="level">مستوى 1</b><span>المستوى</span></div>
+</div>
+</div>
+<div id="game">
+<div id="overlay">
+<h2>لعبة الكنز 🗺️</h2>
+<p><b>Ahmed TV</b> - دور على الكنز!<br>عندك 9 صناديق - واحد فيهم فيه الكنز 💰<br>و 2 فيهم وحش 👾 والباقي فاضي!<br>ليك 3 محاولات بس - لو لقيت الكنز تكسب!</p>
+<button class="btn" id="startBtn">▶ ابدأ الصيد</button>
+</div>
+<div id="board"></div>
+<div id="msg">افتح صندوق ودور على الكنز!</div>
+<button class="btn" id="nextBtn" style="display:none">➡️ المستوى اللي بعده</button>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+<script>
+var score=0,tries=3,level=1,locked=false,opened=0;
+var scoreEl=document.getElementById('score'),triesEl=document.getElementById('tries'),levelEl=document.getElementById('level'),boardEl=document.getElementById('board'),msgEl=document.getElementById('msg'),overlay=document.getElementById('overlay'),nextBtn=document.getElementById('nextBtn');
+var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function newBoard(){
+boardEl.innerHTML='';tries=3;opened=0;locked=false;nextBtn.style.display='none';
+triesEl.textContent='3';levelEl.textContent='مستوى '+level;msgEl.textContent='افتح صندوق ودور على الكنز!';
+var items=['treasure','monster','monster','empty','empty','empty','empty','empty','empty'];
+items=shuffle(items);
+items.forEach(function(type){
+var b=document.createElement('div');b.className='box';b.textContent='📦';
+b.onclick=function(){
+if(locked||b.classList.contains('opened'))return;
+b.classList.add('opened');opened++;
+if(type==='treasure'){
+b.classList.add('treasure');b.textContent='💰';
+score+=20;scoreEl.textContent=score;msgEl.textContent='🎉 لقيت الكنز! برافو!';
+playAhmedVoice('kesebt');locked=true;nextBtn.style.display='block';nextBtn.textContent='➡️ المستوى اللي بعده';
+}else if(type==='monster'){
+b.classList.add('monster');b.textContent='👾';
+tries--;triesEl.textContent=tries;msgEl.textContent='😱 وحش! راحت منك محاولة!';
+playAhmedVoice('ghalat');
+if(tries<=0){locked=true;revealTreasure();setTimeout(endGame,1200);}
+}else{
+b.classList.add('empty');b.textContent='😶';
+tries--;triesEl.textContent=tries;msgEl.textContent='🫥 الصندوق فاضي! حاول تاني!';
+playAhmedVoice('hawel');
+if(tries<=0){locked=true;revealTreasure();setTimeout(endGame,1200);}
+}
+};
+boardEl.appendChild(b);
+});
+}
+function revealTreasure(){
+var boxes=boardEl.querySelectorAll('.box');
+boxes.forEach(function(b){if(!b.classList.contains('opened')){/* keep hidden */}});
+}
+function endGame(){
+playAhmedVoice('khesert');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:40px">💔</div><h2>خلصت المحاولات!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+'</b> نقطة<br>ووصلت للمستوى <b style="color:#facc15">'+level+'</b><br>الكنز كان مستخبي!</p><button class="btn" id="againBtn">🔄 العب تاني</button>';
+document.getElementById('againBtn').onclick=startGame;
+}
+function startGame(){
+playAhmedVoice('ebda');
+score=0;level=1;scoreEl.textContent='0';
+overlay.style.display='none';newBoard();
+}
+document.getElementById('startBtn').onclick=startGame;
+nextBtn.onclick=function(){level++;playAhmedVoice('sah');newBoard();};
+</script>
+</body>
+</html>
