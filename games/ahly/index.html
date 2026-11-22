@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - 【entity-النادي الأهلي¦canonical_name=النادي الأهلي】</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - النادي الأهلي</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important}
-html,body{overflow-y:auto;overflow-x:hidden}
-body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#7f0000,#C62828 50%,#8E0000);color:#fff;display:flex;justify-content:center;padding:4px 8px 4px 8px}
-.game{width:100%;max-width:500px;display:flex;flex-direction:column;background:#fff;border:3px solid #C62828;border-radius:20px;padding:8px;box-shadow:0 18px 50px #0008;position:relative;color:#B71C1C}
+html,body{height:100svh!important;max-height:100svh!important;overflow:hidden!important;position:fixed!important;width:100%}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#7f0000,#C62828 50%,#8E0000);color:#fff;display:flex;justify-content:center;padding:4px 8px;height:100svh!important;overflow:hidden}
+.game{width:100%;max-width:500px;height:100svh!important;max-height:100svh!important;display:flex;flex-direction:column;background:#fff;border:3px solid #C62828;border-radius:20px;padding:8px;box-shadow:0 18px 50px #0008;position:relative;color:#B71C1C;overflow:hidden}
 header{padding:1px 0 3px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;text-align:center}
 .header-top{display:flex;flex-direction:column;align-items:center;gap:4px;justify-content:center}
 .header-text{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
@@ -13,7 +13,7 @@ header{padding:1px 0 3px;flex-shrink:0;display:flex;flex-direction:column;align-
 .names{font-size:22px;text-align:center;font-weight:900;color:#C62828}
 .names small{display:block;font-size:16px;color:#B71C1C;font-weight:900}
 .slogan{background:linear-gradient(135deg,#C62828,#8E0000);color:#FFD54F;font-weight:900;font-size:14px;padding:4px 12px;text-align:center;width:100%;margin-top:6px;border-radius:20px}
-.panel-container{position:relative;display:flex;flex-direction:column}
+.panel-container{position:relative;display:flex;flex-direction:column;flex:1;min-height:0;padding-bottom:2px}
 footer{text-align:center;color:#C62828;font-size:11px;margin-top:6px;flex-shrink:0}
 footer a{color:#C62828;text-decoration:none;font-weight:700}
 .watermark{text-align:center;font-size:10px;color:#B71C1C;opacity:.25;font-weight:900;letter-spacing:2px;pointer-events:none;white-space:nowrap;margin-top:4px}
@@ -34,7 +34,6 @@ footer a{color:#C62828;text-decoration:none;font-weight:700}
 .answer.wrong{background:#333}
 .answer:disabled{opacity:.9}
 .feedback{min-height:20px;margin:2px 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#B71C1C;font-weight:700;font-size:12px;text-align:center;flex-shrink:0}
-/* الزراير - بره - مش ثابتة تحت - ظاهرة في التطبيق */
 .btn-row{display:flex;gap:7px;flex-shrink:0;background:#fff;padding:6px 2px 2px 2px;border-top:2px solid #FFE082}
 .mainbtn{flex:2;font-family:inherit;font-weight:800;border:0;border-radius:20px;padding:11px 10px;background:linear-gradient(135deg,#C62828,#8E0000);color:#fff;cursor:pointer;font-size:13px}
 .skipbtn{flex:1;font-family:inherit;font-weight:800;border:2px solid #C62828;border-radius:20px;padding:11px 6px;background:#fff;color:#B71C1C;cursor:pointer;font-size:13px}
@@ -54,23 +53,29 @@ footer a{color:#C62828;text-decoration:none;font-weight:700}
 <div class="header-top">
 <img src="../../logo.png" alt="Ahmed TV" class="logo-img">
 <div class="header-text">
-<div class="brand">🦅 النادي الأهلي 🦅</div>
+<div class="brand">النادي الأهلي</div>
 <div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div>
 </div>
 </div>
-<div class="slogan">الأهلي فوق الجميع 🔴</div><button id="soundBtn" style="margin:6px auto 0 auto;display:block;font-family:inherit;font-weight:800;border:2px solid #C62828;border-radius:20px;padding:7px 20px;background:#fff;color:#B71C1C;cursor:pointer;font-size:12px">🔊 الصوت: شغال</button>
+<div class="slogan">الأهلي فوق الجميع</div><button id="soundBtn" style="margin:6px auto 0 auto;display:block;font-family:inherit;font-weight:800;border:2px solid #C62828;border-radius:20px;padding:7px 20px;background:#fff;color:#B71C1C;cursor:pointer;font-size:12px">الصوت: شغال</button>
 </header>
 <div class="panel-container">
 <div id="viewGame" style="display:flex;flex-direction:column;gap:3px">
-<div class="cat-row"><button class="cat-btn active" id="catAll" onclick="setCat('الكل',this)">الكل - 300 سؤال</button><button class="cat-btn" onclick="setCat('جدد',this)">🆕 الجدد</button><button class="cat-btn" onclick="setCat('قدامى',this)">🏆 القدامى</button></div>
-<div class="top-bar"><div class="score-box">🦅 <span id="score">0</span> نقطة</div><div class="score-box">السؤال <span id="count">1</span> / <span id="totalQ">300</span></div><div class="score-box">✅ <span id="correctCount">0</span></div></div>
+<div class="cat-row"><button class="cat-btn active" id="catAll" onclick="setCat('الكل',this)">الكل - 300 سؤال</button><button class="cat-btn" onclick="setCat('جدد',this)">الجدد</button><button class="cat-btn" onclick="setCat('قدامى',this)">القدامى</button></div>
+<div class="top-bar"><div class="score-box"><span id="score">0</span> نقطة</div><div class="score-box">السؤال <span id="count">1</span> / <span id="totalQ">300</span></div><div class="score-box"><span id="correctCount">0</span></div></div>
 <div class="qbox"><div class="jersey-big"><div class="num" id="qNum">1</div><div class="pos" id="qPos">حارس</div></div><div class="qtext" id="qText">مين اللاعب ده؟</div></div>
 <div class="answers" id="answers"></div>
-<div class="feedback" id="feedback">🦅 يلا يا أهلاوي! اختر الصح أو اعمل تخطي</div>
-<div class="btn-row"><button class="skipbtn" onclick="skipQ()">⏭️ تخطي</button><button class="mainbtn" id="nextBtn" disabled>السؤال التالي ←</button></div>
+<div class="feedback" id="feedback">يلا يا أهلاوي! اختر الصح أو اعمل تخطي</div>
+<div class="btn-row"><button class="skipbtn" onclick="skipQ()">تخطي</button><button class="mainbtn" id="nextBtn" disabled>السؤال التالي</button></div>
 </div>
-</div><div class="watermark">AHMED TV • 【entity-AL AHLY¦canonical_name=AL AHLY】</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
+</div><div class="watermark">AHMED TV - AL AHLY</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
+let soundOn=true;
+function playAhmedVoice(t){ try{ if(!soundOn) return; if(!t) return; var file=''; if(t.indexOf('صح')>=0) file='sah.mp3'; else if(t.indexOf('غلط')>=0) file='ghalat.mp3'; else if(t.indexOf('حاول')>=0) file='hawel.mp3'; else if(t.indexOf('كسبت')>=0) file='kesebt.mp3'; else if(t.indexOf('ابدأ')>=0) file='ebda.mp3'; if(!file) return; var a=new Audio('../../sounds/'+file); a.play().catch(function(){}); }catch(e){} }
+function playCorrect(){ playAhmedVoice('صح'); }
+function playWrong(){ playAhmedVoice('غلط'); }
+function playSkip(){ playAhmedVoice('حاول'); }
+function playChant(){ playAhmedVoice('ابدأ'); }
 const NEW_PLAYERS=[{n:"محمد ا"+"لشناوي", num:1, pos:"حارس", cat:"جدد"},{n:"مصطفى"+" شوبير", num:31, pos:"حارس", cat:"جدد"},{n:"حمزة"+" علاء", num:26, pos:"حارس", cat:"جدد"},{n:"محمد"+" سيحا", num:37, pos:"حارس", cat:"جدد"},{n:"محمد"+" هاني", num:30, pos:"دفاع", cat:"جدد"},{n:"ياسر إ"+"براهيم", num:6, pos:"دفاع", cat:"جدد"},{n:"ياسين"+" مرعي", num:20, pos:"دفاع", cat:"جدد"},{n:"أشرف"+" داري", num:15, pos:"دفاع", cat:"جدد"},{n:"عمرو "+"الجزار", num:26, pos:"دفاع", cat:"جدد"},{n:"كريم"+" فؤاد", num:28, pos:"دفاع", cat:"جدد"},{n:"يوسف "+"بلعمري", num:20, pos:"دفاع", cat:"جدد"},{n:"أحمد"+" عيد", num:2, pos:"دفاع", cat:"جدد"},{n:"مروان"+" عطية", num:13, pos:"وسط", cat:"جدد"},{n:"أحمد نب"+"يل كوكا", num:36, pos:"وسط", cat:"جدد"},{n:"أحمد"+" رضا", num:24, pos:"وسط", cat:"جدد"},{n:"إمام "+"عاشور", num:22, pos:"وسط", cat:"جدد"},{n:"محمد مج"+"دي أفشة", num:19, pos:"وسط", cat:"جدد"},{n:"علي "+"محمود", num:21, pos:"وسط", cat:"جدد"},{n:"عمر ا"+"لساعي", num:18, pos:"وسط", cat:"جدد"},{n:"أحمد خا"+"لد كباكا", num:11, pos:"وسط", cat:"جدد"},{n:"أحمد س"+"يد زيزو", num:25, pos:"هجوم", cat:"جدد"},{n:"أشرف ب"+"ن شرقي", num:17, pos:"هجوم", cat:"جدد"},{n:"حسين "+"الشحات", num:14, pos:"هجوم", cat:"جدد"},{n:"طاهر مح"+"مد طاهر", num:29, pos:"هجوم", cat:"جدد"},{n:"محمود حسن"+" تريزيجيه", num:7, pos:"هجوم", cat:"جدد"},{n:"سفيان "+"بنجديدة", num:9, pos:"هجوم", cat:"جدد"},{n:"منصف "+"بقرار", num:10, pos:"هجوم", cat:"جدد"},{n:"نيجك ج"+"راديشار", num:10, pos:"هجوم", cat:"جدد"},{n:"محمد ع"+"بد الله", num:38, pos:"هجوم", cat:"جدد"},{n:"عمر سي"+"د معوض", num:12, pos:"هجوم", cat:"جدد"}];
 const OLD_PLAYERS=[{n:"محمود "+"الخطيب", num:10, pos:"أسطورة", cat:"قدامى"},{n:"محمد أب"+"و تريكة", num:22, pos:"أسطورة", cat:"قدامى"},{n:"محمد "+"بركات", num:8, pos:"أسطورة", cat:"قدامى"},{n:"وائل"+" جمعة", num:6, pos:"أسطورة", cat:"قدامى"},{n:"أحمد"+" حسن", num:17, pos:"أسطورة", cat:"قدامى"},{n:"عصام "+"الحضري", num:1, pos:"أسطورة", cat:"قدامى"},{n:"سيد "+"معوض", num:11, pos:"أسطورة", cat:"قدامى"},{n:"أحمد"+" فتحي", num:24, pos:"أسطورة", cat:"قدامى"},{n:"عماد"+" متعب", num:10, pos:"أسطورة", cat:"قدامى"},{n:"محمد ن"+"اجي جدو", num:15, pos:"أسطورة", cat:"قدامى"},{n:"وليد "+"سليمان", num:11, pos:"أسطورة", cat:"قدامى"},{n:"حسام"+" غالي", num:14, pos:"أسطورة", cat:"قدامى"},{n:"أحمد"+" بلال", num:9, pos:"أسطورة", cat:"قدامى"},{n:"حسام "+"عاشور", num:25, pos:"أسطورة", cat:"قدامى"},{n:"شريف "+"إكرامي", num:1, pos:"أسطورة", cat:"قدامى"},{n:"أحمد "+"السيد", num:3, pos:"أسطورة", cat:"قدامى"},{n:"محمد"+" شوقي", num:5, pos:"أسطورة", cat:"قدامى"},{n:"إسلام "+"الشاطر", num:2, pos:"أسطورة", cat:"قدامى"},{n:"أحمد "+"شوبير", num:1, pos:"أسطورة", cat:"قدامى"},{n:"طاهر أ"+"بو زيد", num:10, pos:"أسطورة", cat:"قدامى"},{n:"مختار"+" التتش", num:10, pos:"أسطورة", cat:"قدامى"},{n:"صالح"+" سليم", num:10, pos:"أسطورة", cat:"قدامى"},{n:"حسن "+"حمدي", num:10, pos:"أسطورة", cat:"قدامى"},{n:"إبراه"+"يم حسن", num:2, pos:"أسطورة", cat:"قدامى"},{n:"هادي"+" خشبة", num:20, pos:"أسطورة", cat:"قدامى"},{n:"أيمن"+" شوقي", num:9, pos:"أسطورة", cat:"قدامى"},{n:"علاء "+"ميهوب", num:10, pos:"أسطورة", cat:"قدامى"},{n:"ربيع "+"ياسين", num:3, pos:"أسطورة", cat:"قدامى"},{n:"محمد "+"رمضان", num:9, pos:"أسطورة", cat:"قدامى"},{n:"أحمد عبد ا"+"لمنعم كشري", num:9, pos:"أسطورة", cat:"قدامى"}];
 const ALL_PLAYERS=[...NEW_PLAYERS, ...OLD_PLAYERS];
@@ -101,33 +106,25 @@ function buildQuestions(cat){
   }
   return shuffle(qs).slice(0,300);
 }
-let soundOn=true, audioCtx=null;
-function getCtx(){ if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
-function playTone(f, dur, vol, type, delay){ if(!soundOn) return; const ctx=getCtx(); if(!ctx) return; try{ const t0=ctx.currentTime+delay; const o=ctx.createOscillator(), g=ctx.createGain(); o.type=type||'triangle'; o.frequency.value=f; g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(vol,t0+0.02); g.gain.exponentialRampToValueAtTime(0.001,t0+dur); o.connect(g); g.connect(ctx.destination); o.start(t0); o.stop(t0+dur); }catch(e){} }
-function playCorrect(){ [523,659,784,1046].forEach((f,i)=>playTone(f,0.35,0.14,'triangle',i*0.09)); }
-function playWrong(){ playTone(180,0.3,0.1,'sawtooth',0); }
-function playSkip(){ playTone(400,0.15,0.08,'sine',0); }
-function playChant(){ [523,523,659,784,784,659,523].forEach((f,i)=>playTone(f,0.22,0.07,'triangle',i*0.16)); }
 let currentCat='الكل', questions=[], idx=0, score=0, correctCount=0, locked=false, skipped=0;
 function setCat(cat,btn){ document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); currentCat=cat; startQuiz(); }
 function startQuiz(){ playChant(); questions=buildQuestions(currentCat); idx=0; score=0; correctCount=0; skipped=0; document.getElementById('totalQ').textContent=questions.length; document.getElementById('score').textContent=score; document.getElementById('correctCount').textContent=correctCount; loadQ(); }
 function loadQ(){
-  if(idx>=questions.length){ document.getElementById('qText').textContent='خلصت الـ 300 سؤال! 🏆'; document.getElementById('feedback').textContent='نتيجتك: '+score+' نقطة • صح: '+correctCount+' • تخطي: '+skipped+' - دوس تخطي عشان تلعب تاني'; document.getElementById('answers').innerHTML=''; return; }
+  if(idx>=questions.length){ document.getElementById('qText').textContent='خلصت الـ 300 سؤال!'; document.getElementById('feedback').textContent='نتيجتك: '+score+' نقطة - صح: '+correctCount+' - تخطي: '+skipped+' - دوس تخطي عشان تلعب تاني'; document.getElementById('answers').innerHTML=''; return; }
   locked=false; const it=questions[idx];
   document.getElementById('count').textContent=idx+1;
   document.getElementById('qNum').textContent=it.p.num;
-  document.getElementById('qPos').textContent=it.p.pos+' • '+it.p.cat;
+  document.getElementById('qPos').textContent=it.p.pos+' - '+it.p.cat;
   document.getElementById('qText').textContent=it.q;
-  document.getElementById('feedback').textContent='🦅 السؤال '+(idx+1)+' من 300 - اختر الصح أو اعمل تخطي';
+  document.getElementById('feedback').textContent='السؤال '+(idx+1)+' من 300 - اختر الصح أو اعمل تخطي';
   const ans=document.getElementById('answers'); ans.innerHTML='';
   it.opts.forEach(o=>{ const b=document.createElement('button'); b.className='answer'; b.textContent=o; b.onclick=()=>choose(o===it.correct,b,it); ans.appendChild(b); });
   document.getElementById('nextBtn').disabled=true;
 }
-function choose(ok,btn,it){ if(locked) return; locked=true; [...document.getElementById('answers').children].forEach(b=>{ b.disabled=true; if(b.textContent===it.correct) b.classList.add('correct'); else if(b===btn) b.classList.add('wrong'); }); if(ok){ playCorrect(); score+=10; correctCount++; document.getElementById('feedback').textContent='✅ صح يا أهلاوي! +10'; } else { playWrong(); document.getElementById('feedback').textContent='❌ غلط - الصح: '+it.correct; } document.getElementById('score').textContent=score; document.getElementById('correctCount').textContent=correctCount; document.getElementById('nextBtn').disabled=false; }
-function skipQ(){ playSkip(); if(idx>=questions.length){ startQuiz(); return; } skipped++; document.getElementById('feedback').textContent='⏭️ تخطيت السؤال - الصح كان: '+questions[idx].correct; idx++; setTimeout(loadQ,600); }
+function choose(ok,btn,it){ if(locked) return; locked=true; [...document.getElementById('answers').children].forEach(b=>{ b.disabled=true; if(b.textContent===it.correct) b.classList.add('correct'); else if(b===btn) b.classList.add('wrong'); }); if(ok){ playCorrect(); score+=10; correctCount++; document.getElementById('feedback').textContent='صح يا أهلاوي! +10'; } else { playWrong(); document.getElementById('feedback').textContent='غلط - الصح: '+it.correct; } document.getElementById('score').textContent=score; document.getElementById('correctCount').textContent=correctCount; document.getElementById('nextBtn').disabled=false; }
+function skipQ(){ playSkip(); if(idx>=questions.length){ startQuiz(); return; } skipped++; document.getElementById('feedback').textContent='تخطيت السؤال - الصح كان: '+questions[idx].correct; idx++; setTimeout(loadQ,600); }
 document.getElementById('nextBtn').onclick=()=>{ if(!locked && idx<questions.length) return; idx++; loadQ(); };
-document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?"🔊 الصوت: شغال":"🔇 الصوت: مطفي"; if(soundOn) getCtx(); };
+document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?"الصوت: شغال":"الصوت: مطفي"; if(soundOn) playChant(); };
 startQuiz();
 </script>
-
 </body></html>
