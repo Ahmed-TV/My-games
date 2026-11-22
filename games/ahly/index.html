@@ -71,7 +71,12 @@ footer a{color:#C62828;text-decoration:none;font-weight:700}
 </div><div class="watermark">AHMED TV - AL AHLY</div><footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
 let soundOn=true;
-function playAhmedVoice(t){ try{ if(!soundOn) return; if(!t) return; var file=''; if(t.indexOf('صح')>=0) file='sah.mp3'; else if(t.indexOf('غلط')>=0) file='ghalat.mp3'; else if(t.indexOf('حاول')>=0) file='hawel.mp3'; else if(t.indexOf('كسبت')>=0) file='kesebt.mp3'; else if(t.indexOf('ابدأ')>=0) file='ebda.mp3'; if(!file) return; var a=new Audio('../../sounds/'+file); a.play().catch(function(){}); }catch(e){} }
+let _ahmedAudio = null;
+function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio = new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+function unlockAhmedAudio(){ try{ let a=getAhmedAudio(); a.volume=0.01; let pr=a.play(); if(pr) pr.then(function(){ a.pause(); a.volume=1; }).catch(function(){}); }catch(e){} }
+document.addEventListener('click', unlockAhmedAudio, {once:true});
+document.addEventListener('touchstart', unlockAhmedAudio, {once:true});
+function playAhmedVoice(t){ try{ if(!soundOn) return; if(!t) return; var file=''; if(t.indexOf('صح')>=0) file='sah.mp3'; else if(t.indexOf('غلط')>=0) file='ghalat.mp3'; else if(t.indexOf('حاول')>=0) file='hawel.mp3'; else if(t.indexOf('كسبت')>=0) file='kesebt.mp3'; else if(t.indexOf('ابدأ')>=0) file='ebda.mp3'; if(!file) return; var a=getAhmedAudio(); try{ a.pause(); }catch(e){} a.src='../../sounds/'+file; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
 function playCorrect(){ playAhmedVoice('صح'); }
 function playWrong(){ playAhmedVoice('غلط'); }
 function playSkip(){ playAhmedVoice('حاول'); }
