@@ -2,14 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>حظك اليوم - Ahmed TV</title>
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%!important; height: 100svh!important; max-height: 100svh!important; overflow: hidden!important; overscroll-behavior:none; }
   body {
     background-color: #080808;
     color: #fff;
@@ -17,23 +14,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     overflow: hidden;
   }
-
   #lucky-game {
     width: 100vw;
     height: 100%;
+    height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* تثبيت العناصر من فوق */
+    justify-content: flex-start;
     align-items: center;
-    padding: 10px;
+    padding: 6px 10px 4px 10px;
     background: radial-gradient(circle, #1a1a1a 0%, #000 80%);
   }
-
+  .logo-img { width: 52px; height: 52px; border-radius: 50%; border: 3px solid #00e5ff; object-fit: cover; display:block; margin-bottom: 3px; background:#fff; }
+  .names { font-size: 12px; color: #e0f7fa; font-weight: bold; text-align:center; margin-bottom: 4px; }
+  .names b { color: #00e5ff; }
   h2 {
-    font-size: 20px;
+    font-size: 19px;
     text-shadow: 0 0 10px #e040fb, 0 0 20px #00e5ff;
     border: 2px solid #00e5ff;
     border-radius: 12px;
@@ -41,28 +39,30 @@
     width: 90%;
     max-width: 350px;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
-
   p {
-    font-size: 14px;
+    font-size: 13px;
     color: #e0f7fa;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
-
   .wheel-wrap {
     position: relative;
     width: 90%;
-    max-width: 350px; /* تصغير حجم العجلة عشان تسيب مساحة للكلام */
-    margin-bottom: 15px;
+    max-width: 330px;
+    flex-grow: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
   }
-
   canvas {
     width: 100%;
     height: auto;
+    max-height: 100%;
     display: block;
   }
-
   .pointer {
     position: absolute;
     top: -5px;
@@ -74,15 +74,14 @@
     filter: drop-shadow(0 0 10px #00e5ff);
     z-index: 2;
   }
-
   .bottom-area {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 2px;
+    flex-shrink: 0;
   }
-
   button {
     background: linear-gradient(#333, #050505);
     color: #fff;
@@ -95,15 +94,11 @@
     cursor: pointer;
     width: 80%;
     max-width: 280px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
-
-  button:disabled {
-    opacity: 0.6;
-  }
-
+  button:disabled { opacity: 0.6; }
   #lucky-result {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     color: #fff;
     text-shadow: 0 0 10px #e040fb;
@@ -115,22 +110,20 @@
 </style>
 </head>
 <body>
-
 <div id="lucky-game" dir="rtl">
+  <img src="../../logo.png" alt="Ahmed TV" class="logo-img">
+  <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
   <h2>🍀 حظك اليوم 🍀</h2>
   <p>لف العجلة واكتشف بختك!</p>
-
   <div class="wheel-wrap">
     <div class="pointer"></div>
     <canvas id="lucky-wheel" width="800" height="800"></canvas>
   </div>
-
   <div class="bottom-area">
     <button id="lucky-spin">لف العجلة ✨</button>
     <div id="lucky-result">جاهز؟ يلا بينا!</div>
   </div>
 </div>
-
 <script>
 (function(){
   const root = document.getElementById("lucky-game");
@@ -138,7 +131,12 @@
   const ctx = canvas.getContext("2d");
   const button = root.querySelector("#lucky-spin");
   const result = root.querySelector("#lucky-result");
-
+  var soundOn=true;
+  var _ahmedAudio=null;
+  var _ahlaPlayed=false;
+  function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+  function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
+  document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
   const items = [
     "حظ سعيد اليوم","بختك حلو","يومك جميل","فرحة قريبة",
     "خبر سعيد","مفاجأة حلوة","رزق واسع","بداية جديدة",
@@ -156,37 +154,29 @@
     "أمنية تتحقق","مفاجأة اليوم","فرحة منتظرة","حظ مضاعف",
     "أحلى الأيام","تفاؤل وسعادة","يوم مشرق","بختك اليوم"
   ];
-
   const colors = [
     "#9ed9f7","#c5b5f5","#f5b8d1","#b9e6cf",
     "#f8df9b","#a9d9e8","#e2c5f4","#c4dcae"
   ];
-
   const center = 400, radius = 370;
   const slice = 2 * Math.PI / items.length;
   let rotation = 0, spinning = false;
-
   function draw() {
     ctx.clearRect(0, 0, 800, 800);
-
     items.forEach((item, i) => {
       const start = rotation + i * slice - Math.PI / 2;
-
       ctx.beginPath();
       ctx.moveTo(center, center);
       ctx.arc(center, center, radius, start, start + slice);
       ctx.closePath();
-
       const grad = ctx.createLinearGradient(0, 0, 800, 800);
       grad.addColorStop(0, colors[i % colors.length]);
       grad.addColorStop(1, "#252525");
       ctx.fillStyle = grad;
       ctx.fill();
-
       ctx.strokeStyle = "#111";
       ctx.lineWidth = 2;
       ctx.stroke();
-
       ctx.save();
       ctx.translate(center, center);
       ctx.rotate(start + slice / 2);
@@ -197,19 +187,16 @@
       ctx.fillText(item, radius - 15, 0, 180);
       ctx.restore();
     });
-
     ctx.beginPath();
     ctx.arc(center, center, 382, 0, Math.PI * 2);
     ctx.strokeStyle = "#111";
     ctx.lineWidth = 20;
     ctx.stroke();
-
     const lights = ["#00e5ff", "#ff4dff", "#fff176", "#69f0ae"];
     for (let i = 0; i < 48; i++) {
       const a = i * Math.PI * 2 / 48;
       const x = center + 380 * Math.cos(a);
       const y = center + 380 * Math.sin(a);
-
       ctx.beginPath();
       ctx.arc(x, y, 8, 0, Math.PI * 2);
       ctx.fillStyle = lights[i % lights.length];
@@ -218,7 +205,6 @@
       ctx.fill();
       ctx.shadowBlur = 0;
     }
-
     ctx.beginPath();
     ctx.arc(center, center, 110, 0, Math.PI * 2);
     ctx.fillStyle = "#050505";
@@ -229,39 +215,34 @@
     ctx.shadowBlur = 20;
     ctx.stroke();
     ctx.shadowBlur = 0;
-
     ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
     ctx.font = "bold 35px Arial";
     ctx.fillText("TV", center, center - 12);
     ctx.fillText("AHMED", center, center + 28);
   }
-
   draw();
-
   button.onclick = function() {
     if (spinning) return;
+    playAhmedVoice('ebda');
     spinning = true;
     button.disabled = true;
     result.textContent = "العجلة بتلف...";
-
     const start = rotation;
     const target = start + Math.PI * 2 * (8 + Math.random() * 5);
     const startTime = performance.now();
-
     function animate(now) {
       const progress = Math.min((now - startTime) / 5500, 1);
       const eased = 1 - Math.pow(1 - progress, 4);
       rotation = start + (target - start) * eased;
       draw();
-
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
         const angle = ((rotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
         const index = Math.floor(((Math.PI * 2 - angle) % (Math.PI * 2)) / slice);
-
         result.textContent = "🍀 بختك اليوم: " + items[index];
+        playAhmedVoice('kesebt');
         spinning = false;
         button.disabled = false;
       }
@@ -270,6 +251,5 @@
   };
 })();
 </script>
- 
 </body>
 </html>
