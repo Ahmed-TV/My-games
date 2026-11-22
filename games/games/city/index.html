@@ -1,1 +1,158 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>بناء المدينة | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(to bottom,#87CEEB 0%,#E0F6FF 45%,#FFF8DC 100%);color:#1e293b;display:flex;flex-direction:column;align-items:center;padding:0;position:relative}
+.topbar{width:100%;background:linear-gradient(90deg,#1e293b,#334155);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:6px 10px;flex-shrink:0;z-index:5}
+.logo-wrap{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid #ffd700;background:#000;flex-shrink:0}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.topbar h1{font-size:16px;color:#ffd700;line-height:1.1}
+.topbar h1 small{display:block;font-size:9px;color:#e2e8f0;letter-spacing:1px}
+.topbar .coins{font-size:14px;font-weight:900;background:#ffd700;color:#1e293b;padding:4px 10px;border-radius:20px}
+#city{width:100%;flex:1;min-height:0;position:relative;display:flex;align-items:flex-end;justify-content:center;padding:0 8px 0;overflow:hidden}
+#skyline{width:100%;max-width:520px;height:100%;display:flex;align-items:flex-end;justify-content:center;gap:6px;padding:10px 6px 0}
+.building{flex:1;min-width:52px;border-radius:10px 10px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:6px 2px;color:#fff;font-weight:900;text-align:center;box-shadow:0 -4px 12px rgba(0,0,0,.15);transition:all .4s}
+.building span{font-size:22px}
+.building small{font-size:9px;line-height:1.2;margin-top:2px}
+.building.house{background:linear-gradient(to top,#f59e0b,#fbbf24)}
+.building.school{background:linear-gradient(to top,#22c55e,#4ade80)}
+.building.hospital{background:linear-gradient(to top,#ef4444,#f87171)}
+.building.park{background:linear-gradient(to top,#16a34a,#86efac)}
+.building.shop{background:linear-gradient(to top,#7c3aed,#a78bfa)}
+.building.mosque{background:linear-gradient(to top,#0ea5e9,#38bdf8)}
+.empty-slot{flex:1;min-width:52px;height:90px;border:2px dashed rgba(30,41,59,.35);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:rgba(30,41,59,.4)}
+#stats{width:100%;max-width:520px;display:flex;gap:6px;padding:6px 8px;background:#fff;border-top:2px solid #f59e0b;flex-shrink:0;z-index:5}
+.stat{flex:1;background:#f1f5f9;border-radius:10px;padding:5px 4px;text-align:center}
+.stat b{display:block;font-size:15px;color:#0f172a}
+.stat span{font-size:9px;color:#64748b}
+#shop{width:100%;max-width:520px;background:#fff;padding:8px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;z-index:5}
+#shopTitle{font-size:13px;font-weight:900;color:#0f172a;text-align:center}
+#shopBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.shop-btn{border:2px solid #e2e8f0;background:#f8fafc;border-radius:12px;padding:6px 2px;cursor:pointer;text-align:center}
+.shop-btn:active{transform:scale(.95)}
+.shop-btn b{display:block;font-size:16px}
+.shop-btn span{font-size:10px;font-weight:900;color:#0f172a;display:block;line-height:1.2}
+.shop-btn small{font-size:9px;color:#64748b}
+.shop-btn:disabled{opacity:.4}
+#msg{font-size:13px;font-weight:900;min-height:18px;text-align:center;color:#b45309}
+#overlay{position:fixed;inset:0;background:rgba(15,23,42,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;gap:12px;z-index:20;color:#fff}
+#overlay h2{font-size:24px;color:#ffd700}
+#overlay p{font-size:14px;line-height:1.8;color:#e2e8f0}
+.btn{background:#ffd700;color:#1e293b;border:none;padding:13px 24px;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer;width:82%;max-width:260px}
+.btn:active{transform:scale(.95)}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<div class="topbar">
+<div style="display:flex;align-items:center;gap:8px"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>بناء المدينة<small>AHMED TV CITY</small></h1></div>
+<div class="coins">💰 <span id="money">100</span> • ⏰ <span id="timeEl">90</span></div>
+</div>
+<div id="city"><div id="skyline"></div></div>
+<div id="stats">
+<div class="stat"><b id="pop">0</b><span>السكان 👨‍👩‍👧‍👦</span></div>
+<div class="stat"><b id="buildCount">0 / 6</b><span>المباني 🏗️</span></div>
+<div class="stat"><b id="level">مدينة 1</b><span>المستوى 🌆</span></div>
+</div>
+<div id="shop">
+<div id="shopTitle">🏗️ اختار مبنى وابنيه - كل مبنى بيزود السكان!</div>
+<div id="shopBtns"></div>
+<div id="msg">ابدأ ببناء بيت عشان الناس تيجي!</div>
+</div>
+<div id="overlay">
+<h2>بناء المدينة 🏙️</h2>
+<p><b style="color:#ffd700">Ahmed TV</b> - انت عمدة المدينة!<br>معاك <b style="color:#ffd700">100 جنيه</b> - ابني بيوت ومدارس ومستشفيات!<br>كل مبنى بيزود السكان - ابني الـ 6 مباني ووصل للهدف عشان تطلع المستوى اللي بعده! كل مستوى الأسعار بتغلى والوقت بيقل!<br>لو فلوسك خلصت - بيع مبنى أو اجمع ضرايب!</p>
+<button class="btn" id="startBtn">🏗️ ابدأ البناء</button>
+</div>
+<script>
+var money=100,pop=0,built=[],level=1,timeLeft=90,timer=null,levelTarget=200;
+var levelEl2=null;
+var moneyEl=document.getElementById('money'),popEl=document.getElementById('pop'),buildCountEl=document.getElementById('buildCount'),levelEl=document.getElementById('level'),skylineEl=document.getElementById('skyline'),shopBtnsEl=document.getElementById('shopBtns'),msgEl=document.getElementById('msg'),overlay=document.getElementById('overlay');
+var ITEMS=[
+{id:'house',e:'🏠',n:'بيت',cost:20,pop:30,h:110},
+{id:'school',e:'🏫',n:'مدرسة',cost:30,pop:40,h:140},
+{id:'hospital',e:'🏥',n:'مستشفى',cost:40,pop:50,h:160},
+{id:'park',e:'🌳',n:'حديقة',cost:15,pop:20,h:80},
+{id:'shop',e:'🏪',n:'محل',cost:25,pop:35,h:120},
+{id:'mosque',e:'🕌',n:'مسجد',cost:35,pop:45,h:150}
+];
+var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+function render(){
+skylineEl.innerHTML='';
+for(var i=0;i<6;i++){
+if(built[i]){
+var it=ITEMS.find(function(x){return x.id===built[i];});
+var d=document.createElement('div');d.className='building '+it.id;d.style.height=it.h+'px';d.innerHTML='<span>'+it.e+'</span><small>'+it.n+'</small>';
+skylineEl.appendChild(d);
+}else{
+var e=document.createElement('div');e.className='empty-slot';e.textContent='+';skylineEl.appendChild(e);
+}
+}
+moneyEl.textContent=money;popEl.textContent=pop+' / '+levelTarget;buildCountEl.textContent=built.length+' / 6';levelEl.textContent='مدينة '+level;document.getElementById('timeEl').textContent=timeLeft;
+shopBtnsEl.innerHTML='';
+ITEMS.forEach(function(it){
+var b=document.createElement('button');b.className='shop-btn';b.innerHTML='<b>'+it.e+'</b><span>'+it.n+'</span><small>'+effCost+' جنيه • +'+it.pop+' ساكن</small>';
+var effCost=Math.round(it.cost*(1+(level-1)*0.5));
+if(built.indexOf(it.id)!==-1){b.disabled=true;b.innerHTML='<b>✅</b><span>'+it.n+' اتبنى</span><small>تم البناء</small>';}
+else if(money<effCost){b.disabled=true;}
+b.onpointerdown=function(e){e.preventDefault();build(it);};
+shopBtnsEl.appendChild(b);
+});
+}
+function build(it){
+if(built.indexOf(it.id)!==-1)return;
+var effCost=Math.round(it.cost*(1+(level-1)*0.5));
+if(money<effCost){msgEl.textContent='❌ فلوسك مش كفاية! دوس على جمع ضرايب!';playAhmedVoice('ghalat');return;}
+money-=effCost;pop+=it.pop;built.push(it.id);
+msgEl.textContent='✅ بنيت '+it.n+'! +'+it.pop+' ساكن!';playAhmedVoice('sah');
+if(pop>=levelTarget && built.length>=6){nextLevel();}else if(built.length>=6 && pop<levelTarget){msgEl.textContent='⚠️ بنيت كل المباني بس السكان لسه '+pop+' / '+levelTarget+' - ابني تاني أو اجمع ضرايب وابني أكتر!';}
+render();
+}
+function collectTax(){
+if(built.length===0){msgEl.textContent='⚠️ ابني بيت الأول عشان تجمع ضرايب!';playAhmedVoice('hawel');return;}
+var gain=Math.max(4,built.length*(10-(level-1)*2));money+=gain;msgEl.textContent='💰 جمعت ضرايب '+gain+' جنيه!';playAhmedVoice('sah');render();
+}
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function startTimer(){stopTimer();timeLeft=90-(level-1)*10;if(timeLeft<40)timeLeft=40;document.getElementById('timeEl').textContent=timeLeft;timer=setInterval(function(){timeLeft--;document.getElementById('timeEl').textContent=timeLeft;if(timeLeft<=0){stopTimer();lose();}},1000);}
+function lose(){playAhmedVoice('khesert');overlay.style.display='flex';overlay.innerHTML='<div style="font-size:44px">💔</div><h2>خلص الوقت!</h2><p>وصلت للمستوى <b style="color:#ffd700">'+level+'</b><br>السكان: <b style="color:#ffd700">'+pop+'</b> / '+levelTarget+'<br>حاول تاني بسرعة!</p><button class="btn" id="againBtn">🔄 العب تاني</button>';document.getElementById('againBtn').onclick=startGame;}
+function nextLevel(){
+stopTimer();playAhmedVoice('kesebt');
+level++;levelTarget=200+ (level-1)*150;pop=0;built=[];money+=50;
+setTimeout(function(){
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:44px">🏆</div><h2>مبروك! مستوى '+ (level-1) +' خلص!</h2><p>دخلت <b style="color:#ffd700">المستوى '+level+'</b><br>الهدف الجديد: <b style="color:#ffd700">'+levelTarget+'</b> ساكن<br>الأسعار غليت والضرايب قلت والوقت أقل!<br>خدت هدية 50 جنيه!</p><button class="btn" id="nextBtn2">➡️ ابدأ المستوى '+level+'</button>';
+document.getElementById('nextBtn2').onclick=function(){overlay.style.display='none';moneyEl.textContent=money;render();startTimer();};
+},400);
+}
+function win(){
+playAhmedVoice('kesebt');
+setTimeout(function(){
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:44px">🏆</div><h2>مبروك يا عمدة!</h2><p>بنيت مدينتك كاملة!<br>السكان: <b style="color:#ffd700;font-size:22px">'+pop+'</b> ساكن<br>فلوسك: <b style="color:#ffd700">'+money+'</b> جنيه<br>Ahmed TV بيقولك: انت أحسن عمدة!</p><button class="btn" id="againBtn">🔄 ابنِ مدينة جديدة</button>';
+document.getElementById('againBtn').onclick=startGame;
+},600);
+}
+function startGame(){
+playAhmedVoice('ebda');
+money=100;pop=0;built=[];level=1;levelTarget=200;overlay.style.display='none';startTimer();
+var taxBtn=document.createElement('button');
+render();
+var shop=document.getElementById('shop');
+var old=document.getElementById('taxBtn');if(old)old.remove();
+var tb=document.createElement('button');tb.id='taxBtn';tb.className='btn';tb.style.width='100%';tb.style.background='#22c55e';tb.style.color='#fff';tb.textContent='💰 اجمع ضرايب (+10 لكل مبنى)';
+tb.onpointerdown=function(e){e.preventDefault();collectTax();};
+shop.appendChild(tb);
+}
+document.getElementById('startBtn').onclick=startGame;
+render();
+</script>
+</body>
+</html>
