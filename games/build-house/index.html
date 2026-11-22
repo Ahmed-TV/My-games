@@ -6,26 +6,23 @@
 <title>بناء منزل | أحمد عبدالعزيز</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-html, body { overflow-y: auto; overflow-x: hidden; }
-body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 4px 4px 4px; }
-.header { width: 100%; max-width: 500px; text-align: center; }
-.top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
-.logo-wrap { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; flex-shrink: 0; }
+html, body { height: 100%!important; height: 100svh!important; max-height: 100svh!important; overflow: hidden!important; overscroll-behavior:none; }
+body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 4px 3px 4px; }
+.header { width: 100%; max-width: 500px; text-align: center; flex-shrink:0; }
+.top-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2px; }
+.logo-wrap { width: 62px; height: 62px; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; flex-shrink: 0; }
 .logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-h1 { font-size: 26px; color: #ff2d95; line-height: 1.2; }
-h1 small { display: block; font-size: 13px; color: #00e5ff; }
-.names { text-align: center; line-height: 1.3; margin-bottom: 6px; }
-.names .ar { display: block; font-size: 22px; color: #facc15; font-weight: 900; }
-.names .en { display: block; font-size: 16px; color: #fff; font-weight: 900; }
-.stats { display: flex; gap: 8px; justify-content: center; margin: 4px 0 6px; }
+h1 { font-size: 22px; color: #ff2d95; line-height: 1.2; }
+h1 small { display: block; font-size: 12px; color: #00e5ff; }
+.names { text-align: center; line-height: 1.3; margin-bottom: 4px; }
+.names .ar { display: block; font-size: 19px; color: #facc15; font-weight: 900; }
+.names .en { display: block; font-size: 14px; color: #fff; font-weight: 900; }
+.stats { display: flex; gap: 8px; justify-content: center; margin: 3px 0 4px; }
 .stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 3px 12px; min-width: 85px; text-align: center; }
 .stat b { display: block; font-size: 16px; color: #00e5ff; }
 .stat span { font-size: 9px; color: #c4b5fd; }
-.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.4; margin-bottom: 6px; }
-#game-container { width: 100%; max-width: 500px; height: 320px; position: relative; background: #38bdf8; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; }
-@media (max-width: 600px) {
-  #game-container { height: 400px; }
-}
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 5px; text-align: center; font-size: 11px; font-weight: 900; line-height: 1.4; margin-bottom: 5px; flex-shrink:0; }
+#game-container { width: 100%; max-width: 500px; flex:1; min-height:0; position: relative; background: #38bdf8; border: 3px solid #f59e0b; border-radius: 16px; overflow: hidden; }
 .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.08); font-size: 28px; font-weight: 900; pointer-events: none; white-space: nowrap; z-index: 0; }
 .build-area { position: absolute; inset: 0; overflow: hidden; z-index: 1; display: flex; flex-direction: column; justify-content: flex-end; }
 .ground { width: 100%; height: 25px; background: #22c55e; border-top: 5px solid #16a34a; z-index: 2; flex-shrink: 0; }
@@ -34,8 +31,7 @@ h1 small { display: block; font-size: 13px; color: #00e5ff; }
 .floor.roof { background: linear-gradient(to bottom, #ef4444, #b91c1c); border-color: #7f1d1d; border-radius: 10px 10px 0 0; height: 25px; }
 .moving-floor { position: absolute; height: 35px; background: linear-gradient(to bottom, #fcd34d, #f59e0b); border: 2px solid #b45309; border-radius: 4px; z-index: 5; display: flex; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 .moving-floor .window-icon { font-size: 16px; color: #fff; }
-/* الزرار بره اللعبة - وتحت - مش مخفي */
-.controls { width: 100%; max-width: 500px; margin-top: 6px; }
+.controls { width: 100%; max-width: 500px; margin-top: 5px; flex-shrink:0; }
 .btn { width: 100%; background: linear-gradient(90deg,#f59e0b,#ff2d95); color: #fff; border: 2px solid #fff; padding: 12px; border-radius: 10px; font-size: 20px; font-weight: 900; cursor: pointer; }
 .btn:active { transform: scale(0.98); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -43,8 +39,8 @@ h1 small { display: block; font-size: 13px; color: #00e5ff; }
 #overlay h2 { font-size: 22px; color: #facc15; }
 #overlay p { line-height: 1.5; font-size: 13px; color: #fff; }
 .btn-start { background: linear-gradient(90deg,#f59e0b,#ff2d95); color: #fff; border: 2px solid #fff; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
-#game-wrap { position: relative; width: 100%; max-width: 500px; }
-.footer { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 6px; }
+#game-wrap { position: relative; width: 100%; max-width: 500px; flex:1; min-height:0; display:flex; }
+.footer { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 4px; flex-shrink:0; }
 .footer a { color: #facc15; text-decoration: none; }
 </style>
 </head>
@@ -61,11 +57,16 @@ h1 small { display: block; font-size: 13px; color: #00e5ff; }
 <script>
 const buildArea=document.getElementById('buildArea'),placeBtn=document.getElementById('placeBtn'),floorsEl=document.getElementById('floors'),bestEl=document.getElementById('best'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn');
 let floorCount=0,running=false;
-let best=parseInt(localStorage.getItem('houseBest')||'0');let audioCtx=null;
+let best=parseInt(localStorage.getItem('houseBest')||'0');
 let movingFloor=null,moveInterval=null,posX=0,direction=1,lastFloorLeft=0,lastFloorWidth=60,currentFloorY=25;
 bestEl.textContent=best;
-function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
-function playSound(type){if(!audioCtx)return;const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);if(type==='build'){osc.type='sine';osc.frequency.setValueAtTime(300,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(500,audioCtx.currentTime+0.1);gain.gain.setValueAtTime(0.15,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.2);osc.start();osc.stop(audioCtx.currentTime+0.2);}else if(type==='fail'){osc.type='sawtooth';osc.frequency.setValueAtTime(200,audioCtx.currentTime);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.3);osc.start();osc.stop(audioCtx.currentTime+0.3);}else if(type==='win'){osc.type='triangle';osc.frequency.setValueAtTime(600,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(1200,audioCtx.currentTime+0.4);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.5);osc.start();osc.stop(audioCtx.currentTime+0.5);}}
+var soundOn=true;
+var _ahmedAudio=null;
+var _ahlaPlayed=false;
+function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
+document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function playSound(type){ if(type==='build') playAhmedVoice('sah'); else if(type==='fail') playAhmedVoice('khesert'); else if(type==='win') playAhmedVoice('kesebt'); }
 function createMovingFloor(){
 movingFloor=document.createElement('div');movingFloor.className='moving-floor';movingFloor.style.width=lastFloorWidth+'%';movingFloor.style.left=posX+'%';movingFloor.style.bottom=(currentFloorY)+'px';
 if(floorCount===0)movingFloor.innerHTML='🚪';else movingFloor.innerHTML='<span class="window-icon">🪟</span>';
@@ -93,17 +94,14 @@ setTimeout(()=>{overlay.style.display='flex';overlay.innerHTML=`<div style="font
 setTimeout(createMovingFloor,300);
 }
 function startGame(){
-initAudio();overlay.style.display='none';
+playAhmedVoice('ebda');overlay.style.display='none';
 buildArea.innerHTML='<div class="ground"></div>';
 floorCount=0;floorsEl.textContent=0;lastFloorLeft=0;lastFloorWidth=60;currentFloorY=25;running=true;
 createMovingFloor();
 }
-placeBtn.addEventListener('touchstart',e=>{e.preventDefault();initAudio();placeFloor();},{passive:false});
-placeBtn.addEventListener('click',()=>{initAudio();placeFloor();});
+placeBtn.addEventListener('touchstart',e=>{e.preventDefault();placeFloor();},{passive:false});
+placeBtn.addEventListener('click',()=>{placeFloor();});
 startBtn.onclick=startGame;
-document.body.addEventListener('touchstart',initAudio,{once:true});
-document.body.addEventListener('click',initAudio,{once:true});
 </script>
-
 </body>
 </html>
