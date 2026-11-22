@@ -96,36 +96,38 @@ skylineEl.appendChild(d);
 var e=document.createElement('div');e.className='empty-slot';e.textContent='+';skylineEl.appendChild(e);
 }
 }
-moneyEl.textContent=money;popEl.textContent=pop+' / '+levelTarget;buildCountEl.textContent=built.length+' / 6';levelEl.textContent='مدينة '+level;document.getElementById('timeEl').textContent=timeLeft;
+moneyEl.textContent=money;popEl.textContent=pop+' / '+levelTarget;buildCountEl.textContent=built.length+' مبنى';levelEl.textContent='مدينة '+level;document.getElementById('timeEl').textContent=timeLeft;
 shopBtnsEl.innerHTML='';
 ITEMS.forEach(function(it){
 var b=document.createElement('button');b.className='shop-btn';b.innerHTML='<b>'+it.e+'</b><span>'+it.n+'</span><small>'+effCost+' جنيه • +'+it.pop+' ساكن</small>';
 var effCost=Math.round(it.cost*(1+(level-1)*0.5));
-if(built.indexOf(it.id)!==-1){b.disabled=true;b.innerHTML='<b>✅</b><span>'+it.n+' اتبنى</span><small>تم البناء</small>';}
-else if(money<effCost){b.disabled=true;}
+var cnt=built.filter(function(x){return x===it.id;}).length;
+if(money<effCost){b.disabled=true;}
+if(cnt>0){b.innerHTML='<b>'+it.e+'</b><span>'+it.n+' ✅ x'+cnt+'</span><small>'+effCost+' جنيه • +'+it.pop+' ساكن • دوس لتطويره!</small>';}
 b.onpointerdown=function(e){e.preventDefault();build(it);};
 shopBtnsEl.appendChild(b);
 });
 }
 function build(it){
-if(built.indexOf(it.id)!==-1)return;
+// مسموح تبني نفس المبنى تاني كتطوير
+
 var effCost=Math.round(it.cost*(1+(level-1)*0.5));
 if(money<effCost){msgEl.textContent='❌ فلوسك مش كفاية! دوس على جمع ضرايب!';playAhmedVoice('ghalat');return;}
 money-=effCost;pop+=it.pop;built.push(it.id);
 msgEl.textContent='✅ بنيت '+it.n+'! +'+it.pop+' ساكن!';playAhmedVoice('sah');
-if(pop>=levelTarget && built.length>=6){nextLevel();}else if(built.length>=6 && pop<levelTarget){msgEl.textContent='⚠️ بنيت كل المباني بس السكان لسه '+pop+' / '+levelTarget+' - ابني تاني أو اجمع ضرايب وابني أكتر!';}
+if(pop>=levelTarget){nextLevel();}else{msgEl.textContent='⚠️ السكان لسه '+pop+' / '+levelTarget+' - ابنِ تاني أو طور مبنى أو اجمع ضرايب!';}
 render();
 }
 function collectTax(){
 if(built.length===0){msgEl.textContent='⚠️ ابني بيت الأول عشان تجمع ضرايب!';playAhmedVoice('hawel');return;}
-var gain=Math.max(4,built.length*(10-(level-1)*2));money+=gain;msgEl.textContent='💰 جمعت ضرايب '+gain+' جنيه!';playAhmedVoice('sah');render();
+var gain=Math.max(6,built.length*(12-(level-1)*1));money+=gain;msgEl.textContent='💰 جمعت ضرايب '+gain+' جنيه!';playAhmedVoice('sah');render();
 }
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
 function startTimer(){stopTimer();timeLeft=90-(level-1)*10;if(timeLeft<40)timeLeft=40;document.getElementById('timeEl').textContent=timeLeft;timer=setInterval(function(){timeLeft--;document.getElementById('timeEl').textContent=timeLeft;if(timeLeft<=0){stopTimer();lose();}},1000);}
 function lose(){playAhmedVoice('khesert');overlay.style.display='flex';overlay.innerHTML='<div style="font-size:44px">💔</div><h2>خلص الوقت!</h2><p>وصلت للمستوى <b style="color:#ffd700">'+level+'</b><br>السكان: <b style="color:#ffd700">'+pop+'</b> / '+levelTarget+'<br>حاول تاني بسرعة!</p><button class="btn" id="againBtn">🔄 العب تاني</button>';document.getElementById('againBtn').onclick=startGame;}
 function nextLevel(){
 stopTimer();playAhmedVoice('kesebt');
-level++;levelTarget=200+ (level-1)*150;pop=0;built=[];money+=50;
+level++;levelTarget=200+ (level-1)*100;pop=0;built=[];money+=50;
 setTimeout(function(){
 overlay.style.display='flex';
 overlay.innerHTML='<div style="font-size:44px">🏆</div><h2>مبروك! مستوى '+ (level-1) +' خلص!</h2><p>دخلت <b style="color:#ffd700">المستوى '+level+'</b><br>الهدف الجديد: <b style="color:#ffd700">'+levelTarget+'</b> ساكن<br>الأسعار غليت والضرايب قلت والوقت أقل!<br>خدت هدية 50 جنيه!</p><button class="btn" id="nextBtn2">➡️ ابدأ المستوى '+level+'</button>';
