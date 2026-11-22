@@ -1,352 +1,73 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>لعبة الفئات | Ahmed TV</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>توقع الكارت - بنك الألعاب</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  
-  html, body { 
-    height: 100vh; 
-    height: 100dvh; 
-    overflow: hidden; 
-    position: fixed; 
-    width: 100%;
-  }
-  
-  body {
-    font-family: Tahoma, Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
-  }
-
-  .header { width: 100%; max-width: 600px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
-  .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
-  .header-text { text-align: right; }
-  .header-text h1 { font-size: 18px; color: #facc15; margin: 0;}
-  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
-  .header-text .names b { color: #facc15; font-size: 13px;}
-
-  .stats { display: flex; gap: 8px; justify-content: center; margin-bottom: 5px;}
-  .stat { background: #1e293b; border-radius: 6px; padding: 2px 12px; min-width: 70px; text-align: center; border: 1px solid #334155;}
-  .stat b { display: block; font-size: 16px; color: #facc15; }
-  .stat span { font-size: 9px; color: #94a3b8; }
-
-  #game-container {
-    width: 100%; max-width: 600px; flex-grow: 1; min-height: 0;
-    position: relative; display: flex; flex-direction: column;
-    background: #1e293b; 
-    border: 3px solid #f59e0b; border-radius: 12px;
-    overflow-y: auto;
-    padding: 10px;
-    gap: 10px;
-  }
-
-  .watermark {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 40px; font-weight: 900;
-    pointer-events: none; z-index: 0; white-space: nowrap;
-    letter-spacing: 2px;
-  }
-
-  .letter-box {
-    background: #f59e0b;
-    border-radius: 12px;
-    padding: 10px;
-    text-align: center;
-    font-size: 40px;
-    font-weight: 900;
-    color: #fff;
-    box-shadow: 0 0 20px rgba(245,158,11,0.5);
-    flex-shrink: 0;
-    z-index: 1;
-  }
-
-  .categories {
-    display: flex; flex-direction: column; gap: 10px;
-    z-index: 1;
-  }
-
-  .category-row {
-    background: #334155;
-    border-radius: 10px;
-    padding: 8px 12px;
-    display: flex; align-items: center; gap: 10px;
-  }
-
-  .category-row span {
-    font-size: 14px; font-weight: bold; color: #facc15; min-width: 70px;
-  }
-
-  .category-row input {
-    flex: 1; border: none; border-radius: 8px;
-    padding: 10px; font-size: 16px; font-family: inherit;
-    background: #fff; color: #000;
-  }
-  .category-row input:focus { outline: 2px solid #facc15; }
-  .category-row input.correct { border: 2px solid #22c55e; background: #dcfce7;}
-  .category-row input.wrong { border: 2px solid #ef4444; background: #fee2e2;}
-
-  .btn-row {
-    display: flex; gap: 10px; z-index: 1; margin-top: 5px;
-  }
-  
-  .btn {
-    flex: 1; color: #fff; border: none;
-    padding: 12px 10px; border-radius: 12px; font-size: 16px; font-weight: 900;
-    cursor: pointer;
-  }
-  .btn-check { background: #10b981; box-shadow: 0 4px 0 #047857; }
-  .btn-check:active { transform: translateY(4px); box-shadow: 0 0 0 #047857; }
-  
-  .btn-skip { background: #f59e0b; box-shadow: 0 4px 0 #b45309; }
-  .btn-skip:active { transform: translateY(4px); box-shadow: 0 0 0 #b45309; }
-
-  .btn:disabled { opacity: 0.5; }
-
-  #overlay {
-    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 10px; z-index: 10;
-  }
-  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
-  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
-  .btn-start {
-    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
-    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
-    width: 80%; max-width: 200px;
-  }
-  .btn-start:active { transform: scale(0.95); }
-
-  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
-  .footer a { color: #facc15; text-decoration: none; }
-</style>
-</head>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
+body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:Tahoma,sans-serif;text-align:center;color:#fff;padding:6px 8px 4px 8px;touch-action:manipulation;display:flex;flex-direction:column;align-items:center}
+.top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;width:100%;margin:0 auto;padding:5px 6px 5px;box-shadow:0 0 15px rgba(0,0,0,.4);flex-shrink:0}
+.logo{width:52px;height:52px;border-radius:50%;border:3px solid #c40000;object-fit:cover;background:#fff}
+.game-title{font-size:19px;font-weight:900;color:#c40000;margin:1px 0 0}
+.my-name{font-size:19px;font-weight:900;color:#c40000}
+.my-name small{display:block;font-size:13px;color:#c40000}
+.bank{font-size:15px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
+.board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;width:100%;margin:6px auto 0;padding:10px;flex-grow:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.cards{display:flex;justify-content:center;gap:12px;margin:10px 0}
+.card{width:90px;height:130px;background:#fff;border-radius:10px;border:3px solid #000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#000;font-weight:900;box-shadow:0 4px 10px rgba(0,0,0,.4);transition:transform 0.5s}
+.card.red{color:#c40000}
+.card .big{font-size:38px}
+.card .small{font-size:16px}
+.card.back{background:linear-gradient(135deg,#c40000,#2d0a4a);color:#FFD700;font-size:40px;border-color:#FFD700}
+.card.flip{transform:rotateY(360deg)}
+.btn{background:#FFD700;color:#000;border:none;padding:12px 20px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;margin:5px}
+.sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:7px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
+#msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
+.score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
+.footer{font-size:11px;color:#fff;margin-top:6px;text-shadow:1px 1px 2px #000;flex-shrink:0}
+.footer a{color:#FFD700;text-decoration:none;font-weight:900}
+</style></head>
 <body>
-
-  <div class="header">
-    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
-    <div class="header-text">
-        <h1>لعبة الفئات</h1>
-        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
-    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
-    <div class="stat"><b id="timer">180</b><span>الوقت</span></div>
-  </div>
-
-  <div id="game-container">
-    <div class="watermark">Ahmed TV</div>
-    
-    <div class="letter-box" id="letterDisplay">؟</div>
-    
-    <div class="categories" id="categoriesBox"></div>
-    
-    <div class="btn-row">
-      <button class="btn btn-check" id="checkBtn">✅ تحقق</button>
-      <button class="btn btn-skip" id="skipBtn">⏭️ تخطي</button>
-    </div>
-
-    <div id="overlay">
-      <h2>لعبة الفئات</h2>
-      <p>
-        <b>Ahmed TV</b> - اكتب إجابة تبدأ بالحرف!<br>
-        عندك 3 دقايق .. يلا بينا
-      </p>
-      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
-    </div>
-  </div>
-
-  <div class="footer">
-    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
-  </div>
-
+<div class="top-box">
+<img class="logo" src="../../logo.png" alt="Ahmed TV">
+<div class="game-title">توقع الكارت</div>
+<div class="my-name">أحمد عبدالعزيز<small>Ahmed TV</small></div>
+<div class="bank">بنك الألعاب</div>
+</div>
+<div class="board">
+<div id="msg">توقع الكارت الجاي أعلى ولا أقل؟</div>
+<div class="cards">
+<div class="card" id="myCard"><div class="small">انت</div><div class="big" id="myVal">؟</div><div class="small" id="mySuit">-</div></div>
+<div class="card back" id="midCard">🃏</div>
+<div class="card" id="pcCard"><div class="small">الكمبيوتر</div><div class="big" id="pcVal">؟</div><div class="small" id="pcSuit">-</div></div>
+</div>
+<div style="font-weight:900;">الكارت اللي في النص ده - اللي هييجي؟</div>
+<div style="margin:8px 0;">
+<button class="btn" onclick="guess('up')">أعلى</button>
+<button class="btn" onclick="guess('down')">أقل</button>
+</div>
+<button class="sound-btn" id="soundBtn" onclick="toggleSound()">الصوت: شغال</button>
+<div class="score">نقطك: <span id="score">0</span> | نقط الكمبيوتر: <span id="pcScore">0</span> | الدور: <span id="round">1</span> / 10</div>
+<button class="btn" onclick="location.reload()">لعبة جديدة</button>
+<div style="font-size:13px;margin-top:6px;">لو توقعت صح - هتاخد نقطة! اللي يوصل 10 الأول يكسب!</div>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
 <script>
-const letterDisplay = document.getElementById('letterDisplay');
-const categoriesBox = document.getElementById('categoriesBox');
-const scoreEl = document.getElementById('score');
-const bestEl = document.getElementById('best');
-const timerEl = document.getElementById('timer');
-const checkBtn = document.getElementById('checkBtn');
-const skipBtn = document.getElementById('skipBtn');
-const overlay = document.getElementById('overlay');
-const startBtn = document.getElementById('startBtn');
-
-let score = 0;
-let best = parseInt(localStorage.getItem('categoriesBest') || '0');
-bestEl.textContent = best;
-let running = false;
-let checking = false; // عشان نعرف لو إحنا في وضع التحقق
-let currentLetter = '';
-let timeLeft = 180;
-let timerInterval = null;
-let audioCtx = null;
-
-const CATEGORIES = [
-  { label: '🍔 أكل' },
-  { label: '🌍 بلد' },
-  { label: '🎨 لون' },
-  { label: '👨‍💼 وظيفة' },
-  { label: '👕 ملابس' }
-];
-
-const LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','هـ','و','ي'];
-
-function initAudio() {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-}
-
-function playSound(type) {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  
-  if (type === 'check') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-  } else if (type === 'win') {
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 0.4);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-  }
-}
-
-function buildCategories() {
-  categoriesBox.innerHTML = '';
-  CATEGORIES.forEach((cat, index) => {
-    let row = document.createElement('div');
-    row.className = 'category-row';
-    row.innerHTML = `
-      <span>${cat.label}</span>
-      <input type="text" id="cat_${index}" placeholder="اكتب هنا..." autocomplete="off">
-    `;
-    categoriesBox.appendChild(row);
-  });
-}
-
-function startGame() {
-  initAudio();
-  overlay.style.display = 'none';
-  score = 0;
-  scoreEl.textContent = 0;
-  timeLeft = 180;
-  timerEl.textContent = timeLeft;
-  running = true;
-  checking = false;
-  
-  checkBtn.disabled = false;
-  skipBtn.disabled = false;
-  
-  currentLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
-  letterDisplay.textContent = currentLetter;
-  
-  buildCategories();
-  
-  if (timerInterval) clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    if(!checking) { // الوقت بيقف لو إحنا في وضع التحقق
-      timeLeft--;
-      timerEl.textContent = timeLeft;
-      if (timeLeft <= 0) endGame();
-    }
-  }, 1000);
-}
-
-function checkAnswers() {
-  if (!running || checking) return;
-  
-  checking = true;
-  checkBtn.disabled = true;
-  skipBtn.disabled = true;
-  
-  let correctCount = 0;
-  
-  CATEGORIES.forEach((cat, index) => {
-    let input = document.getElementById('cat_' + index);
-    let answer = input.value.trim();
-    
-    if (answer !== '' && answer.startsWith(currentLetter)) {
-      input.classList.add('correct');
-      correctCount++;
-    } else {
-      input.classList.add('wrong');
-    }
-  });
-  
-  score += correctCount * 10;
-  scoreEl.textContent = score;
-  playSound('check');
-  
-  // بعد ثانيتين، نغير الحرف ونرجع نلعب
-  setTimeout(() => {
-    nextRound();
-  }, 1500);
-}
-
-function skipRound() {
-  if (!running || checking) return;
-  nextRound();
-}
-
-function nextRound() {
-  checking = false;
-  checkBtn.disabled = false;
-  skipBtn.disabled = false;
-  
-  currentLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
-  letterDisplay.textContent = currentLetter;
-  buildCategories();
-}
-
-function endGame() {
-  running = false;
-  clearInterval(timerInterval);
-  playSound('win');
-  
-  if (score > best) {
-    best = score;
-    localStorage.setItem('categoriesBest', best);
-    bestEl.textContent = best;
-  }
-
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `
-    <div style="font-size:35px">🏆</div>
-    <h2>خلص الوقت!</h2>
-    <p>جمعت <b style="color:#facc15;font-size:22px">${score} نقطة</b><br>
-    أعلى نتيجة: ${best}<br>
-    أحمد TV بيقولك: حاول تاني!</p>
-    <button class="btn-start" id="againBtn">🔄 العب تاني</button>
-  `;
-  document.getElementById('againBtn').onclick = startGame;
-}
-
-checkBtn.onclick = checkAnswers;
-skipBtn.onclick = skipRound;
-startBtn.onclick = startGame;
-
-document.body.addEventListener('touchstart', initAudio, { once: true });
-document.body.addEventListener('click', initAudio, { once: true });
+var soundOn=true;
+var _ahmedAudio=null;
+var _ahlaPlayed=false;
+function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
+document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function toggleSound(){soundOn=!soundOn;document.getElementById('soundBtn').textContent=soundOn?'الصوت: شغال':'الصوت: مقفول';}
+function soundFlip(){}
+function soundWin(){playAhmedVoice('sah');}
+function soundLose(){playAhmedVoice('ghalat');}
+var suits=['♥','♦','♣','♠'];var values=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+function valNum(v){if(v==='J')return 11;if(v==='Q')return 12;if(v==='K')return 13;if(v==='A')return 14;return parseInt(v);}
+function randCard(){var s=suits[Math.floor(Math.random()*4)];var v=values[Math.floor(Math.random()*values.length)];return {s:s,v:v,n:valNum(v)};}
+var cur=randCard();var score=0,pcScore=0,round=1,locked=false;
+function showMy(){var c=document.getElementById('myCard');c.className='card'+((cur.s==='♥'||cur.s==='♦')?' red':'');document.getElementById('myVal').textContent=cur.v;document.getElementById('mySuit').textContent=cur.s;}
+function resetMid(){var m=document.getElementById('midCard');m.className='card back';m.innerHTML='🃏';}
+function guess(dir){if(locked||round>10)return;locked=true;soundFlip();var next=randCard();var mid=document.getElementById('midCard');mid.classList.add('flip');setTimeout(function(){mid.className='card flip'+((next.s==='♥'||next.s==='♦')?' red':'');mid.innerHTML='<div class="small">اللي جاي</div><div class="big">'+next.v+'</div><div class="small">'+next.s+'</div>';var pc=document.getElementById('pcCard');pc.className='card'+((next.s==='♥'||next.s==='♦')?' red':'');document.getElementById('pcVal').textContent=next.v;document.getElementById('pcSuit').textContent=next.s;var win=(dir==='up'&&next.n>cur.n)||(dir==='down'&&next.n<cur.n);var tie=next.n===cur.n;if(tie){playAhmedVoice('hawel');document.getElementById('msg').textContent='تعادل! نفس الرقم '+next.v+' - كمل!';}else if(win){score++;soundWin();document.getElementById('msg').textContent='صح! اللي جاي كان '+next.v+next.s+' - خدت نقطة!';}else{pcScore++;soundLose();document.getElementById('msg').textContent='غلط! اللي جاي كان '+next.v+next.s+' - الكمبيوتر خد نقطة!';}document.getElementById('score').textContent=score;document.getElementById('pcScore').textContent=pcScore;setTimeout(function(){cur=next;showMy();resetMid();document.getElementById('pcVal').textContent='؟';document.getElementById('pcSuit').textContent='-';document.getElementById('pcCard').className='card';round++;document.getElementById('round').textContent=round>10?10:round;if(round>10){if(score>pcScore){playAhmedVoice('kesebt');document.getElementById('msg').textContent='كسبت يا بطل! '+score+' - '+pcScore;}else if(pcScore>score){playAhmedVoice('khesert');document.getElementById('msg').textContent='الكمبيوتر كسب - حاول تاني! '+score+' - '+pcScore;}else document.getElementById('msg').textContent='تعادل! العب تاني!';}else{document.getElementById('msg').textContent='توقع الكارت الجاي أعلى ولا أقل؟';}locked=false;},1800);},400);}
+showMy();
 </script>
- 
-</body>
-</html>
+</body></html>
