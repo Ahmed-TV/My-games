@@ -2,28 +2,29 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>جري الأبطال - بنك الألعاب</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
-  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden;overflow-y:auto}
-  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
-  .logo{width:88px;height:88px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
-  .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
-  .my-name{font-size:22px;font-weight:900;color:#c40000}
-  .my-name small{display:block;font-size:16px;color:#FF0000;font-weight:900}
-  .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
-  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:10px;width:100%}
-  .game-area{position:relative;width:100%;height:240px;background:linear-gradient(to bottom,#87CEEB 0%,#E0F7FF 70%,#8BC34A 70%,#4CAF50 100%);border-radius:12px;overflow:hidden;touch-action:manipulation;border:3px solid #fff;direction:ltr}
+  html,body{overflow:hidden!important;height:100%!important;height:100svh!important;max-height:100svh!important;overscroll-behavior:none}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:6px 8px 4px 8px;touch-action:manipulation;overflow-x:hidden;display:flex;flex-direction:column;align-items:center}
+  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;width:100%;margin:0 auto;padding:5px 6px 5px;box-shadow:0 0 15px rgba(0,0,0,.4);flex-shrink:0}
+  .logo{width:82px;height:82px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
+  .game-title{font-size:21px;font-weight:900;color:#c40000;margin:1px 0 0}
+  .my-name{font-size:21px;font-weight:900;color:#c40000}
+  .my-name small{display:block;font-size:15px;color:#FF0000;font-weight:900}
+  .bank{font-size:17px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:0}
+  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;width:100%;margin:6px auto 0;padding:8px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  .game-area{position:relative;width:100%;flex:1;min-height:0;background:linear-gradient(to bottom,#87CEEB 0%,#E0F7FF 70%,#8BC34A 70%,#4CAF50 100%);border-radius:12px;overflow:hidden;touch-action:manipulation;border:3px solid #fff;direction:ltr}
   .ground{position:absolute;bottom:0;left:0;width:100%;height:30px;background:#4CAF50;border-top:3px solid #2E7D32}
   .player{position:absolute;bottom:30px;left:40px;width:50px;height:50px;font-size:42px;display:flex;align-items:center;justify-content:center;transform:scaleX(-1);direction:ltr}
   .obs{position:absolute;bottom:30px;width:40px;height:50px;font-size:36px;display:flex;align-items:center;justify-content:center;direction:ltr}
   .coin{position:absolute;width:34px;height:34px;font-size:28px;display:flex;align-items:center;justify-content:center;direction:ltr}
-  .controls{display:flex;justify-content:center;gap:6px;margin:8px 0;direction:ltr}
-  .btn{background:#FFD700;color:#000;border:none;padding:14px 18px;font-size:19px;font-weight:900;border-radius:10px;cursor:pointer;flex:1;max-width:180px;touch-action:manipulation}
-  .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:8px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
-  #msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
-  .score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
+  .controls{display:flex;justify-content:center;gap:6px;margin:6px 0;direction:ltr;flex-shrink:0}
+  .btn{background:#FFD700;color:#000;border:none;padding:12px 18px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;flex:1;max-width:180px;touch-action:manipulation}
+  .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:7px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:3px}
+  #msg{font-size:16px;font-weight:900;min-height:22px;margin:4px 0;color:#fff;line-height:1.2}
+  .score{font-weight:bold;font-size:14px;margin-top:4px;color:#fff}
 </style>
 </head>
 <body oncontextmenu="return false" onselectstart="return false">
@@ -45,24 +46,29 @@
   </div>
   <button class="sound-btn" id="soundBtn" onclick="toggleSound()">الصوت: شغال</button>
   <div class="score">النقط: <span id="score">0</span> | العملات: <span id="coins">0</span> | أحسن نتيجة: <span id="best">0</span></div>
-  <button class="btn" style="max-width:160px;font-size:15px;" onclick="location.reload()">لعبة جديدة</button>
-  <div style="font-size:13px;margin-top:6px;">دوس نط أو دوس على الشاشة - لو خبطت في حاجز تخسر!</div>
+  <button class="btn" style="max-width:160px;font-size:15px;margin:4px auto 0;" onclick="location.reload()">لعبة جديدة</button>
+  <div style="font-size:12px;margin-top:4px;">دوس نط أو دوس على الشاشة - لو خبطت في حاجز تخسر!</div>
 </div>
 <script>
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
 document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
-var audioCtx=null, soundOn=true;
-function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? 'الصوت: شغال' : 'الصوت: مقفول'; }
-function beep(f,d,t){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); var o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=t||'sine'; o.frequency.value=f; g.gain.value=0.25; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d); }catch(e){} }
-function soundJump(){ beep(600,0.15,'sine'); setTimeout(function(){beep(800,0.15,'sine');},80); }
-function soundCoin(){ beep(1000,0.1,'sine'); setTimeout(function(){beep(1400,0.15,'sine');},80); }
-function soundHit(){ beep(200,0.4,'sawtooth'); }
+var soundOn=true;
+var _ahmedAudio=null;
+var _ahlaPlayed=false;
+function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
+document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? 'الصوت: شغال' : 'الصوت: مقفول'; if(soundOn) playAhmedVoice('sah'); }
+function soundJump(){ }
+function soundCoin(){ playAhmedVoice('sah'); }
+function soundHit(){ playAhmedVoice('khesert'); }
 </script>
 <script>
 var playing=false, over=false, score=0, coins=0, best=0, speed=1.6, playerY=30, vy=0, jumping=false, obs=[], coinItems=[], spawnTimer=null, animId=null, frame=0;
 function startGame(){
   if(playing) return;
+  playAhmedVoice('ebda');
   playing=true; over=false; score=0; coins=0; speed=1.6; playerY=30; vy=0; jumping=false; obs=[]; coinItems=[]; frame=0;
   document.getElementById('score').textContent='0';
   document.getElementById('coins').textContent='0';
@@ -146,6 +152,5 @@ function hit(){
 document.getElementById('area').addEventListener('pointerdown', function(){ if(playing) jump(); else startGame(); });
 document.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='ArrowUp'){ e.preventDefault(); if(!playing) startGame(); else jump(); } });
 </script>
-
 </body>
 </html>
