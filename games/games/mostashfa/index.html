@@ -1,1 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة المستشفى | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#e0f7fa;color:#004d40;display:flex;flex-direction:column;align-items:center;padding:0;overflow:hidden}
+.top{width:100%;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;box-shadow:0 2px 10px rgba(0,0,0,.08);flex-shrink:0}
+.logo-wrap{width:46px;height:46px;border-radius:50%;overflow:hidden;border:3px solid #00bfa5;background:#fff}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.top h1{font-size:18px;color:#00796b;line-height:1.1}
+.top h1 small{display:block;font-size:9px;color:#80cbc4;letter-spacing:1px}
+.top .pill{background:#00bfa5;color:#fff;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:900}
+#stats{width:100%;max-width:520px;display:flex;gap:8px;padding:8px 10px;flex-shrink:0}
+.stat{flex:1;background:#fff;border-radius:16px;padding:7px 4px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat b{display:block;font-size:17px;color:#00796b}
+.stat span{font-size:10px;color:#80cbc4}
+#game{width:100%;max-width:520px;flex:1;min-height:0;padding:0 10px 10px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+#patient{background:#fff;border-radius:22px;padding:12px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.08);flex-shrink:0;border:2px solid #b2dfdb}
+#patient .ava{font-size:52px}
+#patient b{font-size:16px;color:#004d40;display:block;margin:4px 0 2px}
+#patient p{font-size:12px;color:#00796b;line-height:1.6}
+#patient .sym{font-size:11px;background:#e0f2f1;color:#004d40;padding:5px 8px;border-radius:10px;display:inline-block;margin-top:4px}
+#treats{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;justify-content:center}
+.treat{width:100%;background:#fff;border:2px solid #80cbc4;border-radius:50px;padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;text-align:right;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.treat:active{transform:scale(.97);background:#e0f7fa}
+.treat b{font-size:22px}
+.treat span{font-size:13px;font-weight:900;color:#004d40}
+.treat small{display:block;font-size:10px;color:#80cbc4}
+.treat.correct{border-color:#00c853;background:#e8f5e9}
+.treat.wrong{border-color:#ff5252;background:#ffebee}
+#msg{font-size:14px;font-weight:900;min-height:20px;text-align:center;color:#00796b}
+.btn{background:#00bfa5;color:#fff;border:none;padding:14px 22px;border-radius:50px;font-size:16px;font-weight:900;cursor:pointer;width:88%;max-width:300px;margin:0 auto;display:block;box-shadow:0 4px 12px rgba(0,191,165,.4)}
+.btn:active{transform:scale(.95)}
+#overlay{position:fixed;inset:0;background:#e0f7fa;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:12px;z-index:20;color:#004d40}
+#overlay h2{font-size:26px;color:#00796b}
+#overlay p{font-size:14px;line-height:1.8;color:#004d40}
+.footer{font-size:10px;color:#80cbc4;text-align:center;padding:6px;flex-shrink:0}
+.footer a{color:#00796b;text-decoration:none}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<div class="top">
+<div style="display:flex;align-items:center;gap:8px"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>لعبة المستشفى<small>AHMED TV HOSPITAL</small></h1></div>
+<div class="pill">⭐ <span id="scoreTop">0</span></div>
+</div>
+<div id="stats">
+<div class="stat"><b id="score">0</b><span>النقط ⭐</span></div>
+<div class="stat"><b id="level">مريض 1 / 50</b><span>المريض 🩺</span></div>
+<div class="stat"><b id="timer">⏰ 30</b><span>الوقت</span></div>
+</div>
+<div id="game">
+<div id="overlay">
+<h2>لعبة المستشفى 🏥</h2>
+<p><b style="color:#00796b">Ahmed TV</b> - انت الدكتور!<br>50 مريض جايين بأمراض مختلفة<br>اقرا الأعراض واختار الدوا الصح!<br>لو اخترت غلط المريض هيزعل - ولو صح هتاخد نقط!<br>كل مريض الوقت بيقل!</p>
+<button class="btn" id="startBtn">🩺 ابدأ الكشف</button>
+</div>
+<div id="patient"><div class="ava" id="pAva">🤒</div><b id="pName">المريض أحمد</b><p id="pDesc">عنده سخونية وكحة</p><span class="sym" id="pSym">الأعراض: سخونية 🤒 + كحة 😷</span></div>
+<div id="treats"></div>
+<div id="msg">اقرا الأعراض واختار الدوا الصح!</div>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+<script>
+var PATIENTS=[
+{name:'المريض أحمد',ava:'🤒',desc:'عنده سخونية وكحة من امبارح',sym:'سخونية 🤒 + كحة 😷',treats:[{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'👓',n:'نضارة',d:'للنظر',ok:false}]},
+{name:'المريضة منى',ava:'🤕',desc:'وقعت على راسها واتعورت',sym:'جرح في الراس 🤕 + وجع',treats:[{e:'🩹',n:'بلاستر + مطهر',d:'بينضف الجرح',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض كريم',ava:'🦷',desc:'سنانه بتوجعه أوي',sym:'وجع سنان 🦷 + ورم',treats:[{e:'🦷',n:'دكتور سنان',d:'بيعالج السنان',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة سارة',ava:'👁️',desc:'عينيها بتوجعها ومش شايفة كويس',sym:'وجع عين 👁️ + زغللة',treats:[{e:'👓',n:'نضارة + قطرة',d:'بتعالج العين',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض عمر',ava:'🤧',desc:'عنده برد ورشح',sym:'رشح 🤧 + عطس',treats:[{e:'🤧',n:'دوا برد',d:'بيعالج البرد',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض يوسف',ava:'🦴',desc:'وقع وكسر رجله',sym:'كسر 🦴 + وجع جامد',treats:[{e:'🦴',n:'جبس + أشعة',d:'بيعالج الكسر',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'👓',n:'نضارة',d:'للنظر',ok:false}]},
+{name:'المريضة نور',ava:'🤢',desc:'بطنها بتوجعها وعايزة ترجع',sym:'وجع بطن 🤢 + ترجيع',treats:[{e:'💊',n:'دوا بطن',d:'بيعالج البطن',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض حمزة',ava:'🩸',desc:'اتعور في إيده وبينزف',sym:'نزيف 🩸 + جرح',treats:[{e:'🩹',n:'شاش + مطهر',d:'بيوقف النزيف',ok:true},{e:'👓',n:'نضارة',d:'للنظر',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة ليان',ava:'😵',desc:'دايخة ومش قادرة تقف',sym:'دوخة 😵 + تعب',treats:[{e:'🛏️',n:'راحة + عصير',d:'بيريح الجسم',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض آدم',ava:'🦻',desc:'ودنه بتوجعه ومش سامع كويس',sym:'وجع ودن 🦻 + طنين',treats:[{e:'🦻',n:'دكتور ودن + قطرة',d:'بيعالج الودن',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة مريم',ava:'🫀',desc:'قلبها بيدق بسرعة ونهجان',sym:'نهجان 🫀 + ضربات سريعة',treats:[{e:'🫀',n:'كشف قلب + راحة',d:'بيطمن على القلب',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض سيف',ava:'🤕',desc:'عنده صداع جامد من الصبح',sym:'صداع 🤕 + تعب',treats:[{e:'💊',n:'دوا صداع + راحة',d:'بيعالج الصداع',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض فارس',ava:'🦵',desc:'رجله اتلوت وهو بيلعب كورة',sym:'التواء 🦵 + ورم',treats:[{e:'🦵',n:'رباط ضاغط + تلج',d:'بيعالج الالتواء',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة هبة',ava:'🤢',desc:'أكلت أكل بايظ وبطنها بتوجعها',sym:'تسمم 🤢 + ترجيع',treats:[{e:'💊',n:'دوا بطن + محلول',d:'بيعالج التسمم',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'👓',n:'نضارة',d:'للنظر',ok:false}]},
+{name:'المريض سليم',ava:'😷',desc:'بيكح كتير وصدره مقفول',sym:'كحة 😷 + ضيق نفس',treats:[{e:'💊',n:'دوا كحة + بخاخ',d:'بيفتح الصدر',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة ريم',ava:'🤕',desc:'اتخبطت في دماغها وهي بتلعب',sym:'خبطه 🤕 + دوخة',treats:[{e:'🧊',n:'تلج + راحة',d:'بيهدي الخبطة',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض تامر',ava:'🦷',desc:'ضرسه مسوس وبيوجعه',sym:'تسوس 🦷 + وجع',treats:[{e:'🦷',n:'حشو ضرس',d:'بيعالج التسوس',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة جنى',ava:'👂',desc:'ودنها مسدودة ومش سامعة',sym:'انسداد 👂 + وجع',treats:[{e:'🦻',n:'تنضيف ودن + قطرة',d:'بينضف الودن',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض زياد',ava:'🩸',desc:'أنفه بينزف من الخبطة',sym:'نزيف أنف 🩸',treats:[{e:'🩹',n:'قطن + ضغط',d:'بيوقف النزيف',ok:true},{e:'👓',n:'نضارة',d:'للنظر',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة فريدة',ava:'😴',desc:'مش بتنام كويس وتعبانة',sym:'أرق 😴 + تعب',treats:[{e:'🛏️',n:'نوم بدري + راحة',d:'بيريح الجسم',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض بلال',ava:'🤕',desc:'إيده اتحرقت من الشاي',sym:'حرق 🤕 + وجع',treats:[{e:'🧴',n:'مرهم حروق + شاش',d:'بيعالج الحرق',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة سلمى',ava:'🤧',desc:'عندها حساسية وبتعطس',sym:'حساسية 🤧 + عطس',treats:[{e:'💊',n:'دوا حساسية',d:'بيعالج الحساسية',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض نادر',ava:'🦴',desc:'ضهره بيوجعه من الشيل التقيل',sym:'وجع ضهر 🦴',treats:[{e:'🧘',n:'راحة + مساج',d:'بيريح الضهر',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة دينا',ava:'🦶',desc:'رجلها فيها مسمار',sym:'مسمار 🦶 + وجع',treats:[{e:'🩹',n:'لزقة مسمار + راحة',d:'بيعالج المسمار',ok:true},{e:'👓',n:'نضارة',d:'للنظر',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض كمال',ava:'👁️',desc:'عينه حمرا وبتحكه',sym:'حساسية عين 👁️',treats:[{e:'👁️',n:'قطرة عين',d:'بتعالج العين',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة هالة',ava:'🦷',desc:'لثتها بتنزف',sym:'نزيف لثة 🦷',treats:[{e:'🦷',n:'مضمضة + دكتور سنان',d:'بيعالج اللثة',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض وائل',ava:'🤒',desc:'عنده دور برد تقيل',sym:'برد 🤒 + تكسير',treats:[{e:'💊',n:'دوا برد + شوربة',d:'بيعالج البرد',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة شيماء',ava:'🤢',desc:'دايخة وعايزة ترجع من الأكل',sym:'دوخة 🤢 + ترجيع',treats:[{e:'💊',n:'دوا دوخة + راحة',d:'بيعالج الدوخة',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض حسام',ava:'🦵',desc:'ركبته بتوجعه بعد الماتش',sym:'وجع ركبة 🦵',treats:[{e:'🧊',n:'تلج + راحة',d:'بيهدي الركبة',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة آية',ava:'👃',desc:'مناخيرها مسدودة ومش شامة',sym:'انسداد 👃 + رشح',treats:[{e:'💊',n:'دوا برد + بخاخ',d:'بيفتح المناخير',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض عادل',ava:'🫀',desc:'ضغطه عالي وصداع',sym:'ضغط عالي 🫀 + صداع',treats:[{e:'💊',n:'دوا ضغط + راحة',d:'بيظبط الضغط',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة ندى',ava:'🦶',desc:'صوباعها اتزنق في الباب',sym:'زنقة 🦶 + ورم',treats:[{e:'🧊',n:'تلج + رباط',d:'بيهدي الورم',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض سامي',ava:'😷',desc:'زوره بيوجعه ومش قادر يبلع',sym:'التهاب زور 😷',treats:[{e:'💊',n:'دوا زور + عسل',d:'بيعالج الزور',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة لينا',ava:'🤕',desc:'اتعورت في ركبتها وهي بتجري',sym:'جرح ركبة 🤕',treats:[{e:'🩹',n:'مطهر + بلاستر',d:'بينضف الجرح',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض جمال',ava:'🦻',desc:'بيسمع وش في ودنه',sym:'طنين 🦻',treats:[{e:'🦻',n:'كشف ودن + قطرة',d:'بيعالج الطنين',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة رنا',ava:'🦷',desc:'سنانها صفرا وعايزة تبييض',sym:'اصفرار 🦷',treats:[{e:'🦷',n:'تنضيف سنان',d:'بيبيض السنان',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض فادي',ava:'🤧',desc:'بيكح من التراب',sym:'حساسية تراب 🤧',treats:[{e:'😷',n:'كمامة + دوا حساسية',d:'بيحمي من التراب',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة مها',ava:'🩸',desc:'إيدها اتجرحت بالسكينة',sym:'جرح سكينة 🩸',treats:[{e:'🩹',n:'شاش + مطهر',d:'بيوقف النزيف',ok:true},{e:'👓',n:'نضارة',d:'للنظر',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض رامي',ava:'🦴',desc:'كتفه اتخلع وهو بيلعب',sym:'خلع كتف 🦴',treats:[{e:'🦴',n:'رد الكتف + رباط',d:'بيرجع الكتف',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة سارة',ava:'😴',desc:'تعبانة من قلة النوم',sym:'إرهاق 😴',treats:[{e:'🛏️',n:'نوم + عصير',d:'بيريح الجسم',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريض خالد',ava:'🤒',desc:'عنده حرارة عالية',sym:'حرارة 🤒 + رعشة',treats:[{e:'💊',n:'كمادات + دوا حرارة',d:'بينزل الحرارة',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة نورا',ava:'👁️',desc:'عينها دمعت من التراب',sym:'دموع 👁️',treats:[{e:'👁️',n:'غسيل عين + قطرة',d:'بينضف العين',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض ياسر',ava:'🦶',desc:'كعبه بيوجعه لما يمشي',sym:'وجع كعب 🦶',treats:[{e:'🧦',n:'فرشة طبية + راحة',d:'بيريح الكعب',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريضة هاجر',ava:'🤢',desc:'بطنها منفوخة',sym:'انتفاخ 🤢',treats:[{e:'💊',n:'دوا انتفاخ + شاي',d:'بيعالج الانتفاخ',ok:true},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض محمود',ava:'🤕',desc:'دماغه اتخبطت في الباب',sym:'خبطة 🤕',treats:[{e:'🧊',n:'تلج + راحة',d:'بيهدي الخبطة',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة إيمان',ava:'🦷',desc:'ضرس العقل بيوجعها',sym:'ضرس عقل 🦷',treats:[{e:'🦷',n:'خلع ضرس العقل',d:'بيشيل الوجع',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض أشرف',ava:'😷',desc:'صدره بيزيق',sym:'أزمة صدر 😷',treats:[{e:'💨',n:'بخاخ + راحة',d:'بيفتح الصدر',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة جميلة',ava:'👂',desc:'ودنها فيها شمع كتير',sym:'شمع 👂',treats:[{e:'🦻',n:'تنضيف ودن',d:'بينضف الودن',ok:true},{e:'💊',n:'دوا سخونية',d:'بينزل السخونية',ok:false},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false}]},
+{name:'المريض إسلام',ava:'🩸',desc:'أنفه اتخبط وبينزف',sym:'نزيف 🩸',treats:[{e:'🩹',n:'قطن + تلج',d:'بيوقف النزيف',ok:true},{e:'👓',n:'نضارة',d:'للنظر',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+{name:'المريضة دعاء',ava:'🤧',desc:'عندها برد من التكييف',sym:'برد 🤧',treats:[{e:'💊',n:'دوا برد + شوربة',d:'بيعالج البرد',ok:true},{e:'🩹',n:'بلاستر',d:'للجروح',ok:false},{e:'🦷',n:'دكتور سنان',d:'للسنان',ok:false}]},
+];
 
+var score=0,current=0,locked=true,timeLeft=30,timer=null;
+var scoreEl=document.getElementById('score'),scoreTop=document.getElementById('scoreTop'),levelEl=document.getElementById('level'),timerEl=document.getElementById('timer'),treatsEl=document.getElementById('treats'),msgEl=document.getElementById('msg'),overlay=document.getElementById('overlay'),pAva=document.getElementById('pAva'),pName=document.getElementById('pName'),pDesc=document.getElementById('pDesc'),pSym=document.getElementById('pSym');
+var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function startTimer(){stopTimer();timeLeft=Math.max(15,30-current);timerEl.textContent='⏰ '+timeLeft;timer=setInterval(function(){timeLeft--;timerEl.textContent='⏰ '+timeLeft;if(timeLeft<=0){stopTimer();if(!locked){locked=true;msgEl.textContent='⏰ خلص الوقت! المريض زعل!';playAhmedVoice('khesert');setTimeout(endGame,1000);}}},1000);}
+function showPatient(idx){
+current=idx;
+var p=PATIENTS[current];
+if(!p){winAll();return;}
+locked=false;
+pAva.textContent=p.ava;pName.textContent=p.name;pDesc.textContent=p.desc;pSym.textContent='الأعراض: '+p.sym;
+levelEl.textContent='مريض '+(current+1)+' / '+PATIENTS.length;
+msgEl.textContent='اقرا الأعراض واختار الدوا الصح!';
+treatsEl.innerHTML='';
+var arr=p.treats.slice().sort(function(){return Math.random()-0.5;});
+arr.forEach(function(t){
+var b=document.createElement('button');b.className='treat';b.innerHTML='<b>'+t.e+'</b><span>'+t.n+'<small>'+t.d+'</small></span>';
+b.onclick=function(){
+if(locked)return;locked=true;stopTimer();
+if(t.ok){b.classList.add('correct');score+=20;scoreEl.textContent=score;scoreTop.textContent=score;
+if(current>=PATIENTS.length-1){msgEl.textContent='🏆 صح! عالجت كل المرضى!';playAhmedVoice('kesebt');setTimeout(winAll,1200);}
+else{msgEl.textContent='✅ صح! عالجته! كمل.. رايح للمريض اللي بعده: '+PATIENTS[current+1].name;playAhmedVoice('sah');setTimeout(function(){showPatient(current+1);},1500);}
+}else{b.classList.add('wrong');msgEl.textContent='❌ غلط! ده مش الدوا الصح! المريض زعل!';playAhmedVoice('khesert');setTimeout(endGame,1200);}
+};
+treatsEl.appendChild(b);
+});
+startTimer();
+}
+function winAll(){
+playAhmedVoice('kesebt');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:44px">🏆</div><h2>انت أحسن دكتور!</h2><p>عالجت الـ <b style="color:#00796b">50 مريض</b> كلهم!<br>جبت <b style="color:#00796b;font-size:22px">'+score+'</b> نقطة<br>Ahmed TV بيقولك: انت دكتور شاطر!</p><button class="btn" id="againBtn">🔄 اكشف تاني</button>';
+document.getElementById('againBtn').onclick=function(){startGame();};
+}
+function endGame(){
+playAhmedVoice('khesert');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:44px">💔</div><h2>المريض زعل منك!</h2><p>جبت <b style="color:#00796b;font-size:22px">'+score+'</b> نقطة<br>ووصلت للمريض <b style="color:#00796b">'+(current+1)+' / 50</b></p><button class="btn" id="againBtn">🔄 حاول تاني</button>';
+document.getElementById('againBtn').onclick=function(){startGame();};
+}
+function startGame(){playAhmedVoice('ebda');score=0;scoreEl.textContent='0';scoreTop.textContent='0';overlay.style.display='none';showPatient(0);}
+document.getElementById('startBtn').onclick=function(){startGame();};
+</script>
+</body>
+</html>
