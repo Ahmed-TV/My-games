@@ -1,1 +1,143 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة المحقق | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(to bottom,#0f172a 0%,#1e293b 60%,#334155 100%);color:#fff;display:flex;flex-direction:column;align-items:center;padding:6px 10px;overflow:hidden;position:relative}
+body::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(45deg,#facc15 0 12px,#0f172a 12px 24px);z-index:1}
+.header{width:100%;max-width:520px;text-align:center;flex-shrink:0;padding-top:8px;z-index:2}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px}
+.logo-wrap{width:52px;height:52px;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#000;box-shadow:0 0 14px rgba(250,204,21,.6)}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:22px;color:#facc15;line-height:1.2}
+h1 small{display:block;font-size:10px;color:#cbd5e1;letter-spacing:2px}
+.names{font-size:12px;color:#cbd5e1;margin:4px 0 6px}
+.names b{color:#facc15}
+.score{display:flex;gap:8px;justify-content:center;margin-bottom:8px}
+.stat{background:rgba(255,255,255,.08);border:1px solid rgba(250,204,21,.5);border-radius:12px;padding:5px 10px;min-width:92px;text-align:center}
+.stat b{display:block;font-size:18px;color:#facc15}
+.stat span{font-size:10px;color:#cbd5e1}
+#game{width:100%;max-width:520px;flex:1;min-height:0;background:#f8fafc;color:#0f172a;border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:8px;overflow:hidden;position:relative;z-index:2}
+#caseBox{background:#0f172a;color:#fff;border-radius:12px;padding:8px 10px;text-align:center;border:2px solid #ef4444}
+#caseBox b{color:#facc15;font-size:14px}
+#caseBox p{font-size:12px;line-height:1.6;margin-top:2px;color:#e2e8f0}
+#cluesLabel{text-align:center;font-size:12px;font-weight:900;color:#dc2626;background:#fee2e2;border:1px dashed #ef4444;border-radius:8px;padding:3px}
+#clues{display:flex;gap:6px}
+.clue{flex:1;background:linear-gradient(135deg,#fef2f2,#fee2e2);border:2px solid #ef4444;border-radius:12px;padding:7px 3px;text-align:center;cursor:pointer;position:relative;box-shadow:0 3px 8px rgba(239,68,68,.25)}
+.clue::before{content:'🔴 دليل';position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:#dc2626;color:#fff;font-size:8px;padding:1px 6px;border-radius:10px;white-space:nowrap}
+.clue:active{transform:scale(.96)}
+.clue b{font-size:20px;display:block;margin-top:6px}
+.clue span{font-size:10px;font-weight:900;color:#7f1d1d;display:block;line-height:1.3}
+.clue small{display:block;font-size:8px;color:#ef4444;font-weight:900}
+.clue.opened{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border-color:#22c55e}
+.clue.opened::before{content:'✅ تم';background:#22c55e}
+#suspects{display:flex;gap:8px;flex:1;min-height:0}
+.suspect{flex:1;background:#fff;border:2px solid #e2e8f0;border-radius:14px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+.suspect:active{transform:scale(.97)}
+.suspect.guilty{border-color:#ef4444;background:#fef2f2}
+.suspect.innocent{border-color:#22c55e;background:#f0fdf4}
+.suspect .ava{font-size:34px}
+.suspect b{font-size:12px;color:#0f172a}
+.suspect span{font-size:10px;color:#64748b;line-height:1.4}
+#msg{font-size:13px;font-weight:900;min-height:18px;text-align:center;color:#b45309}
+.btn{background:#facc15;color:#0f172a;border:none;padding:11px 20px;border-radius:12px;font-size:15px;font-weight:900;cursor:pointer;width:82%;max-width:260px;margin:0 auto;display:block}
+.btn:active{transform:scale(.95)}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;gap:10px;z-index:10;border-radius:18px;color:#fff}
+#overlay h2{font-size:24px;color:#facc15}
+#overlay p{font-size:13px;line-height:1.7;color:#e2e8f0}
+.footer{font-size:10px;color:#94a3b8;text-align:center;margin-top:6px;flex-shrink:0;z-index:2}
+.footer a{color:#facc15;text-decoration:none}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>لعبة المحقق<small>🕵️ AHMED TV DETECTIVE</small></h1></div>
+<div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+<div class="score">
+<div class="stat"><b id="score">0</b><span>النقط ⭐</span></div>
+<div class="stat"><b id="level">قضية 1</b><span>القضية 🔍</span></div>
+<div class="stat"><b id="timer">⏰ 60</b><span>الوقت</span></div>
+</div>
+</div>
+<div id="game">
+<div id="overlay">
+<h2>لعبة المحقق 🕵️</h2>
+<p><b style="color:#facc15">Ahmed TV</b> - 12 جريمة مستنياك!<br>عندك 3 مشتبه فيهم و 3 أدلة <span style="color:#ef4444">حمرا</span> 🔴<br>دوس على الأدلة عشان تجمعها، وبعدين اتهم المجرم الصح!<br>كل قضية أصعب - والوقت بيقل!</p>
+<button class="btn" id="startBtn">🔍 ابدأ التحقيق</button>
+</div>
+<div id="caseBox"><b id="caseTitle">قضية 1: سرقة البنك</b><p id="caseDesc">حد سرق فلوس من البنك بالليل.. مين اللي عملها؟</p></div>
+<div id="clues"></div>
+<div id="suspects"></div>
+<div id="msg">دوس على الأدلة الأول، وبعدين اتهم المجرم!</div>
+<button class="btn" id="nextBtn" style="display:none">➡️ القضية اللي بعدها</button>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+<script>
+var score=0,level=1,cluesFound=0,locked=true,timeLeft=60,timer=null,culpritIdx=0;
+var scoreEl=document.getElementById('score'),levelEl=document.getElementById('level'),timerEl=document.getElementById('timer'),cluesEl=document.getElementById('clues'),suspectsEl=document.getElementById('suspects'),msgEl=document.getElementById('msg'),overlay=document.getElementById('overlay'),nextBtn=document.getElementById('nextBtn'),caseTitle=document.getElementById('caseTitle'),caseDesc=document.getElementById('caseDesc');
+var CASES=[
+{title:'قضية 1: سرقة البنك 🏦',desc:'حد سرق فلوس من البنك بالليل.. مين اللي عملها؟',clues:[{e:'👣',t:'آثار أقدام',d:'آثار طين - المجرم لابس جزمة رياضة!'},{e:'🔑',t:'مفتاح مكسور',d:'مفتاح قديم مكسور جنب الخزنة!'},{e:'🧤',t:'جوانتي أسود',d:'جوانتي أسود - المجرم لابس جوانتي!'}],suspects:[{e:'👨‍💼',n:'أستاذ سامي',a:'في البيت - لابس بدلة وجزمة كلاسيك'},{e:'🏃',n:'كابتن ميدو',a:'بيجري في الشارع - لابس جزمة رياضة!'},{e:'👩‍🍳',n:'الشيف منى',a:'في المطعم - لابسة جوانتي أبيض'}],culprit:1},
+{title:'قضية 2: سرقة المجوهرات 💎',desc:'عقد الماس اتسرق من المتحف.. مين اللي سرقه؟',clues:[{e:'💎',t:'قطعة ماس',d:'قطعة ماس وقعت - المجرم مستعجل!'},{e:'📷',t:'صورة كاميرا',d:'الكاميرا صورت حد لابس كاب أحمر!'},{e:'🧥',t:'زرار جاكيت',d:'زرار جاكيت أزرق وقع جنب الخزنة!'}],suspects:[{e:'👩‍🎨',n:'الفنانة سارة',a:'بترسم - لابسة جاكيت أزرق!'},{e:'👨‍🔧',n:'عم حسن',a:'بيصلح الكهربا - لابس كاب أحمر!'},{e:'👮',n:'الضابط كريم',a:'بيحرس المتحف - لابس بدلة رسمية'}],culprit:0},
+{title:'قضية 3: تسمم الأكل 🧪',desc:'حد حط حاجة في أكل الحفلة.. مين؟',clues:[{e:'🧪',t:'زجاجة صغيرة',d:'زجاجة فيها ريحة غريبة!'},{e:'📝',t:'ورقة تهديد',d:'مكتوب فيها: انتقم منهم!'},{e:'👃',t:'ريحة عطر',d:'ريحة عطر قوية في المطبخ!'}],suspects:[{e:'👨‍🍳',n:'الشيف عادل',a:'بيطبخ - معاه كل المكونات!'},{e:'👩',n:'نور',a:'زعلانة من أصحاب الحفلة - لابسة عطر قوي!'},{e:'🧑‍💼',n:'مدير الحفلة',a:'بينظم الحفلة - مشغول طول الوقت'}],culprit:1},
+{title:'قضية 4: حريق المدرسة 🔥',desc:'حريق ولع في المدرسة بالليل.. مين؟',clues:[{e:'🔥',t:'ولاعة حمرا',d:'ولاعة حمرا وقعت جنب المدرسة!'},{e:'🛢️',t:'ريحة بنزين',d:'ريحة بنزين - المجرم جاب بنزين!'},{e:'👟',t:'كوتشي محروق',d:'كوتشي محروق - المجرم كان قريب من النار!'}],suspects:[{e:'👦',n:'الطالب زياد',a:'زعلان من المدرسة - معاه ولاعة حمرا!'},{e:'👨‍🏫',n:'الأستاذ أحمد',a:'في البيت بيصحح امتحانات'},{e:'🧹',n:'عم فرج',a:'بينضف المدرسة - معاه جاز'}],culprit:0},
+{title:'قضية 5: سرقة السيارة 🚗',desc:'عربية اتسرقت من الجراج.. مين؟',clues:[{e:'🔧',t:'مفتاح مزور',d:'مفتاح مزور - المجرم بيعرف يزور مفاتيح!'},{e:'🕶️',t:'نضارة',d:'نضارة سودا وقعت جنب العربية!'},{e:'🚬',t:'سيجارة',d:'سيجارة مطفية - المجرم بيدخن!'}],suspects:[{e:'👨‍🔧',n:'الميكانيكي سيد',a:'بيصلح عربيات - بيعرف يزور مفاتيح!'},{e:'👩‍💼',n:'مدام هبة',a:'كانت في الشغل - مش بتدخن'},{e:'🧑',n:'البواب عماد',a:'بيحرس الجراج - لابس نضارة شمس'}],culprit:0},
+{title:'قضية 6: كسر زجاج المحل 🪟',desc:'حد كسر زجاج محل اللعب وخد لعب.. مين؟',clues:[{e:'🧱',t:'طوبة',d:'طوبة كبيرة - المجرم رماها على الزجاج!'},{e:'🧸',t:'لعبة دبدوب',d:'دبدوب وقع - المجرم خد لعب أطفال!'},{e:'👣',t:'آثار صغيرة',d:'آثار أقدام صغيرة - المجرم صغير في السن!'}],suspects:[{e:'👦',n:'الولد كريم',a:'كان بيلعب في الشارع - عايز لعب!'},{e:'👨',n:'عم محمود',a:'كان في البيت نايم'},{e:'👩‍🦰',n:'الآنسة دينا',a:'كانت في الشغل - مش بتلعب'}],culprit:0},
+{title:'قضية 7: سرقة التليفون 📱',desc:'تليفون اتسرق من الشنطة في الأتوبيس.. مين؟',clues:[{e:'🎧',t:'سماعة',d:'سماعة مقطوعة - المجرم شد الشنطة!'},{e:'💅',t:'ضوفر',d:'ضوفر طويل مكسور - المجرم ست!'},{e:'👛',t:'محفظة',d:'محفظة مفتوحة - المجرم فتح الشنطة!'}],suspects:[{e:'👩‍🦱',n:'البنت رنا',a:'قاعدة جنب الشنطة - ضوافرها طويلة!'},{e:'👴',n:'الحاج سعيد',a:'نايم في الأتوبيس'},{e:'👨‍🎓',n:'الطالب عمر',a:'بيسمع أغاني - معاه سماعة سليمة'}],culprit:0},
+{title:'قضية 8: سرقة الكنز 🗺️',desc:'خريطة الكنز اتسرقت من المكتبة.. مين؟',clues:[{e:'🗺️',t:'خريطة مقطوعة',d:'حتة من الخريطة مقطوعة - المجرم خد حتة!'},{e:'🔦',t:'كشاف',d:'كشاف صغير - المجرم كان في الضلمة!'},{e:'🧭',t:'بوصلة',d:'بوصلة قديمة وقعت جنب الرف!'}],suspects:[{e:'🧑‍🏫',n:'المدرس فادي',a:'بيقرا كتب تاريخ - معاه بوصلة!'},{e:'👧',n:'البنت ليان',a:'كانت بتذاكر - مش مهتمة بالكنز'},{e:'👨‍🌾',n:'الفلاح جابر',a:'كان في الغيط - مش بيروح المكتبة'}],culprit:0},
+{title:'قضية 9: تخريب الحديقة 🌳',desc:'حد قطع ورد الحديقة كلها.. مين؟',clues:[{e:'🌹',t:'ورد مقطوع',d:'ورد مقطوع - المجرم بيكره الورد!'},{e:'✂️',t:'مقص',d:'مقص صغير - المجرم قص بيه الورد!'},{e:'👟',t:'آثار في الطين',d:'آثار جزمة في الطين جنب الورد!'}],suspects:[{e:'👦',n:'الولد يوسف',a:'كان بيلعب كورة - جزمته فيها طين!'},{e:'👩‍🌾',n:'الست أم أحمد',a:'بتزرع ورد - بتحب الورد'},{e:'🧑‍🍳',n:'الطباخ سامح',a:'كان في المطبخ - معاه مقص!' }],culprit:0},
+{title:'قضية 10: سرقة الكيكة 🎂',desc:'كيكة عيد الميلاد اتسرقت من التلاجة.. مين؟',clues:[{e:'🍰',t:'حتة كيكة',d:'حتة كيكة على الأرض - المجرم كل منها!'},{e:'🥄',t:'معلقة',d:'معلقة فيها كريمة - المجرم أكل بالمعلقة!'},{e:'👃',t:'ريحة شوكولاتة',d:'ريحة شوكولاتة على هدوم حد!'}],suspects:[{e:'👧',n:'البنت مريم',a:'كانت بتلعب - هدومها فيها شوكولاتة!'},{e:'👨',n:'بابا',a:'كان في الشغل'},{e:'🐱',n:'القطة مشمش',a:'كانت نايمة - مش بتاكل كيكة'}],culprit:0},
+{title:'قضية 11: سرقة الامتحان 📝',desc:'ورق الامتحان اتسرق من أوضة المدرسين.. مين؟',clues:[{e:'📄',t:'ورقة امتحان',d:'ورقة امتحان مقطوعة وقعت في الحوش!'},{e:'🔑',t:'مفتاح الأوضة',d:'مفتاح الأوضة اتسرق - المجرم معاه مفتاح!'},{e:'👓',t:'نضارة',d:'نضارة وقعت جنب الدولاب!'}],suspects:[{e:'👦',n:'الطالب آدم',a:'كان خايف من الامتحان - معاه مفتاح مزور!'},{e:'👩‍🏫',n:'المدرسة سلمى',a:'كانت بتحط الامتحان - لابسة نضارة!'},{e:'🧹',n:'عم سيد',a:'بينضف الأوضة - معاه مفتاح الأوضة'}],culprit:0},
+{title:'قضية 12: اختفاء القطة 🐱',desc:'القطة لولو اختفت من البيت.. مين خدها؟',clues:[{e:'🐾',t:'آثار أقدام قطة',d:'آثار أقدام القطة رايحة ناحية الباب!'},{e:'🧶',t:'خيط',d:'خيط أحمر - القطة كانت بتلعب بيه!'},{e:'🥛',t:'طبق لبن',d:'طبق لبن فاضي - حد أكل القطة لبن!'}],suspects:[{e:'👦',n:'الولد حمزة',a:'كان بيلعب مع القطة - معاه خيط أحمر!'},{e:'👩',n:'ماما',a:'كانت بتطبخ - مش بتحب القطط'},{e:'👴',n:'جدو',a:'كان نايم - مش بيشوف'}],culprit:0}
+];
+var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function startTimer(){stopTimer();timeLeft=Math.max(30,60-(level-1)*3);timerEl.textContent='⏰ '+timeLeft;timer=setInterval(function(){timeLeft--;timerEl.textContent='⏰ '+timeLeft;if(timeLeft<=0){stopTimer();if(!locked){locked=true;msgEl.textContent='⏰ خلص الوقت! المجرم هرب!';playAhmedVoice('khesert');setTimeout(endGame,1000);}}},1000);}
+function loadCase(){
+var c=CASES[(level-1)%CASES.length];
+culpritIdx=c.culprit;cluesFound=0;locked=false;
+caseTitle.textContent=c.title;caseDesc.textContent=c.desc;
+levelEl.textContent='قضية '+level+' / 12';msgEl.textContent='دوس على الأدلة الأول، وبعدين اتهم المجرم!';nextBtn.style.display='none';
+cluesEl.innerHTML='';suspectsEl.innerHTML='';
+c.clues.forEach(function(cl,i){
+var d=document.createElement('div');d.className='clue';d.innerHTML='<b>'+cl.e+'</b><span>'+cl.t+'</span><small>🔴 دليل '+ (i+1) +'</small>';
+d.onpointerdown=function(e){e.preventDefault();if(d.classList.contains('opened'))return;d.classList.add('opened');cluesFound++;msgEl.textContent='🔴 دليل '+ (i+1) +': '+cl.d;playAhmedVoice('sah');};
+cluesEl.appendChild(d);
+});
+c.suspects.forEach(function(s,i){
+var d=document.createElement('div');d.className='suspect';d.innerHTML='<div class="ava">'+s.e+'</div><b>'+s.n+'</b><span>'+s.a+'</span>';
+d.onpointerdown=function(e){e.preventDefault();if(locked)return;
+if(cluesFound<3){msgEl.textContent='⚠️ اجمع الـ 3 أدلة الأول!';playAhmedVoice('hawel');return;}
+locked=true;stopTimer();
+if(i===culpritIdx){d.classList.add('guilty');score+=30;scoreEl.textContent=score;msgEl.textContent='🎉 صح! '+s.n+' هو المجرم!';playAhmedVoice('kesebt');if(level>=12){setTimeout(winAll,600);}else{nextBtn.style.display='block';}}
+else{d.classList.add('innocent');msgEl.textContent='❌ غلط! '+s.n+' بريء! المجرم هرب!';playAhmedVoice('khesert');setTimeout(endGame,1200);}
+};
+suspectsEl.appendChild(d);
+});
+startTimer();
+}
+function winAll(){
+playAhmedVoice('kesebt');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:44px">🏆</div><h2>انت أحسن محقق!</h2><p>حليت الـ <b style="color:#facc15">12 قضية</b> كلهم!<br>جبت <b style="color:#facc15;font-size:22px">'+score+'</b> نقطة<br>Ahmed TV بيقولك: انت محقق عبقري!</p><button class="btn" id="againBtn">🔄 حقق تاني</button>';
+document.getElementById('againBtn').onclick=startGame;
+}
+function endGame(){
+playAhmedVoice('khesert');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:44px">💔</div><h2>المجرم هرب منك!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+'</b> نقطة<br>ووصلت للقضية <b style="color:#facc15">'+level+' / 12</b><br>المحقق بيقولك: ركز في الأدلة المرة الجاية!</p><button class="btn" id="againBtn">🔄 حقق تاني</button>';
+document.getElementById('againBtn').onclick=startGame;
+}
+function startGame(){playAhmedVoice('ebda');score=0;level=1;scoreEl.textContent='0';overlay.style.display='none';loadCase();}
+document.getElementById('startBtn').onclick=startGame;
+nextBtn.onclick=function(){level++;playAhmedVoice('sah');loadCase();};
+</script>
+</body>
+</html>
