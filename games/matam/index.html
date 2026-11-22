@@ -53,7 +53,7 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 <div id="game">
 <div id="overlay">
 <h2>لعبة المطعم 🍔</h2>
-<p><b>Ahmed TV</b> - انت الشيف!<br>الزبون بيطلب أكل - دوس على الأكل الصح بسرعة!<br>كل طلب صح = 10 نقط - معاك 30 ثانية!</p>
+<p><b>Ahmed TV</b> - انت الشيف!<br>الزبون بيطلب أكل من 28 أكلة - دوس على الأكل الصح بسرعة!<br>كل طلب صح = 10 نقط - معاك 30 ثانية!</p>
 <button class="btn" id="startBtn">▶ افتح المطعم</button>
 </div>
 <div id="timer">⏰ 30 ثانية</div>
@@ -65,17 +65,25 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 <script>
 var score=0,orders=0,timeLeft=30,timer=null,current='',locked=false;
 var scoreEl=document.getElementById('score'),timeEl=document.getElementById('timeEl'),ordersEl=document.getElementById('orders'),orderEl=document.getElementById('order'),foodsEl=document.getElementById('foods'),msgEl=document.getElementById('msg'),timerEl=document.getElementById('timer'),overlay=document.getElementById('overlay');
-var FOODS=[{e:'🍔',n:'برجر'},{e:'🍕',n:'بيتزا'},{e:'🍟',n:'بطاطس'},{e:'🌭',n:'هوت دوج'},{e:'🍦',n:'آيس كريم'},{e:'🧃',n:'عصير'}];
+var FOODS=[{e:'🍔',n:'برجر'},{e:'🍕',n:'بيتزا'},{e:'🍟',n:'بطاطس'},{e:'🌭',n:'هوت دوج'},{e:'🍦',n:'آيس كريم'},{e:'🧃',n:'عصير'},{e:'🍗',n:'فراخ'},{e:'🥩',n:'لحمة'},{e:'🐟',n:'سمك'},{e:'🍤',n:'جمبري'},{e:'🍝',n:'مكرونة'},{e:'🍚',n:'رز'},{e:'🥗',n:'سلطة'},{e:'🍲',n:'شوربة'},{e:'🧆',n:'كفتة'},{e:'🍢',n:'كباب'},{e:'🌮',n:'شاورما'},{e:'🥙',n:'كشري'},{e:'🫓',n:'فول'},{e:'🧆',n:'طعمية'},{e:'☕',n:'قهوة'},{e:'🍵',n:'شاي'},{e:'🍰',n:'كيك'},{e:'🍩',n:'دونات'},{e:'🍿',n:'فشار'},{e:'🍫',n:'شوكولاتة'},{e:'🥤',n:'بيبسي'},{e:'🍋',n:'ليمون'}];
 var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
 function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
 function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+var prevFood='';
 function newOrder(){
-current=FOODS[Math.floor(Math.random()*FOODS.length)];
+var next;
+do{next=FOODS[Math.floor(Math.random()*FOODS.length)];}while(next.n===prevFood && FOODS.length>1);
+prevFood=next.n;
+current=next;
 orderEl.textContent='الزبون عايز: '+current.e+' '+current.n;
 foodsEl.innerHTML='';
-FOODS.forEach(function(f){
+var others=FOODS.filter(function(x){return x.n!==current.n;});
+for(var i=others.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=others[i];others[i]=others[j];others[j]=t;}
+var shown=[current].concat(others.slice(0,5));
+for(var k=shown.length-1;k>0;k--){var jj=Math.floor(Math.random()*(k+1));var tt=shown[k];shown[k]=shown[jj];shown[jj]=tt;}
+shown.forEach(function(f){
 var d=document.createElement('div');d.className='food';d.innerHTML=f.e+'<span>'+f.n+'</span>';
 d.onpointerdown=function(e){e.preventDefault();if(locked)return;if(f.n===current.n){score+=10;orders++;scoreEl.textContent=score;ordersEl.textContent=orders;msgEl.textContent='✅ صح! الزبون مبسوط!';playAhmedVoice('sah');newOrder();}else{msgEl.textContent='❌ غلط! ده مش اللي طلبه!';playAhmedVoice('ghalat');}};
 foodsEl.appendChild(d);
