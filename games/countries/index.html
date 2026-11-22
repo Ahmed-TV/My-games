@@ -4,7 +4,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important}
 html,body{height:100%;overflow:hidden}
 body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#1A3A5C,#0288D1);height:100vh;height:100dvh;display:flex;justify-content:center;padding:4px 8px;overflow:hidden}
-.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:#fff;border:3px solid #0288D1;border-radius:20px;padding:8px;overflow:hidden;position:relative}
+.game{width:100%;max-width:500px;height:100dvh;height:100svh;display:flex;flex-direction:column;background:#fff;border:3px solid #0288D1;border-radius:20px;padding:8px;overflow:hidden;position:relative}
 header{padding:2px 0 4px;display:flex;flex-direction:column;align-items:center;text-align:center;flex-shrink:0}
 .logo-img{width:72px;height:72px;border-radius:50%;border:3px solid #0288D1;object-fit:cover;background:#fff;margin-bottom:4px}
 .brand{font-size:22px;font-weight:900;color:#01579B}
@@ -18,13 +18,13 @@ header{padding:2px 0 4px;display:flex;flex-direction:column;align-items:center;t
 .qbox{background:linear-gradient(180deg,#E3F2FD,#fff);border:2px solid #81D4FA;border-radius:14px;padding:8px;text-align:center;flex-shrink:0;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
 .qicon{font-size:52px}
 .qtext{font-size:19px;font-weight:800;color:#01579B;margin-top:6px;line-height:1.4}
-.answers{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;flex-shrink:0;min-height:110px!important;height:auto!important;visibility:visible!important;opacity:1!important}
+.answers{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;flex-shrink:0;min-height:110px!important;height:auto!important;visibility:visible!important;opacity:1!important}
 .answer{font-family:inherit;font-size:15px;font-weight:800;color:#fff!important;background:#0288D1!important;background:linear-gradient(135deg,#0288D1,#03A9F4)!important;border:0;border-radius:12px;padding:12px 5px;min-height:50px!important;cursor:pointer;overflow:hidden;visibility:visible!important;opacity:1!important;display:block!important}
 .answer.correct{background:#2E7D32}
 .answer.wrong{background:#333}
 .answer:disabled{opacity:.9}
 .feedback{height:20px;font-size:12px;font-weight:700;color:#01579B;text-align:center;margin:4px 0;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.btn-row{display:flex;gap:7px;flex-shrink:0;position:absolute;bottom:0;left:0;right:0;background:#fff;padding:6px 8px;border-top:2px solid #B3E5FC}
+.btn-row{display:flex;gap:8px;margin-top:4px;flex-shrink:0}
 .mainbtn{flex:2;font-family:inherit;font-weight:800;border:0;border-radius:20px;padding:11px 10px;background:#0288D1;color:#fff;cursor:pointer;font-size:13px}
 .skipbtn{flex:1;font-family:inherit;font-weight:800;border:2px solid #0288D1;border-radius:20px;padding:11px 6px;background:#fff;color:#01579B;cursor:pointer;font-size:13px}
 footer{text-align:center;color:#0288D1;font-size:11px;margin-top:4px;flex-shrink:0}
@@ -35,7 +35,7 @@ footer a{color:#0288D1;text-decoration:none;font-weight:700}
 </style></head>
 <body><div class="game">
 <header class="top-fixed"><img src="https://ahmed-tv.github.io/My-games/logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">🌍 لعبة الدول 🌍</div><div class="names">أحمد عبدالعزيز • Ahmed TV</div></header>
-<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding-bottom:62px;position:relative">
+<div style="flex:1;display:flex;flex-direction:column;min-height:0;padding-bottom:8px;position:relative">
 <div class="type-row"><button class="type-btn active" onclick="setType('الكل',this)">🌍 الكل</button><button class="type-btn" onclick="setType('عاصمة',this)">🏛️ العاصمة</button><button class="type-btn" onclick="setType('عملة',this)">💰 العملة</button><button class="type-btn" onclick="setType('قارة',this)">🌍 القارة</button><button class="type-btn" onclick="setType('شهرة',this)">⭐ الشهرة</button></div>
 <div class="progress-wrap"><div class="progress" id="prog"></div></div>
 <div class="prog-text" id="progText">السؤال 1 / 780</div>
@@ -268,8 +268,8 @@ function loadQ(){ if(idx>=qs.length){ document.getElementById('qText').textConte
 function choose(ok,btn,it){ if(locked) return; locked=true; [...document.getElementById('answers').children].forEach(b=>{ b.disabled=true; if(b.textContent===it.correct) b.classList.add('correct'); else if(b===btn) b.classList.add('wrong'); }); if(ok){ playCorrect(); score+=10; correct++; document.getElementById('feedback').textContent='صح! +10'; } else { playWrong(); document.getElementById('feedback').textContent='غلط - الصح: '+it.correct; } document.getElementById('nextBtn').disabled=false; }
 function skipQ(){ playSkip(); if(idx>=qs.length){ build(); idx=0; loadQ(); return; } document.getElementById('feedback').textContent='تخطيت - الصح: '+qs[idx].correct; idx++; setTimeout(loadQ,600); }
 function setType(t,btn){ document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); curType=t; idx=0; score=0; correct=0; build(); loadQ(); }
-document.getElementById('nextBtn').onclick=()=>{ if(!locked && idx<qs.length) return; idx++; loadQ(); };
-document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'الصوت: شغال':'الصوت: مطفي'; };
+var _nb=document.getElementById('nextBtn'); if(_nb){ _nb.onclick=function(){ if(!locked && idx<qs.length) return; idx++; loadQ(); }; }
+var _sb=document.getElementById('soundBtn'); if(_sb){ _sb.onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'الصوت: شغال':'الصوت: مطفي'; }; }
 build(); loadQ();
 
 </script>
