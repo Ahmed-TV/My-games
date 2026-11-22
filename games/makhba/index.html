@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>لعبة المخبأ | Ahmed TV</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
 html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
 body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation}
 .header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
@@ -22,7 +22,7 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 .stat span{font-size:10px;color:#94a3b8}
 #game{width:100%;max-width:500px;flex:1;min-height:0;background:#1e293b;border:4px solid #f59e0b;border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
 #board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:340px}
-.door{background:linear-gradient(135deg,#7c3aed,#4c1d95);border:3px solid #facc15;border-radius:14px;height:110px;font-size:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.4)}
+.door{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;background:linear-gradient(135deg,#7c3aed,#4c1d95);border:3px solid #facc15;border-radius:14px;height:110px;font-size:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.4)}
 .door:active{transform:scale(.94)}
 .door.opened{cursor:default}
 .door.ahmed{background:linear-gradient(135deg,#facc15,#f59e0b);border-color:#fff}
@@ -39,7 +39,7 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 .footer a{color:#facc15;text-decoration:none}
 </style>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 <div class="header">
 <div class="top-row">
 <div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div>
@@ -70,6 +70,8 @@ var scoreEl=document.getElementById('score'),triesEl=document.getElementById('tr
 var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
 function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
 function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
 document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
@@ -87,7 +89,7 @@ var items=['ahmed','empty','empty','empty','empty','empty'];
 items=shuffle(items);
 items.forEach(function(type,idx){
 var d=document.createElement('div');d.className='door';d.innerHTML='🚪<span>باب '+(idx+1)+'</span>';
-d.onclick=function(){
+d.onpointerdown=function(e){e.preventDefault();
 if(locked||d.classList.contains('opened'))return;
 d.classList.add('opened');
 if(type==='ahmed'){
