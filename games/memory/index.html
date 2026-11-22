@@ -2,77 +2,71 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Ahmed TV - لعبة الذاكرة</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%!important; height: 100svh!important; max-height: 100svh!important; overflow: hidden!important; overscroll-behavior:none; }
   body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
     background: radial-gradient(circle at center, #111 0%, #000 100%);
     color: #fff; 
-    height: 100vh;
-    height: 100dvh;
     display: flex; 
     flex-direction: column;
     align-items: center; 
     justify-content: space-between;
-    padding: 10px;
+    padding: 6px 10px 4px 10px;
     overflow: hidden;
   }
-
   .header {
     text-align: center;
     width: 100%;
     flex-shrink: 0;
-    margin-top: 10px;
+    margin-top: 4px;
+    display:flex; flex-direction:column; align-items:center;
   }
-
+  .logo-img { width: 55px; height: 55px; border-radius: 50%; border: 3px solid #00e5ff; object-fit: cover; display:block; margin-bottom: 3px; background:#fff; }
   .header h1 {
-    font-size: 24px;
+    font-size: 22px;
     color: #00e5ff;
     text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-    margin-bottom: 5px;
+    margin-bottom: 3px;
   }
-
   .header h2 {
-    font-size: 18px;
+    font-size: 16px;
     color: #ff0055;
     text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
-
   .stats { 
-    margin-bottom: 10px; 
+    margin-bottom: 6px; 
     color: #a0a0b0; 
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
     background: rgba(255,255,255,0.05);
-    padding: 8px 15px;
+    padding: 6px 15px;
     border-radius: 20px;
     display: inline-block;
     border: 1px solid #333;
   }
-
-  /* منطقة اللعب */
   .board-container {
     width: 95vw;
-    max-width: 450px;
+    max-width: 430px;
     aspect-ratio: 1 / 1;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
-    margin: 10px 0;
+    min-height:0;
+    margin: 6px 0;
   }
-
   .board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 8px;
     width: 100%;
     height: 100%;
   }
-
   .card {
     background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
     border-radius: 12px;
@@ -86,22 +80,19 @@
     user-select: none;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
   }
-
   .card.flipped { 
     background: #0f3460; 
     border-color: #00e5ff;
     transform: rotateY(180deg); 
   }
-  
   .card.matched { 
     background: #14552d; 
     border-color: #2ecc71;
     cursor: default; 
     opacity: 0.6; 
   }
-
   .btn {
-    padding: 12px 30px;
+    padding: 11px 30px;
     background: linear-gradient(135deg, #00e5ff, #0077ff);
     color: #000; 
     border: none; 
@@ -110,49 +101,49 @@
     font-weight: 900;
     cursor: pointer;
     box-shadow: 0 0 15px rgba(0,229,255,0.4);
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     flex-shrink: 0;
     transition: transform 0.1s;
   }
   .btn:active { transform: scale(0.95); }
-
   a.back { 
     color: #666; 
     text-decoration: none; 
     font-size: 13px;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     flex-shrink: 0;
   }
 </style>
 </head>
 <body>
-
   <div class="header">
+    <img src="../../logo.png" alt="Ahmed TV" class="logo-img">
     <h1>🧠 لعبة الذاكرة</h1>
     <h2>أحمد عبدالعزيز - Ahmed TV</h2>
     <div class="stats">الحركات: <span id="moves">0</span> | الأزواج: <span id="pairs">0</span>/8</div>
   </div>
-
   <div class="board-container">
     <div class="board" id="board"></div>
   </div>
-
   <button class="btn" onclick="init()">إعادة اللعب 🔄</button>
   <a class="back" href="../../index.html">← رجوع للرئيسية</a>
-
 <script>
 const emojis = ['🍎','🍌','🍇','🍓','🍒','🥝','🍑','🍍'];
 let cards = [], flipped = [], matched = 0, moves = 0, lock = false;
-
+var soundOn=true;
+var _ahmedAudio=null;
+var _ahlaPlayed=false;
+function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
+document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 function init() {
+  playAhmedVoice('ebda');
   cards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
   flipped = []; matched = 0; moves = 0; lock = false;
   document.getElementById('moves').textContent = 0;
   document.getElementById('pairs').textContent = 0;
-  
   const board = document.getElementById('board');
   board.innerHTML = '';
-  
   cards.forEach((emoji, i) => {
     const card = document.createElement('div');
     card.className = 'card';
@@ -162,26 +153,24 @@ function init() {
     board.appendChild(card);
   });
 }
-
 function flip(card) {
   if (lock || card.classList.contains('flipped') || card.classList.contains('matched')) return;
-  
   card.textContent = card.dataset.emoji;
   card.classList.add('flipped');
   flipped.push(card);
-  
   if (flipped.length === 2) {
     moves++;
     document.getElementById('moves').textContent = moves;
     lock = true;
-    
     if (flipped[0].dataset.emoji === flipped[1].dataset.emoji) {
+      playAhmedVoice('sah');
       flipped.forEach(c => c.classList.add('matched'));
       matched++;
       document.getElementById('pairs').textContent = matched;
       flipped = []; lock = false;
-      if (matched === 8) setTimeout(() => alert('🎉 مبروك يا بطل! خلصت اللعبة في ' + moves + ' حركة'), 300);
+      if (matched === 8) { playAhmedVoice('kesebt'); setTimeout(() => alert('🎉 مبروك يا بطل! خلصت اللعبة في ' + moves + ' حركة'), 400); }
     } else {
+      playAhmedVoice('ghalat');
       setTimeout(() => {
         flipped.forEach(c => { c.classList.remove('flipped'); c.textContent = ''; });
         flipped = []; lock = false;
@@ -189,9 +178,7 @@ function flip(card) {
     }
   }
 }
-
 init();
 </script>
- 
 </body>
 </html>
