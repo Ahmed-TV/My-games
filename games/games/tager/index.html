@@ -1,1 +1,138 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة التاجر | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation}
+.header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2px}
+.logo-wrap{width:52px;height:52px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#000}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:22px;color:#facc15;line-height:1.2}
+h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2px}
+.names{font-size:13px;color:#cbd5e1;font-weight:bold;margin-bottom:4px}
+.names b{color:#facc15;font-size:15px}
+.score{display:flex;gap:10px;justify-content:center;margin:3px 0 6px}
+.stat{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:4px 14px;min-width:85px;text-align:center}
+.stat b{display:block;font-size:18px;color:#facc15}
+.stat span{font-size:10px;color:#94a3b8}
+#game{width:100%;max-width:500px;flex:1;min-height:0;background:#1e293b;border:4px solid #f59e0b;border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
+#product{font-size:52px}
+#productName{font-size:20px;font-weight:900;color:#facc15}
+#price{font-size:32px;font-weight:900;background:#fff;color:#0f172a;border-radius:12px;padding:6px 18px}
+#trend{font-size:14px;font-weight:900;min-height:20px}
+#msg{font-size:15px;font-weight:900;min-height:22px;text-align:center;color:#facc15}
+.btns{display:flex;gap:10px;width:100%;justify-content:center}
+.btn{background:#f59e0b;color:#000;border:none;padding:13px 18px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;flex:1;max-width:160px}
+.btn.buy{background:#22c55e;color:#fff}
+.btn.sell{background:#ef4444;color:#fff}
+.btn:active{transform:scale(.95)}
+.btn:disabled{opacity:.4}
+#timer{font-size:14px;background:#ef4444;padding:4px 12px;border-radius:20px;font-weight:900}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
+#overlay h2{font-size:24px;color:#facc15}
+#overlay p{font-size:14px;line-height:1.7;color:#e2e8f0}
+.footer{font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;flex-shrink:0}
+.footer a{color:#facc15;text-decoration:none}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<div class="header">
+<div class="top-row">
+<div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div>
+<h1>لعبة التاجر<small>AHMED TV TRADER</small></h1>
+</div>
+<div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+<div class="score">
+<div class="stat"><b id="money">100</b><span>فلوسك 💰</span></div>
+<div class="stat"><b id="stock">0</b><span>بضاعتك 📦</span></div>
+<div class="stat"><b id="timeEl">60</b><span>الوقت ⏰</span></div>
+</div>
+</div>
+<div id="game">
+<div id="overlay">
+<h2>لعبة التاجر 💰</h2>
+<p><b>Ahmed TV</b> - انت التاجر!<br>معاك <b style="color:#facc15">100 جنيه</b> - اشتري رخيص وبيع غالي!<br>السعر بيطلع وينزل كل ثانية - اشتري لما يرخص وبيع لما يغلى!<br>معاك 60 ثانية - جمع فلوس أكتر!</p>
+<button class="btn" id="startBtn">▶ افتح المحل</button>
+</div>
+<div id="timer">⏰ 60 ثانية</div>
+<div id="product">🍎</div>
+<div id="productName">تفاح</div>
+<div id="price">50 جنيه</div>
+<div id="trend">📈 السعر بيتحرك...</div>
+<div id="msg">اشتري لما السعر يرخص!</div>
+<div class="btns">
+<button class="btn buy" id="buyBtn">🛒 اشتري</button>
+<button class="btn sell" id="sellBtn">💵 بيع</button>
+</div>
+<div style="font-size:12px;color:#94a3b8">كل دوسة = 1 قطعة</div>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+<script>
+var money=100,stock=0,timeLeft=60,timer=null,priceTimer=null,price=50,locked=true,startMoney=100;
+var moneyEl=document.getElementById('money'),stockEl=document.getElementById('stock'),timeEl=document.getElementById('timeEl'),priceEl=document.getElementById('price'),trendEl=document.getElementById('trend'),msgEl=document.getElementById('msg'),timerEl=document.getElementById('timer'),overlay=document.getElementById('overlay'),productEl=document.getElementById('product'),productNameEl=document.getElementById('productName');
+var PRODUCTS=[{e:'🍎',n:'تفاح'},{e:'🍌',n:'موز'},{e:'🍇',n:'عنب'},{e:'🥕',n:'جزر'},{e:'🍞',n:'عيش'},{e:'🧀',n:'جبنة'},{e:'🥚',n:'بيض'},{e:'🍫',n:'شوكولاتة'}];
+var prodIdx=0;
+var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+function newProduct(){
+prodIdx=Math.floor(Math.random()*PRODUCTS.length);
+var p=PRODUCTS[prodIdx];productEl.textContent=p.e;productNameEl.textContent=p.n;
+price=30+Math.floor(Math.random()*40);priceEl.textContent=price+' جنيه';trendEl.textContent='📊 سعر جديد!';
+}
+function tickPrice(){
+if(locked)return;
+var old=price;
+var change=Math.floor(Math.random()*21)-10;
+price=Math.max(10,Math.min(120,price+change));
+priceEl.textContent=price+' جنيه';
+if(price>old){trendEl.textContent='📈 السعر طلع! بيع دلوقتي!';trendEl.style.color='#22c55e';}
+else if(price<old){trendEl.textContent='📉 السعر نزل! اشتري دلوقتي!';trendEl.style.color='#ef4444';}
+else{trendEl.textContent='➡️ السعر ثابت';trendEl.style.color='#facc15';}
+}
+function buy(){
+if(locked)return;
+if(money<price){msgEl.textContent='❌ فلوسك مش كفاية!';playAhmedVoice('ghalat');return;}
+money-=price;stock++;moneyEl.textContent=money;stockEl.textContent=stock;
+msgEl.textContent='✅ اشتريت '+PRODUCTS[prodIdx].n+' بـ '+price+' جنيه';playAhmedVoice('sah');
+}
+function sell(){
+if(locked)return;
+if(stock<=0){msgEl.textContent='❌ معندكش بضاعة تبيعها! اشتري الأول!';playAhmedVoice('hawel');return;}
+money+=price;stock--;moneyEl.textContent=money;stockEl.textContent=stock;
+msgEl.textContent='💵 بعت '+PRODUCTS[prodIdx].n+' بـ '+price+' جنيه';playAhmedVoice('sah');
+}
+function endGame(){
+locked=true;
+if(priceTimer)clearInterval(priceTimer);
+if(timer)clearInterval(timer);
+var total=money+stock*price;
+var profit=total-startMoney;
+if(profit>0)playAhmedVoice('kesebt');else playAhmedVoice('khesert');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:40px">'+(profit>0?'🏆':'💔')+'</div><h2>'+(profit>0?'مبروك يا تاجر!':'خسرت يا تاجر!')+'</h2><p>فلوسك: <b style="color:#facc15;font-size:22px">'+money+'</b> جنيه<br>بضاعتك: <b style="color:#facc15">'+stock+'</b> قطعة<br>المكسب: <b style="color:'+(profit>0?'#22c55e':'#ef4444')+'">'+profit+'</b> جنيه</p><button class="btn" id="againBtn">🔄 افتح تاني</button>';
+document.getElementById('againBtn').onclick=startGame;
+}
+function startGame(){
+playAhmedVoice('ebda');
+money=100;stock=0;timeLeft=60;locked=false;
+moneyEl.textContent='100';stockEl.textContent='0';timeEl.textContent='60';timerEl.textContent='⏰ 60 ثانية';
+overlay.style.display='none';newProduct();msgEl.textContent='اشتري لما السعر يرخص!';
+if(timer)clearInterval(timer);if(priceTimer)clearInterval(priceTimer);
+timer=setInterval(function(){timeLeft--;timeEl.textContent=timeLeft;timerEl.textContent='⏰ '+timeLeft+' ثانية';if(timeLeft<=0)endGame();},1000);
+priceTimer=setInterval(tickPrice,1200);
+setInterval(function(){if(!locked && Math.random()<0.15)newProduct();},8000);
+}
+document.getElementById('startBtn').onclick=startGame;
+document.getElementById('buyBtn').onpointerdown=function(e){e.preventDefault();buy();};
+document.getElementById('sellBtn').onpointerdown=function(e){e.preventDefault();sell();};
+</script>
+</body>
+</html>
