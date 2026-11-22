@@ -51,12 +51,14 @@ footer a{color:#8B4513;text-decoration:none;font-weight:700}
 document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 var moving=document.getElementById('moving'), falling=document.getElementById('falling'), pyramid=document.getElementById('pyramid'), msg=document.getElementById('msg'), overlay=document.getElementById('overlay');
 var playing=false, mx=10, dir=1, moveTimer=null, score=0, stage=1, best=+(localStorage.getItem('ahmed_pyramid_big_best')||0);
-var soundOn=true;
+var soundOn=true; // كل أصوات أحمد: ahla=ترحيب, ebda=ابدأ, sah=صح, ghalat=غلط, hawel=حاول تاني, kesebt=كسبت مرحلة/كسبت اللعبة, khesert=خسرت
 // صوت أحمد - ملف واحد بيتعاد استخدامه عشان الصوت ميقفش
 var _ahmedAudio=null;
 function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
 function playAhmedVoice(name){ try{ if(!soundOn) return; var a=getAhmedAudio(); try{a.pause();}catch(e){} a.src='../../sounds/'+name+'.mp3'; a.currentTime=0; a.volume=1; var pr=a.play(); if(pr) pr.catch(function(){}); }catch(e){} }
-document.addEventListener('click',function(){ try{ var a=getAhmedAudio(); a.volume=0.01; var pr=a.play(); if(pr) pr.then(function(){a.pause();a.volume=1;}).catch(function(){}); }catch(e){} }, {once:true});
+// أهلا - ترحيب أول ما يلمس اللعبة
+var _ahlaPlayed=false;
+document.addEventListener('click',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; try{ var a2=getAhmedAudio(); a2.src='../../sounds/ahla.mp3'; a2.play().catch(function(){}); }catch(e){} } try{ var a=getAhmedAudio(); a.volume=0.01; var pr=a.play(); if(pr) pr.then(function(){a.pause();a.volume=1;}).catch(function(){}); }catch(e){} }, {once:true});
 function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; if(soundOn) playAhmedVoice('sah'); }
 function playBeep(f,d){ playAhmedVoice('sah'); }
 function playWin(){ playAhmedVoice('kesebt'); }
@@ -68,10 +70,10 @@ function renderPyramid(){ pyramid.innerHTML=''; var needs=[5,4,3,2,1]; var left=
 function startGame(){ playAhmedVoice('ebda'); score=0; mx=10; dir=1; playing=true; document.getElementById('score').textContent='0'; document.getElementById('stage').textContent='المرحلة '+stage+' / 5'; renderPyramid(); overlay.style.display='none'; moving.style.display='flex'; moving.style.left=mx+'%'; msg.textContent='المرحلة '+stage+' من 5'; clearInterval(moveTimer); var sp=speedForStage(); moveTimer=setInterval(function(){ if(!playing) return; mx+=dir*sp; if(mx>85){dir=-1;} if(mx<2){dir=1;} moving.style.left=mx+'%'; },30); }
 function dropBlock(){ if(!playing) return; var startX=mx; moving.style.display='none'; falling.style.display='flex'; falling.style.left=startX+'%'; falling.style.top='10px'; var y=10; var viewH=document.getElementById('view').offsetHeight; var fall=setInterval(function(){ y+=9; falling.style.top=y+'px'; if(y>viewH-70){ clearInterval(fall); falling.style.display='none'; checkDrop(startX); } },20); }
 function checkDrop(x){ var ok=(x>16&&x<80); if(ok){ score++; document.getElementById('score').textContent=score; renderPyramid(); msg.textContent='عاش! حجر في الهرم! 🔺'; playAhmedVoice('sah'); if(score>=15){ stageComplete(); return; } moving.style.display='flex'; } else { playAhmedVoice('ghalat'); loseGame(); } }
-function stageComplete(){ playing=false; clearInterval(moveTimer); if(stage>=5){ playAhmedVoice('kesebt'); if(score>best){ best=score; localStorage.setItem('ahmed_pyramid_big_best',best); document.getElementById('best').textContent=best; } pyramid.innerHTML=pyramid.innerHTML+'<div class="py-row"><div class="py-block top">👑</div></div>'; overlay.style.display='flex'; overlay.innerHTML='<h2>بطل! خلصت الـ 5 مراحل! 👑</h2><p>بنيت 5 أهرامات - انت ملك الهرم!</p><button id="startBtn" onclick="restartAll()">العب من الأول</button>'; } else { playAhmedVoice('sah'); overlay.style.display='flex'; overlay.innerHTML='<h2>خلصت المرحلة '+stage+'! 🎉</h2><p>فاضل '+(5-stage)+' مراحل - اللي جاية أصعب!</p><button id="startBtn" onclick="nextStage()">المرحلة اللي بعدها</button>'; } }
+function stageComplete(){ playing=false; clearInterval(moveTimer); if(stage>=5){ playAhmedVoice('kesebt'); if(score>best){ best=score; localStorage.setItem('ahmed_pyramid_big_best',best); document.getElementById('best').textContent=best; } pyramid.innerHTML=pyramid.innerHTML+'<div class="py-row"><div class="py-block top">👑</div></div>'; overlay.style.display='flex'; overlay.innerHTML='<h2>بطل! خلصت الـ 5 مراحل! 👑</h2><p>بنيت 5 أهرامات - انت ملك الهرم!</p><button id="startBtn" onclick="restartAll()">العب من الأول</button>'; } else { playAhmedVoice('kesebt'); // كسبت المرحلة overlay.style.display='flex'; overlay.innerHTML='<h2>خلصت المرحلة '+stage+'! 🎉</h2><p>فاضل '+(5-stage)+' مراحل - اللي جاية أصعب!</p><button id="startBtn" onclick="playAhmedVoice('ebda'); setTimeout(nextStage,300)">المرحلة اللي بعدها</button>'; } }
 function nextStage(){ stage++; startGame(); }
 function restartAll(){ stage=1; startGame(); }
-function loseGame(){ playing=false; clearInterval(moveTimer); playAhmedVoice('khesert'); overlay.style.display='flex'; overlay.innerHTML='<h2>الحجر وقع! 😢</h2><p>كنت في المرحلة '+stage+' من 5<br>جمعت '+score+' حجرة</p><button id="startBtn" onclick="startGame()">حاول تاني</button>'; }
+function loseGame(){ playing=false; clearInterval(moveTimer); playAhmedVoice('khesert'); overlay.style.display='flex'; overlay.innerHTML='<h2>الحجر وقع! 😢</h2><p>كنت في المرحلة '+stage+' من 5<br>جمعت '+score+' حجرة</p><button id="startBtn" onclick="playAhmedVoice('hawel'); setTimeout(startGame,400)">حاول تاني</button>'; }
 renderPyramid();
 </script>
 </body></html>
