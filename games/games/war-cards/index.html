@@ -1,1 +1,115 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>حرب الكوتشينة | Ahmed TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation}
+.header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2px}
+.logo-wrap{width:52px;height:52px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#000}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:22px;color:#facc15;line-height:1.2}
+h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2px}
+.names{font-size:13px;color:#cbd5e1;font-weight:bold;margin-bottom:4px}
+.names b{color:#facc15;font-size:15px}
+.score{display:flex;gap:10px;justify-content:center;margin:3px 0 6px}
+.stat{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:4px 14px;min-width:85px;text-align:center}
+.stat b{display:block;font-size:18px;color:#facc15}
+.stat span{font-size:10px;color:#94a3b8}
+#game{width:100%;max-width:500px;flex:1;min-height:0;background:#1e293b;border:4px solid #f59e0b;border-radius:16px;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+.row{display:flex;gap:12px;justify-content:center;width:100%}
+.player-box{flex:1;text-align:center}
+.player-box span{font-size:13px;font-weight:900;color:#facc15}
+.big-card{width:100%;max-width:130px;height:170px;margin:6px auto;background:#fff;border-radius:12px;color:#000;display:flex;flex-direction:column;justify-content:space-between;padding:8px;font-weight:900;box-shadow:0 6px 14px rgba(0,0,0,.4)}
+.big-card.red{color:#dc2626}
+.big-card.back{background:#b91c1c;color:#fff;justify-content:center;align-items:center;font-size:18px;border:2px solid #991b1b}
+.big-card .top-num{font-size:22px;line-height:1}
+.big-card .center{font-size:52px;text-align:center;line-height:1}
+.big-card .bottom-num{font-size:22px;line-height:1;text-align:left;transform:rotate(180deg)}
+#msg{font-size:17px;font-weight:900;min-height:26px;text-align:center;color:#facc15}
+#round{font-size:12px;color:#94a3b8}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
+#overlay h2{font-size:24px;color:#facc15}
+#overlay p{font-size:14px;line-height:1.7;color:#e2e8f0}
+.btn{background:#f59e0b;color:#000;border:none;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:220px}
+.btn:active{transform:scale(.95)}
+.footer{font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;flex-shrink:0}
+.footer a{color:#facc15;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="top-row">
+<div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div>
+<h1>حرب الكوتشينة<small>AHMED TV WAR</small></h1>
+</div>
+<div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
+<div class="score">
+<div class="stat"><b id="myScore">0</b><span>أنت</span></div>
+<div class="stat"><b id="roundEl">جولة 1 / 10</b><span>الجولة</span></div>
+<div class="stat"><b id="cpuScore">0</b><span>الكمبيوتر</span></div>
+</div>
+</div>
+<div id="game">
+<div id="overlay">
+<h2>حرب الكوتشينة ⚔️</h2>
+<p><b>Ahmed TV</b> - أنت ضد الكمبيوتر!<br>دوس على الكارت، والكارت الأعلى بيكسب النقطة.<br>اللي يوصل 10 جولات الأول.. هو اللي يكسب!</p>
+<button class="btn" id="startBtn">▶ ابدأ الحرب</button>
+</div>
+<div class="row">
+<div class="player-box"><span>🖥️ الكمبيوتر</span><div id="cpuCard" class="big-card back">Ahmed TV</div></div>
+<div class="player-box"><span>😀 أنت</span><div id="myCard" class="big-card back">Ahmed TV</div></div>
+</div>
+<div id="msg">دوس على كارتك عشان تلعب!</div>
+<div id="round">الجولة 1 من 10</div>
+<button class="btn" id="playBtn">🃏 العب الكارت</button>
+</div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
+<script>
+var myScore=0,cpuScore=0,round=1,totalRounds=10,locked=false;
+var myEl=document.getElementById('myScore'),cpuEl=document.getElementById('cpuScore'),roundEl=document.getElementById('roundEl'),roundTxt=document.getElementById('round'),msgEl=document.getElementById('msg'),myCardEl=document.getElementById('myCard'),cpuCardEl=document.getElementById('cpuCard'),overlay=document.getElementById('overlay'),playBtn=document.getElementById('playBtn'),startBtn=document.getElementById('startBtn');
+var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
+function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
+function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+var VALS=[{v:2,l:'2'},{v:3,l:'3'},{v:4,l:'4'},{v:5,l:'5'},{v:6,l:'6'},{v:7,l:'7'},{v:8,l:'8'},{v:9,l:'9'},{v:10,l:'10'},{v:11,l:'J'},{v:12,l:'Q'},{v:13,l:'K'},{v:14,l:'A'}];
+function draw(){var c=VALS[Math.floor(Math.random()*VALS.length)];var red=Math.random()<0.5;return{val:c.v,label:c.l,red:red,sym:red?'♥':'♠'};}
+function render(el,card){el.className='big-card'+(card.red?' red':'');el.innerHTML='<div class="top-num">'+card.label+card.sym+'</div><div class="center">'+card.label+'</div><div class="bottom-num">'+card.label+card.sym+'</div>';}
+function playRound(){
+if(locked||round>totalRounds)return;
+locked=true;
+var mine=draw(),cpu=draw();
+render(myCardEl,mine);render(cpuCardEl,cpu);
+if(mine.val>cpu.val){myScore++;msgEl.textContent='✅ كارتك أعلى! نقطة ليك!';playAhmedVoice('sah');}
+else if(cpu.val>mine.val){cpuScore++;msgEl.textContent='❌ كارت الكمبيوتر أعلى! نقطة ليه!';playAhmedVoice('ghalat');}
+else{msgEl.textContent='🤝 تعادل! محدش خد نقطة';playAhmedVoice('hawel');}
+myEl.textContent=myScore;cpuEl.textContent=cpuScore;
+setTimeout(function(){
+if(round>=totalRounds){endGame();}
+else{round++;roundEl.textContent='جولة '+round+' / 10';roundTxt.textContent='الجولة '+round+' من 10';myCardEl.className='big-card back';myCardEl.textContent='Ahmed TV';cpuCardEl.className='big-card back';cpuCardEl.textContent='Ahmed TV';msgEl.textContent='دوس على كارتك عشان تلعب!';locked=false;}
+},1400);
+}
+function startGame(){
+playAhmedVoice('ebda');
+myScore=0;cpuScore=0;round=1;locked=false;
+myEl.textContent='0';cpuEl.textContent='0';roundEl.textContent='جولة 1 / 10';roundTxt.textContent='الجولة 1 من 10';msgEl.textContent='دوس على كارتك عشان تلعب!';
+myCardEl.className='big-card back';myCardEl.textContent='Ahmed TV';cpuCardEl.className='big-card back';cpuCardEl.textContent='Ahmed TV';
+overlay.style.display='none';
+}
+function endGame(){
+var win=myScore>cpuScore,draw2=myScore===cpuScore;
+if(win)playAhmedVoice('kesebt');else if(!draw2)playAhmedVoice('khesert');else playAhmedVoice('hawel');
+overlay.style.display='flex';
+overlay.innerHTML='<div style="font-size:40px">'+(win?'🏆':draw2?'🤝':'💔')+'</div><h2>'+(win?'مبروك! كسبت الحرب!':draw2?'تعادل!': 'الكمبيوتر كسب المرة دي!')+'</h2><p>نتيجتك: <b style="color:#facc15;font-size:22px">'+myScore+'</b> - الكمبيوتر: <b style="color:#facc15;font-size:22px">'+cpuScore+'</b><br>Ahmed TV بيقولك: العب تاني وانتقم!</p><button class="btn" id="againBtn">🔄 العب تاني</button>';
+document.getElementById('againBtn').onclick=startGame;
+}
+startBtn.onclick=startGame;
+playBtn.onclick=playRound;
+myCardEl.onclick=playRound;
+</script>
+</body>
+</html>
