@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - مطاردة العربيات</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:none}
-html,body{overflow-y:auto;overflow-x:hidden}
-body{font-family:Tahoma,Arial;background:#1A0033;display:flex;justify-content:center;padding:4px 8px}
-.game{width:100%;max-width:500px;display:flex;flex-direction:column;background:linear-gradient(180deg,#FF1744 0%,#FF9800 20%,#FFD600 40%,#00E676 60%,#00E5FF 80%,#6D28D9 100%);border:4px solid #00E5FF;border-radius:28px;padding:6px}
-header{display:flex;align-items:center;gap:10px;justify-content:center;text-align:center}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none!important;-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial;background:#1A0033;display:flex;justify-content:center;padding:4px 8px;height:100svh!important;overflow:hidden!important}
+.game{width:100%;max-width:500px;height:100%!important;height:100svh!important;max-height:100svh!important;display:flex;flex-direction:column;overflow:hidden!important;background:linear-gradient(180deg,#FF1744 0%,#FF9800 20%,#FFD600 40%,#00E676 60%,#00E5FF 80%,#6D28D9 100%);border:4px solid #00E5FF;border-radius:28px;padding:6px}
+header{display:flex;align-items:center;gap:10px;flex-shrink:0;justify-content:center;text-align:center}
 .logo-wrap{width:88px;height:88px;flex-shrink:0;border-radius:50%;border:4px solid #00E5FF;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px #00E5FF,0 0 30px #FFD600;padding:0;background:#000}
 .logo{width:100%;height:100%;border-radius:50%;border:0;object-fit:cover;padding:0;display:block}
 .brand{font-size:24px;font-weight:900;color:#FFD600}
 .names{font-size:22px;font-weight:900;color:#FFE066}
 .names small{display:block;font-size:16px;color:#FFE066}
-.stats{display:flex;gap:4px;margin:4px 0}
+.stats{display:flex;gap:4px;margin:3px 0;flex-shrink:0}
 .stat{flex:1;background:#FFF176;border:2px solid #00E5FF;border-radius:10px;text-align:center;padding:2px}
 .stat b{display:block;color:#D50000}
 .stat span{font-size:9px;color:#666;font-weight:800}
-#view{height:320px;background:#111;border:2px solid #00E5FF;border-radius:14px;position:relative;overflow:hidden}
+#view{flex:1;min-height:0;height:auto;background:#111;border:2px solid #00E5FF;border-radius:14px;position:relative;overflow:hidden}
 #view canvas{width:100%;height:100%;display:block}
 #inGame{position:absolute;top:2px;left:0;right:0;text-align:center;pointer-events:none;line-height:1.2}
 #inGame div{font-weight:900;color:#FFD600;text-shadow:1px 1px 0 #000;font-size:13px}
 #inGame small{color:#fff;text-shadow:1px 1px 0 #D50000;font-size:10px}
 #overlay{position:absolute;inset:0;background:rgba(0,0,0,.65);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:5}
 #overlay button{margin-top:10px;padding:11px 24px;border:0;border-radius:20px;background:#FFD600;color:#D50000;font-weight:900;font-size:16px}
-.feedback{text-align:center;color:#FFD600;font-size:11px;font-weight:800;margin:2px 0}
-.controls{display:flex;gap:6px;direction:ltr}
-.cbtn{flex:1;padding:10px;border:2px solid #FFD600;border-radius:14px;background:#00E5FF;color:#000;font-weight:900;font-size:16px}
+.feedback{text-align:center;color:#FFD600;font-size:11px;font-weight:800;margin:1px 0;flex-shrink:0}
+.controls{display:flex;gap:6px;direction:ltr;flex-shrink:0}
+.cbtn{flex:1;padding:10px;border:2px solid #FFD600;border-radius:14px;background:#00E5FF;color:#000;font-weight:900;font-size:16px;-webkit-touch-callout:none!important;user-select:none!important;touch-action:manipulation}
 .cbtn.go{background:#FFD600}
-.btn-row{display:flex;gap:6px;margin-top:4px}
+.btn-row{display:flex;gap:6px;margin-top:3px;flex-shrink:0}
 .mainbtn{flex:2;padding:8px;border:0;border-radius:16px;background:#FFD600;color:#D50000;font-weight:900}
 .skipbtn{flex:1;padding:8px;border:2px solid #FFD600;border-radius:16px;background:#FF9800;color:#fff;font-weight:800}
-footer{text-align:center;color:#FFE066;font-size:10px;margin-top:4px;padding-bottom:4px}
+footer{text-align:center;color:#FFE066;font-size:10px;margin-top:2px;padding-bottom:2px;flex-shrink:0}
 footer a{color:#FFE066;text-decoration:none}
-@media(max-width:600px){#view{height:400px}}
+@media(max-width:600px){#view{flex:1;min-height:0;height:auto}}
 </style></head>
-<body><div class="game">
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false"><div class="game">
 <header><div class="logo-wrap"><img src="../../logo.png" class="logo" alt="Ahmed TV"></div><div style="flex:1"><div class="brand">مطاردة العربيات</div><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></div><button id="soundBtn" style="margin:2px auto;display:block;padding:3px 10px;border:2px solid #00E5FF;border-radius:20px;background:#fff;color:#D50000;font-weight:800;font-size:11px">الصوت: شغال</button></header>
 <div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="coins">0</b><span>فلوس</span></div><div class="stat"><b id="best">0</b><span>أعلى سكور</span></div></div>
 <div id="view"><canvas id="cv"></canvas><div id="inGame"><div>أحمد عبدالعزيز</div><small>Ahmed TV</small></div><div id="overlay"><h2>مطاردة العربيات</h2><p>سوق ولم الفلوس<br>واهرب من العربيات</p><button onclick="startGame()">ابدأ المطاردة</button></div></div>
@@ -47,19 +47,39 @@ footer a{color:#FFE066;text-decoration:none}
 <div class="btn-row"><button class="skipbtn" onclick="location.reload()">من الأول</button><button class="mainbtn" onclick="startGame()">مطاردة جديدة</button></div>
 <footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu', function(e){ e.preventDefault(); e.stopPropagation(); return false; }, true);
+document.addEventListener('selectstart', function(e){ e.preventDefault(); return false; }, true);
+document.addEventListener('dragstart', function(e){ e.preventDefault(); return false; }, true);
+window.addEventListener('contextmenu', function(e){ e.preventDefault(); e.stopPropagation(); return false; }, true);
+// ===== صوتك بدل الصفافير - FIXED =====
+// القديم كان بيستخدم Oscillator (صفارة) - دلوقتي بصوتك من ../../sounds/
+var soundOn=true, _ahmedAudio=null, _ahlaPlayed=false, _audioCache={};
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function getAhmedAudio(){ if(!_ahmedAudio){ _ahmedAudio=new Audio(); _ahmedAudio.preload='auto'; } return _ahmedAudio; }
+function playAhmedVoice(n){
+  try{
+    if(!soundOn) return;
+    var base=_audioCache[n];
+    var a = base ? base.cloneNode() : new Audio('../../sounds/'+n+'.mp3');
+    if(base) a.src=base.src;
+    a.currentTime=0; a.volume=1;
+    var p=a.play(); if(p) p.catch(function(){});
+  }catch(e){}
+}
+document.addEventListener('pointerdown', function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 var cv=document.getElementById('cv');var ctx=cv.getContext('2d');var W=400,H=300;var score=0,coins=0,best=0;
 try{best=Number(localStorage.getItem('car_chase_best')||0);}catch(e){}
 document.getElementById('best').textContent=best;
 var playing=false,px=0.5,tick=0,objs=[],moveL=false,moveR=false,boost=false;
 function resize(){var r=cv.parentElement.getBoundingClientRect();if(r.width>10){W=Math.floor(r.width);H=Math.floor(r.height);cv.width=W;cv.height=H;}}
 window.addEventListener('resize',resize);resize();setTimeout(resize,200);
-var soundOn=true,actx=null;
-function act(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(actx&&actx.state==='suspended')actx.resume();return actx;}
-function tone(f,d,v,t,dl){if(!soundOn)return;var c=act();if(!c)return;try{var o=c.createOscillator(),g=c.createGain(),t0=c.currentTime+(dl||0);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(0.0001,t0);g.gain.linearRampToValueAtTime(v||0.2,t0+0.02);g.gain.exponentialRampToValueAtTime(0.001,t0+d);o.connect(g);g.connect(c.destination);o.start(t0);o.stop(t0+d+0.05);}catch(e){}}
-function sndCoin(){tone(880,0.12,0.2,'sine',0);tone(1320,0.15,0.2,'sine',0.07);}
-function sndHit(){tone(150,0.35,0.25,'square',0);tone(80,0.35,0.25,'square',0.1);}
-function sndGo(){tone(200,0.3,0.15,'sawtooth',0);tone(400,0.3,0.15,'sawtooth',0.12);}
-document.addEventListener('pointerdown',function(){act();});
+// أصوات بصوتك - مش صفافير
+var _lastCoin=0;
+function sndCoin(){ var now=Date.now(); if(now-_lastCoin<350) return; _lastCoin=now; playAhmedVoice('sah'); }
+function sndHit(){ playAhmedVoice('khesert'); }
+function sndGo(){ playAhmedVoice('ebda'); }
 document.getElementById('soundBtn').addEventListener('click',function(){soundOn=!soundOn;this.textContent=soundOn?'الصوت: شغال':'الصوت: مطفي';if(soundOn)sndCoin();});
 var fuel=100;
 function updateFuel(){var bar=document.getElementById('fuelBar');var txt=document.getElementById('fuelText');var msg=document.getElementById('fuelMsg');if(bar){bar.style.width=fuel+'%';}if(txt){txt.textContent=Math.floor(fuel)+'%';}if(msg){if(fuel<=0)msg.textContent='البنزين خلص! استنى يتملي...';else if(fuel<30)msg.textContent='البنزين قرب يخلص!';else if(boost)msg.textContent='بتطير بالبنزين!';else msg.textContent='البنزين مليان - دوس بنزين واطير!';}}
@@ -95,15 +115,17 @@ ctx.fillStyle='#FFD600';ctx.font='14px Arial';ctx.textAlign='left';ctx.fillText(
 function loop(){tick++;if(moveL)px=Math.max(0.22,px-0.015);if(moveR)px=Math.min(0.78,px+0.015);if(tick%150===0)spawn();for(var i=objs.length-1;i>=0;i--){var o=objs[i];o.z-=(boost&&fuel>0)?0.009:0.003;if(o.z<0){objs.splice(i,1);continue;}var depth=1-o.z;if(playing&&depth>0.88&&depth<0.98&&Math.abs(o.x-px)<0.08){if(o.isCoin){objs.splice(i,1);coins++;score+=100;sndCoin();document.getElementById('coins').textContent=coins;document.getElementById('score').textContent=score;}else{sndHit();gameOver();return;}}}if(playing){score+=boost?3:1;document.getElementById('score').textContent=score;}draw();requestAnimationFrame(loop);}
 function gameOver(){playing=false;if(score>best){best=score;try{localStorage.setItem('car_chase_best',best);}catch(e){}document.getElementById('best').textContent=best;}var ov=document.getElementById('overlay');ov.style.display='flex';ov.innerHTML='<h2>خبطت!</h2><p>سكورك: '+score+'<br>فلوس: '+coins+'</p><button onclick="startGame()">العب تاني</button>';}
 function startGame(){objs=[];score=0;coins=0;px=0.5;playing=true;document.getElementById('score').textContent='0';document.getElementById('coins').textContent='0';document.getElementById('overlay').style.display='none';document.getElementById('feedback').textContent='دوس بنزين ولم الفلوس!';sndGo();}
-document.getElementById('btnLeft').addEventListener('pointerdown',function(){moveL=true;});
-document.getElementById('btnLeft').addEventListener('pointerup',function(){moveL=false;});
-document.getElementById('btnLeft').addEventListener('pointerleave',function(){moveL=false;});
-document.getElementById('btnRight').addEventListener('pointerdown',function(){moveR=true;});
-document.getElementById('btnRight').addEventListener('pointerup',function(){moveR=false;});
-document.getElementById('btnRight').addEventListener('pointerleave',function(){moveR=false;});
-document.getElementById('btnGo').addEventListener('pointerdown',function(){boost=true;this.style.background='#FF1744';this.style.color='#fff';this.textContent='بنزين';sndGo();});
-document.getElementById('btnGo').addEventListener('pointerup',function(){boost=false;this.style.background='#FFD600';this.style.color='#D50000';this.textContent='بنزين';});
+function bindBtn(id, down, up){
+  var el=document.getElementById(id);
+  el.addEventListener('pointerdown', function(e){ e.preventDefault(); down(); });
+  el.addEventListener('pointerup', function(){ if(up) up(); });
+  el.addEventListener('pointerleave', function(){ if(up) up(); });
+  el.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
+  el.oncontextmenu=function(){ return false; };
+}
+bindBtn('btnLeft', function(){ moveL=true; }, function(){ moveL=false; });
+bindBtn('btnRight', function(){ moveR=true; }, function(){ moveR=false; });
+bindBtn('btnGo', function(){ boost=true; var b=document.getElementById('btnGo'); b.style.background='#FF1744'; b.style.color='#fff'; sndGo(); }, function(){ boost=false; var b=document.getElementById('btnGo'); b.style.background='#FFD600'; b.style.color='#D50000'; });
 loop();
 </script>
-
 </body></html>
