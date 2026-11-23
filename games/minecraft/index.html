@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - لعبة البناء والتكسير</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
-html,body{overflow-y:auto;overflow-x:hidden}
-body{font-family:Tahoma,Arial,sans-serif;background:#7ED3FF;display:flex;justify-content:center;padding:3px 6px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#7ED3FF;display:flex;justify-content:center;padding:3px 6px;height:100svh!important;overflow:hidden!important}
 body::before{content:"☁️ ☁️ ☁️";position:fixed;top:6px;left:0;right:0;text-align:center;font-size:22px;opacity:.7;pointer-events:none;z-index:0}
-.game{width:100%;max-width:500px;display:flex;flex-direction:column;background:linear-gradient(180deg,#FFF9C4 0%,#FFE9A8 35%,#C8F7C5 65%,#A8E6A1 100%);border:4px solid #7B1FA2;border-radius:38px 38px 18px 18px;padding:5px 7px;position:relative;z-index:1;box-shadow:0 0 0 6px #fff, 0 0 0 9px #7B1FA2, 0 10px 30px rgba(0,0,0,.25)}
+.game{width:100%;max-width:500px;height:100%!important;height:100svh!important;max-height:100svh!important;display:flex;flex-direction:column;overflow:hidden!important;background:linear-gradient(180deg,#FFF9C4 0%,#FFE9A8 35%,#C8F7C5 65%,#A8E6A1 100%);border:4px solid #7B1FA2;border-radius:38px 38px 18px 18px;padding:5px 7px;position:relative;z-index:1;box-shadow:0 0 0 6px #fff, 0 0 0 9px #7B1FA2, 0 10px 30px rgba(0,0,0,.25)}
 header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;text-align:center;flex-shrink:0}
-.logo-img{width:88px;height:88px;border-radius:50%;border:4px solid #D32F2F;object-fit:cover;background:#fff;margin-bottom:1px}
-.brand{font-size:22px;font-weight:900;color:#B71C1C}
-.names{font-size:22px;font-weight:900;color:#B71C1C}
-.names small{display:block;font-size:16px;color:#D32F2F;font-weight:900}
-.stats{display:flex;gap:4px;width:100%;margin:3px 0}
+.logo-img{width:72px;height:72px;border-radius:50%;border:4px solid #D32F2F;object-fit:cover;background:#fff;margin-bottom:1px}
+.brand{font-size:20px;font-weight:900;color:#B71C1C}
+.names{font-size:19px;font-weight:900;color:#B71C1C}
+.names small{display:block;font-size:14px;color:#D32F2F;font-weight:900}
+.stats{display:flex;gap:4px;width:100%;margin:2px 0;flex-shrink:0}
 .stat{flex:1;background:#fff;border:1.5px solid #D32F2F;border-radius:9px;padding:2px 1px;text-align:center;line-height:1.1}
 .stat b{display:block;font-size:13px;color:#B71C1C}
 .stat span{font-size:9px;font-weight:800;color:#666}
-.modes{display:flex;gap:5px;width:100%;margin-bottom:4px}
+.modes{display:flex;gap:5px;width:100%;margin-bottom:3px;flex-shrink:0}
 .mode{flex:1;padding:5px 2px;border-radius:10px;border:2px solid #D32F2F;background:#fff;color:#B71C1C;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit;touch-action:manipulation}
 .mode.active{background:#D32F2F;color:#fff}
-.board{background:linear-gradient(180deg,#B3E5FC,#87CEEB);border:2px solid #5D4037;border-radius:12px;padding:3px;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(8,1fr);gap:2px;height:320px;flex-shrink:0}
-.cell{border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;background:rgba(255,255,255,.4);border:1px solid rgba(0,0,0,.08);touch-action:manipulation}
-.inv{display:flex;gap:3px;width:100%;margin-top:4px}
+.board{background:linear-gradient(180deg,#B3E5FC,#87CEEB);border:2px solid #5D4037;border-radius:12px;padding:3px;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(8,1fr);gap:2px;flex:1;min-height:0}
+.cell{border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;background:rgba(255,255,255,.4);border:1px solid rgba(0,0,0,.08);touch-action:manipulation;-webkit-touch-callout:none!important;user-select:none!important}
+.inv{display:flex;gap:3px;width:100%;margin-top:3px;flex-shrink:0}
 .inv-item{flex:1;background:#fff;border:1.5px solid #ccc;border-radius:8px;padding:2px 0;text-align:center;cursor:pointer;touch-action:manipulation}
 .inv-item.sel{border-color:#D32F2F;background:#FFEBEE}
 .inv-item div{font-size:17px;line-height:1}
 .inv-item span{font-size:8px;font-weight:800;color:#333}
-.feedback{min-height:16px;font-size:11px;font-weight:800;color:#B71C1C;text-align:center;margin:3px 0 2px 0}
+.feedback{min-height:16px;font-size:11px;font-weight:800;color:#B71C1C;text-align:center;margin:2px 0 1px 0;flex-shrink:0}
 .btn-row{display:flex;gap:6px;flex-shrink:0;background:rgba(255,255,255,.95);padding:4px 6px;border-top:2px dashed #7B1FA2;border-radius:10px;margin-top:2px}
 .mainbtn{flex:2;font-family:inherit;font-weight:800;border:0;border-radius:18px;padding:7px 10px;background:#D32F2F;color:#fff;cursor:pointer;font-size:13px}
 .skipbtn{flex:1;font-family:inherit;font-weight:800;border:2px solid #D32F2F;border-radius:18px;padding:7px 6px;background:#fff;color:#B71C1C;cursor:pointer;font-size:13px}
-footer{text-align:center;color:#D32F2F;font-size:10px;margin-top:2px;padding-bottom:2px}
+footer{text-align:center;color:#D32F2F;font-size:10px;margin-top:2px;padding-bottom:2px;flex-shrink:0}
 footer a{color:#D32F2F;text-decoration:none;font-weight:700}
 </style></head>
-<body oncontextmenu="return false"><div class="game">
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false"><div class="game">
 <header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">لعبة البناء والتكسير</div><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div><button id="soundBtn" style="margin:3px auto 0 auto;display:block;font-family:inherit;font-weight:800;border:2px solid #D32F2F;border-radius:20px;padding:3px 14px;background:#fff;color:#B71C1C;cursor:pointer;font-size:11px">الصوت: شغال</button></header>
-<div style="display:flex;flex-direction:column;position:relative">
+<div style="display:flex;flex-direction:column;position:relative;flex:1;min-height:0">
 <div class="stats"><div class="stat"><b id="score">0</b><span>النقط</span></div><div class="stat"><b id="broken">0</b><span>كسرت</span></div><div class="stat"><b id="built">0</b><span>بنيت</span></div></div>
 <div class="modes"><button class="mode active" id="modeBreak" onclick="setMode('break')">تكسير</button><button class="mode" id="modeBuild" onclick="setMode('build')">بناء</button></div>
 <div class="board" id="board"></div>
@@ -44,27 +44,32 @@ footer a{color:#D32F2F;text-decoration:none;font-weight:700}
 </div>
 <footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
-document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
-document.addEventListener('selectstart',function(e){e.preventDefault();return false;});
-document.addEventListener('dragstart',function(e){e.preventDefault();return false;});
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
 const BLOCKS={grass:"🟩",dirt:"🟫",stone:"⬜",wood:"🟧",leaf:"🌳",sand:"🟨",brick:"🧱",glass:"🩵"};
 const NAMES={grass:"عشب",dirt:"تراب",stone:"حجر",wood:"خشب",leaf:"ورق شجر",sand:"رمل",brick:"طوب",glass:"إزاز"};
 let grid=[], mode='break', selected='brick', score=0, broken=0, built=0, inv={grass:5,dirt:5,stone:5,wood:5,leaf:3,sand:5,brick:10,glass:5};
-let soundOn=true, audioCtx=null;
-function getCtx(){ if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(audioCtx&&audioCtx.state==='suspended') audioCtx.resume(); return audioCtx; }
-document.addEventListener('pointerdown',()=>getCtx());
-function tone(f,d=0.12,v=0.2,t='triangle',delay=0){ if(!soundOn) return; const ctx=getCtx(); if(!ctx) return; try{ const t0=ctx.currentTime+delay; const o=ctx.createOscillator(), g=ctx.createGain(); o.type=t; o.frequency.setValueAtTime(f,t0); g.gain.setValueAtTime(0.0001,t0); g.gain.linearRampToValueAtTime(v,t0+0.02); g.gain.exponentialRampToValueAtTime(0.001,t0+d); o.connect(g); g.connect(ctx.destination); o.start(t0); o.stop(t0+d+0.05);}catch(e){} }
-function playBreak(){ tone(180,.15,.25,'square',0); tone(120,.2,.2,'square',.1); }
-function playBuild(){ tone(400,.1,.2,'triangle',0); tone(600,.15,.2,'triangle',.08); }
+// ===== صوتك بدل الصفافير =====
+// القديم كان tone() بـ Oscillator - صفارة. دلوقتي بصوتك من ../../sounds/
+let soundOn=true, _audioCache={}, _ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function playBreak(){ playAhmedVoice('sah'); }
+function playBuild(){ playAhmedVoice('sah'); }
 function newWorld(){ score=0; broken=0; built=0; inv={grass:5,dirt:5,stone:5,wood:5,leaf:3,sand:5,brick:10,glass:5}; grid=[]; for(let r=0;r<8;r++){ grid[r]=[]; for(let c=0;c<10;c++){ let b=null; if(r===0) b=null; else if(r===1) b=null; else if(r===2){ b='leaf'; if(c===2||c===7) b=null; } else if(r===3){ if(c===2||c===7) b='wood'; else b='grass'; } else if(r===4) b='dirt'; else if(r===5) b='dirt'; else if(r===6) b='stone'; else b='stone'; if(r>=4&&Math.random()<0.12) b='sand'; if(r===3&&c>7) b='sand'; grid[r][c]=b; } }
  grid[2][4]='leaf'; grid[2][5]='leaf'; grid[3][4]='wood'; grid[3][5]='wood'; grid[1][4]=null; grid[1][5]=null;
  updateStats(); render(); document.getElementById('feedback').textContent='دوس على أي بلوك عشان تكسره!'; }
 function updateStats(){ document.getElementById('score').textContent=score; document.getElementById('broken').textContent=broken; document.getElementById('built').textContent=built; }
-function render(){ const b=document.getElementById('board'); b.innerHTML=''; for(let r=0;r<8;r++) for(let c=0;c<10;c++){ let d=document.createElement('div'); d.className='cell'; d.textContent=grid[r][c]?BLOCKS[grid[r][c]]:''; d.onclick=()=>clickCell(r,c); b.appendChild(d); } const invEl=document.getElementById('inv'); invEl.innerHTML=''; Object.keys(BLOCKS).forEach(k=>{ let it=document.createElement('div'); it.className='inv-item'+(selected===k?' sel':''); it.innerHTML='<div>'+BLOCKS[k]+'</div><span>'+NAMES[k]+' ('+inv[k]+')</span>'; it.onclick=()=>{ selected=k; setMode('build'); render(); }; invEl.appendChild(it); }); }
-function clickCell(r,c){ getCtx(); if(mode==='break'){ if(!grid[r][c]){ document.getElementById('feedback').textContent='دي فاضية - اختار بلوك فيه حاجة'; return; } let t=grid[r][c]; inv[t]=(inv[t]||0)+1; grid[r][c]=null; broken++; score+=10; playBreak(); document.getElementById('feedback').textContent='كسرت '+NAMES[t]+' +10'; } else { if(grid[r][c]){ document.getElementById('feedback').textContent='دي مش فاضية - كسرها الأول'; return; } if(!inv[selected]||inv[selected]<=0){ document.getElementById('feedback').textContent='خلص '+NAMES[selected]+' - كسر شوية عشان تجمع'; return; } inv[selected]--; grid[r][c]=selected; built++; score+=10; playBuild(); document.getElementById('feedback').textContent='بنيت '+NAMES[selected]+' +10'; } updateStats(); render(); }
+function blockGoogle(el){ el.oncontextmenu=function(){ return false; }; el.onselectstart=function(){ return false; }; el.ondragstart=function(){ return false; }; el.addEventListener('contextmenu', function(e){ e.preventDefault(); e.stopPropagation(); return false; }, true); }
+function render(){ const b=document.getElementById('board'); b.innerHTML=''; for(let r=0;r<8;r++) for(let c=0;c<10;c++){ let d=document.createElement('div'); d.className='cell'; d.textContent=grid[r][c]?BLOCKS[grid[r][c]]:''; blockGoogle(d); d.addEventListener('pointerdown', function(e){ e.preventDefault(); clickCell(r,c); }, {passive:false}); b.appendChild(d); } const invEl=document.getElementById('inv'); invEl.innerHTML=''; Object.keys(BLOCKS).forEach(k=>{ let it=document.createElement('div'); it.className='inv-item'+(selected===k?' sel':''); it.innerHTML='<div>'+BLOCKS[k]+'</div><span>'+NAMES[k]+' ('+inv[k]+')</span>'; blockGoogle(it); it.addEventListener('pointerdown', function(e){ e.preventDefault(); selected=k; setMode('build'); render(); }, {passive:false}); invEl.appendChild(it); }); }
+function clickCell(r,c){ if(mode==='break'){ if(!grid[r][c]){ document.getElementById('feedback').textContent='دي فاضية - اختار بلوك فيه حاجة'; return; } let t=grid[r][c]; inv[t]=(inv[t]||0)+1; grid[r][c]=null; broken++; score+=10; playBreak(); document.getElementById('feedback').textContent='كسرت '+NAMES[t]+' +10'; } else { if(grid[r][c]){ document.getElementById('feedback').textContent='دي مش فاضية - كسرها الأول'; return; } if(!inv[selected]||inv[selected]<=0){ document.getElementById('feedback').textContent='خلص '+NAMES[selected]+' - كسر شوية عشان تجمع'; return; } inv[selected]--; grid[r][c]=selected; built++; score+=10; playBuild(); document.getElementById('feedback').textContent='بنيت '+NAMES[selected]+' +10'; } updateStats(); render(); }
 function setMode(m){ mode=m; document.getElementById('modeBreak').classList.toggle('active',m==='break'); document.getElementById('modeBuild').classList.toggle('active',m==='build'); document.getElementById('feedback').textContent=m==='break'?'دوس على أي بلوك عشان تكسره!':'اختار بلوك من تحت ودوس على مكان فاضي عشان تبني!'; }
-document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'الصوت: شغال':'الصوت: مطفي'; if(soundOn) getCtx(); };
+document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'الصوت: شغال':'الصوت: مطفي'; if(soundOn) playAhmedVoice('sah'); };
 newWorld();
 </script>
-
 </body></html>
