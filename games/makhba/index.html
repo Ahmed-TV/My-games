@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>لعبة المخبأ | Ahmed TV</title>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>لعبة المخبأ | Ahmed TV</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none!important;-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important;touch-action:manipulation}
 html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
-body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation;height:100svh!important;overflow:hidden!important}
 .header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
 .top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2px}
 .logo-wrap{width:52px;height:52px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#000}
-.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block;-webkit-touch-callout:none!important;user-select:none!important}
 h1{font-size:22px;color:#facc15;line-height:1.2}
 h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2px}
 .names{font-size:13px;color:#cbd5e1;font-weight:bold;margin-bottom:4px}
@@ -22,7 +18,7 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 .stat span{font-size:10px;color:#94a3b8}
 #game{width:100%;max-width:500px;flex:1;min-height:0;background:#1e293b;border:4px solid #f59e0b;border-radius:16px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
 #board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:340px}
-.door{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;background:linear-gradient(135deg,#7c3aed,#4c1d95);border:3px solid #facc15;border-radius:14px;height:110px;font-size:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.4)}
+.door{-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important;touch-action:manipulation;background:linear-gradient(135deg,#7c3aed,#4c1d95);border:3px solid #facc15;border-radius:14px;height:110px;font-size:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.4)}
 .door:active{transform:scale(.94)}
 .door.opened{cursor:default}
 .door.ahmed{background:linear-gradient(135deg,#facc15,#f59e0b);border-color:#fff}
@@ -30,16 +26,15 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 .door span{font-size:11px;font-weight:900;margin-top:2px}
 #msg{font-size:16px;font-weight:900;min-height:24px;text-align:center;color:#facc15}
 #timer{font-size:14px;color:#fff;background:#ef4444;padding:4px 12px;border-radius:20px;font-weight:900}
-.btn{background:#f59e0b;color:#000;border:none;padding:12px 22px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:240px}
+.btn{background:#f59e0b;color:#000;border:none;padding:12px 22px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:240px;-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important;touch-action:manipulation}
 .btn:active{transform:scale(.95)}
 #overlay{position:absolute;inset:0;background:rgba(15,23,42,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
 #overlay h2{font-size:24px;color:#facc15}
 #overlay p{font-size:14px;line-height:1.7;color:#e2e8f0}
 .footer{font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;flex-shrink:0}
 .footer a{color:#facc15;text-decoration:none}
-</style>
-</head>
-<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+</style></head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
 <div class="header">
 <div class="top-row">
 <div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div>
@@ -65,22 +60,39 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 </div>
 <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
 <script>
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('mousedown',function(e){if(e.button===2)e.preventDefault();},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
 var score=0,tries=3,level=1,locked=false,timeLeft=20,timer=null;
 var scoreEl=document.getElementById('score'),triesEl=document.getElementById('tries'),levelEl=document.getElementById('level'),boardEl=document.getElementById('board'),msgEl=document.getElementById('msg'),timerEl=document.getElementById('timer'),overlay=document.getElementById('overlay'),nextBtn=document.getElementById('nextBtn');
-var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
-function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
-function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
-document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+// ===== صوتك =====
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
-document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
 function startTimer(){
 stopTimer();timeLeft=20;timerEl.textContent='⏰ '+timeLeft+' ثانية';
 timer=setInterval(function(){
 timeLeft--;timerEl.textContent='⏰ '+timeLeft+' ثانية';
-if(timeLeft<=0){stopTimer();if(!locked){locked=true;msgEl.textContent='⏰ خلص الوقت! أحمد كان مستخبي!';playAhmedVoice('khesert');setTimeout(endGame,1000);}}
+if(timeLeft<=0){stopTimer();if(!locked){locked=true;msgEl.textContent='⏰ خلص الوقت! أحمد كان مستخبي!';playAhmedVoice('khesert');revealAhmed();setTimeout(endGame,1200);}}
 },1000);
+}
+// ✅ كانت ناقصة - لما تخسر، أحمد مكنش بيظهر فين، دلوقتي هيظهر لوحده
+function revealAhmed(){
+var doors=boardEl.querySelectorAll('.door');
+doors.forEach(function(d){
+if(d.getAttribute('data-type')==='ahmed' && !d.classList.contains('opened')){
+d.classList.add('opened','ahmed');d.innerHTML='😀<span>كنت هنا!</span>';
+}
+});
 }
 function newBoard(){
 boardEl.innerHTML='';tries=3;locked=false;nextBtn.style.display='none';
@@ -88,8 +100,9 @@ triesEl.textContent='3';levelEl.textContent='مستوى '+level;msgEl.textConten
 var items=['ahmed','empty','empty','empty','empty','empty'];
 items=shuffle(items);
 items.forEach(function(type,idx){
-var d=document.createElement('div');d.className='door';d.innerHTML='🚪<span>باب '+(idx+1)+'</span>';
-d.onpointerdown=function(e){e.preventDefault();
+var d=document.createElement('div');d.className='door';d.innerHTML='🚪<span>باب '+(idx+1)+'</span>';d.setAttribute('data-type',type);
+blockGoogle(d);
+d.addEventListener('pointerdown',function(e){e.preventDefault();e.stopPropagation();
 if(locked||d.classList.contains('opened'))return;
 d.classList.add('opened');
 if(type==='ahmed'){
@@ -100,9 +113,9 @@ playAhmedVoice('kesebt');locked=true;stopTimer();nextBtn.style.display='block';n
 d.classList.add('empty');d.innerHTML='🫥<span>فاضي!</span>';
 tries--;triesEl.textContent=tries;msgEl.textContent='🫥 الباب فاضي! أحمد مش هنا!';
 playAhmedVoice('ghalat');
-if(tries<=0){locked=true;stopTimer();setTimeout(endGame,800);}
+if(tries<=0){locked=true;stopTimer();revealAhmed();setTimeout(endGame,1000);}
 }
-};
+},{passive:false});
 boardEl.appendChild(d);
 });
 startTimer();
@@ -110,16 +123,18 @@ startTimer();
 function endGame(){
 playAhmedVoice('khesert');
 overlay.style.display='flex';
-overlay.innerHTML='<div style="font-size:40px">💔</div><h2>أحمد هرب منك!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+'</b> نقطة<br>ووصلت للمستوى <b style="color:#facc15">'+level+'</b><br>دور عليه تاني!</p><button class="btn" id="againBtn">🔄 العب تاني</button>';
-document.getElementById('againBtn').onclick=startGame;
+overlay.innerHTML='<div style="font-size:40px">💔</div><h2>أحمد هرب منك!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+'</b> نقطة<br>ووصلت للمستوى <b style="color:#facc15">'+level+'</b><br>دور عليه تاني!</p><button class="btn" id="againBtn" data-action="again">🔄 العب تاني</button>';
+var ab=document.getElementById('againBtn'); blockGoogle(ab);
 }
 function startGame(){
 playAhmedVoice('ebda');
 score=0;level=1;scoreEl.textContent='0';
 overlay.style.display='none';newBoard();
 }
-document.getElementById('startBtn').onclick=startGame;
-nextBtn.onclick=function(){level++;playAhmedVoice('sah');newBoard();};
+// pointerdown بدل onclick - Delegation للـ overlay
+blockGoogle(document.getElementById('startBtn')); blockGoogle(nextBtn); blockGoogle(overlay);
+document.getElementById('startBtn').addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
+nextBtn.addEventListener('pointerdown',function(e){e.preventDefault();level++;playAhmedVoice('sah');newBoard();},{passive:false});
+overlay.addEventListener('pointerdown',function(e){ var b=e.target.closest?e.target.closest('#againBtn'):null; if(!b) return; e.preventDefault(); startGame(); },{passive:false});
 </script>
-</body>
-</html>
+</body></html>
