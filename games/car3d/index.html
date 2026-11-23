@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>سباق السيارات | Ahmed TV</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{overflow-y:auto;overflow-x:hidden}
-body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px}
-.header{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;padding-bottom:3px}
-.logo-img{width:88px;height:88px;border-radius:50%;border:4px solid #facc15;object-fit:cover;background:#fff;box-shadow:0 0 22px rgba(250,204,21,.5)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;height:100svh!important;overflow:hidden!important}
+.header{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;padding-bottom:2px}
+.logo-img{width:64px;height:64px;border-radius:50%;border:4px solid #facc15;object-fit:cover;background:#fff;box-shadow:0 0 22px rgba(250,204,21,.5)}
 .header-text{text-align:center}
-.header-text h1{font-size:22px;color:#facc15;margin:0}
-.header-text .names{font-size:22px;color:#fff;font-weight:900;margin-top:2px}
-.header-text .names small{display:block;font-size:16px;color:#facc15;font-weight:900}
-.stats{display:flex;gap:6px;justify-content:center;margin-bottom:4px;flex-wrap:wrap}
+.header-text h1{font-size:20px;color:#facc15;margin:0}
+.header-text .names{font-size:18px;color:#fff;font-weight:900;margin-top:1px}
+.header-text .names small{display:block;font-size:13px;color:#facc15;font-weight:900}
+.stats{display:flex;gap:6px;justify-content:center;margin-bottom:4px;flex-wrap:wrap;flex-shrink:0}
 .stat{background:#1e293b;border-radius:8px;padding:2px 8px;min-width:56px;text-align:center;border:1px solid #334155}
 .stat b{display:block;font-size:13px;color:#facc15}
 .stat span{font-size:8px;color:#94a3b8}
-#game-container{width:100%;max-width:600px;height:320px;position:relative;display:flex;flex-direction:column;background:#1e293b;border:3px solid #f59e0b;border-radius:12px;overflow:hidden;padding:5px;flex-shrink:0}
-#canvas-container{width:100%;flex-grow:1;position:relative;min-height:0;border-radius:8px;overflow:hidden;background:#22c55e}
+#game-container{width:100%;max-width:600px;flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:#1e293b;border:3px solid #f59e0b;border-radius:12px;overflow:hidden;padding:5px}
+#canvas-container{width:100%;flex:1;position:relative;min-height:0;border-radius:8px;overflow:hidden;background:#22c55e}
 #cv{width:100%;height:100%;display:block}
 #hud{position:absolute;top:8px;right:8px;left:8px;display:flex;justify-content:space-between;z-index:4;pointer-events:none}
 #speedo{background:rgba(0,0,0,.65);border:2px solid #facc15;border-radius:10px;padding:4px 10px;text-align:center}
@@ -24,8 +24,8 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:f
 #combo{background:rgba(0,0,0,.65);border:2px solid #fb7185;border-radius:10px;padding:4px 10px;text-align:center;display:none}
 #combo b{color:#fb7185;font-size:15px}
 #msg{position:absolute;top:38%;left:0;right:0;text-align:center;font-size:26px;font-weight:900;color:#facc15;text-shadow:3px 3px 0 #000;z-index:4;pointer-events:none;display:none}
-.controls{direction:ltr;display:flex;gap:8px;justify-content:center;padding:8px 0 0 0;z-index:3;flex-shrink:0;width:100%;max-width:600px}
-.ctrl-btn{background:#f59e0b;color:#fff;border:2px solid #b45309;border-radius:12px;font-size:16px;font-weight:900;width:88px;height:58px;display:flex;justify-content:center;align-items:center;cursor:pointer;user-select:none;box-shadow:0 4px 0 #b45309;touch-action:none}
+.controls{direction:ltr;display:flex;gap:8px;justify-content:center;padding:6px 0 0 0;z-index:3;flex-shrink:0;width:100%;max-width:600px}
+.ctrl-btn{background:#f59e0b;color:#fff;border:2px solid #b45309;border-radius:12px;font-size:16px;font-weight:900;width:88px;height:52px;display:flex;justify-content:center;align-items:center;cursor:pointer;user-select:none;box-shadow:0 4px 0 #b45309;touch-action:none}
 .ctrl-btn:active{transform:translateY(4px);background:#d97706}
 .ctrl-btn.nitro{background:#dc2626;border-color:#7f1d1d;box-shadow:0 4px 0 #7f1d1d;font-size:16px;font-weight:900;width:88px}
 .ctrl-btn.pause{background:#334155;border-color:#0f172a;font-size:16px;width:60px}
@@ -33,13 +33,12 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:f
 #overlay h2{font-size:24px;color:#facc15}
 #overlay p{line-height:1.6;font-size:14px;color:#e2e8f0}
 .btn-start{background:#f59e0b;color:#000;border:none;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:220px}
-.footer{font-size:11px;color:#94a3b8;text-align:center;margin-top:6px;padding-bottom:6px}
+.footer{font-size:11px;color:#94a3b8;text-align:center;margin-top:4px;padding-bottom:2px;flex-shrink:0}
 .footer a{color:#facc15;text-decoration:none}
-#nitroBar{height:8px;background:#334155;border-radius:10px;overflow:hidden;margin:4px 12px 0}
+#nitroBar{height:8px;background:#334155;border-radius:10px;overflow:hidden;margin:4px 12px 0;flex-shrink:0}
 #nitroFill{height:100%;width:100%;background:linear-gradient(90deg,#facc15,#ef4444)}
-@media(max-width:600px){#game-container{height:400px}}
 </style></head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
 <div class="header">
 <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
 <div class="header-text"><h1>سباق السيارات</h1><div class="names">أحمد عبدالعزيز<small>Ahmed TV</small></div></div>
@@ -60,37 +59,47 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:f
 </div>
 <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
 <script>
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
 var cv=document.getElementById('cv'),ctx=cv.getContext('2d');
 var scoreEl=document.getElementById('score'),bestEl=document.getElementById('best'),speedEl=document.getElementById('speed'),coinsEl=document.getElementById('coins'),distEl=document.getElementById('dist'),levelEl=document.getElementById('level'),overlay=document.getElementById('overlay'),msgEl=document.getElementById('msg'),comboEl=document.getElementById('combo'),comboTxt=document.getElementById('comboTxt'),nitroFill=document.getElementById('nitroFill');
 var W=360,H=480,running=false,paused=false,score=0,coins=0,dist=0,level=1,combo=0,comboT=0,nitro=100,nitroOn=false,lane=1,px=0.5,targetPx=0.5,tick=0,enemies=[],stars=[],trees=[],parts=[],best=0;
 try{best=Number(localStorage.getItem('car3dBest')||0);}catch(e){}
 bestEl.textContent=best;
-var actx=null;
-function act(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(actx&&actx.state==='suspended')actx.resume();return actx;}
-function tone(f,d,t,v){var c=act();if(!c)return;try{var o=c.createOscillator(),g=c.createGain();o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||0.12,c.currentTime);g.gain.exponentialRampToValueAtTime(0.01,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d);}catch(e){}}
+// ===== صوتك بدل الصفافير =====
+let soundOn=true, _audioCache={}, _ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 function showMsg(t){msgEl.textContent=t;msgEl.style.display='block';setTimeout(function(){msgEl.style.display='none'},900);}
 function resize(){var r=cv.parentElement.getBoundingClientRect();if(r.width>10){W=Math.floor(r.width);H=Math.floor(r.height);cv.width=W;cv.height=H;}}
 window.addEventListener('resize',resize);resize();setTimeout(resize,200);
-function goLeft(){if(!running||paused)return;lane=Math.max(0,lane-1);targetPx=(lane+0.5)/3;tone(400,0.08,'sine',0.08);}
-function goRight(){if(!running||paused)return;lane=Math.min(2,lane+1);targetPx=(lane+0.5)/3;tone(400,0.08,'sine',0.08);}
-document.getElementById('leftBtn').addEventListener('pointerdown',function(e){e.preventDefault();goLeft();});
-document.getElementById('rightBtn').addEventListener('pointerdown',function(e){e.preventDefault();goRight();});
-document.getElementById('nitroBtn').addEventListener('pointerdown',function(){if(nitro>10&&running){nitroOn=true;tone(150,0.4,'sawtooth',0.12);}});
+function goLeft(){if(!running||paused)return;lane=Math.max(0,lane-1);targetPx=(lane+0.5)/3;}
+function goRight(){if(!running||paused)return;lane=Math.min(2,lane+1);targetPx=(lane+0.5)/3;}
+['leftBtn','rightBtn','nitroBtn','pauseBtn','startBtn'].forEach(function(id){ blockGoogle(document.getElementById(id)); });
+document.getElementById('leftBtn').addEventListener('pointerdown',function(e){e.preventDefault();goLeft();},{passive:false});
+document.getElementById('rightBtn').addEventListener('pointerdown',function(e){e.preventDefault();goRight();},{passive:false});
+document.getElementById('nitroBtn').addEventListener('pointerdown',function(e){e.preventDefault();if(nitro>10&&running){nitroOn=true;}},{passive:false});
 document.getElementById('nitroBtn').addEventListener('pointerup',function(){nitroOn=false;});
 document.getElementById('nitroBtn').addEventListener('pointerleave',function(){nitroOn=false;});
-document.getElementById('pauseBtn').addEventListener('click',function(){if(!running)return;paused=!paused;this.textContent=paused?'كمل':'وقف';showMsg(paused?'وقفنا':'كمل!');});
+document.getElementById('pauseBtn').addEventListener('pointerdown',function(e){e.preventDefault();if(!running)return;paused=!paused;this.textContent=paused?'كمل':'وقف';showMsg(paused?'وقفنا':'كمل!');},{passive:false});
 document.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')goLeft();if(e.key==='ArrowRight')goRight();});
 var touchX=null;cv.addEventListener('touchstart',function(e){touchX=e.touches[0].clientX;},{passive:true});
 cv.addEventListener('touchend',function(e){if(touchX===null)return;var dx=e.changedTouches[0].clientX-touchX;if(dx>30)goRight();else if(dx<-30)goLeft();touchX=null;},{passive:true});
+blockGoogle(cv); cv.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
 for(var i=0;i<12;i++)trees.push({y:Math.random()*H,left:Math.random()<0.5,x:Math.random()});
 function drawCar(x,y,w,h,col,flip){ctx.fillStyle='rgba(0,0,0,.3)';ctx.fillRect(x-w/2,y+h*0.4,w,6);ctx.fillStyle=col;ctx.fillRect(x-w/2,y,w,h);ctx.fillStyle='#0f172a';ctx.fillRect(x-w*0.35,y+h*0.2,w*0.7,h*0.35);ctx.fillStyle='#E0F7FA';ctx.fillRect(x-w*0.3,y+h*0.25,w*0.2,h*0.2);ctx.fillRect(x+w*0.1,y+h*0.25,w*0.2,h*0.2);ctx.fillStyle='#111';ctx.fillRect(x-w*0.55,y+h*0.1,w*0.18,h*0.25);ctx.fillRect(x+w*0.37,y+h*0.1,w*0.18,h*0.25);ctx.fillRect(x-w*0.55,y+h*0.65,w*0.18,h*0.25);ctx.fillRect(x+w*0.37,y+h*0.65,w*0.18,h*0.25);ctx.fillStyle='#fff';ctx.fillRect(x-w*0.4,y+(flip?h-6:0),w*0.8,4);ctx.fillStyle='#facc15';ctx.fillRect(x-w*0.4,y+(flip?0:h-4),w*0.8,4);}
 function draw(){ctx.fillStyle='#22c55e';ctx.fillRect(0,0,W,H);var roadX=W*0.12,roadW=W*0.76;ctx.fillStyle='#334155';ctx.fillRect(roadX,0,roadW,H);ctx.fillStyle='#facc15';var off=(tick*1.2)%40;for(var y=-40+off;y<H;y+=40){ctx.fillRect(roadX+roadW/3-2,y,4,20);ctx.fillRect(roadX+roadW*2/3-2,y,4,20);}ctx.fillStyle='#fff';ctx.fillRect(roadX-4,0,4,H);ctx.fillRect(roadX+roadW,0,4,H);for(var i=0;i<trees.length;i++){var t=trees[i];var tx=t.left?W*0.03:W*0.92;ctx.fillStyle='#78350f';ctx.fillRect(tx,t.y,6,10);ctx.fillStyle='#16a34a';ctx.beginPath();ctx.arc(tx+3,t.y-6,10,0,6.29);ctx.fill();}for(var s=0;s<stars.length;s++){var st=stars[s];ctx.fillStyle='#facc15';ctx.font='22px Arial';ctx.textAlign='center';ctx.fillText('⭐',st.x,st.y);}for(var e=0;e<enemies.length;e++){var en=enemies[e];drawCar(en.x,en.y,44,70,en.col,true);}for(var p=0;p<parts.length;p++){var pt=parts[p];ctx.fillStyle=pt.col;ctx.fillRect(pt.x,pt.y,6,6);}var bx=px*W,by=H*0.78;drawCar(bx,by,50,78,'#f59e0b',false);ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(6,6,70,22);ctx.fillStyle='#facc15';ctx.font='12px Arial';ctx.textAlign='left';ctx.fillText('Ahmed TV',10,21);}
-function loop(){tick++;if(running&&!paused){px+=(targetPx-px)*0.2;var cur=(nitroOn&&nitro>0)?2.0:1.1;if(nitroOn&&nitro>0)nitro=Math.max(0,nitro-0.8);else nitro=Math.min(100,nitro+0.2);nitroFill.style.width=nitro+'%';dist+=cur*0.05;score+=nitroOn?2:1;level=1+Math.floor(dist/400);scoreEl.textContent=score;distEl.textContent=Math.floor(dist)+'م';levelEl.textContent=level;speedEl.textContent=Math.round(cur*15);if(comboT>0){comboT--;if(comboT===0){combo=0;comboEl.style.display='none';}}if(tick%Math.max(100,150-level*5)===0){var l=Math.floor(Math.random()*3);enemies.push({x:(l+0.5)/3*W,y:-80,col:['#ef4444','#3b82f6','#8b5cf6','#ec4899','#14b8a6'][Math.floor(Math.random()*5)]});}if(tick%80===0){var l2=Math.floor(Math.random()*3);stars.push({x:(l2+0.5)/3*W,y:-40});}for(var i=trees.length-1;i>=0;i--){trees[i].y+=cur;if(trees[i].y>H+20){trees[i].y=-20;trees[i].left=Math.random()<0.5;}}for(var j=enemies.length-1;j>=0;j--){var en=enemies[j];en.y+=cur;if(en.y>H+80){enemies.splice(j,1);var near=Math.abs(en.x-px*W);if(near>50&&near<110){combo++;comboT=100;score+=combo*50;comboTxt.textContent='كومبو x'+(combo+1)+' +'+combo*50;comboEl.style.display='block';tone(500,0.08,'square',0.08);showMsg('قربت! +'+combo*50);}continue;}if(Math.abs(en.x-px*W)<42&&Math.abs(en.y-H*0.78)<62){if(running)endGame();break;}}for(var k=stars.length-1;k>=0;k--){var st=stars[k];st.y+=cur;if(st.y>H){stars.splice(k,1);continue;}if(Math.abs(st.x-px*W)<35&&Math.abs(st.y-H*0.78)<50){stars.splice(k,1);coins++;score+=100;nitro=Math.min(100,nitro+15);coinsEl.textContent=coins;tone(900,0.12,'sine',0.15);setTimeout(function(){tone(1400,0.15,'sine',0.15)},70);showMsg('+100');}}for(var p=parts.length-1;p>=0;p--){var pt=parts[p];pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=0.2;if(pt.y>H){parts.splice(p,1);}}}draw();requestAnimationFrame(loop);}
+function loop(){tick++;if(running&&!paused){px+=(targetPx-px)*0.2;var cur=(nitroOn&&nitro>0)?2.0:1.1;if(nitroOn&&nitro>0)nitro=Math.max(0,nitro-0.8);else nitro=Math.min(100,nitro+0.2);nitroFill.style.width=nitro+'%';dist+=cur*0.05;score+=nitroOn?2:1;level=1+Math.floor(dist/400);scoreEl.textContent=score;distEl.textContent=Math.floor(dist)+'م';levelEl.textContent=level;speedEl.textContent=Math.round(cur*15);if(comboT>0){comboT--;if(comboT===0){combo=0;comboEl.style.display='none';}}if(tick%Math.max(100,150-level*5)===0){var l=Math.floor(Math.random()*3);enemies.push({x:(l+0.5)/3*W,y:-80,col:['#ef4444','#3b82f6','#8b5cf6','#ec4899','#14b8a6'][Math.floor(Math.random()*5)]});}if(tick%80===0){var l2=Math.floor(Math.random()*3);stars.push({x:(l2+0.5)/3*W,y:-40});}for(var i=trees.length-1;i>=0;i--){trees[i].y+=cur;if(trees[i].y>H+20){trees[i].y=-20;trees[i].left=Math.random()<0.5;}}for(var j=enemies.length-1;j>=0;j--){var en=enemies[j];en.y+=cur;if(en.y>H+80){enemies.splice(j,1);var near=Math.abs(en.x-px*W);if(near>50&&near<110){combo++;comboT=100;score+=combo*50;comboTxt.textContent='كومبو x'+(combo+1)+' +'+combo*50;comboEl.style.display='block';playAhmedVoice('sah');showMsg('قربت! +'+combo*50);}continue;}if(Math.abs(en.x-px*W)<42&&Math.abs(en.y-H*0.78)<62){if(running)endGame();break;}}for(var k=stars.length-1;k>=0;k--){var st=stars[k];st.y+=cur;if(st.y>H){stars.splice(k,1);continue;}if(Math.abs(st.x-px*W)<35&&Math.abs(st.y-H*0.78)<50){stars.splice(k,1);coins++;score+=100;nitro=Math.min(100,nitro+15);coinsEl.textContent=coins;playAhmedVoice('sah');showMsg('+100');}}for(var p=parts.length-1;p>=0;p--){var pt=parts[p];pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=0.2;if(pt.y>H){parts.splice(p,1);}}}draw();requestAnimationFrame(loop);}
 var ended=false;
-function endGame(){if(ended)return;ended=true;running=false;tone(200,0.5,'sawtooth',0.25);var bx=px*W,by=H*0.78;for(var i=0;i<18;i++)parts.push({x:bx,y:by,vx:(Math.random()-0.5)*6,vy:Math.random()*-4,col:['#ef4444','#facc15','#fb923c'][i%3]});setTimeout(function(){if(score>best){best=score;try{localStorage.setItem('car3dBest',best);}catch(e){}bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML='<div style="font-size:35px">💥</div><h2>خبطت!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+' نقطة</b> و '+coins+' نجمة<br>وصلت '+Math.floor(dist)+' متر - المرحلة '+level+'<br>أعلى نتيجة: '+best+'</p><button class="btn-start" id="againBtn">العب تاني</button>';document.getElementById('againBtn').onclick=startGame;},500);}
-function startGame(){ended=false;act();overlay.style.display='none';score=0;coins=0;dist=0;level=1;combo=0;nitro=100;lane=1;px=0.5;targetPx=0.5;enemies=[];stars=[];parts=[];paused=false;document.getElementById('pauseBtn').textContent='وقف';scoreEl.textContent='0';coinsEl.textContent='0';distEl.textContent='0م';levelEl.textContent='1';running=true;showMsg('يلااا!');}
-document.getElementById('startBtn').onclick=startGame;
+function endGame(){if(ended)return;ended=true;running=false;playAhmedVoice('khesert');var bx=px*W,by=H*0.78;for(var i=0;i<18;i++)parts.push({x:bx,y:by,vx:(Math.random()-0.5)*6,vy:Math.random()*-4,col:['#ef4444','#facc15','#fb923c'][i%3]});setTimeout(function(){if(score>best){best=score;try{localStorage.setItem('car3dBest',best);}catch(e){}bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML='<div style="font-size:35px">💥</div><h2>خبطت!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+' نقطة</b> و '+coins+' نجمة<br>وصلت '+Math.floor(dist)+' متر - المرحلة '+level+'<br>أعلى نتيجة: '+best+'</p><button class="btn-start" id="againBtn">العب تاني</button>';var ab=document.getElementById('againBtn'); blockGoogle(ab); ab.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});},500);}
+function startGame(){ended=false;overlay.style.display='none';score=0;coins=0;dist=0;level=1;combo=0;nitro=100;lane=1;px=0.5;targetPx=0.5;enemies=[];stars=[];parts=[];paused=false;document.getElementById('pauseBtn').textContent='وقف';scoreEl.textContent='0';coinsEl.textContent='0';distEl.textContent='0م';levelEl.textContent='1';running=true;playAhmedVoice('ebda');showMsg('يلااا!');}
+document.getElementById('startBtn').addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
 loop();
 </script>
-
 </body></html>
