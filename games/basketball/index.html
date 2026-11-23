@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>رمي السلة | Ahmed TV</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important}
-html,body{overflow-y:auto;overflow-x:hidden}
-body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;height:100svh!important;overflow:hidden!important}
 .header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
-.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px}
-.logo-img{width:88px;height:88px;flex-shrink:0;border-radius:50%;border:4px solid #facc15;object-fit:cover;background:#fff;box-shadow:0 0 22px rgba(250,204,21,.5)}
-h1{font-size:22px;line-height:1.2}
-h1 small{display:block;font-size:13px;color:#facc15;letter-spacing:1px;margin-top:2px}
-.names{font-size:22px;color:#fff;margin-bottom:5px;font-weight:900}
-.names small{display:block;font-size:16px;color:#facc15;font-weight:900}
-.stats{display:flex;gap:10px;justify-content:center;margin:5px 0 10px;flex-wrap:wrap}
-.stat{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:5px 15px;min-width:80px;text-align:center}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:3px}
+.logo-img{width:64px;height:64px;flex-shrink:0;border-radius:50%;border:4px solid #facc15;object-fit:cover;background:#fff;box-shadow:0 0 22px rgba(250,204,21,.5)}
+h1{font-size:20px;line-height:1.2}
+h1 small{display:block;font-size:12px;color:#facc15;letter-spacing:1px;margin-top:2px}
+.names{font-size:18px;color:#fff;margin-bottom:3px;font-weight:900}
+.names small{display:block;font-size:13px;color:#facc15;font-weight:900}
+.stats{display:flex;gap:10px;justify-content:center;margin:3px 0 6px;flex-wrap:wrap;flex-shrink:0}
+.stat{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:4px 15px;min-width:80px;text-align:center}
 .stat b{display:block;font-size:18px;color:#facc15}
 .stat span{font-size:10px;color:#94a3b8}
-#game-container{width:100%;max-width:500px;height:320px;position:relative;display:flex;flex-direction:column;background:#f59e0b;border:4px solid #f59e0b;border-radius:16px;overflow:hidden;cursor:pointer}
+#game-container{width:100%;max-width:500px;flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:#f59e0b;border:4px solid #f59e0b;border-radius:16px;overflow:hidden;cursor:pointer}
 .watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(255,255,255,0.1);font-size:30px;font-weight:900;pointer-events:none;z-index:0;white-space:nowrap}
 canvas{width:100%;height:100%;display:block;z-index:1}
 #overlay{position:absolute;inset:0;background:rgba(15,23,42,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
@@ -23,11 +23,10 @@ canvas{width:100%;height:100%;display:block;z-index:1}
 #overlay p{line-height:1.6;font-size:14px;color:#e2e8f0;margin-bottom:10px}
 .btn-start{background:#f59e0b;color:#000;border:none;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:200px}
 .btn-start:active{transform:scale(0.95)}
-.footer{font-size:11px;color:#94a3b8;text-align:center;margin-top:6px;padding-bottom:6px}
+.footer{font-size:11px;color:#94a3b8;text-align:center;margin-top:4px;padding-bottom:2px;flex-shrink:0}
 .footer a{color:#facc15;text-decoration:none}
-@media(max-width:600px){#game-container{height:400px}}
 </style></head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
 <div class="header">
 <div class="top-row">
 <img src="../../logo.png" alt="Ahmed TV" class="logo-img">
@@ -43,11 +42,22 @@ canvas{width:100%;height:100%;display:block;z-index:1}
 </div>
 <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
 <script>
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
 const canvas=document.getElementById('gameCanvas');const ctx=canvas.getContext('2d');const scoreEl=document.getElementById('score');const bestEl=document.getElementById('best');const overlay=document.getElementById('overlay');const startBtn=document.getElementById('startBtn');
-let W=0,H=0,running=false,score=0;let best=parseInt(localStorage.getItem('basketBest')||'0');bestEl.textContent=best;let audioCtx=null;
+let W=0,H=0,running=false,score=0;let best=parseInt(localStorage.getItem('basketBest')||'0');bestEl.textContent=best;
 let ball={x:0,y:0,radius:15,isShot:false};let hoop={x:0,y:0,w:100,h:15};let arrowX=0,arrowDir=1,isStopped=false;
-function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
-function playSound(type){if(!audioCtx)return;const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);if(type==='shoot'){osc.type='sine';osc.frequency.setValueAtTime(300,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(600,audioCtx.currentTime+0.1);gain.gain.setValueAtTime(0.1,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.1);osc.start();osc.stop(audioCtx.currentTime+0.1);}else if(type==='score'){osc.type='triangle';osc.frequency.setValueAtTime(600,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(1200,audioCtx.currentTime+0.2);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.3);osc.start();osc.stop(audioCtx.currentTime+0.3);}else if(type==='miss'){osc.type='sawtooth';osc.frequency.setValueAtTime(200,audioCtx.currentTime);gain.gain.setValueAtTime(0.1,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.2);osc.start();osc.stop(audioCtx.currentTime+0.2);}}
+// ===== صوتك بدل الصفافير =====
+let soundOn=true, _audioCache={}, _ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function playSound(type){ if(type==='shoot'){ /* دوسة - من غير صوت كل مرة */ } else if(type==='score'){ playAhmedVoice('sah'); } else if(type==='miss'){ playAhmedVoice('ghalat'); } }
 function resize(){const rect=canvas.parentElement.getBoundingClientRect();canvas.width=rect.width;canvas.height=rect.height;W=canvas.width;H=canvas.height;hoop.w=W*0.4;hoop.x=(W-hoop.w)/2;hoop.y=H*0.25;resetShot();}
 function resetShot(){ball.x=W/2;ball.y=H-40;ball.isShot=false;arrowX=0;arrowDir=1;isStopped=false;}
 function draw(){ctx.fillStyle='#f59e0b';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(hoop.x,hoop.y,hoop.w,hoop.h);ctx.strokeStyle='#ef4444';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(hoop.x,hoop.y+hoop.h);ctx.lineTo(hoop.x+hoop.w,hoop.y+hoop.h);ctx.stroke();ctx.strokeStyle='rgba(255,255,255,0.6)';ctx.lineWidth=2;for(let i=0;i<=hoop.w;i+=20){ctx.beginPath();ctx.moveTo(hoop.x+i,hoop.y+hoop.h);ctx.lineTo(hoop.x+i-10,hoop.y+hoop.h+30);ctx.stroke();}
@@ -57,14 +67,10 @@ if(ball.isShot){ctx.fillStyle='#22c55e';ctx.font='bold 40px Arial';ctx.textAlign
 function update(){if(!running)return;if(!ball.isShot){arrowX+=arrowDir*0.04;if(arrowX>1){arrowX=1;arrowDir=-1;}if(arrowX<-1){arrowX=-1;arrowDir=1;}}}
 function loop(){update();draw();requestAnimationFrame(loop);}
 function shoot(){if(!running||ball.isShot)return;ball.isShot=true;playSound('shoot');setTimeout(()=>{let hoopCenter=hoop.x+hoop.w/2;let ballHitX=W/2+(arrowX*(W/2-30));let tolerance=30;if(Math.abs(ballHitX-hoopCenter)<tolerance){score++;scoreEl.textContent=score;if(score>best){best=score;bestEl.textContent=best;localStorage.setItem('basketBest',String(best));}playSound('score');}else{playSound('miss');}setTimeout(resetShot,1000);},500);}
-function startGame(){initAudio();overlay.style.display='none';score=0;scoreEl.textContent=score;running=true;resetShot();loop();}
-canvas.addEventListener('mousedown',shoot);
-canvas.addEventListener('touchstart',(e)=>{e.preventDefault();shoot();},{passive:false});
-startBtn.onclick=startGame;
+function startGame(){playAhmedVoice('ebda');overlay.style.display='none';score=0;scoreEl.textContent=score;running=true;resetShot();loop();}
+blockGoogle(canvas); canvas.addEventListener('pointerdown',function(e){e.preventDefault();shoot();},{passive:false}); canvas.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+blockGoogle(startBtn); startBtn.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false}); startBtn.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
 window.addEventListener('resize',()=>{resize();if(!running)draw();});
 resize();draw();
-document.body.addEventListener('touchstart',initAudio,{once:true});
-document.body.addEventListener('click',initAudio,{once:true});
 </script>
-
 </body></html>
