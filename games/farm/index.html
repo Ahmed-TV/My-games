@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - مزرعة أحمد</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - مزرعة أحمد</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
-html,body{overflow:hidden}
-body{font-family:Tahoma,Arial,sans-serif;background:#F5DEB3;display:flex;justify-content:center;padding:3px 6px}
-.game{width:100%;max-width:500px;display:flex;flex-direction:column;background:linear-gradient(180deg,#FFF8DC 0%,#F5DEB3 50%,#DEB887 100%);border:4px solid #8B4513;border-radius:38px 38px 18px 18px;padding:5px 7px;position:relative}
-header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;text-align:center}
-.logo-img{width:110px!important;height:110px!important;min-width:110px;min-height:110px;max-width:110px;max-height:110px;border-radius:50%;border:4px solid #8B4513;object-fit:cover;background:#fff}
-.brand{font-size:22px!important;font-weight:900;color:#8B4513;line-height:1.2}
-.names{font-size:22px!important;font-weight:900;color:#8B4513;line-height:1.3;text-align:center}
-.name-en{display:block;font-size:18px!important;font-weight:900;color:#8B4513;line-height:1.2}
-.names small{display:block;font-size:16px!important;color:#A0522D;font-weight:900;line-height:1.2}
-.modes{display:flex;gap:5px;width:100%;margin:2px 0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#F5DEB3;display:flex;justify-content:center;padding:3px 6px;height:100svh!important;overflow:hidden!important}
+.game{width:100%;max-width:500px;display:flex;flex-direction:column;background:linear-gradient(180deg,#FFF8DC 0%,#F5DEB3 50%,#DEB887 100%);border:4px solid #8B4513;border-radius:38px 38px 18px 18px;padding:5px 7px;position:relative;height:100%;min-height:0}
+header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;text-align:center;flex-shrink:0}
+.logo-img{width:64px!important;height:64px!important;min-width:64px;min-height:64px;max-width:64px;max-height:64px;border-radius:50%;border:4px solid #8B4513;object-fit:cover;background:#fff}
+.brand{font-size:20px!important;font-weight:900;color:#8B4513;line-height:1.2}
+.names{font-size:18px!important;font-weight:900;color:#8B4513;line-height:1.3;text-align:center}
+.name-en{display:block;font-size:14px!important;font-weight:900;color:#8B4513;line-height:1.2}
+.names small{display:block;font-size:13px!important;color:#A0522D;font-weight:900;line-height:1.2}
+.modes{display:flex;gap:5px;width:100%;margin:2px 0;flex-shrink:0}
 .mode{flex:1;padding:6px 2px;border-radius:10px;border:2px solid #8B4513;background:#fff;color:#8B4513;font-weight:900;font-size:12px;cursor:pointer;font-family:inherit}
 .mode.active{background:#8B4513;color:#fff}
-.stats{display:flex;gap:4px;width:100%;margin:2px 0}
+.stats{display:flex;gap:4px;width:100%;margin:2px 0;flex-shrink:0}
 .stat{flex:1;background:#fff;border:1.5px solid #8B4513;border-radius:9px;padding:2px 1px;text-align:center;line-height:1.1}
 .stat b{display:block;font-size:14px;color:#8B4513}
 .stat span{font-size:9px;font-weight:800;color:#666}
-#view{width:100%;height:320px;background:linear-gradient(180deg,#87CEEB 0%,#90EE90 45%,#7CB342 100%);border:2px solid #8B4513;border-radius:16px;overflow:hidden;position:relative;padding:8px}
-@media(min-width:700px){#view{height:400px}}
+#view{width:100%;flex:1;min-height:0;background:linear-gradient(180deg,#87CEEB 0%,#90EE90 45%,#7CB342 100%);border:2px solid #8B4513;border-radius:16px;overflow:hidden;position:relative;padding:8px}
 #timerBar{position:absolute;top:0;left:0;height:6px;background:#FFD700;z-index:6;width:100%}
 #grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
 .plot{background:#8D6E63;border:3px solid #5D4037;border-radius:14px;height:82px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden}
@@ -38,40 +37,59 @@ header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;t
 .how b{color:#8B4513;font-size:13px}
 .how div{color:#333;font-size:11px;font-weight:700;line-height:1.7}
 #startBtn{font-family:inherit;font-weight:900;border:0;border-radius:18px;padding:12px 28px;background:#FFD700;color:#8B4513;cursor:pointer;font-size:16px}
-.controls{display:flex;gap:6px;width:100%;margin-top:5px}
+.controls{display:flex;gap:6px;width:100%;margin-top:5px;flex-shrink:0}
 .cbtn{flex:1;height:52px;border-radius:14px;border:0;background:#4CAF50;color:#fff;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit}
-footer{text-align:center;color:#8B4513;font-size:10px;margin-top:2px;padding-bottom:2px}
+footer{text-align:center;color:#8B4513;font-size:10px;margin-top:2px;padding-bottom:2px;flex-shrink:0}
 footer a{color:#8B4513;text-decoration:none;font-weight:700}
 </style></head>
-<body oncontextmenu="return false"><div class="game">
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false"><div class="game">
 <header><img src="../../logo.png" alt="Ahmed TV" class="logo-img"><div class="brand">مزرعة أحمد</div><div class="names">أحمد عبدالعزيز<span class="name-en">Ahmed Abdelaziz</span><small>Ahmed TV</small></div></header>
-<div class="modes"><button class="mode active" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button><button class="mode" onclick="showHow()">❓ شرح اللعبة</button></div>
+<div class="modes"><button class="mode active" id="soundBtn">🔊 الصوت: شغال</button><button class="mode" id="howBtn">❓ شرح اللعبة</button></div>
 <div class="stats"><div class="stat"><b id="stage">المرحلة 1 / 5</b><span>المرحلة</span></div><div class="stat"><b id="score">0</b><span>المحصول</span></div><div class="stat"><b id="time">60</b><span>ثانية</span></div></div>
-<div id="view"><div id="timerBar"></div><div id="msg">دوس ابدأ - ازرع واحصد!</div><div id="grid"></div><div id="crow" onclick="hitCrow()">🐦‍⬛</div>
-<div id="overlay"><h2>🌾 مزرعة أحمد 🌾</h2><div class="how"><b>ازاي تلعب؟</b><div>1 - دوس على الحوض الفاضي - تزرع بذرة 🌱<br>2 - دوس تاني - تسقيها مية 💧<br>3 - استنى تكبر - تبقى 🌽<br>4 - دوس تالت مرة - تحصدها +10<br>5 - الغراب 🐦‍⬛ لو ظهر - دوس عليه بسرعة قبل ما ياكل الزرع!</div><b>المراحل 5:</b><div>كل مرحلة الوقت بيقل والغراب بيكتر - اجمع 100 نقطة عشان تطلع مرحلة</div></div><button id="startBtn" onclick="startGame()">ابدأ الزراعة</button></div></div>
-<div class="controls"><button class="cbtn" onclick="plantAll()">🌱 ازرع الكل</button><button class="cbtn" style="background:#2196F3" onclick="waterAll()">💧 اسقي الكل</button></div>
+<div id="view"><div id="timerBar"></div><div id="msg">دوس ابدأ - ازرع واحصد!</div><div id="grid"></div><div id="crow">🐦‍⬛</div>
+<div id="overlay"><h2>🌾 مزرعة أحمد 🌾</h2><div class="how"><b>ازاي تلعب؟</b><div>1 - دوس على الحوض الفاضي - تزرع بذرة 🌱<br>2 - دوس تاني - تسقيها مية 💧<br>3 - استنى تكبر - تبقى 🌽<br>4 - دوس تالت مرة - تحصدها +10<br>5 - الغراب 🐦‍⬛ لو ظهر - دوس عليه بسرعة قبل ما ياكل الزرع!</div><b>المراحل 5:</b><div>كل مرحلة الوقت بيقل والغراب بيكتر - اجمع 100 نقطة عشان تطلع مرحلة</div></div><button id="startBtn" data-action="start">ابدأ الزراعة</button></div></div>
+<div class="controls"><button class="cbtn" id="plantBtn">🌱 ازرع الكل</button><button class="cbtn" style="background:#2196F3" id="waterBtn">💧 اسقي الكل</button></div>
 <footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
 <script>
-document.addEventListener('contextmenu',function(e){e.preventDefault();return false;});
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
 var grid=document.getElementById('grid'), msg=document.getElementById('msg'), overlay=document.getElementById('overlay'), crow=document.getElementById('crow'), timerBar=document.getElementById('timerBar');
 var playing=false, score=0, stage=1, timeLeft=60, timer=null, crowTimer=null, plots=[];
-var soundOn=true, actx=null;
-function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; if(soundOn) playBeep(600); }
-function playBeep(f,d){ if(!soundOn) return; try{ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==='suspended') actx.resume(); var o=actx.createOscillator(), g=actx.createGain(); o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0.3,actx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,actx.currentTime+(d||0.18)); o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+(d||0.18)); }catch(e){} }
-function playWin(){ playBeep(523,0.15); setTimeout(function(){playBeep(659,0.15);},150); setTimeout(function(){playBeep(784,0.3);},300); }
-function speak(t){ if(!soundOn) return; try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(t); u.lang='ar-EG'; u.rate=1; window.speechSynthesis.speak(u); } }catch(e){} }
-function showHow(){ overlay.style.display='flex'; overlay.innerHTML='<h2>❓ شرح اللعبة</h2><div class="how"><b>ازاي تلعب؟</b><div>دوس على الحوض: بذرة 🌱 - دوس تاني: مية 💧 - استنى: تكبر 🌽 - دوس تالت: تحصد +10<br>الغراب لو ظهر دوس عليه بسرعة!</div></div><button id="startBtn" onclick="startGame()">فهمت - ابدأ</button>'; }
-function buildGrid(){ grid.innerHTML=''; plots=[]; for(var i=0;i<6;i++){ var d=document.createElement('div'); d.className='plot'; d.innerHTML='<div class="emoji">🟫</div><div class="label">دوس وازرع</div>'; (function(idx,el){ el.onclick=function(){ tapPlot(idx); }; })(i,d); grid.appendChild(d); plots.push({el:d,state:0,timer:null}); } }
-function tapPlot(i){ if(!playing) return; var p=plots[i]; if(p.state===0){ p.state=1; p.el.innerHTML='<div class="emoji">🌱</div><div class="label">دوس واسقي</div>'; p.el.classList.add('water'); playBeep(500,0.15); msg.textContent='زرعت! دوس تاني واسقيها'; } else if(p.state===1){ p.state=2; p.el.innerHTML='<div class="emoji">💧🌱</div><div class="label">بتكبر...</div>'; p.el.classList.add('grow'); playBeep(600,0.15); msg.textContent='سقيتها! استنى تكبر'; clearTimeout(p.timer); p.timer=setTimeout(function(){ if(p.state===2){ p.state=3; p.el.innerHTML='<div class="emoji">🌽</div><div class="label">احصد!</div>'; p.el.classList.add('ready'); playBeep(900,0.2); msg.textContent='كبرت! دوس واحصدها!'; } }, 2500 - stage*250); } else if(p.state===3){ p.state=0; p.el.className='plot'; p.el.innerHTML='<div class="emoji">🟫</div><div class="label">دوس وازرع</div>'; score+=10; document.getElementById('score').textContent=score; playBeep(800,0.2); speak('عاش'); msg.textContent='حصدت! +10 👏'; if(score>=stage*100){ stageComplete(); } } }
+var soundOn=true;
+// ===== صوتك بدل الصفافير + بدل روبوت جوجل =====
+var _audioCache={}, _ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; if(soundOn) playAhmedVoice('sah'); }
+function playBeep(f,d){ playAhmedVoice('sah'); }
+function playWin(){ playAhmedVoice('kesebt'); }
+function speak(t){ playAhmedVoice('ebda'); }
+function showHow(){ overlay.style.display='flex'; overlay.innerHTML='<h2>❓ شرح اللعبة</h2><div class="how"><b>ازاي تلعب؟</b><div>دوس على الحوض: بذرة 🌱 - دوس تاني: مية 💧 - استنى: تكبر 🌽 - دوس تالت: تحصد +10<br>الغراب لو ظهر دوس عليه بسرعة!</div></div><button id="startBtn" data-action="start">فهمت - ابدأ</button>'; }
+function buildGrid(){ grid.innerHTML=''; plots=[]; for(var i=0;i<6;i++){ var d=document.createElement('div'); d.className='plot'; d.innerHTML='<div class="emoji">🟫</div><div class="label">دوس وازرع</div>'; (function(idx,el){ blockGoogle(el); el.addEventListener('pointerdown',function(e){e.preventDefault();tapPlot(idx);},{passive:false}); el.addEventListener('contextmenu',function(e){e.preventDefault();return false;}); })(i,d); grid.appendChild(d); plots.push({el:d,state:0,timer:null}); } }
+function tapPlot(i){ if(!playing) return; var p=plots[i]; if(p.state===0){ p.state=1; p.el.innerHTML='<div class="emoji">🌱</div><div class="label">دوس واسقي</div>'; p.el.classList.add('water'); playAhmedVoice('sah'); msg.textContent='زرعت! دوس تاني واسقيها'; } else if(p.state===1){ p.state=2; p.el.innerHTML='<div class="emoji">💧🌱</div><div class="label">بتكبر...</div>'; p.el.classList.add('grow'); playAhmedVoice('sah'); msg.textContent='سقيتها! استنى تكبر'; clearTimeout(p.timer); p.timer=setTimeout(function(){ if(p.state===2){ p.state=3; p.el.innerHTML='<div class="emoji">🌽</div><div class="label">احصد!</div>'; p.el.classList.add('ready'); playAhmedVoice('sah'); msg.textContent='كبرت! دوس واحصدها!'; } }, 2500 - stage*250); } else if(p.state===3){ p.state=0; p.el.className='plot'; p.el.innerHTML='<div class="emoji">🟫</div><div class="label">دوس وازرع</div>'; score+=10; document.getElementById('score').textContent=score; playAhmedVoice('sah'); msg.textContent='حصدت! +10 👏'; if(score>=stage*100){ stageComplete(); } } }
 function plantAll(){ if(!playing) return; plots.forEach(function(p,idx){ if(p.state===0) tapPlot(idx); }); }
 function waterAll(){ if(!playing) return; plots.forEach(function(p,idx){ if(p.state===1) tapPlot(idx); }); }
-function spawnCrow(){ if(!playing) return; var idx=Math.floor(Math.random()*6); var p=plots[idx]; if(p.state===2||p.state===3){ crow.style.display='block'; crow.style.top=(30+Math.random()*40)+'%'; crow.style.left=(10+Math.random()*70)+'%'; crow.dataset.plot=idx; msg.textContent='الغراب جاي ياكل الزرع! دوس عليه!'; playBeep(200,0.3); setTimeout(function(){ if(crow.style.display==='block'){ var pi=parseInt(crow.dataset.plot); var pp=plots[pi]; pp.state=0; pp.el.className='plot'; pp.el.innerHTML='<div class="emoji">🟫</div><div class="label">الغراب أكله!</div>'; crow.style.display='none'; msg.textContent='الغراب أكل الزرع! 😢'; } }, 2200 - stage*200); } }
-function hitCrow(){ if(!playing) return; crow.style.display='none'; score+=5; document.getElementById('score').textContent=score; playBeep(1000,0.2); msg.textContent='طردت الغراب! +5 👏'; }
-function startGame(){ score=0; timeLeft=65-stage*5; document.getElementById('score').textContent='0'; document.getElementById('time').textContent=timeLeft; document.getElementById('stage').textContent='المرحلة '+stage+' / 5'; buildGrid(); playing=true; overlay.style.display='none'; msg.textContent='ازرع بسرعة!'; speak('المرحلة '+stage); clearInterval(timer); clearInterval(crowTimer); timer=setInterval(function(){ timeLeft--; document.getElementById('time').textContent=timeLeft; timerBar.style.width=(timeLeft/(65-stage*5)*100)+'%'; if(timeLeft<=0){ endGame(); } },1000); crowTimer=setInterval(spawnCrow, 4000 - stage*400); }
-function stageComplete(){ playing=false; clearInterval(timer); clearInterval(crowTimer); crow.style.display='none'; playWin(); if(stage>=5){ overlay.style.display='flex'; overlay.innerHTML='<h2>أحسن مزارع! 👑</h2><p>خلصت كل المراحل - 5 مراحل<br>جمعت '+score+' نقطة</p><button id="startBtn" onclick="restartAll()">العب من الأول</button>'; } else { overlay.style.display='flex'; overlay.innerHTML='<h2>خلصت المرحلة '+stage+'! 🎉</h2><p>المرحلة اللي جاية أسرع والغراب أكتر!<br>جمعت '+score+' نقطة</p><button id="startBtn" onclick="nextStage()">المرحلة اللي بعدها</button>'; } }
+function spawnCrow(){ if(!playing) return; var idx=Math.floor(Math.random()*6); var p=plots[idx]; if(p.state===2||p.state===3){ crow.style.display='block'; crow.style.top=(30+Math.random()*40)+'%'; crow.style.left=(10+Math.random()*70)+'%'; crow.dataset.plot=idx; msg.textContent='الغراب جاي ياكل الزرع! دوس عليه!'; playAhmedVoice('ghalat'); setTimeout(function(){ if(crow.style.display==='block'){ var pi=parseInt(crow.dataset.plot); var pp=plots[pi]; pp.state=0; pp.el.className='plot'; pp.el.innerHTML='<div class="emoji">🟫</div><div class="label">الغراب أكله!</div>'; crow.style.display='none'; msg.textContent='الغراب أكل الزرع! 😢'; } }, 2200 - stage*200); } }
+function hitCrow(){ if(!playing) return; crow.style.display='none'; score+=5; document.getElementById('score').textContent=score; playAhmedVoice('sah'); msg.textContent='طردت الغراب! +5 👏'; }
+function startGame(){ score=0; timeLeft=65-stage*5; document.getElementById('score').textContent='0'; document.getElementById('time').textContent=timeLeft; document.getElementById('stage').textContent='المرحلة '+stage+' / 5'; buildGrid(); playing=true; overlay.style.display='none'; msg.textContent='ازرع بسرعة!'; playAhmedVoice('ebda'); clearInterval(timer); clearInterval(crowTimer); timer=setInterval(function(){ timeLeft--; document.getElementById('time').textContent=timeLeft; timerBar.style.width=(timeLeft/(65-stage*5)*100)+'%'; if(timeLeft<=0){ endGame(); } },1000); crowTimer=setInterval(spawnCrow, 4000 - stage*400); }
+function stageComplete(){ playing=false; clearInterval(timer); clearInterval(crowTimer); crow.style.display='none'; playWin(); if(stage>=5){ overlay.style.display='flex'; overlay.innerHTML='<h2>أحسن مزارع! 👑</h2><p>خلصت كل المراحل - 5 مراحل<br>جمعت '+score+' نقطة</p><button id="startBtn" data-action="restart">العب من الأول</button>'; } else { overlay.style.display='flex'; overlay.innerHTML='<h2>خلصت المرحلة '+stage+'! 🎉</h2><p>المرحلة اللي جاية أسرع والغراب أكتر!<br>جمعت '+score+' نقطة</p><button id="startBtn" data-action="next">المرحلة اللي بعدها</button>'; } }
 function nextStage(){ stage++; startGame(); }
 function restartAll(){ stage=1; startGame(); }
-function endGame(){ playing=false; clearInterval(timer); clearInterval(crowTimer); crow.style.display='none'; overlay.style.display='flex'; overlay.innerHTML='<h2>خلص الوقت! ⏰</h2><p>كنت في المرحلة '+stage+'<br>جمعت '+score+' نقطة</p><button id="startBtn" onclick="startGame()">حاول تاني</button>'; }
+function endGame(){ playing=false; clearInterval(timer); clearInterval(crowTimer); crow.style.display='none'; overlay.style.display='flex'; overlay.innerHTML='<h2>خلص الوقت! ⏰</h2><p>كنت في المرحلة '+stage+'<br>جمعت '+score+' نقطة</p><button id="startBtn" data-action="start">حاول تاني</button>'; }
+// pointerdown بدل onclick - Delegation للـ overlay عشان الزرار يفضل شغال بعد ما يتغير
+blockGoogle(overlay); blockGoogle(crow); blockGoogle(document.getElementById('soundBtn')); blockGoogle(document.getElementById('howBtn')); blockGoogle(document.getElementById('plantBtn')); blockGoogle(document.getElementById('waterBtn'));
+overlay.addEventListener('pointerdown',function(e){ var b=e.target.closest?e.target.closest('#startBtn'):null; if(!b) return; e.preventDefault(); var a=b.getAttribute('data-action'); if(a==='next') nextStage(); else if(a==='restart') restartAll(); else startGame(); },{passive:false});
+crow.addEventListener('pointerdown',function(e){e.preventDefault();hitCrow();},{passive:false});
+document.getElementById('soundBtn').addEventListener('pointerdown',function(e){e.preventDefault();toggleSound();},{passive:false});
+document.getElementById('howBtn').addEventListener('pointerdown',function(e){e.preventDefault();showHow();},{passive:false});
+document.getElementById('plantBtn').addEventListener('pointerdown',function(e){e.preventDefault();plantAll();},{passive:false});
+document.getElementById('waterBtn').addEventListener('pointerdown',function(e){e.preventDefault();waterAll();},{passive:false});
 buildGrid();
 </script>
 </body></html>
