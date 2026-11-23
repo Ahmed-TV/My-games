@@ -1,56 +1,64 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>الدومينو - بنك الألعاب</title>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>الدومينو - بنك الألعاب</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
-  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
-  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
-  .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
-  .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
-  .my-name{font-size:15px;font-weight:900;color:#c40000}
-  .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
-  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:12px;width:100%}
-  .ends{font-size:20px;font-weight:900;background:#fff;color:#c40000;border-radius:10px;padding:8px;margin:8px 0}
-  .table{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;min-height:90px;background:rgba(0,0,0,.25);border-radius:10px;padding:8px;margin:8px 0}
-  .tile{display:inline-flex;background:#fff;color:#000;border:2px solid #000;border-radius:8px;overflow:hidden;font-weight:900;cursor:pointer;min-width:52px}
-  .tile.sel{outline:3px solid #FFD700;transform:scale(1.05)}
-  .tile .half{padding:8px 7px;font-size:18px;border-left:1px solid #000}
-  .tile .half:last-child{border:none}
-  .tile.small{min-width:44px}
-  .tile.small .half{padding:6px 5px;font-size:15px}
-  .hand{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:8px 0}
-  .btn{background:#FFD700;color:#000;border:none;padding:13px 22px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;margin:5px}
-  #msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
-  .score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
-</style>
-</head>
-<body oncontextmenu="return false" onselectstart="return false">
+*{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none!important;user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:4px 8px;display:flex;flex-direction:column;overflow:hidden!important}
+.top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:4px 6px 5px;box-shadow:0 0 15px rgba(0,0,0,.4);flex-shrink:0;width:100%}
+.logo{width:56px;height:56px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
+.game-title{font-size:20px;font-weight:900;color:#c40000;margin:1px 0 0}
+.my-name{font-size:14px;font-weight:900;color:#c40000}
+.bank{font-size:16px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:0}
+.board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:6px auto 0;padding:8px;width:100%;flex:1;min-height:0;display:flex;flex-direction:column}
+.ends{font-size:18px;font-weight:900;background:#fff;color:#c40000;border-radius:10px;padding:6px;margin:4px 0;flex-shrink:0}
+.table{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;min-height:56px;background:rgba(0,0,0,.25);border-radius:10px;padding:6px;margin:4px 0;flex-shrink:0;overflow:hidden}
+.tile{display:inline-flex;background:#fff;color:#000;border:2px solid #000;border-radius:8px;overflow:hidden;font-weight:900;cursor:pointer;min-width:52px}
+.tile.sel{outline:3px solid #FFD700;transform:scale(1.05)}
+.tile .half{padding:8px 7px;font-size:18px;border-left:1px solid #000}
+.tile .half:last-child{border:none}
+.tile.small{min-width:44px}
+.tile.small .half{padding:6px 5px;font-size:15px}
+.hand{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:4px 0;flex:1;min-height:0;align-content:flex-start;overflow:hidden}
+.btn{background:#FFD700;color:#000;border:none;padding:11px 20px;font-size:17px;font-weight:900;border-radius:10px;cursor:pointer;margin:3px}
+#msg{font-size:16px;font-weight:900;min-height:22px;margin:3px 0;color:#fff;flex-shrink:0}
+.score{font-weight:bold;font-size:14px;margin-top:3px;color:#fff;flex-shrink:0}
+.btn-row{flex-shrink:0}
+.label{font-weight:900;flex-shrink:0}
+</style></head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
 <div class="top-box">
-  <img class="logo" src="../../logo.png">
-  <div class="game-title">🎴 الدومينو 🎴</div>
-  <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
-  <div class="bank">بنك الألعاب</div>
+<img class="logo" src="../../logo.png" alt="Ahmed TV">
+<div class="game-title">🎴 الدومينو 🎴</div>
+<div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
+<div class="bank">بنك الألعاب</div>
 </div>
 <div class="board">
-  <div id="msg">دوس على حجر من عندك عشان تلعبه</div>
-  <div class="ends">الطرفين: <span id="leftEnd">-</span> | <span id="rightEnd">-</span> | الكمبيوتر: <span id="pcCount">7</span> حجارة</div>
-  <div style="font-weight:900;">الطاولة:</div>
-  <div class="table" id="table"></div>
-  <div style="font-weight:900;">حجارتك:</div>
-  <div class="hand" id="hand"></div>
-  <button class="btn" onclick="drawTile()">اسحب حجر 🃏</button>
-  <button class="btn" onclick="passTurn()">عدّي ⏭️</button>
-  <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
-  <div class="score">حجارتك: <span id="myCount">7</span> | الدور: <span id="turn">انت</span></div>
+<div id="msg">دوس على حجر من عندك عشان تلعبه</div>
+<div class="ends">الطرفين: <span id="leftEnd">-</span> | <span id="rightEnd">-</span> | الكمبيوتر: <span id="pcCount">7</span> حجارة</div>
+<div class="label">الطاولة:</div>
+<div class="table" id="table"></div>
+<div class="label">حجارتك:</div>
+<div class="hand" id="hand"></div>
+<div class="btn-row"><button class="btn" id="drawBtn">اسحب حجر 🃏</button><button class="btn" id="passBtn">عدّي ⏭️</button><button class="btn" id="newBtn">لعبة جديدة 🔁</button></div>
+<div class="score">حجارتك: <span id="myCount">7</span> | الدور: <span id="turn">انت</span></div>
 </div>
 <script>
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+// ===== صوتك بدل الصفافير =====
+let soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 var all=[];for(var i=0;i<=6;i++)for(var j=i;j<=6;j++)all.push([i,j]);
 function shuffle(a){for(var i=a.length-1;i>0;i--){var r=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[r];a[r]=t;}return a;}
 shuffle(all);
-var myHand=all.slice(0,7), pcHand=all.slice(7,14), stock=all.slice(14), table=[], myTurn=true, sel=-1;
+var myHand=all.slice(0,7), pcHand=all.slice(7,14), stock=all.slice(14), table=[], myTurn=true, sel=-1, gameOver=false;
 function render(){
   document.getElementById('myCount').textContent=myHand.length;
   document.getElementById('pcCount').textContent=pcHand.length;
@@ -60,7 +68,7 @@ function render(){
   var t=document.getElementById('table');t.innerHTML='';
   table.forEach(function(p){var d=document.createElement('div');d.className='tile small';d.innerHTML='<span class="half">'+p[0]+'</span><span class="half">'+p[1]+'</span>';t.appendChild(d);});
   var h=document.getElementById('hand');h.innerHTML='';
-  myHand.forEach(function(p,idx){var d=document.createElement('div');d.className='tile'+(sel===idx?' sel':'');d.innerHTML='<span class="half">'+p[0]+'</span><span class="half">'+p[1]+'</span>';d.onclick=function(){if(!myTurn)return;sel=idx;render();tryPlay();};h.appendChild(d);});
+  myHand.forEach(function(p,idx){var d=document.createElement('div');d.className='tile'+(sel===idx?' sel':'');d.setAttribute('data-idx',idx);d.innerHTML='<span class="half">'+p[0]+'</span><span class="half">'+p[1]+'</span>';blockGoogle(d);h.appendChild(d);});
 }
 function canPlay(p){
   if(table.length===0)return true;
@@ -68,10 +76,10 @@ function canPlay(p){
   return p[0]===L||p[1]===L||p[0]===R||p[1]===R;
 }
 function tryPlay(){
-  if(sel<0)return;
+  if(sel<0||gameOver)return;
   var p=myHand[sel];
-  if(!canPlay(p)){document.getElementById('msg').textContent='الحجر ده مش هينفع - اختار حجر تاني';return;}
-  playTile('my',sel); 
+  if(!canPlay(p)){document.getElementById('msg').textContent='الحجر ده مش هينفع - اختار حجر تاني';playAhmedVoice('ghalat');return;}
+  playTile('my',sel);
 }
 function playTile(who,idx){
   var p = who==='my'?myHand[idx]:pcHand[idx];
@@ -86,31 +94,39 @@ function playTile(who,idx){
   }
   if(who==='my') myHand.splice(idx,1); else pcHand.splice(idx,1);
   sel=-1;
-  if(myHand.length===0){document.getElementById('msg').textContent='كسبت يا بطل! 🏆';render();return;}
-  if(pcHand.length===0){document.getElementById('msg').textContent='الكمبيوتر كسب - حاول تاني!';render();return;}
+  if(myHand.length===0){gameOver=true;document.getElementById('msg').textContent='كسبت يا بطل! 🏆';playAhmedVoice('kesebt');render();return;}
+  if(pcHand.length===0){gameOver=true;document.getElementById('msg').textContent='الكمبيوتر كسب - حاول تاني!';playAhmedVoice('khesert');render();return;}
   myTurn=!myTurn; render();
   if(!myTurn) setTimeout(pcPlay,800);
   else document.getElementById('msg').textContent='دورك - دوس على حجر من عندك';
   return true;
 }
 function pcPlay(){
+  if(gameOver) return;
   for(var i=0;i<pcHand.length;i++){var p=pcHand[i];if(canPlay(p)){document.getElementById('msg').textContent='الكمبيوتر لعب حجر...';playTile('pc',i);return;}}
   if(stock.length>0){pcHand.push(stock.pop());document.getElementById('msg').textContent='الكمبيوتر سحب حجر...';setTimeout(pcPlay,700);return;}
   myTurn=true;document.getElementById('msg').textContent='الكمبيوتر عدّى - دورك!';render();
 }
 function drawTile(){
-  if(!myTurn)return;
-  if(stock.length===0){document.getElementById('msg').textContent='مفيش حجارة في السحب!';return;}
-  myHand.push(stock.pop());sel=-1;render();document.getElementById('msg').textContent='سحبت حجر - اختار حجر تلعبه';
+  if(!myTurn||gameOver)return;
+  if(stock.length===0){document.getElementById('msg').textContent='مفيش حجارة في السحب!';playAhmedVoice('ghalat');return;}
+  myHand.push(stock.pop());sel=-1;render();document.getElementById('msg').textContent='سحبت حجر - اختار حجر تلعبه';playAhmedVoice('sah');
 }
 function passTurn(){
-  if(!myTurn)return;
+  if(!myTurn||gameOver)return;
   var can=false;myHand.forEach(function(p){if(canPlay(p))can=true;});
-  if(can){document.getElementById('msg').textContent='معاك حجر ينفع تلعبه - العبه الأول!';return;}
+  if(can){document.getElementById('msg').textContent='معاك حجر ينفع تلعبه - العبه الأول!';playAhmedVoice('ghalat');return;}
   myTurn=false;render();pcPlay();
 }
+function newGame(){ playAhmedVoice('ebda'); location.reload(); }
+// pointerdown بدل onclick - دوسة لعب بس
+var handEl=document.getElementById('hand');
+blockGoogle(handEl);
+handEl.addEventListener('pointerdown',function(e){ var tile=e.target.closest?e.target.closest('.tile'):null; if(!tile) return; e.preventDefault(); if(!myTurn||gameOver) return; sel=parseInt(tile.getAttribute('data-idx')); render(); tryPlay(); },{passive:false});
+['drawBtn','passBtn','newBtn'].forEach(function(id){ var b=document.getElementById(id); blockGoogle(b); });
+document.getElementById('drawBtn').addEventListener('pointerdown',function(e){e.preventDefault();drawTile();},{passive:false});
+document.getElementById('passBtn').addEventListener('pointerdown',function(e){e.preventDefault();passTurn();},{passive:false});
+document.getElementById('newBtn').addEventListener('pointerdown',function(e){e.preventDefault();newGame();},{passive:false});
 render();
 </script>
- 
-</body>
-</html>
+</body></html>
