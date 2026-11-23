@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>لعبة الكنز | Ahmed TV</title>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>لعبة الكنز | Ahmed TV</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none!important;-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important;touch-action:manipulation}
 html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;overscroll-behavior:none}
-body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;touch-action:manipulation;height:100svh!important;overflow:hidden!important}
 .header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
 .top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2px}
 .logo-wrap{width:52px;height:52px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#000}
@@ -36,8 +32,7 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 #overlay p{font-size:14px;line-height:1.7;color:#e2e8f0}
 .footer{font-size:10px;color:#94a3b8;text-align:center;margin-top:4px;flex-shrink:0}
 .footer a{color:#facc15;text-decoration:none}
-</style>
-</head>
+</style></head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
 <div class="header">
 <div class="top-row">
@@ -63,40 +58,31 @@ h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2
 </div>
 <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a></div>
 <script>
-// ===== منع بحث جوجل اللي بيطلع لما تدوس على الكلام والزراير =====
+// ===== منع بحث جوجل =====
 document.addEventListener('contextmenu', function(e){ e.preventDefault(); e.stopPropagation(); return false; }, true);
 document.addEventListener('selectstart', function(e){ e.preventDefault(); return false; }, true);
 document.addEventListener('dragstart', function(e){ e.preventDefault(); return false; }, true);
 document.addEventListener('mousedown', function(e){ if(e.button===2) e.preventDefault(); }, true);
-// منع الدوسة الطويلة اللي بتفتح بحث جوجل في كروم موبايل
-var _lp=null;
-document.addEventListener('touchstart', function(){ _lp=setTimeout(function(){},600); }, {passive:true});
-document.addEventListener('touchend', function(){ if(_lp) clearTimeout(_lp); }, {passive:true});
-document.addEventListener('touchmove', function(){ if(_lp) clearTimeout(_lp); }, {passive:true});
 window.addEventListener('contextmenu', function(e){ e.preventDefault(); e.stopPropagation(); return false; }, true);
-var score=0,tries=3,level=1,locked=false,opened=0;
+var score=0,tries=3,level=1,locked=false,opened=0,treasureIdx=-1;
 var scoreEl=document.getElementById('score'),triesEl=document.getElementById('tries'),levelEl=document.getElementById('level'),boardEl=document.getElementById('board'),msgEl=document.getElementById('msg'),overlay=document.getElementById('overlay'),nextBtn=document.getElementById('nextBtn');
-var soundOn=true,_ahmedAudio=null,_ahlaPlayed=false;
-function getAhmedAudio(){if(!_ahmedAudio){_ahmedAudio=new Audio();_ahmedAudio.preload='auto';}return _ahmedAudio;}
-function playAhmedVoice(n){try{if(!soundOn)return;var a=getAhmedAudio();try{a.pause();}catch(e){}a.src='../../sounds/'+n+'.mp3';a.currentTime=0;a.volume=1;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
-document.addEventListener('click',function(){if(!_ahlaPlayed){_ahlaPlayed=true;playAhmedVoice('ahla');}});
+// ===== صوتك =====
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-function blockGoogle(el){
-  el.oncontextmenu=function(){ return false; };
-  el.onselectstart=function(){ return false; };
-  el.ondragstart=function(){ return false; };
-  el.addEventListener('contextmenu', function(e){ e.preventDefault(); e.stopPropagation(); return false; }, true);
-  el.addEventListener('touchstart', function(e){ e.stopPropagation(); }, {passive:true});
-}
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){ return false; }; el.onselectstart=function(){ return false; }; el.ondragstart=function(){ return false; }; el.addEventListener('contextmenu', function(e){ e.preventDefault(); e.stopPropagation(); return false; }, true); }
 function newBoard(){
-boardEl.innerHTML='';tries=3;opened=0;locked=false;nextBtn.style.display='none';
+boardEl.innerHTML='';tries=3;opened=0;locked=false;treasureIdx=-1;nextBtn.style.display='none';
 triesEl.textContent='3';levelEl.textContent='مستوى '+level;msgEl.textContent='افتح صندوق ودور على الكنز!';
 var items=['treasure','monster','monster','empty','empty','empty','empty','empty','empty'];
 items=shuffle(items);
-items.forEach(function(type){
-var b=document.createElement('div');b.className='box';b.textContent='📦';
+items.forEach(function(type,idx){
+if(type==='treasure') treasureIdx=idx;
+var b=document.createElement('div');b.className='box';b.textContent='📦';b.setAttribute('data-type',type);
 blockGoogle(b);
-// استخدم pointerdown بدل onclick - أسرع ومش بيفتح بحث جوجل
 b.addEventListener('pointerdown', function(e){
 e.preventDefault(); e.stopPropagation();
 if(locked||b.classList.contains('opened'))return;
@@ -120,25 +106,32 @@ if(tries<=0){locked=true;revealTreasure();setTimeout(endGame,1200);}
 boardEl.appendChild(b);
 });
 }
+// ✅ كانت بايظة - كانت فاضية ومش بتورّي الكنز فين لما تخسر
 function revealTreasure(){
 var boxes=boardEl.querySelectorAll('.box');
-boxes.forEach(function(b){if(!b.classList.contains('opened')){}});
+boxes.forEach(function(b,i){
+if(b.getAttribute('data-type')==='treasure' && !b.classList.contains('opened')){
+b.classList.add('opened','treasure');b.textContent='💰';
+}
+});
 }
 function endGame(){
 playAhmedVoice('khesert');
 overlay.style.display='flex';
-overlay.innerHTML='<div style="font-size:40px">💔</div><h2>خلصت المحاولات!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+'</b> نقطة<br>ووصلت للمستوى <b style="color:#facc15">'+level+'</b><br>الكنز كان مستخبي!</p><button class="btn" id="againBtn">🔄 العب تاني</button>';
-var ab=document.getElementById('againBtn'); blockGoogle(ab); ab.onclick=startGame;
+overlay.innerHTML='<div style="font-size:40px">💔</div><h2>خلصت المحاولات!</h2><p>جبت <b style="color:#facc15;font-size:22px">'+score+'</b> نقطة<br>ووصلت للمستوى <b style="color:#facc15">'+level+'</b><br>الكنز كان مستخبي!</p><button class="btn" id="againBtn" data-action="again">🔄 العب تاني</button>';
+var ab=document.getElementById('againBtn'); blockGoogle(ab);
 }
 function startGame(){
 playAhmedVoice('ebda');
 score=0;level=1;scoreEl.textContent='0';
 overlay.style.display='none';newBoard();
 }
-document.getElementById('startBtn').onclick=startGame;
+// pointerdown بدل onclick - Delegation للـ overlay عشان زرار "العب تاني" يفضل شغال
 blockGoogle(document.getElementById('startBtn'));
 blockGoogle(nextBtn);
-nextBtn.onclick=function(){level++;playAhmedVoice('sah');newBoard();};
+blockGoogle(overlay);
+document.getElementById('startBtn').addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
+nextBtn.addEventListener('pointerdown',function(e){e.preventDefault();level++;playAhmedVoice('sah');newBoard();},{passive:false});
+overlay.addEventListener('pointerdown',function(e){ var b=e.target.closest?e.target.closest('#againBtn'):null; if(!b) return; e.preventDefault(); startGame(); },{passive:false});
 </script>
-</body>
-</html>
+</body></html>
