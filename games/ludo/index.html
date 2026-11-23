@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>اللودو - بنك الألعاب</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-moz-user-select:none !important;-ms-user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
   body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
   .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
   .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
@@ -28,7 +28,7 @@
   .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:8px 14px;font-size:14px;font-weight:900;border-radius:20px;cursor:pointer;margin:4px}
 </style>
 </head>
-<body oncontextmenu="return false" onselectstart="return false">
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
 <div class="top-box">
   <img class="logo" src="../../logo.png">
   <div class="game-title">🎲 اللودو 🎲</div>
@@ -38,56 +38,47 @@
 <div class="board">
   <div id="msg">دوس ارمي الزهر - انت الأحمر 🔴</div>
   <div class="dice" id="dice">🎲 🎲</div>
-  <button class="btn" onclick="roll()">ارمي الزهر 🎲</button>
-  <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button>
+  <button class="btn" id="rollBtn">ارمي الزهر 🎲</button>
+  <button class="sound-btn" id="soundBtn">🔊 الصوت: شغال</button>
   <div class="track" id="track"></div>
   <div class="score">مكانك: <span id="myPos">البداية</span> | الكمبيوتر: <span id="pcPos">البداية</span> | الدور: <span id="turn">انت</span></div>
-  <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
+  <button class="btn" id="newBtn">لعبة جديدة 🔁</button>
   <div style="font-size:13px;margin-top:6px;">وصل للنهاية الأول عشان تكسب! لو وقفت على نفس مكان الكمبيوتر - هترجعه للبداية!</div>
 </div>
-
 <script>
-// ===== الأصوات =====
-var audioCtx = null;
-var soundOn = true;
-function toggleSound(){
-  soundOn = !soundOn;
-  document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول';
-}
-function beep(freq, dur, type){
-  if(!soundOn) return;
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-    var o = audioCtx.createOscillator();
-    var g = audioCtx.createGain();
-    o.type = type || 'sine';
-    o.frequency.value = freq;
-    g.gain.value = 0.3;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime + dur);
-  }catch(e){}
-}
-function soundDice(){ beep(300, 0.1, 'square'); setTimeout(function(){ beep(400, 0.1, 'square'); }, 100); setTimeout(function(){ beep(500, 0.15, 'square'); }, 200); }
-function soundMove(){ beep(600, 0.15, 'sine'); }
-function soundEat(){ beep(800, 0.1, 'sawtooth'); setTimeout(function(){ beep(1000, 0.2, 'sawtooth'); }, 100); }
-function soundWin(){ beep(523, 0.2, 'sine'); setTimeout(function(){ beep(659, 0.2, 'sine'); }, 200); setTimeout(function(){ beep(784, 0.2, 'sine'); }, 400); setTimeout(function(){ beep(1046, 0.4, 'sine'); }, 600); }
-function soundLose(){ beep(400, 0.2, 'sawtooth'); setTimeout(function(){ beep(300, 0.3, 'sawtooth'); }, 200); }
+// ===== منع بحث جوجل - بيمنع البحث اللي بيطلع لما تدوس على الكلام والزراير =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('mousedown',function(e){if(e.button===2)e.preventDefault();},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+// ===== صوتك بدل الصفافير =====
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; }
+function soundDice(){ playAhmedVoice('sah'); }
+function soundMove(){ playAhmedVoice('sah'); }
+function soundEat(){ playAhmedVoice('kesebt'); }
+function soundWin(){ playAhmedVoice('kesebt'); }
+function soundLose(){ playAhmedVoice('khesert'); }
 </script>
-
 <script>
 var TOTAL=32, myPos=-1, pcPos=-1, myTurn=true, diceVal=0, canMove=false;
 function render(){
   var t=document.getElementById('track'); t.innerHTML='';
   for(var i=0;i<TOTAL;i++){
-    var c=document.createElement('div'); c.className='cell';
+    var c=document.createElement('div'); c.className='cell'; c.setAttribute('data-idx',i);
     if(i===0) c.classList.add('start');
     if(i===TOTAL-1) c.classList.add('finish');
     if(i===16) c.classList.add('home');
     c.textContent = i===0?'ابدأ':i===TOTAL-1?'🏁':i+1;
     if(myPos===i){ var m=document.createElement('div'); m.className='tok my'; m.textContent='🔴'; c.appendChild(m); }
     if(pcPos===i){ var p=document.createElement('div'); p.className='tok pc'; p.textContent='🔵'; c.appendChild(p); }
-    c.onclick=function(idx){ return function(){ if(myTurn && canMove) moveMy(idx); }; }(i);
+    blockGoogle(c);
     t.appendChild(c);
   }
   document.getElementById('myPos').textContent = myPos===-1?'البداية':myPos===TOTAL-1?'النهاية 🏁':(myPos+1);
@@ -95,25 +86,20 @@ function render(){
   document.getElementById('turn').textContent = myTurn?'انت':'الكمبيوتر';
 }
 function roll(){
-  if(canMove){ document.getElementById('msg').textContent='العب الزهر اللي معاك الأول - دوس على مكانك!'; return; }
+  if(!myTurn) return;
+  if(canMove){ document.getElementById('msg').textContent='العب الزهر اللي معاك الأول - دوس على مكانك!'; playAhmedVoice('ghalat'); return; }
   soundDice();
   var d1=Math.floor(Math.random()*6)+1, d2=Math.floor(Math.random()*6)+1;
   diceVal=d1+d2;
   document.getElementById('dice').textContent='🎲 '+d1+'  🎲 '+d2+' = '+diceVal;
-  if(myTurn){
-    document.getElementById('msg').textContent='طلعلك '+diceVal+' - دوس على مكانك عشان تتحرك';
-    canMove=true;
-  } else {
-    setTimeout(pcMove,800);
-  }
+  if(myTurn){ document.getElementById('msg').textContent='طلعلك '+diceVal+' - دوس على مكانك عشان تتحرك'; canMove=true; } else { setTimeout(pcMove,800); }
   render();
 }
 function moveMy(idx){
   if(!canMove) return;
   var target = myPos===-1 ? diceVal-1 : myPos+diceVal;
   if(target>=TOTAL) target=TOTAL-1;
-  if(myPos!==-1 && idx!==myPos) { document.getElementById('msg').textContent='دوس على مكانك الحالي - العلامة الحمرا!'; return; }
-  var oldPc = pcPos;
+  if(myPos!==-1 && idx!==myPos) { document.getElementById('msg').textContent='دوس على مكانك الحالي - العلامة الحمرا!'; playAhmedVoice('ghalat'); return; }
   myPos=target;
   if(myPos===pcPos && pcPos!==-1){ pcPos=-1; soundEat(); document.getElementById('msg').textContent='أكلت الكمبيوتر ورجعته للبداية! 😍'; }
   else { soundMove(); document.getElementById('msg').textContent='اتحركت '+diceVal+' - دور الكمبيوتر...'; }
@@ -131,8 +117,14 @@ function pcMove(){
   if(pcPos===TOTAL-1){ soundLose(); document.getElementById('msg').textContent='الكمبيوتر كسب - حاول تاني!'; render(); return; }
   myTurn=true; canMove=false; render();
 }
+var trackEl=document.getElementById('track');
+blockGoogle(trackEl);
+trackEl.addEventListener('pointerdown',function(e){ var cell=e.target.closest?e.target.closest('.cell'):null; if(!cell) return; e.preventDefault(); if(myTurn && canMove) moveMy(parseInt(cell.getAttribute('data-idx'))); },{passive:false});
+['rollBtn','soundBtn','newBtn'].forEach(function(id){ var b=document.getElementById(id); blockGoogle(b); });
+document.getElementById('rollBtn').addEventListener('pointerdown',function(e){e.preventDefault();roll();},{passive:false});
+document.getElementById('soundBtn').addEventListener('pointerdown',function(e){e.preventDefault();toggleSound();},{passive:false});
+document.getElementById('newBtn').addEventListener('pointerdown',function(e){e.preventDefault();playAhmedVoice('ebda');location.reload();},{passive:false});
 render();
 </script>
- 
 </body>
 </html>
