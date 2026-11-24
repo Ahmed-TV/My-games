@@ -2,60 +2,64 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>الطاولة - بنك الألعاب</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
-  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
-  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
-  .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
-  .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
-  .my-name{font-size:15px;font-weight:900;color:#c40000}
-  .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
-  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:12px;width:100%}
-  .top,.bottom{display:flex;justify-content:space-between}
-  .col{width:34px;min-height:125px;background:rgba(255,255,255,.2);border-radius:8px;padding:4px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent;-moz-user-select:none!important;-ms-user-select:none!important;touch-action:manipulation}
+  html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:6px 8px;touch-action:manipulation;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;overflow:hidden!important}
+  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;width:100%;margin:0 auto;padding:4px 6px 5px;box-shadow:0 0 15px rgba(0,0,0,.4);flex-shrink:0}
+  .logo{width:50px;height:50px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
+  .game-title{font-size:20px;font-weight:900;color:#c40000;margin:1px 0 1px}
+  .my-name{font-size:13px;font-weight:900;color:#c40000}
+  .bank{font-size:16px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
+  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;width:100%;margin:6px auto 0;padding:8px;flex:1;min-height:0;display:flex;flex-direction:column}
+  .top,.bottom{display:flex;justify-content:space-between;flex:1;min-height:0}
+  .col{width:34px;min-height:0;background:rgba(255,255,255,.2);border-radius:8px;padding:3px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;justify-content:flex-start}
   .col.sel{outline:3px solid #FFD700}
-  .piece{width:28px;height:28px;border-radius:50%;border:2px solid #000;font-size:13px;font-weight:900;line-height:24px;pointer-events:none}
+  .piece{width:24px;height:24px;border-radius:50%;border:2px solid #000;font-size:11px;font-weight:900;line-height:20px;pointer-events:none;flex-shrink:0}
   .white{background:#fff;color:#000}
   .black{background:#222;color:#fff;border-color:#FFD700}
-  .mid{height:10px}
-  .dice{font-size:32px;margin:8px 0;color:#fff}
-  .btn{background:#FFD700;color:#000;border:none;padding:13px 22px;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;margin:5px}
-  #msg{font-size:17px;font-weight:900;min-height:24px;margin:6px 0;color:#fff}
-  .score{font-weight:bold;font-size:15px;margin-top:6px;color:#fff}
+  .mid{height:8px;flex-shrink:0}
+  .dice{font-size:26px;margin:4px 0;color:#fff;flex-shrink:0}
+  .btn{background:#FFD700;color:#000;border:none;padding:10px 22px;font-size:17px;font-weight:900;border-radius:10px;cursor:pointer;margin:3px;flex-shrink:0}
+  #msg{font-size:15px;font-weight:900;min-height:22px;margin:4px 0;color:#fff;flex-shrink:0}
+  .score{font-weight:bold;font-size:14px;margin-top:4px;color:#fff;flex-shrink:0}
 </style>
 </head>
 <body oncontextmenu="return false" onselectstart="return false">
-<div class="top-box">
-  <img class="logo" src="../../logo.png">
-  <div class="game-title">🎲 الطاولة 🎲</div>
-  <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
-  <div class="bank">بنك الألعاب</div>
-</div>
-<div class="board">
-  <div id="msg">دوس ارمي الزهر - انت الأبيض ⚪</div>
-  <div class="dice" id="dice">🎲 🎲</div>
-  <button class="btn" onclick="roll()">ارمي الزهر 🎲</button>
-  <div class="top" id="top"></div>
-  <div class="mid"></div>
-  <div class="bottom" id="bottom"></div>
-  <div class="score">انت: <span id="myCount">15</span> | الكمبيوتر: <span id="pcCount">15</span> | الدور: <span id="turn">انت</span></div>
-  <button class="btn" onclick="location.reload()">لعبة جديدة 🔁</button>
-</div>
+<div class="top-box"><img class="logo" src="../../logo.png"><div class="game-title">الطاولة</div><div class="my-name">Ahmed TV • أحمد عبد العزيز</div><div class="bank">بنك الألعاب</div></div>
+<div class="board"><div id="msg">اضغط ارمي الزهر - أنت الأبيض</div><div class="dice" id="dice">🎲 🎲</div><button class="btn" id="rollBtn">ارمي الزهر</button><div class="top" id="top"></div><div class="mid"></div><div class="bottom" id="bottom"></div><div class="score">أنت: <span id="myCount">15</span> | الكمبيوتر: <span id="pcCount">15</span> | الدور: <span id="turn">أنت</span></div><button class="btn" id="newBtn">لعبة جديدة</button></div>
+<script>
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+</script>
 <script>
 var board=[];for(var i=0;i<24;i++) board[i]={n:0,c:''};
 board[0]={n:2,c:'white'};board[11]={n:5,c:'black'};board[16]={n:3,c:'black'};board[18]={n:5,c:'white'};board[23]={n:2,c:'black'};board[12]={n:5,c:'white'};board[7]={n:3,c:'white'};board[5]={n:5,c:'black'};
 var sel=-1,diceVals=[],myTurn=true;
-function render(){var top=document.getElementById('top'),bottom=document.getElementById('bottom');top.innerHTML='';bottom.innerHTML='';for(var i=0;i<12;i++)top.appendChild(makeCol(11-i));for(var i=12;i<24;i++)bottom.appendChild(makeCol(i));document.getElementById('myCount').textContent=count('white');document.getElementById('pcCount').textContent=count('black');document.getElementById('turn').textContent=myTurn?'انت':'الكمبيوتر';}
+var rollBtn=document.getElementById('rollBtn'); var newBtn=document.getElementById('newBtn');
+blockGoogle(rollBtn); blockGoogle(newBtn);
+function render(){var top=document.getElementById('top'),bottom=document.getElementById('bottom');top.innerHTML='';bottom.innerHTML='';for(var i=0;i<12;i++)top.appendChild(makeCol(11-i));for(var i=12;i<24;i++)bottom.appendChild(makeCol(i));document.getElementById('myCount').textContent=count('white');document.getElementById('pcCount').textContent=count('black');document.getElementById('turn').textContent=myTurn?'أنت':'الكمبيوتر';}
 function count(c){var s=0;board.forEach(function(p){if(p.c===c)s+=p.n;});return s;}
-function makeCol(idx){var d=document.createElement('div');d.className='col'+(sel===idx?' sel':'');d.onclick=function(){clickCol(idx);};var p=board[idx];for(var i=0;i<p.n;i++){var s=document.createElement('div');s.className='piece '+(p.c==='white'?'white':'black');s.textContent=p.n;d.appendChild(s);}var lab=document.createElement('div');lab.style.fontSize='10px';lab.style.pointerEvents='none';lab.textContent=idx+1;d.appendChild(lab);return d;}
-function roll(){if(diceVals.length>0){document.getElementById('msg').textContent='العب الزهر اللي معاك الأول!';return;}var d1=Math.floor(Math.random()*6)+1,d2=Math.floor(Math.random()*6)+1;diceVals=[d1,d2];if(d1===d2)diceVals=[d1,d1,d1,d1];document.getElementById('dice').textContent='🎲 '+d1+'  🎲 '+d2+(d1===d2?' - دوبل!':'');document.getElementById('msg').textContent=myTurn?'دوس على حجرك وبعدين المكان اللي هتروحله':'دور الكمبيوتر...';if(!myTurn)setTimeout(pcPlay,800);}
-function clickCol(idx){if(!myTurn||diceVals.length===0)return;if(sel===-1){if(board[idx].c!=='white'||board[idx].n===0){document.getElementById('msg').textContent='دوس على حجر أبيض بتاعك!';return;}sel=idx;render();}else{var move=diceVals.find(function(d){return idx===sel+d;});if(move===undefined){sel=-1;render();document.getElementById('msg').textContent='مش هينفع تتحرك كده - اختار تاني';return;}doMove(sel,idx,move);sel=-1;if(diceVals.length===0){myTurn=false;render();setTimeout(function(){roll();},600);}else render();}}
-function doMove(from,to,d){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='white'){board[to].c='white';board[to].n++;}else if(board[to].n===1){board[to].c='white';board[to].n=1;document.getElementById('msg').textContent='أكلت حجر الكمبيوتر! 😍';}else{board[from].n++;board[from].c='white';return;}diceVals.splice(diceVals.indexOf(d),1);}
-function pcPlay(){if(diceVals.length===0)return;for(var from=23;from>=0;from--){if(board[from].c!=='black')continue;for(var k=0;k<diceVals.length;k++){var to=from-diceVals[k];if(to<0)continue;if(board[to].c===''||board[to].c==='black'||board[to].n===1){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='black'){board[to].c='black';board[to].n++;}else{board[to].c='black';board[to].n=1;}diceVals.splice(k,1);render();if(diceVals.length>0){setTimeout(pcPlay,600);return;}myTurn=true;document.getElementById('msg').textContent='دورك انت - ارمي الزهر!';render();return;}}}diceVals=[];myTurn=true;document.getElementById('msg').textContent='الكمبيوتر معرفش يلعب - دورك!';render();}
+function makeCol(idx){var d=document.createElement('div');d.className='col'+(sel===idx?' sel':'');blockGoogle(d);d.addEventListener('pointerdown',function(e){e.preventDefault();clickCol(idx);},{passive:false});var p=board[idx];for(var i=0;i<p.n;i++){var s=document.createElement('div');s.className='piece '+(p.c==='white'?'white':'black');s.textContent=p.n;d.appendChild(s);}var lab=document.createElement('div');lab.style.fontSize='10px';lab.style.pointerEvents='none';lab.textContent=idx+1;d.appendChild(lab);return d;}
+function roll(){if(diceVals.length>0){document.getElementById('msg').textContent='العب الزهر الذي معك أولا!';playAhmedVoice('hawel');return;}var d1=Math.floor(Math.random()*6)+1,d2=Math.floor(Math.random()*6)+1;diceVals=[d1,d2];if(d1===d2)diceVals=[d1,d1,d1,d1];document.getElementById('dice').textContent='🎲 '+d1+'  🎲 '+d2+(d1===d2?' - دوبل!':'');document.getElementById('msg').textContent=myTurn?'اضغط على حجرك وبعد ذلك المكان الذي ستذهب إليه':'دور الكمبيوتر...';playAhmedVoice('ebda');if(!myTurn)setTimeout(pcPlay,800);}
+function clickCol(idx){if(!myTurn||diceVals.length===0)return;if(sel===-1){if(board[idx].c!=='white'||board[idx].n===0){document.getElementById('msg').textContent='اضغط على حجر أبيض خاص بك!';playAhmedVoice('ghalat');return;}sel=idx;render();}else{var move=diceVals.find(function(d){return idx===sel+d;});if(move===undefined){sel=-1;render();document.getElementById('msg').textContent='لا يمكن أن تتحرك هكذا - اختر مرة أخرى';playAhmedVoice('ghalat');return;}doMove(sel,idx,move);sel=-1;if(diceVals.length===0){myTurn=false;render();setTimeout(function(){roll();},600);}else render();}}
+function doMove(from,to,d){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='white'){board[to].c='white';board[to].n++;playAhmedVoice('sah');}else if(board[to].n===1){board[to].c='white';board[to].n=1;document.getElementById('msg').textContent='أكلت حجر الكمبيوتر!';playAhmedVoice('kesebt');}else{board[from].n++;board[from].c='white';return;}diceVals.splice(diceVals.indexOf(d),1);}
+function pcPlay(){if(diceVals.length===0)return;for(var from=23;from>=0;from--){if(board[from].c!=='black')continue;for(var k=0;k<diceVals.length;k++){var to=from-diceVals[k];if(to<0)continue;if(board[to].c===''||board[to].c==='black'||board[to].n===1){board[from].n--;if(board[from].n===0)board[from].c='';if(board[to].c===''||board[to].c==='black'){board[to].c='black';board[to].n++;}else{board[to].c='black';board[to].n=1;}diceVals.splice(k,1);render();if(diceVals.length>0){setTimeout(pcPlay,600);return;}myTurn=true;document.getElementById('msg').textContent='دورك أنت - ارمي الزهر!';render();return;}}}diceVals=[];myTurn=true;document.getElementById('msg').textContent='الكمبيوتر لم يستطع اللعب - دورك!';render();}
+function onRoll(e){ if(e) e.preventDefault(); roll(); }
+function onNew(e){ if(e) e.preventDefault(); location.reload(); }
+rollBtn.addEventListener('click', onRoll); rollBtn.addEventListener('pointerdown', onRoll, {passive:false}); rollBtn.addEventListener('touchstart', onRoll, {passive:false});
+newBtn.addEventListener('click', onNew); newBtn.addEventListener('pointerdown', onNew, {passive:false}); newBtn.addEventListener('touchstart', onNew, {passive:false});
 render();
 </script>
- 
 </body>
 </html>
