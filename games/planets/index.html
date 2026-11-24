@@ -3,320 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>ترتيب الكواكب | Ahmed TV</title>
+<title>رحلة الفضاء | Ahmed TV</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100vh; height: 100dvh; overflow: hidden; }
-  body {
-    font-family: Tahoma, Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: env(safe-area-inset-top, 8px) 8px env(safe-area-inset-bottom, 8px) 8px;
-  }
-
-  .header { width: 100%; max-width: 550px; text-align: center; flex-shrink: 0;}
-  .top-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 5px; }
-  
-  .logo {
-    width: 65px; height: 65px; flex-shrink: 0;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6); 
-    border: 4px solid #fff; border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #fff; line-height: 1;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-  }
-  .logo b { font-size: 13px; }
-  .logo span { font-size: 8px; font-weight: 900; margin-top: 2px; }
-  
-  h1 { font-size: 20px; line-height: 1.2; color: #facc15;}
-  h1 small { display: block; font-size: 11px; color: #fff; letter-spacing: 1px; margin-top: 2px; }
-  
-  .names { font-size: 14px; color: #cbd5e1; margin-bottom: 5px; font-weight: bold;}
-  .names b { color: #facc15; font-size: 16px;}
-
-  #game-container {
-    width: 100%; max-width: 550px; flex-grow: 1; min-height: 0;
-    position: relative; display: flex; flex-direction: column;
-    background: #1e293b; 
-    border: 4px solid #f59e0b; border-radius: 16px;
-    overflow: hidden;
-    padding: 10px;
-    margin-top: 5px;
-  }
-
-  .watermark {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: rgba(255, 255, 255, 0.05);
-    font-size: 40px;
-    font-weight: 900;
-    pointer-events: none;
-    z-index: 0;
-    white-space: nowrap;
-  }
-
-  /* ترتيب الكواكب */
-  .slots-container {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-    margin-bottom: 15px; z-index: 1; flex-shrink: 0;
-  }
-  .slot {
-    background: #0f172a; border: 2px dashed #475569; border-radius: 10px;
-    height: 70px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-    font-size: 12px; color: #94a3b8; position: relative;
-  }
-  .slot .slot-num { position: absolute; top: 2px; right: 5px; font-size: 12px; font-weight: bold; color: #f59e0b;}
-  .slot .slot-content { font-size: 30px; }
-  .slot.correct { border: 2px solid #22c55e; background: #14532d; }
-  .slot.wrong { border: 2px solid #ef4444; background: #7f1d1d; }
-
-  /* الكواكب المتاحة */
-  .planets-container {
-    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-    padding-top: 10px; border-top: 2px solid #334155; z-index: 1;
-  }
-  .planet {
-    background: #334155; border-radius: 10px; padding: 10px 15px;
-    font-size: 30px; cursor: pointer; user-select: none;
-    display: flex; flex-direction: column; align-items: center;
-    transition: transform 0.1s;
-    border: 2px solid #475569;
-  }
-  .planet:active { transform: scale(0.9); }
-  .planet.selected { border-color: #facc15; box-shadow: 0 0 15px #facc15; }
-  .planet .p-name { font-size: 10px; margin-top: 2px; color: #cbd5e1;}
-
-  #overlay {
-    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 10px; z-index: 10;
-  }
-  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
-  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
-  .btn-start {
-    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
-    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
-    width: 80%; max-width: 200px;
-  }
-  .btn-start:active { transform: scale(0.95); }
-
-  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 5px;}
-  .footer a { color: #facc15; text-decoration: none; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;overflow:hidden!important}
+.header{width:100%;max-width:550px;text-align:center;flex-shrink:0}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:3px}
+.logo-img{width:60px;height:60px;flex-shrink:0;border-radius:50%;border:4px solid #fff;object-fit:cover;background:#fff;box-shadow:0 0 20px rgba(59,130,246,.5);display:block}
+h1{font-size:20px;line-height:1.2;color:#facc15}
+h1 small{display:block;font-size:11px;color:#fff;letter-spacing:1px;margin-top:2px}
+.names{font-size:14px;color:#cbd5e1;margin-bottom:3px;font-weight:bold}
+.names b{color:#facc15;font-size:16px}
+.stats{display:flex;gap:6px;justify-content:center;margin:2px 0 4px}
+.stat{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:3px 10px;min-width:80px;text-align:center}
+.stat b{display:block;font-size:15px;color:#facc15}
+.stat span{font-size:10px;color:#94a3b8}
+.levels{display:flex;gap:5px;justify-content:center;margin-bottom:4px;flex-shrink:0}
+.lv{flex:1;max-width:160px;background:#1e293b;border:2px solid #334155;border-radius:20px;padding:4px;font-size:11px;font-weight:900;color:#94a3b8}
+.lv.active{background:#f59e0b;color:#000;border-color:#fff}
+.lv.done{background:#14532d;color:#fff;border-color:#22c55e}
+#game-container{width:100%;max-width:550px;flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:#1e293b;border:4px solid #f59e0b;border-radius:16px;overflow:hidden;padding:8px;margin-top:2px}
+.watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(255,255,255,.05);font-size:40px;font-weight:900;pointer-events:none;z-index:0;white-space:nowrap}
+.info{background:#0f172a;border:2px solid #f59e0b;border-radius:10px;padding:6px;text-align:center;font-size:12px;line-height:1.5;margin-bottom:6px;flex-shrink:0;z-index:1}
+.info b{color:#facc15}
+.q{font-size:15px;font-weight:900;text-align:center;margin-bottom:6px;flex-shrink:0;z-index:1;line-height:1.5}
+.slots-container{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px;z-index:1;flex-shrink:0}
+.slot{background:#0f172a;border:2px dashed #475569;border-radius:10px;height:64px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative}
+.slot .slot-num{position:absolute;top:2px;right:5px;font-size:12px;font-weight:bold;color:#f59e0b}
+.slot .slot-content{font-size:11px;text-align:center;line-height:1.2}
+.slot.correct{border:2px solid #22c55e;background:#14532d}
+.slot.wrong{border:2px solid #ef4444;background:#7f1d1d}
+.planets-container{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding-top:8px;border-top:2px solid #334155;z-index:1;flex-shrink:0}
+.planet{background:#334155;border-radius:10px;padding:6px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;border:2px solid #475569;min-width:62px}
+.planet:active{transform:scale(.9)}
+.planet.selected{border-color:#facc15;box-shadow:0 0 15px #facc15}
+.planet .p-name{font-size:10px;margin-top:3px;color:#cbd5e1}
+.ball{width:32px;height:32px;border-radius:50%!important;flex-shrink:0;box-shadow:inset -4px -4px 8px rgba(0,0,0,.4), 0 0 8px rgba(255,255,255,.2)}
+.slot .ball{width:30px;height:30px}
+.opts{display:flex;flex-direction:column;gap:6px;z-index:1}
+.opt{background:#334155;border:2px solid #475569;border-radius:10px;padding:10px;font-size:14px;font-weight:900;cursor:pointer;text-align:center}
+.opt:active{transform:scale(.98)}
+.opt.correct{background:#14532d;border-color:#22c55e}
+.opt.wrong{background:#7f1d1d;border-color:#ef4444}
+#msg{text-align:center;min-height:20px;font-size:13px;font-weight:900;color:#facc15;margin:4px 0;flex-shrink:0}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10;overflow:hidden}
+#overlay h2{font-size:22px;color:#facc15}
+#overlay p{line-height:1.6;font-size:13px;color:#e2e8f0}
+.btn-start{background:#f59e0b;color:#000;border:none;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:220px}
+.footer{font-size:10px;color:#94a3b8;text-align:center;flex-shrink:0;margin-top:4px}
+.footer a{color:#facc15;text-decoration:none}
 </style>
 </head>
-<body>
-
-  <div class="header">
-    <div class="top-row">
-      <div class="logo"><b>Ahmed</b><span>TV 📺</span></div>
-      <h1>ترتيب الكواكب<small>AHMED TV PLANETS</small></h1>
-    </div>
-    <div class="names">أحمد عبدالعزيز • <b>Ahmed Abdelaziz</b></div>
-  </div>
-
-  <div id="game-container">
-    <div class="watermark">Ahmed TV</div>
-    
-    <!-- أماكن الكواكب -->
-    <div class="slots-container" id="slotsContainer"></div>
-
-    <!-- الكواكب المتاحة -->
-    <div class="planets-container" id="planetsContainer"></div>
-
-    <div id="overlay">
-      <h2>لعبة ترتيب الكواكب</h2>
-      <p>
-        <b>Ahmed TV</b> - رتب الكواكب من الشمس!<br>
-        دوس على الكوكب، وبعدين دوس على المكان الصح
-      </p>
-      <button class="btn-start" id="startBtn">▶ ابدأ الترتيب</button>
-    </div>
-  </div>
-
-  <div class="footer">
-    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
-  </div>
-
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
+<div class="header"><div class="top-row"><img src="../../logo.png" alt="أحمد عبد العزيز" class="logo-img"><h1>رحلة الفضاء<small>AHMED TV SPACE</small></h1></div><div class="names">أحمد عبد العزيز • <b>Ahmed Abdelaziz</b></div></div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="levelTxt">المستوى 1</b><span>رحلة الفضاء</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
+<div class="levels"><div class="lv active" id="lv1">1️⃣ الكواكب</div><div class="lv" id="lv2">2️⃣ القمر 🌕</div><div class="lv" id="lv3">3️⃣ المجرات ✨</div></div>
+<div id="game-container"><div class="watermark">Ahmed TV</div><div id="stage"></div><div id="msg">هيا نبدأ الرحلة!</div>
+<div id="overlay"><div style="font-size:35px">🚀</div><h2>رحلة الفضاء</h2><p><b>Ahmed TV</b> - 3 مستويات!<br><b>1 - الكواكب:</b> رتّب الكواكب من الشمس<br><b>2 - القمر:</b> تعرّف على جارنا القمر<br><b>3 - المجرات:</b> اكتشف المجرات الكبيرة</p><button class="btn-start" id="startBtn">▶ ابدأ الرحلة</button></div></div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ جميع ألعابي</a></div>
 <script>
-const slotsContainer = document.getElementById('slotsContainer');
-const planetsContainer = document.getElementById('planetsContainer');
-const overlay = document.getElementById('overlay');
-const startBtn = document.getElementById('startBtn');
-
-let selectedPlanet = null;
-let correctCount = 0;
-let audioCtx = null;
-
-// بيانات الكواكب بالترتيب (من الشمس)
-const PLANETS = [
-  { id: 1, name: "عطارد", emoji: "🌑" },
-  { id: 2, name: "الزهرة", emoji: "🟠" },
-  { id: 3, name: "الأرض", emoji: "🌍" },
-  { id: 4, name: "المريخ", emoji: "🔴" },
-  { id: 5, name: "المشتري", emoji: "🟤" },
-  { id: 6, name: "زحل", emoji: "🪐" },
-  { id: 7, name: "أورانوس", emoji: "🔵" },
-  { id: 8, name: "نبتون", emoji: "🌌" }
-];
-
-function initAudio() {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-}
-
-function playSound(type) {
-  if (!audioCtx) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  
-  if (type === 'click') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-  } else if (type === 'correct') {
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.2);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-  } else if (type === 'wrong') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-  } else if (type === 'win') {
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1600, audioCtx.currentTime + 0.4);
-    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-  }
-}
-
-// خلط الكواكب
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function startGame() {
-  initAudio();
-  overlay.style.display = 'none';
-  selectedPlanet = null;
-  correctCount = 0;
-  
-  // عمل الأماكن الفاضية
-  slotsContainer.innerHTML = '';
-  PLANETS.forEach((p, index) => {
-    let slot = document.createElement('div');
-    slot.className = 'slot';
-    slot.dataset.pos = index + 1;
-    slot.innerHTML = `
-      <div class="slot-num">${index + 1}</div>
-      <div class="slot-content"></div>
-    `;
-    slot.onclick = () => placePlanetInSlot(slot);
-    slotsContainer.appendChild(slot);
-  });
-
-  // عرض الكواكب المبعثرة
-  planetsContainer.innerHTML = '';
-  let shuffledPlanets = shuffle([...PLANETS]);
-  
-  shuffledPlanets.forEach(p => {
-    let planetEl = document.createElement('div');
-    planetEl.className = 'planet';
-    planetEl.dataset.id = p.id;
-    planetEl.dataset.name = p.name;
-    planetEl.innerHTML = `
-      <div>${p.emoji}</div>
-      <div class="p-name">${p.name}</div>
-    `;
-    planetEl.onclick = () => selectPlanet(planetEl);
-    planetsContainer.appendChild(planetEl);
-  });
-}
-
-function selectPlanet(el) {
-  if (!el) return;
-  playSound('click');
-  
-  // إزالة التحديد القديم
-  document.querySelectorAll('.planet').forEach(p => p.classList.remove('selected'));
-  
-  // تحديد الكوكب الجديد
-  el.classList.add('selected');
-  selectedPlanet = el;
-}
-
-function placePlanetInSlot(slot) {
-  if (!selectedPlanet) return;
-  if (slot.classList.contains('correct')) return; // لو المكان مليان صح
-  
-  let planetId = parseInt(selectedPlanet.dataset.id);
-  let planetName = selectedPlanet.dataset.name;
-  let planetEmoji = selectedPlanet.innerHTML;
-  
-  let slotPos = parseInt(slot.dataset.pos);
-  
-  // التحقق من الترتيب
-  if (planetId === slotPos) {
-    // صح
-    playSound('correct');
-    slot.classList.add('correct');
-    slot.querySelector('.slot-content').innerHTML = planetEmoji;
-    
-    // إخفاء الكوكب من تحت
-    selectedPlanet.style.display = 'none';
-    selectedPlanet.classList.remove('selected');
-    selectedPlanet = null;
-    
-    correctCount++;
-    
-    if (correctCount === 8) {
-      playSound('win');
-      setTimeout(() => {
-        overlay.style.display = 'flex';
-        overlay.innerHTML = `
-          <div style="font-size:35px">🏆</div>
-          <h2>مبروك! رتبت كل الكواكب!</h2>
-          <p>أنت عبقري فضاء!<br>
-          أحمد TV بيقولك: إنت بطل المجموعة الشمسية!</p>
-          <button class="btn-start" id="againBtn">🔄 العب تاني</button>
-        `;
-        document.getElementById('againBtn').onclick = startGame;
-      }, 500);
-    }
-  } else {
-    // غلط
-    playSound('wrong');
-    slot.classList.add('wrong');
-    setTimeout(() => {
-      slot.classList.remove('wrong');
-    }, 500);
-  }
-}
-
-startBtn.onclick = startGame;
-document.body.addEventListener('touchstart', initAudio, { once: true });
-document.body.addEventListener('click', initAudio, { once: true });
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('mousedown',function(e){if(e.button===2)e.preventDefault();},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 </script>
- 
+<script>
+var stage=document.getElementById('stage'), msg=document.getElementById('msg'), scoreEl=document.getElementById('score'), levelTxt=document.getElementById('levelTxt'), bestEl=document.getElementById('best'), overlay=document.getElementById('overlay'), startBtn=document.getElementById('startBtn');
+var score=0, level=1, best=parseInt(localStorage.getItem('spaceBest')||'0'); bestEl.textContent=best;
+var selected=null, correctCount=0, qIndex=0, qScore=0;
+// الكواكب كلها دواير حقيقية - مش إيموجي مربع - نبتون دايرة زرقاء غامقة
+var PLANETS=[
+ {id:1,name:"عطارد",grad:"radial-gradient(circle at 30% 30%, #d6d3d1, #78716c)"},
+ {id:2,name:"الزهرة",grad:"radial-gradient(circle at 30% 30%, #fde68a, #f59e0b)"},
+ {id:3,name:"الأرض",grad:"radial-gradient(circle at 30% 30%, #7dd3fc, #1d4ed8)"},
+ {id:4,name:"المريخ",grad:"radial-gradient(circle at 30% 30%, #fca5a5, #dc2626)"},
+ {id:5,name:"المشتري",grad:"radial-gradient(circle at 30% 30%, #fde68a, #b45309)"},
+ {id:6,name:"زحل",grad:"radial-gradient(circle at 30% 30%, #fef3c7, #d97706)"},
+ {id:7,name:"أورانوس",grad:"radial-gradient(circle at 30% 30%, #a5f3fc, #06b6d4)"},
+ {id:8,name:"نبتون",grad:"radial-gradient(circle at 30% 30%, #93c5fd, #1e3a8a)"}
+];
+var MOON_Q=[
+ {q:"القمر يدور حول ماذا؟", info:"🌕 القمر هو جار الأرض - يدور حولها ويضيء ليلاً لأنه يعكس ضوء الشمس.", opts:["الأرض","الشمس","المريخ"], ans:0},
+ {q:"كم يوماً يحتاج القمر ليدور حول الأرض؟", info:"🌕 القمر يكمل دورة حول الأرض في حوالي 27 يوماً.", opts:["يوم واحد","حوالي 27 يوماً","سنة كاملة"], ans:1},
+ {q:"لماذا نرى القمر مضيئاً في الليل؟", info:"🌕 القمر لا يضيء بنفسه - هو يعكس ضوء الشمس إلينا.", opts:["لأنه يعكس ضوء الشمس","لأنه مصباح كبير","لأنه قريب من النجوم"], ans:0}
+];
+var GALAXY_Q=[
+ {q:"ما اسم المجرّة التي نعيش فيها؟", info:"✨ مجرتنا اسمها درب التبانة - فيها مليارات النجوم، وشمسنا نجم واحد منها.", opts:["درب التبانة","مجرّة أندروميدا","مجرّة الدوامة"], ans:0},
+ {q:"ما هي المجرّة؟", info:"✨ المجرّة مدينة كبيرة من النجوم والكواكب والغبار - مجرتنا فيها أكثر من 100 مليار نجم!", opts:["مدينة كبيرة من النجوم","كوكب صغير","قمر بعيد"], ans:0},
+ {q:"كم نجماً تقريباً في مجرتنا درب التبانة؟", info:"✨ مجرتنا كبيرة جداً - فيها أكثر من 100 مليار نجم!", opts:["3 نجوم","100 نجم","أكثر من 100 مليار نجم"], ans:2}
+];
+function ballHTML(p, size){ return '<div class="ball" style="width:'+(size||32)+'px;height:'+(size||32)+'px;background:'+p.grad+'"></div>'; }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function setLevels(){ [1,2,3].forEach(function(n){ var el=document.getElementById('lv'+n); el.className='lv'+(n<level?' done':n===level?' active':''); }); levelTxt.textContent='المستوى '+level; }
+function startGame(){ playAhmedVoice('ebda'); overlay.style.display='none'; score=0; level=1; scoreEl.textContent=0; setLevels(); startLevel1(); }
+function startLevel1(){
+ level=1; setLevels(); selected=null; correctCount=0;
+ stage.innerHTML='<div class="info">🪐 <b>المستوى 1 - الكواكب:</b> رتّب الكواكب من الأقرب إلى الشمس. كل الكواكب <b>دواير</b> - ونبتون دايرة زرقاء غامقة 🌍</div><div class="slots-container" id="slots"></div><div class="planets-container" id="planets"></div>';
+ msg.textContent='اضغط على الكوكب، ثم اضغط على المكان الصحيح';
+ var slots=document.getElementById('slots'), planetsBox=document.getElementById('planets');
+ PLANETS.forEach(function(p,i){ var s=document.createElement('div'); s.className='slot'; s.dataset.pos=i+1; s.innerHTML='<div class="slot-num">'+(i+1)+'</div><div class="slot-content"></div>'; blockGoogle(s); s.addEventListener('pointerdown',function(e){e.preventDefault();place(s);},{passive:false}); slots.appendChild(s); });
+ shuffle([...PLANETS]).forEach(function(p){ var el=document.createElement('div'); el.className='planet'; el.dataset.id=p.id; el.innerHTML=ballHTML(p,32)+'<div class="p-name">'+p.name+'</div>'; blockGoogle(el); el.addEventListener('pointerdown',function(e){e.preventDefault();select(el);},{passive:false}); planetsBox.appendChild(el); });
+}
+function select(el){ playAhmedVoice('sah'); document.querySelectorAll('.planet').forEach(function(x){x.classList.remove('selected');}); el.classList.add('selected'); selected=el; }
+function place(slot){
+ if(!selected) return; if(slot.classList.contains('correct')) return;
+ var pid=parseInt(selected.dataset.id), pos=parseInt(slot.dataset.pos);
+ if(pid===pos){ playAhmedVoice('sah'); slot.classList.add('correct'); slot.querySelector('.slot-content').innerHTML=selected.innerHTML; selected.style.display='none'; selected.classList.remove('selected'); selected=null; correctCount++; score+=10; scoreEl.textContent=score;
+  if(correctCount===8){ playAhmedVoice('kesebt'); msg.textContent='🎉 أحسنت! رتّبت كل الكواكب!'; setTimeout(function(){ startLevel2(); },900); }
+ } else { playAhmedVoice('ghalat'); slot.classList.add('wrong'); setTimeout(function(){slot.classList.remove('wrong');},500); msg.textContent='❌ ليس هذا المكان - حاول مرة أخرى'; }
+}
+function startLevel2(){ level=2; setLevels(); qIndex=0; showQuiz(MOON_Q, 'القمر', '🌕 <b>المستوى 2 - القمر:</b> القمر هو أقرب جار لنا في السماء - يدور حول الأرض ويضيء ليلاً.', startLevel3); }
+function startLevel3(){ level=3; setLevels(); qIndex=0; showQuiz(GALAXY_Q, 'المجرات', '✨ <b>المستوى 3 - المجرات:</b> المجرّة مدينة كبيرة من النجوم - مجرتنا اسمها درب التبانة.', finishGame); }
+function showQuiz(list, title, infoText, nextFn){
+ stage.innerHTML='<div class="info">'+infoText+'</div><div class="q" id="qText"></div><div class="opts" id="opts"></div>';
+ msg.textContent='المستوى '+level+' - '+title+' - سؤال '+(qIndex+1)+' من '+list.length;
+ var q=list[qIndex];
+ document.getElementById('qText').textContent=q.q;
+ var optsBox=document.getElementById('opts');
+ // أضف معلومة القمر / المجرة تحت السؤال
+ var info2=document.createElement('div'); info2.className='info'; info2.style.marginTop='6px'; info2.innerHTML=q.info; optsBox.parentNode.insertBefore(info2, optsBox);
+ q.opts.forEach(function(opt,i){ var b=document.createElement('div'); b.className='opt'; b.textContent=opt; blockGoogle(b); b.addEventListener('pointerdown',function(e){ e.preventDefault(); if(i===q.ans){ playAhmedVoice('sah'); b.classList.add('correct'); score+=20; scoreEl.textContent=score; msg.textContent='✅ صحيح! أحسنت!'; setTimeout(function(){ qIndex++; if(qIndex<list.length) showQuiz(list,title,infoText,nextFn); else { playAhmedVoice('kesebt'); nextFn(); } },700); } else { playAhmedVoice('ghalat'); b.classList.add('wrong'); msg.textContent='❌ حاول مرة أخرى - فكّر في المعلومة فوق'; setTimeout(function(){b.classList.remove('wrong');},600); } },{passive:false}); optsBox.appendChild(b); });
+}
+function finishGame(){
+ if(score>best){ best=score; localStorage.setItem('spaceBest',best); bestEl.textContent=best; }
+ overlay.style.display='flex';
+ overlay.innerHTML='<div style="font-size:35px">🏆</div><h2>مبروك! خلّصت رحلة الفضاء!</h2><p>حصلت على <b style="color:#facc15;font-size:22px">'+score+' نقطة</b><br>رتّبت الكواكب، وتعرّفت على القمر، واكتشفت المجرات!<br>أنت بطل المجموعة الشمسية!</p><button class="btn-start" id="againBtn">🔄 العب مرة أخرى</button>';
+ var ab=document.getElementById('againBtn'); blockGoogle(ab); ab.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
+ playAhmedVoice('kesebt');
+}
+blockGoogle(startBtn);
+startBtn.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
+</script>
 </body>
 </html>
