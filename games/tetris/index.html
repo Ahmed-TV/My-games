@@ -2,73 +2,86 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>التتريس - بنك الألعاب</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent}
-  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:8px 8px 20px 8px;touch-action:manipulation;overflow-x:hidden}
-  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;margin:0 auto;padding:6px 6px 7px;box-shadow:0 0 15px rgba(0,0,0,.4)}
-  .logo{width:62px;height:62px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
-  .game-title{font-size:22px;font-weight:900;color:#c40000;margin:2px 0 1px}
-  .my-name{font-size:15px;font-weight:900;color:#c40000}
-  .bank{font-size:18px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
-  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;margin:8px auto 0;padding:10px;width:100%}
-  .tetris-wrap{display:flex;justify-content:center;gap:8px;margin:8px 0;direction:ltr}
-  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:1px;background:#111;padding:3px;border-radius:8px;width:230px;direction:ltr}
-  .cell{aspect-ratio:1;background:#222;border-radius:2px}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none !important;user-select:none !important;-webkit-touch-callout:none !important;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  html,body{height:100% !important;height:100svh !important;max-height:100svh !important;overflow:hidden !important}
+  body{background:linear-gradient(to bottom,#00c853 0%,#ffe600 20%,#ff9600 40%,#ff0000 60%,#0064ff 80%,#9600ff 100%);background-attachment:fixed;font-family:'Segoe UI',Tahoma,sans-serif;text-align:center;color:#fff;padding:4px 8px;display:flex;flex-direction:column;align-items:center;overflow:hidden !important}
+  .top-box{background:#fff;border:3px solid #c40000;border-radius:18px;max-width:520px;width:100%;margin:0 auto;padding:4px 6px 5px;box-shadow:0 0 15px rgba(0,0,0,.4);flex-shrink:0}
+  .logo{width:58px;height:58px;border-radius:50%;border:3px solid #c40000;object-fit:cover}
+  .game-title{font-size:21px;font-weight:900;color:#c40000;margin:1px 0 1px}
+  .my-name{font-size:14px;font-weight:900;color:#c40000}
+  .bank{font-size:17px;font-weight:900;color:#FF0000;-webkit-text-stroke:1px #FFD700;text-shadow:0 0 8px rgba(255,215,0,.8);margin:1px 0 0}
+  .board{background:rgba(255,0,0,0.45);border:3px solid #FFD700;border-radius:16px;max-width:520px;width:100%;margin:5px auto 0;padding:8px;flex:1;min-height:0;display:flex;flex-direction:column}
+  .tetris-wrap{display:flex;justify-content:center;gap:8px;margin:4px 0;direction:ltr;flex:1;min-height:0}
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(20,1fr);gap:1px;background:#111;padding:3px;border-radius:8px;width:min(230px,58vw);height:100%;direction:ltr}
+  .cell{aspect-ratio:1;background:#222;border-radius:2px;min-height:0}
   .cell.c1{background:#00E5FF}.cell.c2{background:#FFD700}.cell.c3{background:#FF4081}.cell.c4{background:#76FF03}.cell.c5{background:#FF6D00}.cell.c6{background:#B388FF}.cell.c7{background:#FF1744}
-  .side{width:86px;text-align:center;direction:rtl}
+  .side{width:86px;text-align:center;direction:rtl;flex-shrink:0}
   .next-box{background:#111;border-radius:8px;padding:6px;min-height:60px;direction:ltr}
   .next-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;direction:ltr}
   .ncell{aspect-ratio:1;background:#222;border-radius:2px}
   .ncell.c1{background:#00E5FF}.ncell.c2{background:#FFD700}.ncell.c3{background:#FF4081}.ncell.c4{background:#76FF03}.ncell.c5{background:#FF6D00}.ncell.c6{background:#B388FF}.ncell.c7{background:#FF1744}
-  .controls{display:flex;justify-content:center;gap:4px;margin:6px 0;flex-wrap:nowrap;direction:ltr}
+  .controls{display:flex;justify-content:center;gap:4px;margin:4px 0;flex-wrap:nowrap;direction:ltr;flex-shrink:0}
   .btn{background:#FFD700;color:#000;border:none;padding:10px 0;font-size:18px;font-weight:900;border-radius:10px;cursor:pointer;flex:1;max-width:90px}
   .sound-btn{background:#fff;color:#c40000;border:2px solid #c40000;padding:7px 12px;font-size:13px;font-weight:900;border-radius:20px;cursor:pointer;margin:3px}
-  #msg{font-size:16px;font-weight:900;min-height:22px;margin:4px 0;color:#fff}
+  #msg{font-size:15px;font-weight:900;min-height:20px;margin:2px 0;color:#fff;flex-shrink:0}
   .score{font-weight:bold;font-size:14px;margin-top:4px;color:#fff}
+  .bottom-row{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;flex-shrink:0}
 </style>
 </head>
-<body oncontextmenu="return false" onselectstart="return false">
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
 <div class="top-box">
   <img class="logo" src="../../logo.png">
   <div class="game-title">🟦 التتريس 🟦</div>
-  <div class="my-name">Ahmed TV • أحمد عبدالعزيز</div>
+  <div class="my-name">Ahmed TV • أحمد عبد العزيز</div>
   <div class="bank">بنك الألعاب</div>
 </div>
 <div class="board">
-  <div id="msg">رص المكعبات - املى سطر كامل عشان يختفي!</div>
+  <div id="msg">رتّب المكعبات - املأ سطراً كاملاً ليختفي!</div>
   <div class="tetris-wrap">
     <div class="grid" id="grid"></div>
     <div class="side">
-      <div style="font-weight:900;font-size:13px;">اللي نازل:</div>
+      <div style="font-weight:900;font-size:13px;">القطعة النازلة:</div>
       <div class="next-box"><div class="next-grid" id="nextGrid"></div></div>
-      <div class="score">النقط: <span id="score">0</span><br>السطور: <span id="lines">0</span><br>المستوى: <span id="level">1</span></div>
-      <button class="btn" style="max-width:100%;font-size:14px;" onclick="startGame()">ابدأ ▶️</button>
+      <div class="score">النقاط: <span id="score">0</span><br>السطور: <span id="lines">0</span><br>المستوى: <span id="level">1</span></div>
+      <button class="btn" style="max-width:100%;font-size:14px;" id="startBtn">ابدأ ▶️</button>
     </div>
   </div>
   <div class="controls">
-    <button class="btn" onclick="moveLeft()">⬅️</button>
-    <button class="btn" onclick="rotate()">🔄</button>
-    <button class="btn" onclick="softDrop()">⬇️</button>
-    <button class="btn" onclick="hardDrop()">⏬</button>
-    <button class="btn" onclick="moveRight()">➡️</button>
+    <button class="btn" id="leftBtn">⬅️</button>
+    <button class="btn" id="rotateBtn">🔄</button>
+    <button class="btn" id="downBtn">⬇️</button>
+    <button class="btn" id="dropBtn">⏬</button>
+    <button class="btn" id="rightBtn">➡️</button>
   </div>
-  <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊 الصوت: شغال</button>
-  <button class="btn" style="max-width:120px;font-size:14px;" onclick="location.reload()">لعبة جديدة 🔁</button>
+  <div class="bottom-row">
+  <button class="sound-btn" id="soundBtn">🔊 الصوت: يعمل</button>
+  <button class="btn" style="max-width:120px;font-size:14px;" id="newBtn">لعبة جديدة 🔁</button>
+  </div>
 </div>
-
 <script>
-var audioCtx=null, soundOn=true;
-function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: شغال' : '🔇 الصوت: مقفول'; }
-function beep(f,d,t){ if(!soundOn) return; try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==='suspended') audioCtx.resume(); var o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=t||'sine'; o.frequency.value=f; g.gain.value=0.25; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d); }catch(e){} }
-function soundMove(){ beep(500,0.08,'square'); }
-function soundRotate(){ beep(700,0.08,'square'); }
-function soundLine(){ beep(523,0.15,'sine'); setTimeout(function(){beep(659,0.15,'sine');},120); setTimeout(function(){beep(784,0.2,'sine');},240); }
-function soundOver(){ beep(400,0.3,'sawtooth'); setTimeout(function(){beep(300,0.4,'sawtooth');},300); }
-function soundDrop(){ beep(300,0.1,'square'); }
+// ===== منع بحث جوجل =====
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('mousedown',function(e){if(e.button===2)e.preventDefault();},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+// ===== صوتك بدل الصفافير =====
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+function toggleSound(){ soundOn=!soundOn; document.getElementById('soundBtn').textContent = soundOn ? '🔊 الصوت: يعمل' : '🔇 الصوت: مغلق'; }
+function soundMove(){ playAhmedVoice('sah'); }
+function soundRotate(){ playAhmedVoice('sah'); }
+function soundLine(){ playAhmedVoice('kesebt'); }
+function soundOver(){ playAhmedVoice('khesert'); }
+function soundDrop(){ playAhmedVoice('sah'); }
 </script>
-
 <script>
 var COLS=10, ROWS=20;
 var board=[], cur=null, curX=3, curY=0, score=0, lines=0, level=1, timer=null, playing=false, over=false;
@@ -120,7 +133,7 @@ function clearLines(){
     document.getElementById('score').textContent=score;
     document.getElementById('lines').textContent=lines;
     document.getElementById('level').textContent=level;
-    document.getElementById('msg').textContent='عاش! مسحت '+cleared+' سطر! 🎉';
+    document.getElementById('msg').textContent='أحسنت! مسحت '+cleared+' سطر! 🎉';
     restartTimer();
   }
 }
@@ -138,7 +151,6 @@ function draw(){
   }
 }
 function drawNext(){
-  // المربع ده دلوقتي بيبين نفس القطعة اللي نازلة بالظبط - نفس الشكل ونفس اللون
   var n=document.getElementById('nextGrid'); n.innerHTML='';
   var m = cur ? cur.m : [[0]];
   var col = cur ? cur.c : 0;
@@ -185,17 +197,18 @@ function restartTimer(){
 }
 function startGame(){
   if(playing) return;
+  playAhmedVoice('ebda');
   newBoard(); score=0; lines=0; level=1; over=false; playing=true;
   document.getElementById('score').textContent='0';
   document.getElementById('lines').textContent='0';
   document.getElementById('level').textContent='1';
-  document.getElementById('msg').textContent='يلا العب! رص المكعبات!';
+  document.getElementById('msg').textContent='هيا العب! رتّب المكعبات!';
   spawn(); restartTimer();
 }
 function gameOver(){
   over=true; playing=false; if(timer) clearInterval(timer);
   soundOver();
-  document.getElementById('msg').textContent='خسرت! وصلت فوق! النقط: '+score+' - دوس لعبة جديدة!';
+  document.getElementById('msg').textContent='خسرت! وصلت إلى الأعلى! النقاط: '+score+' - اضغط لعبة جديدة!';
   draw();
 }
 document.addEventListener('keydown', function(e){
@@ -205,8 +218,8 @@ document.addEventListener('keydown', function(e){
   if(e.key==='ArrowUp') rotate();
   if(e.key===' ') { e.preventDefault(); hardDrop(); }
 });
+[['startBtn',startGame],['leftBtn',moveLeft],['rightBtn',moveRight],['rotateBtn',rotate],['downBtn',softDrop],['dropBtn',hardDrop],['soundBtn',toggleSound],['newBtn',function(){location.reload();}]].forEach(function(pair){ var b=document.getElementById(pair[0]); blockGoogle(b); b.addEventListener('pointerdown',function(e){e.preventDefault();pair[1]();},{passive:false}); });
 newBoard(); drawNext();
 </script>
- 
 </body>
 </html>
