@@ -42,10 +42,8 @@ body{font-family:Tahoma,Arial,sans-serif;color:#fff;display:flex;flex-direction:
 </style>
 </head>
 <body oncontextmenu="return false">
-
 <div id="app">
   <div class="header"><img src="../../logo.png" alt="Ahmed TV"><div><h1>لعبة البيانو</h1><p>أحمد عبدالعزيز • Ahmed TV</p></div></div>
-
   <div class="controls">
     <button class="cbtn active" onclick="setSound(this,'piano')">بيانو</button>
     <button class="cbtn" onclick="setSound(this,'organ')">أورج</button>
@@ -55,11 +53,8 @@ body{font-family:Tahoma,Arial,sans-serif;color:#fff;display:flex;flex-direction:
     <button class="cbtn" onclick="playRec()">تشغيل التسجيل</button>
     <button class="cbtn" onclick="clearRec()">مسح</button>
   </div>
-
   <div class="noteBox"><div class="big" id="curNote">دوس على أي زرار</div><div class="sub" id="curSub"></div></div>
-
   <div class="pianoWrap"><div class="piano" id="piano"></div></div>
-
   <div class="songs">
     <button class="sbtn" onclick="playSong('twinkle')">توينكل</button>
     <button class="sbtn" onclick="playSong('happy')">هابي بيرثداي</button>
@@ -67,7 +62,6 @@ body{font-family:Tahoma,Arial,sans-serif;color:#fff;display:flex;flex-direction:
     <button class="sbtn" onclick="playSong('egypt')">أغنية مصرية</button>
     <button class="sbtn" onclick="playSong('ode')">أغنية الفرح</button>
   </div>
-
   <div class="staff"><span>دو &nbsp; ري &nbsp; مي &nbsp; فا &nbsp; صول &nbsp; لا &nbsp; سي &nbsp; دو</span></div>
 </div>
 <script>
@@ -79,7 +73,13 @@ document.addEventListener('pointerdown',tryLandscape,{once:true});
 document.addEventListener('touchstart',tryLandscape,{once:true});
 window.addEventListener('orientationchange',function(){setTimeout(function(){window.scrollTo(0,0);},100);});
 </script>
-
+<script>
+/* صوت أحمد الترحيب فقط - صوت البيانو الأصلي لم يتغير */
+var _ahmedVoiceAhla=null, _ahlaPlayed=false;
+try{ _ahmedVoiceAhla=new Audio(); _ahmedVoiceAhla.preload='auto'; _ahmedVoiceAhla.src='../../sounds/ahla.mp3'; _ahmedVoiceAhla.load(); }catch(e){}
+function playAhmedAhla(){ try{ if(_ahlaPlayed) return; _ahlaPlayed=true; var a=_ahmedVoiceAhla? _ahmedVoiceAhla.cloneNode() : new Audio('../../sounds/ahla.mp3'); if(_ahmedVoiceAhla) a.src=_ahmedVoiceAhla.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',playAhmedAhla);
+</script>
 <script>
 var actx=null, soundType='piano', recording=false, recNotes=[], recStart=0;
 function act(){ if(!actx){ try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} } if(actx&&actx.state==='suspended') actx.resume(); return actx; }
