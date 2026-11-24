@@ -51,7 +51,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:f
 <div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="levelTxt">المستوى 1</b><span>خمن الحيوان</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
 <div class="levels"><div class="lv active" id="lv1">1️⃣ سهل 🐶</div><div class="lv" id="lv2">2️⃣ متوسط 🐴</div><div class="lv" id="lv3">3️⃣ صعب 🐯</div></div>
 <div id="game-container"><div class="watermark">Ahmed TV</div>
-<div class="question-box"><p>اضغط على الزر واسمع التلميح .. وخمن الحيوان!</p><div class="hint" id="hintTxt">التلميح سيظهر هنا</div><button class="play-btn" id="playSoundBtn">🔊 اسمع التلميح</button><div class="progress" id="progressTxt">السؤال 1 من 5</div></div>
+<div class="question-box"><p>اضغط على الزر واسمع صوت الحيوان .. وخمن الحيوان!</p><div class="hint" id="hintTxt">التلميح سيظهر هنا</div><button class="play-btn" id="playSoundBtn">🔊 اسمع صوت الحيوان</button><div class="progress" id="progressTxt">السؤال 1 من 5</div></div>
 <div class="options" id="optionsBox"></div><div id="msg">هيا نبدأ!</div>
 <div id="overlay"><div style="font-size:35px">🐶</div><h2>خمن الحيوان - مراحل</h2><p><b>Ahmed TV</b> - 3 مستويات!<br><b>1 - سهل:</b> 6 حيوانات تعرفها<br><b>2 - متوسط:</b> 6 حيوانات جديدة<br><b>3 - صعب:</b> 6 حيوانات نادرة<br>كل مستوى 5 أسئلة - جاوب صح عشان تطلع للمستوى اللي بعده!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div>
 <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ جميع ألعابي</a></div>
@@ -74,32 +74,33 @@ var score=0, best=parseInt(localStorage.getItem('animalsBest')||'0'); bestEl.tex
 var level=1, qInLevel=0, correctInLevel=0, currentAnimal=null, isLocked=false;
 var LEVELS=[
  {name:"سهل", animals:[
-  {name:'كلب',emoji:'🐶',hint:'صديق الإنسان - يقول: هو هو'},
-  {name:'قطة',emoji:'🐱',hint:'تحب الحليب - تقول: ميو ميو'},
-  {name:'أسد',emoji:'🦁',hint:'ملك الغابة - له شعر كبير حول وجهه'},
-  {name:'بقرة',emoji:'🐮',hint:'تعطينا الحليب'},
-  {name:'خروف',emoji:'🐑',hint:'له صوف كثير - نأخذ منه الصوف'},
-  {name:'ديك',emoji:'🐓',hint:'يصيح في الصباح - كوكو كوكو'}
+  {name:'كلب',emoji:'🐶',hint:'صديق الإنسان - يقول: هو هو',sound:'https://www.soundjay.com/animal/dog-barking-1.mp3'},
+  {name:'قطة',emoji:'🐱',hint:'تحب الحليب - تقول: ميو ميو',sound:'https://www.soundjay.com/animal/cat-meow-1.mp3'},
+  {name:'أسد',emoji:'🦁',hint:'ملك الغابة - له شعر كبير حول وجهه',sound:'https://www.soundjay.com/animal/lion-roar-1.mp3'},
+  {name:'بقرة',emoji:'🐮',hint:'تعطينا الحليب',sound:'https://www.soundjay.com/animal/cow-moo-1.mp3'},
+  {name:'خروف',emoji:'🐑',hint:'له صوف كثير - نأخذ منه الصوف',sound:'https://www.soundjay.com/animal/sheep-bleat-1.mp3'},
+  {name:'ديك',emoji:'🐓',hint:'يصيح في الصباح - كوكو كوكو',sound:'https://www.soundjay.com/animal/rooster-crow-1.mp3'}
  ]},
  {name:"متوسط", animals:[
-  {name:'حصان',emoji:'🐴',hint:'سريع - نركبه في السباق'},
-  {name:'قرد',emoji:'🐵',hint:'يحب الموز - يقفز بين الأشجار'},
-  {name:'فيل',emoji:'🐘',hint:'أكبر حيوان على الأرض - له خرطوم طويل'},
-  {name:'بطة',emoji:'🦆',hint:'تعوم في الماء - تقول: واك واك'},
-  {name:'أرنب',emoji:'🐰',hint:'له أذنان طويلتان - يحب الجزر'},
-  {name:'دب',emoji:'🐻',hint:'كبير وقوي - يحب العسل'}
+  {name:'حصان',emoji:'🐴',hint:'سريع - نركبه في السباق',sound:'https://www.soundjay.com/animal/horse-neigh-1.mp3'},
+  {name:'قرد',emoji:'🐵',hint:'يحب الموز - يقفز بين الأشجار',sound:'https://www.soundjay.com/animal/monkey-1.mp3'},
+  {name:'فيل',emoji:'🐘',hint:'أكبر حيوان على الأرض - له خرطوم طويل',sound:'https://www.soundjay.com/animal/elephant-trumpet-1.mp3'},
+  {name:'بطة',emoji:'🦆',hint:'تعوم في الماء - تقول: واك واك',sound:'https://www.soundjay.com/animal/duck-quack-1.mp3'},
+  {name:'أرنب',emoji:'🐰',hint:'له أذنان طويلتان - يحب الجزر',sound:'https://www.soundjay.com/animal/rabbit-squeak-1.mp3'},
+  {name:'دب',emoji:'🐻',hint:'كبير وقوي - يحب العسل',sound:'https://www.soundjay.com/animal/bear-growl-1.mp3'}
  ]},
  {name:"صعب", animals:[
-  {name:'نمر',emoji:'🐯',hint:'له خطوط سوداء - سريع وقوي'},
-  {name:'زرافة',emoji:'🦒',hint:'أطول حيوان - رقبتها طويلة جداً'},
-  {name:'تمساح',emoji:'🐊',hint:'يعيش في النهر - له أسنان كثيرة'},
-  {name:'بومة',emoji:'🦉',hint:'تطير في الليل - لها عينان كبيرتان'},
-  {name:'ثعلب',emoji:'🦊',hint:'ذكي ومكار - له ذيل طويل'},
-  {name:'كنغر',emoji:'🦘',hint:'يعيش في أستراليا - يقفز بعيداً وله جيب'}
+  {name:'نمر',emoji:'🐯',hint:'له خطوط سوداء - سريع وقوي',sound:'https://www.soundjay.com/animal/tiger-growl-1.mp3'},
+  {name:'زرافة',emoji:'🦒',hint:'أطول حيوان - رقبتها طويلة جداً',sound:'https://www.soundjay.com/animal/giraffe-hum-1.mp3'},
+  {name:'تمساح',emoji:'🐊',hint:'يعيش في النهر - له أسنان كثيرة',sound:'https://www.soundjay.com/animal/crocodile-growl-1.mp3'},
+  {name:'بومة',emoji:'🦉',hint:'تطير في الليل - لها عينان كبيرتان',sound:'https://www.soundjay.com/animal/owl-hoot-1.mp3'},
+  {name:'ثعلب',emoji:'🦊',hint:'ذكي ومكار - له ذيل طويل',sound:'https://www.soundjay.com/animal/fox-bark-1.mp3'},
+  {name:'كنغر',emoji:'🦘',hint:'يعيش في أستراليا - يقفز بعيداً وله جيب',sound:'https://www.soundjay.com/animal/kangaroo-thump-1.mp3'}
  ]}
 ];
 function setLevels(){ [1,2,3].forEach(function(n){ var el=document.getElementById('lv'+n); el.className='lv'+(n<level?' done':n===level?' active':''); }); levelTxt.textContent='المستوى '+level+' - '+LEVELS[level-1].name; }
 function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function playAnimalSound(animal){ try{ if(animal && animal.sound){ var a=new Audio(animal.sound); a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){ playAhmedVoice('hawel'); }); } else { playAhmedVoice('hawel'); } }catch(e){ playAhmedVoice('hawel'); } }
 function generateQuestion(){
  isLocked=false; optionsBox.innerHTML='';
  var pool=LEVELS[level-1].animals;
@@ -110,7 +111,7 @@ function generateQuestion(){
  while(choices.length<4){ var r=pool[Math.floor(Math.random()*pool.length)]; if(!choices.some(function(a){return a.name===r.name;})) choices.push(r); }
  shuffle(choices);
  choices.forEach(function(animal){ var btn=document.createElement('div'); btn.className='opt-btn'; btn.innerHTML='<div class="emoji">'+animal.emoji+'</div><div class="text">'+animal.name+'</div>'; blockGoogle(btn); btn.addEventListener('pointerdown',function(e){e.preventDefault();checkAnswer(animal,btn);},{passive:false}); optionsBox.appendChild(btn); });
- playAhmedVoice('hawel');
+ playAnimalSound(currentAnimal);
 }
 function checkAnswer(sel,btn){
  if(isLocked) return; isLocked=true;
@@ -133,7 +134,7 @@ function finishGame(){
 }
 function startGame(){ playAhmedVoice('ebda'); score=0; level=1; qInLevel=0; correctInLevel=0; scoreEl.textContent=0; setLevels(); overlay.style.display='none'; msgEl.textContent='هيا نبدأ!'; generateQuestion(); }
 blockGoogle(playSoundBtn); blockGoogle(startBtn);
-playSoundBtn.addEventListener('pointerdown',function(e){e.preventDefault();playAhmedVoice('hawel');},{passive:false});
+playSoundBtn.addEventListener('pointerdown',function(e){e.preventDefault();if(currentAnimal) playAnimalSound(currentAnimal);},{passive:false});
 startBtn.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
 </script>
 </body></html>
