@@ -3,306 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>خمن الحيوان | Ahmed TV</title>
+<title>خمن الحيوان - مراحل | Ahmed TV</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  
-  html, body { 
-    height: 100vh; 
-    height: 100dvh; 
-    overflow: hidden; 
-    position: fixed; 
-    width: 100%;
-  }
-  
-  body {
-    font-family: Tahoma, Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: env(safe-area-inset-top, 5px) 5px env(safe-area-inset-bottom, 5px) 5px;
-  }
-
-  .header { width: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; padding-bottom: 5px;}
-  .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #facc15; object-fit: cover; box-shadow: 0 0 10px rgba(250,204,21,0.5);}
-  .header-text { text-align: right; }
-  .header-text h1 { font-size: 18px; color: #facc15; margin: 0;}
-  .header-text .names { font-size: 11px; color: #cbd5e1; font-weight: bold; margin-top: 2px;}
-  .header-text .names b { color: #facc15; font-size: 13px;}
-
-  .stats { display: flex; gap: 10px; justify-content: center; margin-bottom: 5px;}
-  .stat { background: #1e293b; border-radius: 6px; padding: 2px 15px; min-width: 80px; text-align: center; border: 1px solid #334155;}
-  .stat b { display: block; font-size: 18px; color: #facc15; }
-  .stat span { font-size: 10px; color: #94a3b8; }
-
-  #game-container {
-    width: 100%; max-width: 500px; flex-grow: 1; min-height: 0;
-    position: relative; display: flex; flex-direction: column;
-    background: #1e293b; 
-    border: 3px solid #f59e0b; border-radius: 12px;
-    overflow: hidden;
-    padding: 10px;
-    justify-content: center; align-items: center;
-  }
-
-  .watermark {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    text-align: center; color: rgba(255, 255, 255, 0.05); font-size: 40px; font-weight: 900;
-    pointer-events: none; z-index: 0; white-space: nowrap;
-  }
-
-  .question-box {
-    background: #0f172a; border-radius: 16px; padding: 20px;
-    text-align: center; width: 100%; margin-bottom: 20px;
-    border: 2px solid #334155; z-index: 1;
-  }
-  
-  .question-box p { font-size: 18px; color: #cbd5e1; margin-bottom: 15px;}
-  
-  .play-btn {
-    background: #3b82f6; color: #fff; border: none;
-    padding: 15px 30px; border-radius: 50px; font-size: 18px; font-weight: bold;
-    cursor: pointer; box-shadow: 0 4px 0 #1d4ed8; width: 100%; max-width: 250px;
-  }
-  .play-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #1d4ed8; }
-
-  .options {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
-    width: 100%; z-index: 1;
-  }
-  .opt-btn {
-    background: #334155; border: 2px solid #475569;
-    border-radius: 12px; padding: 15px;
-    display: flex; flex-direction: column; align-items: center; gap: 5px;
-    cursor: pointer; transition: transform 0.1s, background 0.2s;
-  }
-  .opt-btn:active { transform: scale(0.95); }
-  
-  .opt-btn .emoji { font-size: 40px; }
-  .opt-btn .text { font-size: 16px; font-weight: bold; color: #fff;}
-  
-  .opt-btn.correct { background: #22c55e; border-color: #16a34a; }
-  .opt-btn.wrong { background: #ef4444; border-color: #b91c1c; }
-
-  #overlay {
-    position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 15px; gap: 10px; z-index: 10;
-  }
-  #overlay h2 { font-size: 24px; margin-bottom: 5px; color: #facc15;}
-  #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; margin-bottom: 10px;}
-  .btn-start {
-    background: #f59e0b; color: #000; border: none; padding: 12px 25px;
-    border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer;
-    width: 80%; max-width: 200px;
-  }
-  .btn-start:active { transform: scale(0.95); }
-
-  .footer { font-size: 8px; color: #94a3b8; text-align: center; flex-shrink: 0; margin-top: 2px;}
-  .footer a { color: #facc15; text-decoration: none; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none!important;-webkit-user-select:none!important;user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;touch-action:manipulation}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#0f172a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 5px;overflow:hidden!important}
+.header{width:100%;max-width:500px;display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;padding-bottom:3px}
+.logo-img{width:50px;height:50px;border-radius:50%;border:3px solid #facc15;object-fit:cover;box-shadow:0 0 10px rgba(250,204,21,.5)}
+.header-text{text-align:right}
+.header-text h1{font-size:18px;color:#facc15;margin:0}
+.header-text .names{font-size:11px;color:#cbd5e1;font-weight:bold;margin-top:2px}
+.header-text .names b{color:#facc15;font-size:13px}
+.stats{display:flex;gap:6px;justify-content:center;margin-bottom:4px;flex-shrink:0}
+.stat{background:#1e293b;border-radius:6px;padding:2px 10px;min-width:72px;text-align:center;border:1px solid #334155}
+.stat b{display:block;font-size:16px;color:#facc15}
+.stat span{font-size:10px;color:#94a3b8}
+.levels{display:flex;gap:5px;justify-content:center;margin-bottom:4px;flex-shrink:0;width:100%;max-width:500px}
+.lv{flex:1;background:#1e293b;border:2px solid #334155;border-radius:20px;padding:4px;font-size:11px;font-weight:900;color:#94a3b8;text-align:center}
+.lv.active{background:#f59e0b;color:#000;border-color:#fff}
+.lv.done{background:#14532d;color:#fff;border-color:#22c55e}
+#game-container{width:100%;max-width:500px;flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:#1e293b;border:3px solid #f59e0b;border-radius:12px;overflow:hidden;padding:10px;justify-content:center;align-items:center}
+.watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(255,255,255,.05);font-size:40px;font-weight:900;pointer-events:none;z-index:0;white-space:nowrap}
+.question-box{background:#0f172a;border-radius:16px;padding:12px;text-align:center;width:100%;margin-bottom:10px;border:2px solid #334155;z-index:1;flex-shrink:0}
+.question-box p{font-size:15px;color:#cbd5e1;margin-bottom:8px;line-height:1.5}
+.question-box .hint{font-size:16px;font-weight:900;color:#facc15}
+.play-btn{background:#3b82f6;color:#fff;border:none;padding:10px 20px;border-radius:50px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #1d4ed8;width:100%;max-width:220px}
+.play-btn:active{transform:translateY(4px);box-shadow:0 0 0 #1d4ed8}
+.progress{font-size:12px;color:#94a3b8;margin-top:6px}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;z-index:1;flex-shrink:0}
+.opt-btn{background:#334155;border:2px solid #475569;border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.opt-btn:active{transform:scale(.95)}
+.opt-btn .emoji{font-size:36px}
+.opt-btn .text{font-size:15px;font-weight:bold;color:#fff}
+.opt-btn.correct{background:#22c55e;border-color:#16a34a}
+.opt-btn.wrong{background:#ef4444;border-color:#b91c1c}
+#msg{text-align:center;min-height:20px;font-size:13px;font-weight:900;color:#facc15;margin:6px 0;flex-shrink:0}
+#overlay{position:absolute;inset:0;background:rgba(15,23,42,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10;overflow:hidden}
+#overlay h2{font-size:22px;color:#facc15}
+#overlay p{line-height:1.6;font-size:13px;color:#e2e8f0}
+.btn-start{background:#f59e0b;color:#000;border:none;padding:12px 25px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;width:80%;max-width:220px}
+.footer{font-size:11px;color:#94a3b8;text-align:center;flex-shrink:0;margin-top:4px;padding-bottom:2px}
+.footer a{color:#facc15;text-decoration:none}
 </style>
 </head>
-<body>
-
-  <div class="header">
-    <img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img">
-    <div class="header-text">
-        <h1>خمن الحيوان</h1>
-        <div class="names">أحمد عبدالعزيز • <b>Ahmed TV</b></div>
-    </div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><b id="score">0</b><span>النقاط</span></div>
-    <div class="stat"><b id="best">0</b><span>الأفضل</span></div>
-  </div>
-
-  <div id="game-container">
-    <div class="watermark">Ahmed TV</div>
-    
-    <div class="question-box">
-      <p>دوس على الزرار واسمع الصوت.. وخمن الحيوان!</p>
-      <button class="play-btn" id="playSoundBtn">🔊 اسمع الصوت</button>
-    </div>
-
-    <div class="options" id="optionsBox"></div>
-
-    <div id="overlay">
-      <h2>خمن الحيوان</h2>
-      <p>
-        <b>Ahmed TV</b> - اختبر معرفتك بالحيوانات!<br>
-        اسمع الصوت واختار الحيوان الصح
-      </p>
-      <button class="btn-start" id="startBtn">▶ ابدأ اللعب</button>
-    </div>
-  </div>
-
-  <div class="footer">
-    <b>Ahmed TV</b> - <a href="../../index.html">⬅ كل ألعابي</a>
-  </div>
-
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false" onmousedown="return false">
+<div class="header"><img src="../../logo.png" alt="Ahmed TV Logo" class="logo-img"><div class="header-text"><h1>خمن الحيوان - مراحل</h1><div class="names">أحمد عبد العزيز • <b>Ahmed TV</b></div></div></div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="levelTxt">المستوى 1</b><span>خمن الحيوان</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
+<div class="levels"><div class="lv active" id="lv1">1️⃣ سهل 🐶</div><div class="lv" id="lv2">2️⃣ متوسط 🐴</div><div class="lv" id="lv3">3️⃣ صعب 🐯</div></div>
+<div id="game-container"><div class="watermark">Ahmed TV</div>
+<div class="question-box"><p>اضغط على الزر واسمع التلميح .. وخمن الحيوان!</p><div class="hint" id="hintTxt">التلميح سيظهر هنا</div><button class="play-btn" id="playSoundBtn">🔊 اسمع التلميح</button><div class="progress" id="progressTxt">السؤال 1 من 5</div></div>
+<div class="options" id="optionsBox"></div><div id="msg">هيا نبدأ!</div>
+<div id="overlay"><div style="font-size:35px">🐶</div><h2>خمن الحيوان - مراحل</h2><p><b>Ahmed TV</b> - 3 مستويات!<br><b>1 - سهل:</b> 6 حيوانات تعرفها<br><b>2 - متوسط:</b> 6 حيوانات جديدة<br><b>3 - صعب:</b> 6 حيوانات نادرة<br>كل مستوى 5 أسئلة - جاوب صح عشان تطلع للمستوى اللي بعده!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div>
+<div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">⬅ جميع ألعابي</a></div>
 <script>
-const scoreEl = document.getElementById('score');
-const bestEl = document.getElementById('best');
-const optionsBox = document.getElementById('optionsBox');
-const playSoundBtn = document.getElementById('playSoundBtn');
-const overlay = document.getElementById('overlay');
-const startBtn = document.getElementById('startBtn');
-
-let score = 0;
-let best = parseInt(localStorage.getItem('animalsBest') || '0');
-bestEl.textContent = best;
-let currentAnimal = null;
-let isLocked = false;
-let audioCtx = null;
-
-// قائمة الحيوانات
-const ANIMALS = [
-  { name: 'كلب', emoji: '🐶', type: 'dog' },
-  { name: 'قطة', emoji: '🐱', type: 'cat' },
-  { name: 'أسد', emoji: '🦁', type: 'lion' },
-  { name: 'بقرة', emoji: '🐮', type: 'cow' },
-  { name: 'خروف', emoji: '🐑', type: 'sheep' },
-  { name: 'ديك', emoji: '🐓', type: 'rooster' }
-];
-
-// دالة تشغيل الأصوات الداخلية
-function playAnimalSound(type) {
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return; }
-  }
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain); gain.connect(audioCtx.destination);
-
-  let now = audioCtx.currentTime;
-
-  if (type === 'cat') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, now);
-    osc.frequency.linearRampToValueAtTime(900, now + 0.2);
-    osc.frequency.linearRampToValueAtTime(500, now + 0.4);
-    gain.gain.setValueAtTime(0, now);
-    gain.gain.linearRampToValueAtTime(0.15, now + 0.05);
-    gain.gain.linearRampToValueAtTime(0.1, now + 0.2);
-    gain.gain.linearRampToValueAtTime(0, now + 0.4);
-    osc.start(now); osc.stop(now + 0.4);
-  } else if (type === 'dog') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(200, now);
-    osc.frequency.exponentialRampToValueAtTime(100, now + 0.2);
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-    osc.start(now); osc.stop(now + 0.2);
-  } else if (type === 'lion') {
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(100, now);
-    osc.frequency.linearRampToValueAtTime(80, now + 0.6);
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
-    osc.start(now); osc.stop(now + 0.6);
-  } else if (type === 'cow') {
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(150, now);
-    osc.frequency.linearRampToValueAtTime(130, now + 0.4);
-    gain.gain.setValueAtTime(0.2, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-    osc.start(now); osc.stop(now + 0.4);
-  } else if (type === 'sheep') {
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(400, now);
-    osc.frequency.linearRampToValueAtTime(500, now + 0.15);
-    osc.frequency.linearRampToValueAtTime(400, now + 0.3);
-    gain.gain.setValueAtTime(0.15, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-    osc.start(now); osc.stop(now + 0.3);
-  } else if (type === 'rooster') {
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(500, now);
-    osc.frequency.linearRampToValueAtTime(700, now + 0.2);
-    osc.frequency.linearRampToValueAtTime(600, now + 0.4);
-    gain.gain.setValueAtTime(0.1, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-    osc.start(now); osc.stop(now + 0.4);
-  }
-}
-
-// توليد سؤال جديد
-function generateQuestion() {
-  isLocked = false;
-  optionsBox.innerHTML = '';
-  
-  currentAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
-  
-  let choices = [currentAnimal];
-  while(choices.length < 4) {
-    let randomAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
-    if (!choices.some(a => a.name === randomAnimal.name)) {
-      choices.push(randomAnimal);
-    }
-  }
-  
-  choices.sort(() => Math.random() - 0.5);
-  
-  choices.forEach(animal => {
-    let btn = document.createElement('div');
-    btn.className = 'opt-btn';
-    btn.innerHTML = `
-      <div class="emoji">${animal.emoji}</div>
-      <div class="text">${animal.name}</div>
-    `;
-    btn.onclick = () => checkAnswer(animal, btn);
-    optionsBox.appendChild(btn);
-  });
-  
-  // تشغيل الصوت الداخلي
-  playAnimalSound(currentAnimal.type);
-}
-
-function checkAnswer(selectedAnimal, btn) {
-  if (isLocked) return;
-  isLocked = true;
-  
-  if (selectedAnimal.name === currentAnimal.name) {
-    btn.classList.add('correct');
-    score += 10;
-    scoreEl.textContent = score;
-    if (score > best) {
-      best = score;
-      localStorage.setItem('animalsBest', best);
-      bestEl.textContent = best;
-    }
-    setTimeout(generateQuestion, 1000);
-  } else {
-    btn.classList.add('wrong');
-    setTimeout(generateQuestion, 1000);
-  }
-}
-
-function startGame() {
-  score = 0;
-  scoreEl.textContent = 0;
-  overlay.style.display = 'none';
-  
-  // تشغيل سياق الصوت
-  if (!audioCtx) {
-    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-  
-  generateQuestion();
-}
-
-playSoundBtn.onclick = () => {
-  if (currentAnimal) playAnimalSound(currentAnimal.type);
-};
-
-startBtn.onclick = startGame;
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('mousedown',function(e){if(e.button===2)e.preventDefault();},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 </script>
- 
-</body>
-</html>
+<script>
+var scoreEl=document.getElementById('score'), bestEl=document.getElementById('best'), optionsBox=document.getElementById('optionsBox'), playSoundBtn=document.getElementById('playSoundBtn'), overlay=document.getElementById('overlay'), startBtn=document.getElementById('startBtn'), hintTxt=document.getElementById('hintTxt'), progressTxt=document.getElementById('progressTxt'), msgEl=document.getElementById('msg'), levelTxt=document.getElementById('levelTxt');
+var score=0, best=parseInt(localStorage.getItem('animalsBest')||'0'); bestEl.textContent=best;
+var level=1, qInLevel=0, correctInLevel=0, currentAnimal=null, isLocked=false;
+var LEVELS=[
+ {name:"سهل", animals:[
+  {name:'كلب',emoji:'🐶',hint:'صديق الإنسان - يقول: هو هو'},
+  {name:'قطة',emoji:'🐱',hint:'تحب الحليب - تقول: ميو ميو'},
+  {name:'أسد',emoji:'🦁',hint:'ملك الغابة - له شعر كبير حول وجهه'},
+  {name:'بقرة',emoji:'🐮',hint:'تعطينا الحليب'},
+  {name:'خروف',emoji:'🐑',hint:'له صوف كثير - نأخذ منه الصوف'},
+  {name:'ديك',emoji:'🐓',hint:'يصيح في الصباح - كوكو كوكو'}
+ ]},
+ {name:"متوسط", animals:[
+  {name:'حصان',emoji:'🐴',hint:'سريع - نركبه في السباق'},
+  {name:'قرد',emoji:'🐵',hint:'يحب الموز - يقفز بين الأشجار'},
+  {name:'فيل',emoji:'🐘',hint:'أكبر حيوان على الأرض - له خرطوم طويل'},
+  {name:'بطة',emoji:'🦆',hint:'تعوم في الماء - تقول: واك واك'},
+  {name:'أرنب',emoji:'🐰',hint:'له أذنان طويلتان - يحب الجزر'},
+  {name:'دب',emoji:'🐻',hint:'كبير وقوي - يحب العسل'}
+ ]},
+ {name:"صعب", animals:[
+  {name:'نمر',emoji:'🐯',hint:'له خطوط سوداء - سريع وقوي'},
+  {name:'زرافة',emoji:'🦒',hint:'أطول حيوان - رقبتها طويلة جداً'},
+  {name:'تمساح',emoji:'🐊',hint:'يعيش في النهر - له أسنان كثيرة'},
+  {name:'بومة',emoji:'🦉',hint:'تطير في الليل - لها عينان كبيرتان'},
+  {name:'ثعلب',emoji:'🦊',hint:'ذكي ومكار - له ذيل طويل'},
+  {name:'كنغر',emoji:'🦘',hint:'يعيش في أستراليا - يقفز بعيداً وله جيب'}
+ ]}
+];
+function setLevels(){ [1,2,3].forEach(function(n){ var el=document.getElementById('lv'+n); el.className='lv'+(n<level?' done':n===level?' active':''); }); levelTxt.textContent='المستوى '+level+' - '+LEVELS[level-1].name; }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function generateQuestion(){
+ isLocked=false; optionsBox.innerHTML='';
+ var pool=LEVELS[level-1].animals;
+ currentAnimal=pool[Math.floor(Math.random()*pool.length)];
+ hintTxt.textContent='التلميح: '+currentAnimal.hint;
+ progressTxt.textContent='السؤال '+(qInLevel+1)+' من 5 - المستوى '+level+' ('+LEVELS[level-1].name+')';
+ var choices=[currentAnimal];
+ while(choices.length<4){ var r=pool[Math.floor(Math.random()*pool.length)]; if(!choices.some(function(a){return a.name===r.name;})) choices.push(r); }
+ shuffle(choices);
+ choices.forEach(function(animal){ var btn=document.createElement('div'); btn.className='opt-btn'; btn.innerHTML='<div class="emoji">'+animal.emoji+'</div><div class="text">'+animal.name+'</div>'; blockGoogle(btn); btn.addEventListener('pointerdown',function(e){e.preventDefault();checkAnswer(animal,btn);},{passive:false}); optionsBox.appendChild(btn); });
+ playAhmedVoice('hawel');
+}
+function checkAnswer(sel,btn){
+ if(isLocked) return; isLocked=true;
+ if(sel.name===currentAnimal.name){ btn.classList.add('correct'); playAhmedVoice('sah'); score+=10; correctInLevel++; scoreEl.textContent=score; msgEl.textContent='✅ صحيح! أحسنت!'; }
+ else { btn.classList.add('wrong'); playAhmedVoice('ghalat'); msgEl.textContent='❌ هذا '+sel.name+' - الصحيح هو '+currentAnimal.name; }
+ qInLevel++;
+ setTimeout(function(){
+  if(qInLevel>=5){
+   if(level<3){ level++; qInLevel=0; correctInLevel=0; setLevels(); msgEl.textContent='🎉 مبروك! طلعت للمستوى '+level+'!'; playAhmedVoice('kesebt'); setTimeout(generateQuestion,900); }
+   else { finishGame(); }
+  } else { generateQuestion(); }
+ },1100);
+}
+function finishGame(){
+ if(score>best){ best=score; localStorage.setItem('animalsBest',best); bestEl.textContent=best; }
+ playAhmedVoice('kesebt');
+ overlay.style.display='flex';
+ overlay.innerHTML='<div style="font-size:35px">🏆</div><h2>مبروك! خلّصت كل المستويات!</h2><p>حصلت على <b style="color:#facc15;font-size:22px">'+score+' نقطة</b><br>عرفت 18 حيواناً - من الكلب إلى الكنغر!<br>أنت خبير حيوانات!</p><button class="btn-start" id="againBtn">🔄 العب مرة أخرى</button>';
+ var ab=document.getElementById('againBtn'); blockGoogle(ab); ab.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
+}
+function startGame(){ playAhmedVoice('ebda'); score=0; level=1; qInLevel=0; correctInLevel=0; scoreEl.textContent=0; setLevels(); overlay.style.display='none'; msgEl.textContent='هيا نبدأ!'; generateQuestion(); }
+blockGoogle(playSoundBtn); blockGoogle(startBtn);
+playSoundBtn.addEventListener('pointerdown',function(e){e.preventDefault();playAhmedVoice('hawel');},{passive:false});
+startBtn.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
+</script>
+</body></html>
