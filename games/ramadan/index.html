@@ -2,11 +2,11 @@
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ahmed TV - لعبة رمضان</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;touch-action:manipulation}
-html,body{overflow-y:auto;overflow-x:hidden}
-body{font-family:Tahoma,Arial,sans-serif;background:#1A0B2E;display:flex;justify-content:center;padding:3px 6px}
-.game{width:100%;max-width:500px;display:flex;flex-direction:column;background:linear-gradient(180deg,#2D1B4E 0%,#4A1D6B 35%,#FF9A3D 70%,#FFD93D 100%);border:4px solid #FFD600;border-radius:38px 38px 18px 18px;padding:5px 7px;position:relative}
+html,body{height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#1A0B2E;display:flex;justify-content:center;padding:3px 6px;height:100%!important;height:100svh!important;overflow:hidden!important}
+.game{width:100%;max-width:500px;height:100%!important;height:100svh!important;max-height:100svh!important;overflow:hidden!important;display:flex;flex-direction:column;}background:linear-gradient(180deg,#2D1B4E 0%,#4A1D6B 35%,#FF9A3D 70%,#FFD93D 100%);border:4px solid #FFD600;border-radius:38px 38px 18px 18px;padding:5px 7px;position:relative}
 header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;text-align:center;flex-shrink:0;position:relative;z-index:2}
-.logo-img{width:88px;height:88px;border-radius:50%;border:4px solid #FF1744;object-fit:cover;background:#FF8A80;margin-bottom:1px;padding:5px;box-shadow:0 0 18px #FF1744, 0 0 30px #FF5252}
+.logo-img{width:52px;height:52px;}border-radius:50%;border:4px solid #FF1744;object-fit:cover;background:#FF8A80;margin-bottom:1px;padding:5px;box-shadow:0 0 18px #FF1744, 0 0 30px #FF5252}
 .brand{font-size:22px;font-weight:900;color:#FFD600;text-shadow:1px 1px 0 #7B1FA2}
 .names{font-size:22px;font-weight:900;color:#FFE066}
 .names small{display:block;font-size:16px;color:#FFE066;font-weight:900}
@@ -17,20 +17,20 @@ header{padding:1px 0 2px;display:flex;flex-direction:column;align-items:center;t
 .stat{flex:1;background:#fff;border:1.5px solid #FFD600;border-radius:9px;padding:2px 1px;text-align:center;line-height:1.1}
 .stat b{display:block;font-size:13px;color:#6D28D9}
 .stat span{font-size:9px;font-weight:800;color:#666}
-#view{width:100%;height:320px;flex-shrink:0;background:#1A0B2E;border:2px solid #FFD600;border-radius:16px;overflow:hidden;position:relative}
+#view{width:100%;flex:1;min-height:0;flex-shrink:1;}background:#1A0B2E;border:2px solid #FFD600;border-radius:16px;overflow:hidden;position:relative}
 #view canvas{width:100%;height:100%;display:block;touch-action:manipulation}
 #overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(26,11,46,.68);color:#fff;text-align:center;padding:12px;z-index:5}
 #overlay h2{font-size:24px;margin-bottom:4px}
 #overlay p{font-size:13px;line-height:1.7;font-weight:800}
 #overlay button{margin-top:10px;font-family:inherit;font-weight:900;border:0;border-radius:20px;padding:11px 24px;background:#FFD600;color:#4A148C;font-size:16px;cursor:pointer;box-shadow:0 4px 0 #B45309}
 .feedback{min-height:16px;font-size:11px;font-weight:800;color:#FFD600;text-align:center;margin:3px 0 2px 0;text-shadow:1px 1px 0 #4A148C}
-.controls{display:flex;gap:6px;width:100%;margin-top:2px;direction:ltr}
-.cbtn{flex:1;font-family:inherit;font-weight:900;border:2px solid #FFD600;border-radius:16px;padding:12px 2px;background:#fff;color:#6D28D9;font-size:16px;cursor:pointer;touch-action:manipulation}
+.controls{display:flex;gap:6px;width:100%;margin-top:2px;direction:ltr;flex-shrink:0}
+.cbtn{flex:1;font-family:inherit;font-weight:900;border:2px solid #FFD600;border-radius:16px;padding:9px 2px;}background:#fff;color:#6D28D9;font-size:16px;cursor:pointer;touch-action:manipulation}
 .cbtn.jump{flex:1.2;background:#FFD600;color:#4A148C!important}
-.btn-row{display:flex;gap:6px;width:100%;margin-top:4px}
+.btn-row{display:flex;gap:6px;width:100%;margin-top:4px;flex-shrink:0}
 .mainbtn{flex:2;font-family:inherit;font-weight:900;border:0;border-radius:18px;padding:7px 10px;background:#FFD600;color:#4A148C!important;cursor:pointer;font-size:13px}
 .skipbtn{flex:1;font-family:inherit;font-weight:800;border:2px solid #FFD600;border-radius:18px;padding:7px 6px;background:#fff;color:#6D28D9;cursor:pointer;font-size:13px}
-footer{text-align:center;color:#FFE066;font-size:10px;margin-top:2px;padding-bottom:2px}
+footer{text-align:center;color:#FFE066;font-size:10px;margin-top:2px;padding-bottom:2px;flex-shrink:0}
 footer a{color:#FFE066;text-decoration:none;font-weight:700}
 </style></head>
 <body oncontextmenu="return false"><div class="game">
@@ -64,6 +64,16 @@ function sndCoin(){ tone(880,.12,.2,'sine',0); tone(1320,.18,.2,'sine',.08); ton
 function sndJump(){ tone(300,.15,.18,'sine',0); tone(600,.15,.18,'sine',.06); }
 function sndHit(){ tone(200,.3,.25,'square',0); tone(100,.3,.25,'square',.1); }
 document.getElementById('soundBtn').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'موسيقى رمضان: شغالة':'الموسيقى: مطفية'; if(soundOn){ act(); startMusic(); } };
+</script>
+<script>
+/* صوت أحمد فقط - أهلا / صح / كسبت / خسرت - موسيقى رمضان الأصلية لم تتغير */
+var _ahmedVoiceCache={}, _ahlaPlayed=false;
+function _preloadAhmedVoice(){ ['ahla','sah','kesebt','khesert'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _ahmedVoiceCache[f]=a; }catch(e){} }); }
+_preloadAhmedVoice();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_ahmedVoiceCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+</script>
+<script>
 const cv=document.getElementById('cv'), ctx2=cv.getContext('2d');
 let W=0,H=0, score=0, coins=0, best=+(localStorage.getItem('ahmed_ramadan_best')||0);
 document.getElementById('best').textContent=best;
@@ -107,7 +117,7 @@ function update(){
     for(let i=objs.length-1;i>=0;i--){ let o=objs[i]; o.y+=0.0016+speed*0.0003; if(o.y>1){ objs.splice(i,1); continue; }
       let dx=Math.abs(o.x-px), dy=Math.abs(o.y-0.88+py*0.3);
       if(dx<0.09 && dy<0.12){
-        if(o.isCoin){ objs.splice(i,1); coins++; score+=50; sndCoin(); updateHUD(); }
+        if(o.isCoin){ objs.splice(i,1); coins++; score+=50; sndCoin(); playAhmedVoice('sah'); updateHUD(); }
         else if(py<0.25){ gameOver(); }
       }
     }
@@ -121,7 +131,8 @@ function update(){
 function updateHUD(){ document.getElementById('score').textContent=score; document.getElementById('coins').textContent=coins; }
 function gameOver(){
   over=true; playing=false; sndHit();
-  if(score>best){ best=score; localStorage.setItem('ahmed_ramadan_best',best); document.getElementById('best').textContent=best; }
+  var isNewBest = score>best;
+  if(isNewBest){ best=score; localStorage.setItem('ahmed_ramadan_best',best); document.getElementById('best').textContent=best; playAhmedVoice('kesebt'); } else { playAhmedVoice('khesert'); }
   let ov=document.getElementById('overlay'); ov.style.display='flex';
   ov.innerHTML='<h2>خبطت!</h2><p>سكورك: '+score+'<br>'+(cat==='fanous'?'فوانيس':cat==='hilal'?'هلال':'نجوم')+': '+coins+'<br>أعلى سكور: '+best+'</p><button onclick="startGame()">العب تاني</button>';
 }
@@ -148,5 +159,4 @@ cv.addEventListener('touchmove',e=>{ let dx=e.touches[0].clientX-sx; if(dx>20){ 
 cv.addEventListener('touchend',()=>{ if(playing) jump(); });
 update();
 </script>
-
 </body></html>
