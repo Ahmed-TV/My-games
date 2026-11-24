@@ -3,82 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>الألغام | أحمد عبدالعزيز</title>
+<title>الألغام | أحمد عبد العزيز</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-html, body { overflow-y: auto; overflow-x: hidden; }
-body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 6px 6px 12px 6px; }
-.header { width: 100%; max-width: 500px; text-align: center; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none!important; -webkit-user-select: none!important; user-select: none!important; -moz-user-select:none!important; -ms-user-select:none!important; touch-action:manipulation; }
+html, body { height:100%!important; height:100svh!important; max-height:100svh!important; overflow: hidden!important; }
+body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 6px; overflow:hidden!important; }
+.header { width: 100%; max-width: 500px; text-align: center; flex-shrink:0; }
 .top-row { display: flex; align-items: center; justify-content: center; gap: 8px; }
-.logo-wrap { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 3px solid #facc15; background: #000; flex-shrink: 0; }
+.logo-wrap { width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 3px solid #facc15; background: #000; flex-shrink: 0; }
 .logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-h1 { font-size: 20px; color: #ff2d95; line-height: 1.1; }
+h1 { font-size: 19px; color: #ff2d95; line-height: 1.1; }
 h1 small { display: block; font-size: 11px; color: #00e5ff; }
-.names { text-align: center; line-height: 1.2; margin: 2px 0 4px; }
-.names .ar { font-size: 16px; color: #facc15; font-weight: 900; }
-.names .en { font-size: 12px; color: #fff; font-weight: 900; }
-.stats { display: flex; gap: 6px; justify-content: center; margin: 2px 0 6px; }
-.stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 3px 10px; min-width: 80px; text-align: center; }
+.names { text-align: center; line-height: 1.2; margin: 1px 0 3px; }
+.names .ar { font-size: 13px; color: #facc15; font-weight: 900; }
+.names .en { font-size: 11px; color: #fff; font-weight: 900; }
+.stats { display: flex; gap: 6px; justify-content: center; margin: 1px 0 4px; }
+.stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 10px; padding: 2px 10px; min-width: 80px; text-align: center; }
 .stat b { display: block; font-size: 15px; color: #00e5ff; }
 .stat span { font-size: 9px; color: #c4b5fd; }
-.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 6px; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.5; margin-bottom: 6px; }
-.modes { display: flex; gap: 6px; justify-content: center; margin-bottom: 6px; width: 100%; max-width: 500px; }
-.mode-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #7c3aed; padding: 10px; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 15px; }
+.how { width: 100%; max-width: 500px; background: #facc15; color: #000; border-radius: 10px; padding: 4px; text-align: center; font-size: 11px; font-weight: 900; line-height: 1.4; margin-bottom: 4px; flex-shrink:0; }
+.modes { display: flex; gap: 6px; justify-content: center; margin-bottom: 4px; width: 100%; max-width: 500px; flex-shrink:0; }
+.mode-btn { flex: 1; background: #1a0033; color: #fff; border: 2px solid #7c3aed; padding: 8px; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: 14px; }
 .mode-btn.active { background: #ff2d95; border-color: #fff; }
 .mode-btn.hint { background: #16a34a; border-color: #fff; }
-#game-container { width: 100%; max-width: 500px; background: #fff; border: 3px solid #facc15; border-radius: 16px; padding: 6px; overflow: hidden; }
-#board { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; width: 100%; }
-.cell { aspect-ratio: 1; background: #7c3aed; border: 2px solid #fff; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; cursor: pointer; color: #fff; width: 100%; min-width: 0; touch-action: none; }
+#game-container { width: 100%; max-width: 500px; background: #fff; border: 3px solid #facc15; border-radius: 16px; padding: 5px; overflow: hidden; flex:1; min-height:0; display:flex; }
+#board { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; width: 100%; flex:1; min-height:0; }
+.cell { aspect-ratio: 1; background: #7c3aed; border: 2px solid #fff; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 900; cursor: pointer; color: #fff; width: 100%; min-width: 0; min-height:0; touch-action: none; }
 .cell.open { background: #e2e8f0; color: #000; border-color: #94a3b8; }
 .cell.flag { background: #facc15; border-color: #fff; }
 .cell.mine { background: #ef4444; }
 .cell.safe-hint { border: 3px solid #16a34a; box-shadow: 0 0 8px #16a34a; }
 .cell.n1 { color: #2563eb; } .cell.n2 { color: #16a34a; } .cell.n3 { color: #dc2626; } .cell.n4 { color: #7c3aed; } .cell.n5 { color: #ea580c; }
-#hint { text-align: center; font-size: 11px; color: #e2e8f0; margin-top: 6px; line-height: 1.4; }
-#resetBtn { width: 100%; max-width: 500px; margin-top: 8px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 12px; padding: 12px; font-size: 20px; font-weight: 900; cursor: pointer; }
-#overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; gap: 8px; z-index: 10; }
+#hint { text-align: center; font-size: 11px; color: #e2e8f0; margin-top: 4px; line-height: 1.4; flex-shrink:0; }
+#resetBtn { width: 100%; max-width: 500px; margin-top: 5px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 12px; padding: 10px; font-size: 18px; font-weight: 900; cursor: pointer; flex-shrink:0; }
+#overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 12px; gap: 8px; z-index: 10; pointer-events:auto; }
 #overlay h2 { font-size: 22px; color: #ff2d95; }
 #overlay p { line-height: 1.6; font-size: 13px; color: #fff; }
-.btn-start { background: linear-gradient(90deg,#ff2d95,#00e5ff); color: #fff; border: 2px solid #fff; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; }
-#game-wrap { position: relative; width: 100%; max-width: 500px; }
+.btn-start { background: linear-gradient(90deg,#ff2d95,#00e5ff); color: #fff; border: 2px solid #fff; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 900; cursor: pointer; width: 80%; max-width: 200px; pointer-events:auto!important; position:relative; z-index:20; }
+#game-wrap { position: relative; width: 100%; max-width: 500px; flex:1; min-height:0; display:flex; flex-direction:column; }
 </style>
 </head>
 <body oncontextmenu="return false">
-<div class="header">
-<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div><h1>الألغام<small>ألغام الأبطال</small></h1></div>
-<div class="names"><span class="ar">أحمد عبدالعزيز</span> <span class="en">Ahmed TV</span></div>
-<div class="stats"><div class="stat"><b id="flags">8</b><span>ألغام فاضلة</span></div><div class="stat"><b id="opened">0</b><span>مربع اتفتح</span></div><div class="stat"><b id="best">0</b><span>فوز</span></div></div>
-</div>
-<div class="how">لو طلعلك رقم 1 = فيه لغم واحد بس في الـ 8 اللي حواليه<br>مش عارف انهي واحد؟ دوس 💡 تلميح - هيعلمك على اللغم الصح</div>
-<div class="modes"><button class="mode-btn active" id="digBtn">⛏️ حفر</button><button class="mode-btn" id="flagBtn">🚩 علم</button><button class="mode-btn hint" id="hintBtn">💡 تلميح (<span id="hintsLeft">3</span>)</button></div>
-<div id="game-wrap"><div id="game-container"><div id="board"></div></div><div id="overlay"><h2>💣 الألغام</h2><p>دوس على مربع بنفسجي = يفتح<br>لو طلع رقم 1 = فيه لغم واحد حواليه<br>مش عارف انهي واحد؟ دوس 💡 تلميح<br>هيعلمك على اللغم الصح بالظبط</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div></div>
-<div id="hint">دوسة عادية = حفر - دوسة طويلة = علم 🚩 - 💡 تلميح = يعلمك على لغم صح</div>
-<button id="resetBtn">🔄 لعبة جديدة</button>
+<div class="header"><div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبد العزيز"></div><h1>الألغام<small>ألغام الأبطال</small></h1></div><div class="names"><span class="ar">أحمد عبد العزيز</span> <span class="en">Ahmed TV</span></div><div class="stats"><div class="stat"><b id="flags">8</b><span>ألغام متبقية</span></div><div class="stat"><b id="opened">0</b><span>مربع تم فتحه</span></div><div class="stat"><b id="best">0</b><span>فوز</span></div></div></div>
+<div class="how">لو ظهر رقم 1 = يوجد لغم واحد فقط في الـ 8 التي حوله<br>لا تعرف أي واحد؟ اضغط تلميح - سيعلمك على اللغم الصحيح</div>
+<div class="modes"><button class="mode-btn active" id="digBtn">حفر</button><button class="mode-btn" id="flagBtn">علم</button><button class="mode-btn hint" id="hintBtn">تلميح (<span id="hintsLeft">3</span>)</button></div>
+<div id="game-wrap"><div id="game-container"><div id="board"></div></div><div id="overlay"><h2>الألغام</h2><p>اضغط على مربع بنفسجي = يفتح<br>لو ظهر رقم 1 = يوجد لغم واحد حوله<br>لا تعرف أي واحد؟ اضغط تلميح<br>سيعلمك على اللغم الصحيح بالضبط</p><button class="btn-start" id="startBtn">ابدأ اللعب</button></div></div>
+<div id="hint">ضغطة عادية = حفر - ضغطة طويلة = علم - تلميح = يعلمك على لغم صحيح</div>
+<button id="resetBtn">لعبة جديدة</button>
+<script>
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+window.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+var soundOn=true,_audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+</script>
 <script>
 const board=document.getElementById('board'),flagsEl=document.getElementById('flags'),openedEl=document.getElementById('opened'),bestEl=document.getElementById('best'),hintsLeftEl=document.getElementById('hintsLeft');
 const overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),resetBtn=document.getElementById('resetBtn'),digBtn=document.getElementById('digBtn'),flagBtn=document.getElementById('flagBtn'),hintBtn=document.getElementById('hintBtn');
 let SIZE=8,MINES=8,cells=[],gameOver=false,opened=0,flagsUsed=0,mode='dig',firstClick=true,hints=3;
 let wins=parseInt(localStorage.getItem('minesWins')||'0');bestEl.textContent=wins;
-let audioCtx=null;
-function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
-function beep(f,d=0.1,type='sine',v=0.12){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d);}
-document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('selectstart',e=>e.preventDefault());
+blockGoogle(startBtn); blockGoogle(resetBtn); blockGoogle(digBtn); blockGoogle(flagBtn); blockGoogle(hintBtn); blockGoogle(board);
+function beep(f){ if(f>=800) playAhmedVoice('kesebt'); else if(f<=100) playAhmedVoice('khesert'); else if(f===200) playAhmedVoice('ghalat'); else playAhmedVoice('sah'); }
 function setMode(m){mode=m;digBtn.classList.toggle('active',m==='dig');flagBtn.classList.toggle('active',m==='flag');}
+function showAgainBtn(msg){ var ab=document.getElementById('againBtn'); if(!ab) return; blockGoogle(ab); ab.addEventListener('click', onReset); ab.addEventListener('pointerdown', onReset, {passive:false}); ab.addEventListener('touchstart', onReset, {passive:false}); }
+var _resetting=false;
+function onReset(e){ if(e){ try{ e.preventDefault(); }catch(err){} } if(_resetting) return; _resetting=true; resetGame(); setTimeout(function(){ _resetting=false; }, 800); }
 function resetGame(){cells=[];gameOver=false;opened=0;flagsUsed=0;firstClick=true;hints=3;hintsLeftEl.textContent=3;flagsEl.textContent=MINES;openedEl.textContent=0;board.innerHTML='';setMode('dig');
 for(let i=0;i<SIZE*SIZE;i++)cells.push({mine:false,open:false,flag:false,num:0,el:null});
 let placed=0;while(placed<MINES){let r=Math.floor(Math.random()*cells.length);if(!cells[r].mine){cells[r].mine=true;placed++;}}
 cells.forEach((c,i)=>{let r=Math.floor(i/SIZE),col=i%SIZE;let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE&&cells[nr*SIZE+nc].mine)n++;}c.num=n;let d=document.createElement('div');d.className='cell';d.textContent='?';
 let pressTimer=null,longPressed=false;
-d.addEventListener('touchstart',e=>{e.preventDefault();initAudio();longPressed=false;pressTimer=setTimeout(()=>{longPressed=true;toggleFlag(i);},400);},{passive:false});
-d.addEventListener('touchend',e=>{e.preventDefault();clearTimeout(pressTimer);if(!longPressed)clickCell(i);},{passive:false});
-d.addEventListener('mousedown',e=>{initAudio();if(e.button===2){toggleFlag(i);return;}clickCell(i);});
-d.addEventListener('contextmenu',e=>{e.preventDefault();toggleFlag(i);});
+// ضغطة واحدة pointerdown - بدل touchstart + mousedown اللي كانوا بيحسبوا الضغطة مرتين
+d.addEventListener('pointerdown',e=>{e.preventDefault();longPressed=false;pressTimer=setTimeout(()=>{longPressed=true;toggleFlag(i);},400);},{passive:false});
+d.addEventListener('pointerup',e=>{e.preventDefault();clearTimeout(pressTimer);if(!longPressed)clickCell(i);},{passive:false});
+d.addEventListener('pointercancel',e=>{clearTimeout(pressTimer);},{passive:false});
+d.addEventListener('pointerleave',e=>{clearTimeout(pressTimer);},{passive:false});
+d.addEventListener('contextmenu',e=>{e.preventDefault();return false;});
+blockGoogle(d);
 c.el=d;board.appendChild(d);});
 overlay.style.display='none';}
-function toggleFlag(i,auto=false){if(gameOver)return;let c=cells[i];if(c.open)return;if(!c.flag&&flagsUsed>=MINES)return;c.flag=!c.flag;flagsUsed+=c.flag?1:-1;flagsEl.textContent=MINES-flagsUsed;c.el.classList.toggle('flag',c.flag);c.el.textContent=c.flag?'🚩':'?';beep(500,0.08);if(!auto)setMode('dig');}
-// زرار التلميح - يعلم على لغم صح 100%
-function useHint(){if(gameOver||hints<=0)return;initAudio();
+function toggleFlag(i,auto=false){if(gameOver)return;let c=cells[i];if(c.open)return;if(!c.flag&&flagsUsed>=MINES)return;c.flag=!c.flag;flagsUsed+=c.flag?1:-1;flagsEl.textContent=MINES-flagsUsed;c.el.classList.toggle('flag',c.flag);c.el.textContent=c.flag?'🚩':'?';playAhmedVoice('hawel');if(!auto)setMode('dig');}
+function useHint(){if(gameOver||hints<=0)return;
 let unflaggedMines=cells.filter(c=>c.mine&&!c.flag);
 if(unflaggedMines.length===0)return;
 let target=unflaggedMines[Math.floor(Math.random()*unflaggedMines.length)];
@@ -87,32 +97,32 @@ hints--;hintsLeftEl.textContent=hints;
 toggleFlag(idx,true);
 target.el.style.boxShadow='0 0 12px #16a34a';
 setTimeout(()=>{if(target.el)target.el.style.boxShadow='';},1500);
-beep(900,0.15);
-// لو علمت على كل الألغام صح - افتح الباقي واكسب
+playAhmedVoice('hawel');
 if(cells.filter(c=>c.mine&&!c.flag).length===0){cells.forEach((c,j)=>{if(!c.mine&&!c.open)openCell(j);});checkWin();}
 }
 function clickCell(i){if(gameOver)return;let c=cells[i];if(c.open){
-// لو دوست على رقم مفتوح - وكان عدد الأعلام حواليه = الرقم - افتح الباقي الآمن لوحده
 let r=Math.floor(i/SIZE),col=i%SIZE;let flagsAround=0,closed=[];
 for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE){let nb=cells[nr*SIZE+nc];if(nb.flag)flagsAround++;if(!nb.open&&!nb.flag)closed.push(nr*SIZE+nc);}}
-if(flagsAround===c.num&&closed.length>0){closed.forEach(j=>{let cc=cells[j];if(!cc.mine)openCell(j);else{revealAll();gameOver=true;overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انفجرت!</h2><p>الأعلام كانت غلط!</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}});checkWin();}
+if(flagsAround===c.num&&closed.length>0){closed.forEach(j=>{let cc=cells[j];if(!cc.mine)openCell(j);else{revealAll();gameOver=true;overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انفجرت!</h2><p>الأعلام كانت غير صحيحة!</p><button class="btn-start" id="againBtn">العب مرة أخرى</button>`;showAgainBtn();}});checkWin();}
 return;}
 if(mode==='flag'){toggleFlag(i);return;}
-if(c.flag){beep(200,0.1);return;}
+if(c.flag){playAhmedVoice('ghalat');return;}
 if(firstClick&&c.mine){c.mine=false;let idx=cells.findIndex(x=>!x.mine&&!x.open);cells[idx].mine=true;cells.forEach((cc,j)=>{let r=Math.floor(j/SIZE),col=j%SIZE;let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE&&cells[nr*SIZE+nc].mine)n++;}cc.num=n;});}
 firstClick=false;
-if(c.mine){revealAll();gameOver=true;beep(100,0.5,'sawtooth',0.2);overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انفجرت!</h2><p>دوست على لغم!<br>فتحت ${opened} مربع<br>استخدم 💡 تلميح عشان تعرف اللغم الصح</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;return;}
+if(c.mine){revealAll();gameOver=true;playAhmedVoice('khesert');overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">💥</div><h2>انفجرت!</h2><p>ضغطت على لغم!<br>فتحت ${opened} مربع<br>استخدم تلميح لكي تعرف اللغم الصحيح</p><button class="btn-start" id="againBtn">العب مرة أخرى</button>`;showAgainBtn();return;}
 openCell(i);checkWin();}
-function openCell(i){let c=cells[i];if(c.open||c.flag||c.mine)return;c.open=true;opened++;openedEl.textContent=opened;c.el.classList.add('open');if(c.num>0){c.el.textContent=c.num;c.el.classList.add('n'+c.num);beep(600,0.05);}else{c.el.textContent='';let r=Math.floor(i/SIZE),col=i%SIZE;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE)openCell(nr*SIZE+nc);}}}
-function checkWin(){if(opened===SIZE*SIZE-MINES&&!gameOver){gameOver=true;wins++;localStorage.setItem('minesWins',wins);bestEl.textContent=wins;beep(800,0.2);overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">🏆</div><h2>كسبت يا بطل!</h2><p>فتحت كل المربعات!<br>فوز: ${wins}</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}}
+function openCell(i){let c=cells[i];if(c.open||c.flag||c.mine)return;c.open=true;opened++;openedEl.textContent=opened;c.el.classList.add('open');if(c.num>0){c.el.textContent=c.num;c.el.classList.add('n'+c.num);playAhmedVoice('sah');}else{c.el.textContent='';let r=Math.floor(i/SIZE),col=i%SIZE;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){let nr=r+dr,nc=col+dc;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE)openCell(nr*SIZE+nc);}}}
+function checkWin(){if(opened===SIZE*SIZE-MINES&&!gameOver){gameOver=true;wins++;localStorage.setItem('minesWins',wins);bestEl.textContent=wins;playAhmedVoice('kesebt');overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:32px">🏆</div><h2>كسبت يا بطل!</h2><p>فتحت كل المربعات!<br>فوز: ${wins}</p><button class="btn-start" id="againBtn">العب مرة أخرى</button>`;showAgainBtn();}}
 function revealAll(){cells.forEach(c=>{if(c.mine){c.el.classList.add('mine');c.el.textContent='💣';}});}
-digBtn.onclick=()=>setMode('dig');
-flagBtn.onclick=()=>setMode('flag');
-hintBtn.onclick=()=>useHint();
-startBtn.onclick=()=>{initAudio();resetGame();};
-resetBtn.onclick=()=>{initAudio();resetGame();};
+function onModeDig(e){ if(e) e.preventDefault(); setMode('dig'); }
+function onModeFlag(e){ if(e) e.preventDefault(); setMode('flag'); }
+function onHint(e){ if(e) e.preventDefault(); useHint(); }
+digBtn.addEventListener('click', onModeDig); digBtn.addEventListener('pointerdown', onModeDig, {passive:false}); digBtn.addEventListener('touchstart', onModeDig, {passive:false});
+flagBtn.addEventListener('click', onModeFlag); flagBtn.addEventListener('pointerdown', onModeFlag, {passive:false}); flagBtn.addEventListener('touchstart', onModeFlag, {passive:false});
+hintBtn.addEventListener('click', onHint); hintBtn.addEventListener('pointerdown', onHint, {passive:false}); hintBtn.addEventListener('touchstart', onHint, {passive:false});
+startBtn.addEventListener('click', onReset); startBtn.addEventListener('pointerdown', onReset, {passive:false}); startBtn.addEventListener('touchstart', onReset, {passive:false});
+resetBtn.addEventListener('click', onReset); resetBtn.addEventListener('pointerdown', onReset, {passive:false}); resetBtn.addEventListener('touchstart', onReset, {passive:false});
 resetGame();
 </script>
-  
 </body>
 </html>
