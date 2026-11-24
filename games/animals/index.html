@@ -74,33 +74,51 @@ var score=0, best=parseInt(localStorage.getItem('animalsBest')||'0'); bestEl.tex
 var level=1, qInLevel=0, correctInLevel=0, currentAnimal=null, isLocked=false;
 var LEVELS=[
  {name:"سهل", animals:[
-  {name:'كلب',emoji:'🐶',hint:'صديق الإنسان - يقول: هو هو',sound:'https://www.soundjay.com/animal/dog-barking-1.mp3'},
-  {name:'قطة',emoji:'🐱',hint:'تحب الحليب - تقول: ميو ميو',sound:'https://www.soundjay.com/animal/cat-meow-1.mp3'},
-  {name:'أسد',emoji:'🦁',hint:'ملك الغابة - له شعر كبير حول وجهه',sound:'https://www.soundjay.com/animal/lion-roar-1.mp3'},
-  {name:'بقرة',emoji:'🐮',hint:'تعطينا الحليب',sound:'https://www.soundjay.com/animal/cow-moo-1.mp3'},
-  {name:'خروف',emoji:'🐑',hint:'له صوف كثير - نأخذ منه الصوف',sound:'https://www.soundjay.com/animal/sheep-bleat-1.mp3'},
-  {name:'ديك',emoji:'🐓',hint:'يصيح في الصباح - كوكو كوكو',sound:'https://www.soundjay.com/animal/rooster-crow-1.mp3'}
+  {name:'كلب',emoji:'🐶',hint:'صديق الإنسان - يقول: هو هو',sound:'https://actions.google.com/sounds/v1/animals/dog_barking.ogg'},
+  {name:'قطة',emoji:'🐱',hint:'تحب الحليب - تقول: ميو ميو',sound:'https://actions.google.com/sounds/v1/animals/cat_meowing.ogg'},
+  {name:'أسد',emoji:'🦁',hint:'ملك الغابة - له شعر كبير حول وجهه',sound:'https://actions.google.com/sounds/v1/animals/lion_roaring.ogg'},
+  {name:'بقرة',emoji:'🐮',hint:'تعطينا الحليب',sound:'https://actions.google.com/sounds/v1/animals/cow_mooing.ogg'},
+  {name:'خروف',emoji:'🐑',hint:'له صوف كثير - نأخذ منه الصوف',sound:'https://actions.google.com/sounds/v1/animals/sheep_bleating.ogg'},
+  {name:'ديك',emoji:'🐓',hint:'يصيح في الصباح - كوكو كوكو',sound:'https://actions.google.com/sounds/v1/animals/rooster_crowing.ogg'}
  ]},
  {name:"متوسط", animals:[
-  {name:'حصان',emoji:'🐴',hint:'سريع - نركبه في السباق',sound:'https://www.soundjay.com/animal/horse-neigh-1.mp3'},
-  {name:'قرد',emoji:'🐵',hint:'يحب الموز - يقفز بين الأشجار',sound:'https://www.soundjay.com/animal/monkey-1.mp3'},
-  {name:'فيل',emoji:'🐘',hint:'أكبر حيوان على الأرض - له خرطوم طويل',sound:'https://www.soundjay.com/animal/elephant-trumpet-1.mp3'},
-  {name:'بطة',emoji:'🦆',hint:'تعوم في الماء - تقول: واك واك',sound:'https://www.soundjay.com/animal/duck-quack-1.mp3'},
-  {name:'أرنب',emoji:'🐰',hint:'له أذنان طويلتان - يحب الجزر',sound:'https://www.soundjay.com/animal/rabbit-squeak-1.mp3'},
-  {name:'دب',emoji:'🐻',hint:'كبير وقوي - يحب العسل',sound:'https://www.soundjay.com/animal/bear-growl-1.mp3'}
+  {name:'حصان',emoji:'🐴',hint:'سريع - نركبه في السباق',sound:'https://actions.google.com/sounds/v1/animals/horse_neighing.ogg'},
+  {name:'قرد',emoji:'🐵',hint:'يحب الموز - يقفز بين الأشجار',sound:'https://actions.google.com/sounds/v1/animals/monkey_screeching.ogg'},
+  {name:'فيل',emoji:'🐘',hint:'أكبر حيوان على الأرض - له خرطوم طويل',sound:'https://actions.google.com/sounds/v1/animals/elephant_trumpeting.ogg'},
+  {name:'بطة',emoji:'🦆',hint:'تعوم في الماء - تقول: واك واك',sound:'https://actions.google.com/sounds/v1/animals/duck_quacking.ogg'},
+  {name:'أرنب',emoji:'🐰',hint:'له أذنان طويلتان - يحب الجزر',sound:'https://actions.google.com/sounds/v1/animals/rabbit_thumping.ogg'},
+  {name:'دب',emoji:'🐻',hint:'كبير وقوي - يحب العسل',sound:'https://actions.google.com/sounds/v1/animals/bear_growling.ogg'}
  ]},
  {name:"صعب", animals:[
-  {name:'نمر',emoji:'🐯',hint:'له خطوط سوداء - سريع وقوي',sound:'https://www.soundjay.com/animal/tiger-growl-1.mp3'},
-  {name:'زرافة',emoji:'🦒',hint:'أطول حيوان - رقبتها طويلة جداً',sound:'https://www.soundjay.com/animal/giraffe-hum-1.mp3'},
-  {name:'تمساح',emoji:'🐊',hint:'يعيش في النهر - له أسنان كثيرة',sound:'https://www.soundjay.com/animal/crocodile-growl-1.mp3'},
-  {name:'بومة',emoji:'🦉',hint:'تطير في الليل - لها عينان كبيرتان',sound:'https://www.soundjay.com/animal/owl-hoot-1.mp3'},
-  {name:'ثعلب',emoji:'🦊',hint:'ذكي ومكار - له ذيل طويل',sound:'https://www.soundjay.com/animal/fox-bark-1.mp3'},
-  {name:'كنغر',emoji:'🦘',hint:'يعيش في أستراليا - يقفز بعيداً وله جيب',sound:'https://www.soundjay.com/animal/kangaroo-thump-1.mp3'}
+  {name:'نمر',emoji:'🐯',hint:'له خطوط سوداء - سريع وقوي',sound:'https://actions.google.com/sounds/v1/animals/tiger_growling.ogg'},
+  {name:'زرافة',emoji:'🦒',hint:'أطول حيوان - رقبتها طويلة جداً',sound:'https://actions.google.com/sounds/v1/animals/giraffe_humming.ogg'},
+  {name:'تمساح',emoji:'🐊',hint:'يعيش في النهر - له أسنان كثيرة',sound:'https://actions.google.com/sounds/v1/animals/alligator_hissing.ogg'},
+  {name:'بومة',emoji:'🦉',hint:'تطير في الليل - لها عينان كبيرتان',sound:'https://actions.google.com/sounds/v1/animals/owl_hooting.ogg'},
+  {name:'ثعلب',emoji:'🦊',hint:'ذكي ومكار - له ذيل طويل',sound:'https://actions.google.com/sounds/v1/animals/fox_barking.ogg'},
+  {name:'كنغر',emoji:'🦘',hint:'يعيش في أستراليا - يقفز بعيداً وله جيب',sound:'https://actions.google.com/sounds/v1/animals/kangaroo_thumping.ogg'}
  ]}
 ];
 function setLevels(){ [1,2,3].forEach(function(n){ var el=document.getElementById('lv'+n); el.className='lv'+(n<level?' done':n===level?' active':''); }); levelTxt.textContent='المستوى '+level+' - '+LEVELS[level-1].name; }
 function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
-function playAnimalSound(animal){ try{ if(animal && animal.sound){ var a=new Audio(animal.sound); a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){ playAhmedVoice('hawel'); }); } else { playAhmedVoice('hawel'); } }catch(e){ playAhmedVoice('hawel'); } }
+function playAnimalSound(animal){
+  // جرب صوت الحيوان الحقيقي - لو فشل جرب البديل - صوتك "حاول" هو آخر حل فقط
+  var urls = [];
+  if(animal && animal.sound) urls.push(animal.sound);
+  // بديل ثانٍ من SoundJay - اللي كان شغال في لعبة القطط
+  if(animal && animal.name==='قطة') urls.push('https://www.soundjay.com/animal/cat-meow-8.mp3');
+  if(animal && animal.name==='كلب') urls.push('https://www.soundjay.com/animal/dog-barking-2.mp3');
+  var idx = 0;
+  function tryNext(){
+    if(idx >= urls.length){ playAhmedVoice('hawel'); return; }
+    try{
+      var a = new Audio(urls[idx]); a.volume = 1;
+      a.onerror = function(){ idx++; tryNext(); };
+      var p = a.play();
+      if(p) p.catch(function(){ idx++; tryNext(); });
+    }catch(e){ idx++; tryNext(); }
+  }
+  tryNext();
+}
 function generateQuestion(){
  isLocked=false; optionsBox.innerHTML='';
  var pool=LEVELS[level-1].animals;
