@@ -1,1 +1,139 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة الثعبان | أحمد عبد العزيز</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout:none!important; -webkit-user-select:none!important; user-select:none!important; -moz-user-select:none!important; -ms-user-select:none!important; touch-action:manipulation; }
+  html, body { height: 100%!important; height: 100svh!important; max-height:100svh!important; overflow: hidden!important; }
+  body { font-family: Tahoma, Arial, sans-serif; background: radial-gradient(1200px 600px at 50% -10%, #123a2a 0%, #07120d 55%, #030705 100%); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 8px; overflow:hidden!important; }
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink:0; }
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .logo-wrap { width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 3px solid #22c55e; background: #000; box-shadow: 0 0 16px rgba(34,197,94,.7); }
+  .logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  h1 { font-size: 22px; line-height: 1.2; color: #4ade80; text-shadow: 0 2px 10px rgba(74,222,128,.4); }
+  h1 small { display: block; font-size: 12px; color: #a7f3d0; margin-top: 2px; }
+  .names { text-align: center; margin: 2px 0 4px; line-height: 1.3; }
+  .names .ar { display: block; font-size: 17px; color: #facc15; font-weight: 900; }
+  .names .en { display: block; font-size: 13px; color: #fff; font-weight: 900; }
+  .stats { display: flex; gap: 6px; justify-content: center; margin: 3px 0 5px; }
+  .stat { background: rgba(0,0,0,.55); border: 2px solid #22c55e; border-radius: 12px; padding: 3px 8px; min-width: 76px; text-align: center; flex:1; max-width:120px; }
+  .stat b { display: block; font-size: 17px; color: #4ade80; }
+  .stat span { font-size: 10px; color: #a7f3d0; }
+  .level-bar { width: 100%; max-width: 500px; height: 8px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden; flex-shrink:0; margin-bottom: 5px; }
+  .level-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#22c55e,#facc15,#ef4444); border-radius: 99px; transition: width .3s; }
+  #game-wrap { width: 100%; max-width: 500px; flex:1; min-height:0; position: relative; background: radial-gradient(circle at 50% 30%, #0f2a1c 0%, #071a10 60%, #04100a 100%); border: 3px solid #22c55e; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(34,197,94,.35), inset 0 0 40px rgba(0,0,0,.6); touch-action: none; }
+  canvas { width: 100%; height: 100%; display: block; }
+  .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: rgba(255,255,255,0.06); font-size: 34px; font-weight: 900; pointer-events: none; white-space: nowrap; }
+  #overlay { position: absolute; inset: 0; background: rgba(3,10,6,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 16px; gap: 9px; z-index: 10; }
+  #overlay h2 { font-size: 24px; color: #4ade80; }
+  #overlay p { line-height: 1.7; font-size: 14px; color: #e2e8f0; }
+  .btn-start { background: linear-gradient(90deg,#22c55e,#16a34a); color: #fff; border: 2px solid #fff; padding: 13px 26px; border-radius: 14px; font-size: 17px; font-weight: 900; cursor: pointer; width: 82%; max-width: 230px; box-shadow: 0 8px 20px rgba(34,197,94,.4); }
+  .btn-start:active { transform: scale(0.97); }
+  .btn-ghost { background: rgba(255,255,255,.12); color: #fff; border: 2px solid rgba(255,255,255,.5); padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 900; cursor: pointer; width: 82%; max-width: 230px; }
+  .controls { width: 100%; max-width: 500px; display: flex; gap: 6px; margin-top: 6px; flex-shrink:0; direction: ltr; }
+  .cbtn { flex:1; background: #0f2a1c; border: 2px solid #22c55e; color: #fff; border-radius: 12px; padding: 9px 2px; font-size: 13px; font-weight: 900; cursor: pointer; }
+  .cbtn.active { background: #22c55e; color: #04100a; }
+  .dpad { width: 100%; max-width: 280px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 6px; flex-shrink:0; direction: ltr; }
+  .dbtn { background: rgba(255,255,255,.1); border: 2px solid #22c55e; color: #fff; border-radius: 12px; padding: 10px 0; font-size: 20px; font-weight: 900; cursor: pointer; }
+  .dbtn:active { background: #22c55e; color: #04100a; }
+  .dbtn.empty { visibility: hidden; }
+  .footer { font-size: 10px; color: #94a3b8; text-align: center; flex-shrink:0; margin-top: 3px; }
+  .footer a { color: #4ade80; text-decoration: none; }
+</style>
+</head>
+<body oncontextmenu="return false">
+  <div class="header">
+    <div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبد العزيز"></div><h1>لعبة الثعبان</h1></div>
+    <div class="names"><span class="ar">أحمد عبد العزيز</span><span class="en">Ahmed TV</span></div>
+    <div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="level">1</b><span>المستوى</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div><div class="stat"><b id="len">3</b><span>طول الثعبان</span></div></div>
+    <div class="level-bar"><div class="level-fill" id="levelFill"></div></div>
+  </div>
+  <div id="game-wrap"><div class="watermark">أحمد عبد العزيز</div><canvas id="gameCanvas"></canvas>
+    <div id="overlay"><h2>لعبة الثعبان</h2><p>كل تفاحة بتطول الثعبان وتزود النقاط<br>كل 5 تفاحات = مستوى جديد<br>خلي بالك من الحيطة ومن نفسك<br>اللعبة بطيئة عشان تلعب براحتك</p><button class="btn-start" id="startBtn">ابدأ اللعب</button><button class="btn-ghost" id="howBtn">كيف ألعب؟</button></div>
+  </div>
+  <div class="controls"><button class="cbtn active" id="speedSlow">بطيئة</button><button class="cbtn" id="speedMed">متوسطة</button><button class="cbtn" id="speedFast">سريعة</button><button class="cbtn" id="pauseBtn">إيقاف مؤقت</button></div>
+  <div class="dpad"><button class="dbtn empty"></button><button class="dbtn" data-dir="up">↑</button><button class="dbtn empty"></button><button class="dbtn" data-dir="left">←</button><button class="dbtn" data-dir="down">↓</button><button class="dbtn" data-dir="right">→</button></div>
+  <div class="footer"><b>Ahmed TV</b> - <a href="../../index.html">كل ألعابي</a></div>
+<script>
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+var _audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+</script>
+<script>
+const canvas=document.getElementById('gameCanvas'), ctx=canvas.getContext('2d');
+const scoreEl=document.getElementById('score'), levelEl=document.getElementById('level'), bestEl=document.getElementById('best'), lenEl=document.getElementById('len'), levelFill=document.getElementById('levelFill');
+const overlay=document.getElementById('overlay'), startBtn=document.getElementById('startBtn'), howBtn=document.getElementById('howBtn'), pauseBtn=document.getElementById('pauseBtn');
+const wrap=document.getElementById('game-wrap');
+[ startBtn, howBtn, pauseBtn ].forEach(blockGoogle);
+document.querySelectorAll('.cbtn,.dbtn').forEach(blockGoogle); blockGoogle(canvas);
+const COLS=18, ROWS=18;
+let cell=24, W=0, H=0, snake=[], dir={x:1,y:0}, nextDir={x:1,y:0}, food=null, bonus=null, bonusTimer=0, obstacles=[], score=0, eaten=0, level=1, speedMode='slow', paused=false, running=false, timer=null, best=parseInt(localStorage.getItem('snakeProBest')||'0');
+bestEl.textContent=best;
+function speedMs(){ let base = speedMode==='slow' ? 650 : speedMode==='med' ? 550 : 400; let lvl = Math.max(0, level-1); return Math.max(320, base - lvl*1); }
+function resize(){ const r=wrap.getBoundingClientRect(); const dpr=Math.min(window.devicePixelRatio||1,2); canvas.width=r.width*dpr; canvas.height=r.height*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); W=r.width; H=r.height; cell=Math.floor(Math.min(W/COLS, H/ROWS)); draw(); }
+function reset(){ snake=[{x:5,y:9},{x:4,y:9},{x:3,y:9}]; dir={x:1,y:0}; nextDir={x:1,y:0}; score=0; eaten=0; level=1; paused=false; pauseBtn.textContent='إيقاف مؤقت'; updateHUD(); spawnFood(); spawnObstacles(); }
+function updateHUD(){ scoreEl.textContent=score; levelEl.textContent=level; lenEl.textContent=snake.length; levelFill.style.width=((eaten%5)/5*100)+'%'; }
+function spawnFood(){ while(true){ const p={x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)}; if(!snake.some(s=>s.x===p.x&&s.y===p.y) && !obstacles.some(o=>o.x===p.x&&o.y===p.y)){ food=p; break; } } if(Math.random()<0.35) spawnBonus(); }
+function spawnBonus(){ while(true){ const p={x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)}; if(!snake.some(s=>s.x===p.x&&s.y===p.y) && !(food&&food.x===p.x&&food.y===p.y) && !obstacles.some(o=>o.x===p.x&&o.y===p.y)){ bonus=p; bonusTimer=18; break; } } }
+function spawnObstacles(){ obstacles=[]; if(level<2) return; const n=Math.min(2+(level-2)*2, 10); for(let i=0;i<n;i++){ let tries=0; while(tries<40){ tries++; const p={x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)}; if(Math.abs(p.x-5)<3&&Math.abs(p.y-9)<3) continue; if(snake.some(s=>s.x===p.x&&s.y===p.y)) continue; if(food&&food.x===p.x&&food.y===p.y) continue; obstacles.push(p); break; } } }
+function setDir(x,y){ if(running && !paused){ if(x===-dir.x && y===-dir.y) return; nextDir={x:x,y:y}; } }
+function step(){
+  if(!running||paused) return;
+  dir=nextDir;
+  const head={x:snake[0].x+dir.x, y:snake[0].y+dir.y};
+  if(head.x<0||head.y<0||head.x>=COLS||head.y>=ROWS || snake.some(s=>s.x===head.x&&s.y===head.y) || obstacles.some(o=>o.x===head.x&&o.y===head.y)){ gameOver(); return; }
+  snake.unshift(head);
+  let ate=false;
+  if(food && head.x===food.x && head.y===food.y){ score+=10; eaten++; ate=true; playAhmedVoice('sah'); if(eaten%5===0){ level++; playAhmedVoice('ebda'); spawnObstacles(); } spawnFood(); }
+  else if(bonus && head.x===bonus.x && head.y===bonus.y){ score+=30; bonus=null; playAhmedVoice('sah'); }
+  if(!ate) snake.pop();
+  if(bonus){ bonusTimer--; if(bonusTimer<=0) bonus=null; }
+  updateHUD(); draw();
+  schedule();
+}
+function schedule(){ if(timer) clearTimeout(timer); if(!running||paused) return; timer=setTimeout(step, speedMs()); }
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const ox=(W-cell*COLS)/2, oy=(H-cell*ROWS)/2;
+  for(let y=0;y<ROWS;y++) for(let x=0;x<COLS;x++){ if((x+y)%2===0){ ctx.fillStyle='rgba(255,255,255,0.03)'; ctx.fillRect(ox+x*cell, oy+y*cell, cell, cell); } }
+  ctx.strokeStyle='rgba(34,197,94,0.25)'; ctx.strokeRect(ox, oy, cell*COLS, cell*ROWS);
+  obstacles.forEach(o=>{ ctx.fillStyle='#7c3aed'; roundRect(ox+o.x*cell+2, oy+o.y*cell+2, cell-4, cell-4, 6); ctx.fill(); ctx.fillStyle='#fff'; ctx.font='bold 12px Tahoma'; ctx.textAlign='center'; ctx.fillText('X', ox+o.x*cell+cell/2, oy+o.y*cell+cell/2+4); });
+  if(food){ const cx=ox+food.x*cell+cell/2, cy=oy+food.y*cell+cell/2; ctx.fillStyle='#ef4444'; ctx.beginPath(); ctx.arc(cx,cy,cell*0.36,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#22c55e'; ctx.fillRect(cx-2, cy-cell*0.4, 4, 8); ctx.fillStyle='#fff'; ctx.fillRect(cx-cell*0.18, cy-cell*0.12, 5, 5); }
+  if(bonus){ const cx=ox+bonus.x*cell+cell/2, cy=oy+bonus.y*cell+cell/2; ctx.fillStyle='#facc15'; ctx.beginPath(); ctx.arc(cx,cy,cell*0.38,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#000'; ctx.font='bold 13px Tahoma'; ctx.textAlign='center'; ctx.fillText('★', cx, cy+5); }
+  snake.forEach((s,i)=>{ const x=ox+s.x*cell, y=oy+s.y*cell; if(i===0){ ctx.fillStyle='#22c55e'; roundRect(x+1,y+1,cell-2,cell-2,8); ctx.fill(); ctx.fillStyle='#000'; ctx.fillRect(x+cell*0.55, y+cell*0.22, 5, 5); ctx.fillRect(x+cell*0.22, y+cell*0.22, 5, 5); } else { const t=i/snake.length; ctx.fillStyle = i%2===0 ? '#16a34a' : '#4ade80'; roundRect(x+2,y+2,cell-4,cell-4,6); ctx.fill(); } });
+}
+function roundRect(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function startGame(){ reset(); running=true; overlay.style.display='none'; playAhmedVoice('ebda'); schedule(); draw(); }
+function togglePause(){ if(!running) return; paused=!paused; pauseBtn.textContent = paused ? 'استئناف' : 'إيقاف مؤقت'; if(!paused) schedule(); else if(timer) clearTimeout(timer); }
+function gameOver(){
+  running=false; if(timer) clearTimeout(timer);
+  const isBest = score>best; if(isBest){ best=score; localStorage.setItem('snakeProBest', String(best)); bestEl.textContent=best; playAhmedVoice('kesebt'); } else { playAhmedVoice('khesert'); }
+  overlay.style.display='flex';
+  overlay.innerHTML=`<h2>انتهت اللعبة</h2><p>حصلت على <b style="color:#4ade80;font-size:22px">${score} نقطة</b><br>وصلت للمستوى ${level} • طول الثعبان ${snake.length}<br>${isBest ? 'نتيجة جديدة! أحسنت يا بطل' : 'أعلى نتيجة: '+best+'<br>أحمد TV يقول لك: حاول مرة أخرى'}</p><button class="btn-start" id="againBtn">العب مرة أخرى</button>`;
+  var ab=document.getElementById('againBtn'); blockGoogle(ab); ab.addEventListener('click', onStart); ab.addEventListener('pointerdown', onStart, {passive:false}); ab.addEventListener('touchstart', onStart, {passive:false});
+}
+var _starting=false;
+function onStart(e){ if(e){ try{ e.preventDefault(); }catch(err){} } if(_starting) return; _starting=true; startGame(); setTimeout(function(){ _starting=false; }, 800); }
+startBtn.addEventListener('click', onStart); startBtn.addEventListener('pointerdown', onStart, {passive:false}); startBtn.addEventListener('touchstart', onStart, {passive:false});
+howBtn.addEventListener('click', function(){ alert('اسحب بإصبعك أو استخدم الأسهم في الأسفل\nكل تفاحة = 10 نقاط\nالنجمة الذهبية = 30 نقطة\nلا تخبط في الحيطة أو في نفسك أو في البنفسجي'); });
+pauseBtn.addEventListener('click', togglePause); pauseBtn.addEventListener('pointerdown', togglePause, {passive:false}); pauseBtn.addEventListener('touchstart', togglePause, {passive:false});
+function setSpeed(mode, btn){ speedMode=mode; document.querySelectorAll('#speedSlow,#speedMed,#speedFast').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
+[['speedSlow','slow'],['speedMed','med'],['speedFast','fast']].forEach(function(pair){ var b=document.getElementById(pair[0]); function h(e){ if(e) e.preventDefault(); setSpeed(pair[1], b); } b.addEventListener('click', h); b.addEventListener('pointerdown', h, {passive:false}); b.addEventListener('touchstart', h, {passive:false}); });
+document.querySelectorAll('.dbtn[data-dir]').forEach(function(b){ function h(e){ if(e) e.preventDefault(); const d=b.dataset.dir; if(d==='up') setDir(0,-1); if(d==='down') setDir(0,1); if(d==='left') setDir(-1,0); if(d==='right') setDir(1,0); } b.addEventListener('click', h); b.addEventListener('pointerdown', h, {passive:false}); b.addEventListener('touchstart', h, {passive:false}); });
+let tx=0, ty=0;
+canvas.addEventListener('touchstart', function(e){ const t=e.touches[0]; tx=t.clientX; ty=t.clientY; }, {passive:true});
+canvas.addEventListener('touchend', function(e){ const t=e.changedTouches[0]; const dx=t.clientX-tx, dy=t.clientY-ty; if(Math.abs(dx)<20 && Math.abs(dy)<20) return; if(Math.abs(dx)>Math.abs(dy)) setDir(dx>0?1:-1, 0); else setDir(0, dy>0?1:-1); }, {passive:true});
+document.addEventListener('keydown', function(e){ if(e.key==='ArrowUp') { e.preventDefault(); setDir(0,-1); } if(e.key==='ArrowDown') { e.preventDefault(); setDir(0,1); } if(e.key==='ArrowLeft') { e.preventDefault(); setDir(-1,0); } if(e.key==='ArrowRight') { e.preventDefault(); setDir(1,0); } if(e.key===' '){ e.preventDefault(); if(!running) startGame(); else togglePause(); } });
+window.addEventListener('resize', resize);
+reset(); resize();
+</script>
+</body>
+</html>
