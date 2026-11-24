@@ -66,6 +66,12 @@ var soundOn=true,_audioCache={},_ahlaPlayed=false;
 function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
 _preload();
 function playAhmedVoice(n){ try{ if(!soundOn) return; var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+
+var _actx=null;
+function unlockAudio(){ try{ if(!_actx){ _actx=new (window.AudioContext||window.webkitAudioContext)(); } if(_actx && _actx.state==='suspended') _actx.resume(); }catch(e){} }
+document.addEventListener('pointerdown', unlockAudio, {passive:true});
+document.addEventListener('touchstart', unlockAudio, {passive:true});
+document.addEventListener('click', unlockAudio, {passive:true});
 document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
 </script>
 <script>
@@ -74,51 +80,78 @@ var score=0, best=parseInt(localStorage.getItem('animalsBest')||'0'); bestEl.tex
 var level=1, qInLevel=0, correctInLevel=0, currentAnimal=null, isLocked=false;
 var LEVELS=[
  {name:"سهل", animals:[
-  {name:'كلب',emoji:'🐶',hint:'صديق الإنسان - يقول: هو هو',sound:'https://actions.google.com/sounds/v1/animals/dog_barking.ogg'},
-  {name:'قطة',emoji:'🐱',hint:'تحب الحليب - تقول: ميو ميو',sound:'https://actions.google.com/sounds/v1/animals/cat_meowing.ogg'},
-  {name:'أسد',emoji:'🦁',hint:'ملك الغابة - له شعر كبير حول وجهه',sound:'https://actions.google.com/sounds/v1/animals/lion_roaring.ogg'},
-  {name:'بقرة',emoji:'🐮',hint:'تعطينا الحليب',sound:'https://actions.google.com/sounds/v1/animals/cow_mooing.ogg'},
-  {name:'خروف',emoji:'🐑',hint:'له صوف كثير - نأخذ منه الصوف',sound:'https://actions.google.com/sounds/v1/animals/sheep_bleating.ogg'},
-  {name:'ديك',emoji:'🐓',hint:'يصيح في الصباح - كوكو كوكو',sound:'https://actions.google.com/sounds/v1/animals/rooster_crowing.ogg'}
+  {name:'كلب',type:'dog',emoji:'🐶',hint:'صديق الإنسان - يقول: هو هو',sounds:['https://www.soundjay.com/animal/dog-barking-1.mp3','https://www.soundjay.com/animal/dog-barking-2.mp3','https://www.soundjay.com/animal/dog-barking-01.mp3','https://actions.google.com/sounds/v1/animals/dog_barking.ogg']},
+  {name:'قطة',type:'cat',emoji:'🐱',hint:'تحب الحليب - تقول: ميو ميو',sounds:['https://www.soundjay.com/animal/cat-meow-8.mp3','https://www.soundjay.com/animal/cat-meow-1.mp3','https://www.soundjay.com/animal/cat-meow-2.mp3','https://actions.google.com/sounds/v1/animals/cat_meowing.ogg']},
+  {name:'أسد',type:'lion',emoji:'🦁',hint:'ملك الغابة - له شعر كبير حول وجهه',sounds:['https://www.soundjay.com/animal/lion-roar-1.mp3','https://www.soundjay.com/animal/lion-roar-2.mp3','https://www.soundjay.com/animal/lion-roaring-1.mp3','https://actions.google.com/sounds/v1/animals/lion_roaring.ogg']},
+  {name:'بقرة',type:'cow',emoji:'🐮',hint:'تعطينا الحليب',sounds:['https://www.soundjay.com/animal/cow-moo-1.mp3','https://www.soundjay.com/animal/cow-mooing-1.mp3','https://www.soundjay.com/animal/cow-moo-2.mp3','https://actions.google.com/sounds/v1/animals/cow_mooing.ogg']},
+  {name:'خروف',type:'sheep',emoji:'🐑',hint:'له صوف كثير - نأخذ منه الصوف',sounds:['https://www.soundjay.com/animal/sheep-bleat-1.mp3','https://www.soundjay.com/animal/sheep-bleating-1.mp3','https://www.soundjay.com/animal/sheep-baa-1.mp3','https://actions.google.com/sounds/v1/animals/sheep_bleating.ogg']},
+  {name:'ديك',type:'rooster',emoji:'🐓',hint:'يصيح في الصباح - كوكو كوكو',sounds:['https://www.soundjay.com/animal/rooster-crow-1.mp3','https://www.soundjay.com/animal/rooster-crowing-1.mp3','https://www.soundjay.com/animal/rooster-crow-2.mp3','https://actions.google.com/sounds/v1/animals/rooster_crowing.ogg']}
  ]},
  {name:"متوسط", animals:[
-  {name:'حصان',emoji:'🐴',hint:'سريع - نركبه في السباق',sound:'https://actions.google.com/sounds/v1/animals/horse_neighing.ogg'},
-  {name:'قرد',emoji:'🐵',hint:'يحب الموز - يقفز بين الأشجار',sound:'https://actions.google.com/sounds/v1/animals/monkey_screeching.ogg'},
-  {name:'فيل',emoji:'🐘',hint:'أكبر حيوان على الأرض - له خرطوم طويل',sound:'https://actions.google.com/sounds/v1/animals/elephant_trumpeting.ogg'},
-  {name:'بطة',emoji:'🦆',hint:'تعوم في الماء - تقول: واك واك',sound:'https://actions.google.com/sounds/v1/animals/duck_quacking.ogg'},
-  {name:'أرنب',emoji:'🐰',hint:'له أذنان طويلتان - يحب الجزر',sound:'https://actions.google.com/sounds/v1/animals/rabbit_thumping.ogg'},
-  {name:'دب',emoji:'🐻',hint:'كبير وقوي - يحب العسل',sound:'https://actions.google.com/sounds/v1/animals/bear_growling.ogg'}
+  {name:'حصان',type:'horse',emoji:'🐴',hint:'سريع - نركبه في السباق',sounds:['https://www.soundjay.com/animal/horse-neigh-1.mp3','https://www.soundjay.com/animal/horse-neighing-1.mp3','https://www.soundjay.com/animal/horse-gallop-1.mp3','https://actions.google.com/sounds/v1/animals/horse_neighing.ogg']},
+  {name:'قرد',type:'monkey',emoji:'🐵',hint:'يحب الموز - يقفز بين الأشجار',sounds:['https://www.soundjay.com/animal/monkey-1.mp3','https://www.soundjay.com/animal/monkey-screech-1.mp3','https://www.soundjay.com/animal/monkey-chatter-1.mp3','https://actions.google.com/sounds/v1/animals/monkey_screeching.ogg']},
+  {name:'فيل',type:'elephant',emoji:'🐘',hint:'أكبر حيوان على الأرض - له خرطوم طويل',sounds:['https://www.soundjay.com/animal/elephant-trumpet-1.mp3','https://www.soundjay.com/animal/elephant-1.mp3','https://www.soundjay.com/animal/elephant-trumpeting-1.mp3','https://actions.google.com/sounds/v1/animals/elephant_trumpeting.ogg']},
+  {name:'بطة',type:'duck',emoji:'🦆',hint:'تعوم في الماء - تقول: واك واك',sounds:['https://www.soundjay.com/animal/duck-quack-1.mp3','https://www.soundjay.com/animal/duck-quacking-1.mp3','https://www.soundjay.com/animal/duck-1.mp3','https://actions.google.com/sounds/v1/animals/duck_quacking.ogg']},
+  {name:'أرنب',type:'rabbit',emoji:'🐰',hint:'له أذنان طويلتان - يحب الجزر',sounds:['https://www.soundjay.com/animal/rabbit-1.mp3','https://www.soundjay.com/animal/bunny-1.mp3','https://www.soundjay.com/animal/rabbit-squeak-1.mp3','https://actions.google.com/sounds/v1/animals/rabbit_thumping.ogg']},
+  {name:'دب',type:'bear',emoji:'🐻',hint:'كبير وقوي - يحب العسل',sounds:['https://www.soundjay.com/animal/bear-growl-1.mp3','https://www.soundjay.com/animal/bear-growling-1.mp3','https://www.soundjay.com/animal/bear-roar-1.mp3','https://actions.google.com/sounds/v1/animals/bear_growling.ogg']}
  ]},
  {name:"صعب", animals:[
-  {name:'نمر',emoji:'🐯',hint:'له خطوط سوداء - سريع وقوي',sound:'https://actions.google.com/sounds/v1/animals/tiger_growling.ogg'},
-  {name:'زرافة',emoji:'🦒',hint:'أطول حيوان - رقبتها طويلة جداً',sound:'https://actions.google.com/sounds/v1/animals/giraffe_humming.ogg'},
-  {name:'تمساح',emoji:'🐊',hint:'يعيش في النهر - له أسنان كثيرة',sound:'https://actions.google.com/sounds/v1/animals/alligator_hissing.ogg'},
-  {name:'بومة',emoji:'🦉',hint:'تطير في الليل - لها عينان كبيرتان',sound:'https://actions.google.com/sounds/v1/animals/owl_hooting.ogg'},
-  {name:'ثعلب',emoji:'🦊',hint:'ذكي ومكار - له ذيل طويل',sound:'https://actions.google.com/sounds/v1/animals/fox_barking.ogg'},
-  {name:'كنغر',emoji:'🦘',hint:'يعيش في أستراليا - يقفز بعيداً وله جيب',sound:'https://actions.google.com/sounds/v1/animals/kangaroo_thumping.ogg'}
+  {name:'نمر',type:'tiger',emoji:'🐯',hint:'له خطوط سوداء - سريع وقوي',sounds:['https://www.soundjay.com/animal/tiger-growl-1.mp3','https://www.soundjay.com/animal/tiger-roar-1.mp3','https://www.soundjay.com/animal/tiger-growling-1.mp3','https://actions.google.com/sounds/v1/animals/tiger_growling.ogg']},
+  {name:'زرافة',type:'giraffe',emoji:'🦒',hint:'أطول حيوان - رقبتها طويلة جداً',sounds:['https://www.soundjay.com/animal/giraffe-1.mp3','https://www.soundjay.com/animal/giraffe-hum-1.mp3','https://www.soundjay.com/animal/giraffe-sound-1.mp3','https://actions.google.com/sounds/v1/animals/giraffe_humming.ogg']},
+  {name:'تمساح',type:'crocodile',emoji:'🐊',hint:'يعيش في النهر - له أسنان كثيرة',sounds:['https://www.soundjay.com/animal/crocodile-1.mp3','https://www.soundjay.com/animal/alligator-1.mp3','https://www.soundjay.com/animal/crocodile-growl-1.mp3','https://actions.google.com/sounds/v1/animals/alligator_hissing.ogg']},
+  {name:'بومة',type:'owl',emoji:'🦉',hint:'تطير في الليل - لها عينان كبيرتان',sounds:['https://www.soundjay.com/animal/owl-hoot-1.mp3','https://www.soundjay.com/animal/owl-hooting-1.mp3','https://www.soundjay.com/animal/owl-1.mp3','https://actions.google.com/sounds/v1/animals/owl_hooting.ogg']},
+  {name:'ثعلب',type:'fox',emoji:'🦊',hint:'ذكي ومكار - له ذيل طويل',sounds:['https://www.soundjay.com/animal/fox-1.mp3','https://www.soundjay.com/animal/fox-bark-1.mp3','https://www.soundjay.com/animal/fox-barking-1.mp3','https://actions.google.com/sounds/v1/animals/fox_barking.ogg']},
+  {name:'كنغر',type:'kangaroo',emoji:'🦘',hint:'يعيش في أستراليا - يقفز بعيداً وله جيب',sounds:['https://www.soundjay.com/animal/kangaroo-1.mp3','https://www.soundjay.com/animal/kangaroo-thump-1.mp3','https://www.soundjay.com/animal/kangaroo-hop-1.mp3','https://actions.google.com/sounds/v1/animals/kangaroo_thumping.ogg']}
  ]}
 ];
 function setLevels(){ [1,2,3].forEach(function(n){ var el=document.getElementById('lv'+n); el.className='lv'+(n<level?' done':n===level?' active':''); }); levelTxt.textContent='المستوى '+level+' - '+LEVELS[level-1].name; }
 function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
 function playAnimalSound(animal){
-  // جرب صوت الحيوان الحقيقي - لو فشل جرب البديل - صوتك "حاول" هو آخر حل فقط
-  var urls = [];
-  if(animal && animal.sound) urls.push(animal.sound);
-  // بديل ثانٍ من SoundJay - اللي كان شغال في لعبة القطط
-  if(animal && animal.name==='قطة') urls.push('https://www.soundjay.com/animal/cat-meow-8.mp3');
-  if(animal && animal.name==='كلب') urls.push('https://www.soundjay.com/animal/dog-barking-2.mp3');
-  var idx = 0;
-  function tryNext(){
-    if(idx >= urls.length){ playAhmedVoice('hawel'); return; }
-    try{
-      var a = new Audio(urls[idx]); a.volume = 1;
-      a.onerror = function(){ idx++; tryNext(); };
-      var p = a.play();
-      if(p) p.catch(function(){ idx++; tryNext(); });
-    }catch(e){ idx++; tryNext(); }
-  }
-  tryNext();
+  // زي الكود الأصلي بتاعك بالظبط - Oscillator من غير نت - كل حيوان نغمته
+  var type = (animal && animal.type) ? animal.type : (typeof animal === 'string' ? animal : 'dog');
+  try{
+    if(!window._animalCtx) window._animalCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var audioCtx = window._animalCtx;
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    var now = audioCtx.currentTime;
+    function tone(wave, f1, f2, f3, dur, vol){
+      osc.type = wave;
+      osc.frequency.setValueAtTime(f1, now);
+      if(f2) osc.frequency.linearRampToValueAtTime(f2, now + dur/2);
+      if(f3) osc.frequency.linearRampToValueAtTime(f3, now + dur);
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(vol || 0.15, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + dur);
+      osc.start(now); osc.stop(now + dur);
+    }
+    // الستة الأصليين - زي كودك بالظبط
+    if(type==='cat') tone('sine',600,900,500,0.4,0.15);
+    else if(type==='dog') tone('sawtooth',200,100,0,0.2,0.2);
+    else if(type==='lion') tone('sawtooth',100,80,0,0.6,0.3);
+    else if(type==='cow') tone('triangle',150,130,0,0.4,0.2);
+    else if(type==='sheep') tone('sine',400,500,400,0.3,0.15);
+    else if(type==='rooster') tone('square',500,700,600,0.4,0.1);
+    // الاثناشر الجداد - بنفس طريقة كودك
+    else if(type==='horse') tone('sawtooth',300,500,250,0.5,0.15);
+    else if(type==='monkey') tone('square',700,900,700,0.3,0.1);
+    else if(type==='elephant') tone('sawtooth',80,60,0,0.8,0.3);
+    else if(type==='duck') tone('square',400,300,400,0.3,0.12);
+    else if(type==='rabbit') tone('sine',800,1000,800,0.25,0.1);
+    else if(type==='bear') tone('sawtooth',90,70,0,0.7,0.3);
+    else if(type==='tiger') tone('sawtooth',120,90,0,0.6,0.3);
+    else if(type==='giraffe') tone('sine',300,350,300,0.4,0.12);
+    else if(type==='crocodile') tone('sawtooth',70,50,0,0.8,0.3);
+    else if(type==='owl') tone('sine',350,300,350,0.5,0.15);
+    else if(type==='fox') tone('square',600,800,600,0.35,0.1);
+    else if(type==='kangaroo') tone('triangle',250,350,250,0.4,0.15);
+    else tone('sine',500,600,500,0.4,0.15);
+  }catch(e){}
 }
+
+
 function generateQuestion(){
  isLocked=false; optionsBox.innerHTML='';
  var pool=LEVELS[level-1].animals;
@@ -129,7 +162,7 @@ function generateQuestion(){
  while(choices.length<4){ var r=pool[Math.floor(Math.random()*pool.length)]; if(!choices.some(function(a){return a.name===r.name;})) choices.push(r); }
  shuffle(choices);
  choices.forEach(function(animal){ var btn=document.createElement('div'); btn.className='opt-btn'; btn.innerHTML='<div class="emoji">'+animal.emoji+'</div><div class="text">'+animal.name+'</div>'; blockGoogle(btn); btn.addEventListener('pointerdown',function(e){e.preventDefault();checkAnswer(animal,btn);},{passive:false}); optionsBox.appendChild(btn); });
- playAnimalSound(currentAnimal);
+ /* الصوت يشتغل بضغطة الزرار فقط - الأندرويد بيمنع التشغيل التلقائي */
 }
 function checkAnswer(sel,btn){
  if(isLocked) return; isLocked=true;
@@ -152,7 +185,8 @@ function finishGame(){
 }
 function startGame(){ playAhmedVoice('ebda'); score=0; level=1; qInLevel=0; correctInLevel=0; scoreEl.textContent=0; setLevels(); overlay.style.display='none'; msgEl.textContent='هيا نبدأ!'; generateQuestion(); }
 blockGoogle(playSoundBtn); blockGoogle(startBtn);
-playSoundBtn.addEventListener('pointerdown',function(e){e.preventDefault();if(currentAnimal) playAnimalSound(currentAnimal);},{passive:false});
+playSoundBtn.addEventListener('click',function(e){ unlockAudio(); if(currentAnimal) playAnimalSound(currentAnimal); });
+playSoundBtn.addEventListener('touchend',function(e){ e.preventDefault(); unlockAudio(); if(currentAnimal) playAnimalSound(currentAnimal); });
 startBtn.addEventListener('pointerdown',function(e){e.preventDefault();startGame();},{passive:false});
 </script>
 </body></html>
