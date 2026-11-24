@@ -3,74 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>الجري والقفز | أحمد عبدالعزيز</title>
+<title>الجري والقفز | أحمد عبد العزيز</title>
 <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  /* سكرول شغال - مفيش حاجة ثابتة بتغطي */
-  html, body { overflow-y: auto; overflow-x: hidden; }
-  body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 10px 8px 30px 8px; }
-  .header { width: 100%; max-width: 500px; text-align: center; }
-  .top-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 2px; }
-  .logo-wrap { width: 88px; height: 88px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 4px solid #facc15; background: #000; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-touch-callout:none!important; -webkit-user-select:none!important; user-select:none!important; -moz-user-select:none!important; -ms-user-select:none!important; touch-action:manipulation; }
+  html, body { height: 100%!important; height: 100svh!important; max-height:100svh!important; overflow: hidden!important; }
+  body { font-family: Tahoma, Arial, sans-serif; background: #0a001a; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 8px; overflow:hidden!important; }
+  .header { width: 100%; max-width: 500px; text-align: center; flex-shrink:0; }
+  .top-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2px; }
+  .logo-wrap { width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 3px solid #facc15; background: #000; }
   .logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  h1 { font-size: 26px; line-height: 1.2; color: #ff2d95; }
-  h1 small { display: block; font-size: 13px; color: #00e5ff; margin-top: 2px; }
-  .names { text-align: center; margin-bottom: 8px; line-height: 1.3; }
-  .names .ar { display: block; font-size: 22px; color: #facc15; font-weight: 900; }
-  .names .en { display: block; font-size: 16px; color: #fff; font-weight: 900; }
-  .stats { display: flex; gap: 10px; justify-content: center; margin: 5px 0 8px; }
-  .stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 12px; padding: 5px 15px; min-width: 80px; text-align: center; }
-  .stat b { display: block; font-size: 18px; color: #00e5ff; }
+  h1 { font-size: 22px; line-height: 1.2; color: #ff2d95; }
+  h1 small { display: block; font-size: 12px; color: #00e5ff; margin-top: 2px; }
+  .names { text-align: center; margin-bottom: 4px; line-height: 1.3; }
+  .names .ar { display: block; font-size: 18px; color: #facc15; font-weight: 900; }
+  .names .en { display: block; font-size: 14px; color: #fff; font-weight: 900; }
+  .stats { display: flex; gap: 8px; justify-content: center; margin: 3px 0 5px; }
+  .stat { background: #1a0033; border: 2px solid #ff2d95; border-radius: 12px; padding: 3px 12px; min-width: 76px; text-align: center; }
+  .stat b { display: block; font-size: 17px; color: #00e5ff; }
   .stat span { font-size: 10px; color: #c4b5fd; }
-  #hearts { font-size: 24px; letter-spacing: 5px; text-align: center; margin-bottom: 5px; }
-  /* اللعبة لوحدها - طول ثابت - مفيش حاجة فوقها */
-  #game-container { width: 100%; max-width: 500px; height: 380px; position: relative; background: #0f0529; border: 3px solid #ff2d95; border-radius: 20px; overflow: hidden; touch-action: none; }
+  #hearts { font-size: 20px; letter-spacing: 4px; text-align: center; margin-bottom: 3px; }
+  #game-container { width: 100%; max-width: 500px; flex:1; min-height:0; position: relative; background: #0f0529; border: 3px solid #ff2d95; border-radius: 20px; overflow: hidden; touch-action: none; }
   .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; color: rgba(255,255,255,0.08); font-size: 38px; font-weight: 900; pointer-events: none; z-index: 0; white-space: nowrap; }
   canvas { width: 100%; height: 100%; display: block; z-index: 1; touch-action: none; }
-  /* الزرار نزل تحت زي ما كان - مش fixed - مش بيغطي على حاجة */
-  #jumpBtn { width: 100%; max-width: 500px; margin-top: 12px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 16px; padding: 18px; font-size: 26px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255,45,149,0.7); text-shadow: 0 2px 4px #000; }
+  #jumpBtn { width: 100%; max-width: 500px; margin-top: 8px; background: linear-gradient(90deg,#ff2d95,#7c3aed,#00e5ff); color: #fff; border: 2px solid #fff; border-radius: 16px; padding: 12px; font-size: 22px; font-weight: 900; cursor: pointer; box-shadow: 0 0 20px rgba(255,45,149,0.7); text-shadow: 0 2px 4px #000; flex-shrink:0; }
   #jumpBtn:active { transform: scale(0.97); }
   #overlay { position: absolute; inset: 0; background: rgba(10,0,26,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 15px; gap: 10px; z-index: 10; }
-  #overlay h2 { font-size: 26px; color: #ff2d95; }
+  #overlay h2 { font-size: 24px; color: #ff2d95; }
   #overlay p { line-height: 1.6; font-size: 14px; color: #e2e8f0; }
-  .btn-start { background: linear-gradient(90deg,#ff2d95,#00e5ff); color: #fff; border: 2px solid #fff; padding: 15px 30px; border-radius: 14px; font-size: 18px; font-weight: 900; cursor: pointer; width: 80%; max-width: 220px; }
+  .btn-start { background: linear-gradient(90deg,#ff2d95,#00e5ff); color: #fff; border: 2px solid #fff; padding: 13px 26px; border-radius: 14px; font-size: 17px; font-weight: 900; cursor: pointer; width: 80%; max-width: 220px; }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false">
   <div class="header">
-    <div class="top-row">
-      <div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبدالعزيز"></div>
-      <h1>الجري والقفز<small>لعبة الجري النيون</small></h1>
-    </div>
-    <div class="names"><span class="ar">أحمد عبدالعزيز</span><span class="en">Ahmed TV</span></div>
+    <div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبد العزيز"></div><h1>الجري والقفز<small>لعبة الجري النيون</small></h1></div>
+    <div class="names"><span class="ar">أحمد عبد العزيز</span><span class="en">Ahmed TV</span></div>
     <div id="hearts">💜💜💜</div>
     <div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
   </div>
-  <div id="game-container">
-    <div class="watermark">أحمد عبدالعزيز</div>
-    <canvas id="gameCanvas"></canvas>
-    <div id="overlay"><h2>🌃 الجري النيـون</h2><p>اجري في مدينة النيون!<br>اقفز فوق الحواجز النيون 💎<br>عندك 3 محاولات .. يلا يا بطل!</p><button class="btn-start" id="startBtn">▶ ابدأ اللعب</button></div>
-  </div>
-  <button id="jumpBtn">🚀 اقفز عالي</button>
+  <div id="game-container"><div class="watermark">أحمد عبد العزيز</div><canvas id="gameCanvas"></canvas><div id="overlay"><h2>الجري النيون</h2><p>اجري في مدينة النيون!<br>اقفز فوق الحواجز النيون<br>عندك 3 محاولات .. يلا يا بطل!</p><button class="btn-start" id="startBtn">ابدأ اللعب</button></div></div>
+  <button id="jumpBtn">اقفز عالي</button>
+<script>
+document.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true);
+document.addEventListener('selectstart',function(e){e.preventDefault();return false;},true);
+document.addEventListener('dragstart',function(e){e.preventDefault();return false;},true);
+function blockGoogle(el){ if(!el) return; el.oncontextmenu=function(){return false;}; el.onselectstart=function(){return false;}; el.ondragstart=function(){return false;}; el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();return false;},true); }
+var _audioCache={},_ahlaPlayed=false;
+function _preload(){ ['sah','kesebt','ebda','khesert','ghalat','hawel','ahla'].forEach(function(f){ try{ var a=new Audio(); a.preload='auto'; a.src='../../sounds/'+f+'.mp3'; a.load(); _audioCache[f]=a; }catch(e){} }); }
+_preload();
+function playAhmedVoice(n){ try{ var base=_audioCache[n]; var a=base?base.cloneNode():new Audio('../../sounds/'+n+'.mp3'); if(base) a.src=base.src; a.currentTime=0; a.volume=1; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; playAhmedVoice('ahla'); } });
+</script>
 <script>
 const canvas=document.getElementById('gameCanvas');const ctx=canvas.getContext('2d');const scoreEl=document.getElementById('score');const bestEl=document.getElementById('best');const heartsEl=document.getElementById('hearts');const overlay=document.getElementById('overlay');const startBtn=document.getElementById('startBtn');const jumpBtn=document.getElementById('jumpBtn');
-let W=0,H=0,running=false,score=0;let best=parseInt(localStorage.getItem('runnerBest')||'0');bestEl.textContent=best;let audioCtx=null,gameSpeed=3,lives=3,isHit=false,stars=[],buildings=[];
+blockGoogle(startBtn); blockGoogle(jumpBtn); blockGoogle(canvas);
+let W=0,H=0,running=false,score=0;let best=parseInt(localStorage.getItem('runnerBest')||'0');bestEl.textContent=best;let gameSpeed=3,lives=3,isHit=false,stars=[],buildings=[];
 let player={x:50,y:0,w:34,h:46,vy:0,gravity:0.38,jumpForce:-16,isJumping:false};let obstacles=[],obstacleTimer=0;
-function initAudio(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();}
-function playSound(type){if(!audioCtx)return;const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);if(type==='jump'){osc.type='sine';osc.frequency.setValueAtTime(350,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(950,audioCtx.currentTime+0.15);gain.gain.setValueAtTime(0.12,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.15);osc.start();osc.stop(audioCtx.currentTime+0.15);}else if(type==='score'){osc.type='square';osc.frequency.setValueAtTime(700,audioCtx.currentTime);gain.gain.setValueAtTime(0.1,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.1);osc.start();osc.stop(audioCtx.currentTime+0.1);}else if(type==='hit'){osc.type='sawtooth';osc.frequency.setValueAtTime(200,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(50,audioCtx.currentTime+0.4);gain.gain.setValueAtTime(0.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.4);osc.start();osc.stop(audioCtx.currentTime+0.4);}}
 function resize(){const rect=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=rect.width;H=rect.height;stars=[];for(let i=0;i<60;i++)stars.push({x:Math.random()*W,y:Math.random()*H*0.5,r:Math.random()*1.5+0.5});buildings=[];for(let i=0;i<10;i++)buildings.push({x:i*55,w:40+Math.random()*25,h:80+Math.random()*120});player.y=H-60;if(!running)draw();}
-function resetGame(){score=0;scoreEl.textContent=score;gameSpeed=3;lives=3;updateHearts();player.y=H-60;player.vy=0;player.isJumping=false;obstacles=[];obstacleTimer=0;isHit=false;running=true;overlay.style.display='none';jumpBtn.disabled=false;loop();}
+function resetGame(){score=0;scoreEl.textContent=score;gameSpeed=3;lives=3;updateHearts();player.y=H-60;player.vy=0;player.isJumping=false;obstacles=[];obstacleTimer=0;isHit=false;running=true;overlay.style.display='none';jumpBtn.disabled=false;playAhmedVoice('ebda');loop();}
 function updateHearts(){let s="";for(let i=0;i<3;i++)s+=(i<lives)?"💜":"🖤";heartsEl.textContent=s;}
-function jump(){if(!running||isHit)return;if(!player.isJumping){player.vy=player.jumpForce;player.isJumping=true;playSound('jump');}}
+function jump(){if(!running||isHit)return;if(!player.isJumping){player.vy=player.jumpForce;player.isJumping=true;}}
 function spawnObstacle(){const w=22+Math.random()*18;const h=32+Math.random()*20;obstacles.push({x:W,y:H-h-20,w:w,h:h,passed:false,kind:Math.floor(Math.random()*3)});}
-function update(){if(!running)return;player.vy+=player.gravity;player.y+=player.vy;if(player.y>H-60){player.y=H-60;player.vy=0;player.isJumping=false;}if(player.y<0){player.y=0;player.vy=0;}if(!isHit){obstacleTimer++;if(obstacleTimer>180){spawnObstacle();obstacleTimer=0;}}for(let i=obstacles.length-1;i>=0;i--){let obs=obstacles[i];if(!isHit)obs.x-=gameSpeed;if(player.x<obs.x+obs.w&&player.x+player.w>obs.x&&player.y<obs.y+obs.h&&player.y+player.h>obs.y&&!obs.hit){obs.hit=true;loseLife();break;}if(obs.x+obs.w<player.x&&!obs.passed){obs.passed=true;score++;scoreEl.textContent=score;playSound('score');}if(obs.x+obs.w<0)obstacles.splice(i,1);}}
-function loseLife(){if(isHit)return;isHit=true;lives--;updateHearts();playSound('hit');canvas.style.opacity='0.5';setTimeout(()=>canvas.style.opacity='1',200);if(lives<=0){endGame();}else{setTimeout(()=>{isHit=false;obstacles=obstacles.filter(o=>o.x>player.x+100);},1000);}}
+function update(){if(!running)return;player.vy+=player.gravity;player.y+=player.vy;if(player.y>H-60){player.y=H-60;player.vy=0;player.isJumping=false;}if(player.y<0){player.y=0;player.vy=0;}if(!isHit){obstacleTimer++;if(obstacleTimer>180){spawnObstacle();obstacleTimer=0;}}for(let i=obstacles.length-1;i>=0;i--){let obs=obstacles[i];if(!isHit)obs.x-=gameSpeed;if(player.x<obs.x+obs.w&&player.x+player.w>obs.x&&player.y<obs.y+obs.h&&player.y+player.h>obs.y&&!obs.hit){obs.hit=true;loseLife();break;}if(obs.x+obs.w<player.x&&!obs.passed){obs.passed=true;score++;scoreEl.textContent=score;playAhmedVoice('sah');}if(obs.x+obs.w<0)obstacles.splice(i,1);}}
+function loseLife(){if(isHit)return;isHit=true;lives--;updateHearts();playAhmedVoice('ghalat');canvas.style.opacity='0.5';setTimeout(()=>canvas.style.opacity='1',200);if(lives<=0){endGame();}else{setTimeout(()=>{isHit=false;obstacles=obstacles.filter(o=>o.x>player.x+100);},1000);}}
 function draw(){const grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#0a001a');grad.addColorStop(0.5,'#2a0a5e');grad.addColorStop(1,'#4c1d95');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';stars.forEach(s=>{ctx.globalAlpha=0.8;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;ctx.fillStyle='#fef9c3';ctx.beginPath();ctx.arc(W-70,60,28,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(254,249,195,0.3)';ctx.beginPath();ctx.arc(W-70,60,40,0,Math.PI*2);ctx.fill();buildings.forEach((b,i)=>{ctx.fillStyle=i%2==0?'#1e1b4b':'#312e81';ctx.fillRect(b.x,H-20-b.h,b.w,b.h);ctx.fillStyle=i%2==0?'#ff2d95':'#00e5ff';for(let wy=H-20-b.h+8;wy<H-30;wy+=18){for(let wx=b.x+6;wx<b.x+b.w-8;wx+=14){if(Math.random()>0.6)ctx.fillRect(wx,wy,5,7);}}});ctx.fillStyle='#0f0529';ctx.fillRect(0,H-20,W,20);ctx.fillStyle='#ff2d95';ctx.fillRect(0,H-20,W,3);ctx.fillStyle='#00e5ff';ctx.fillRect(0,H-4,W,4);const px=player.x,py=player.y;ctx.fillStyle=isHit?'rgba(255,0,0,0.6)':'rgba(0,229,255,0.4)';ctx.beginPath();ctx.arc(px+17,py+23,30,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1e1b4b';ctx.fillRect(px-4,py+36,42,7);ctx.fillStyle='#00e5ff';ctx.fillRect(px-4,py+36,42,2);ctx.fillStyle='#ff2d95';ctx.fillRect(px+9,py+10,18,24);ctx.fillStyle='#fcd7d7';ctx.beginPath();ctx.arc(px+18,py+5,10,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1e1b4b';ctx.beginPath();ctx.arc(px+15,py+3,10,0,Math.PI*2);ctx.fill();ctx.fillStyle='#7c3aed';ctx.fillRect(px+8,py-4,20,6);ctx.fillStyle='#0f0529';ctx.fillRect(px+11,py+32,7,8);ctx.fillRect(px+22,py+32,7,8);obstacles.forEach(obs=>{if(!obs.hit){if(obs.kind===0){ctx.fillStyle='#ff2d95';ctx.fillRect(obs.x,obs.y,obs.w,obs.h);ctx.fillStyle='#fff';ctx.fillRect(obs.x+3,obs.y+5,obs.w-6,3);ctx.fillRect(obs.x+3,obs.y+15,obs.w-6,3);}else if(obs.kind===1){ctx.fillStyle='#00e5ff';ctx.beginPath();ctx.arc(obs.x+obs.w/2,obs.y+obs.h/2,obs.w/2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#0f0529';ctx.beginPath();ctx.arc(obs.x+obs.w/2,obs.y+obs.h/2,obs.w/4,0,Math.PI*2);ctx.fill();}else{ctx.fillStyle='#a855f7';ctx.fillRect(obs.x,obs.y,obs.w,obs.h);ctx.fillStyle='#facc15';ctx.fillRect(obs.x+4,obs.y+4,obs.w-8,obs.h-8);}}});}
 function loop(){if(!running)return;update();draw();requestAnimationFrame(loop);}
-function endGame(){running=false;if(score>best){best=score;localStorage.setItem('runnerBest',best);bestEl.textContent=best;}overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">💔</div><h2>خلصت المحاولات!</h2><p>جبت <b style="color:#00e5ff;font-size:22px">${score} نقطة</b><br>أعلى نتيجة: ${best}<br>بيقولك: جرب تاني يا بطل!</p><button class="btn-start" id="againBtn">🔄 العب تاني</button>`;document.getElementById('againBtn').onclick=resetGame;}
-jumpBtn.addEventListener('click',jump);jumpBtn.addEventListener('touchstart',(e)=>{e.preventDefault();jump();},{passive:false});canvas.addEventListener('touchstart',(e)=>{e.preventDefault();initAudio();jump();},{passive:false});canvas.addEventListener('pointerdown',(e)=>{initAudio();jump();});document.addEventListener('keydown',(e)=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();initAudio();jump();}});startBtn.addEventListener('click',()=>{initAudio();resetGame();});startBtn.addEventListener('touchstart',(e)=>{e.preventDefault();initAudio();resetGame();},{passive:false});window.addEventListener('resize',()=>{resize();if(!running)draw();});
-resize();draw();document.body.addEventListener('touchstart',initAudio,{once:true});document.body.addEventListener('click',initAudio,{once:true});
+function endGame(){running=false;if(score>best){best=score;localStorage.setItem('runnerBest',best);bestEl.textContent=best;playAhmedVoice('kesebt');}else{playAhmedVoice('khesert');}overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">💔</div><h2>خلصت المحاولات!</h2><p>حصلت على <b style="color:#00e5ff;font-size:22px">${score} نقطة</b><br>أعلى نتيجة: ${best}<br>أحمد TV يقول لك: جرب مرة أخرى يا بطل!</p><button class="btn-start" id="againBtn">العب مرة أخرى</button>`;var ab=document.getElementById('againBtn');blockGoogle(ab);ab.addEventListener('click', onStart);ab.addEventListener('pointerdown', onStart, {passive:false});ab.addEventListener('touchstart', onStart, {passive:false});}
+var _starting=false;
+function onStart(e){ if(e){ try{ e.preventDefault(); }catch(err){} } if(_starting) return; _starting=true; resetGame(); setTimeout(function(){ _starting=false; }, 800); }
+function onJump(e){ if(e){ try{ e.preventDefault(); }catch(err){} } jump(); }
+jumpBtn.addEventListener('click',onJump);jumpBtn.addEventListener('touchstart',onJump,{passive:false});jumpBtn.addEventListener('pointerdown',onJump,{passive:false});
+canvas.addEventListener('touchstart',onJump,{passive:false});canvas.addEventListener('pointerdown',onJump,{passive:false});canvas.addEventListener('click',onJump);
+document.addEventListener('keydown',(e)=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump();}});
+startBtn.addEventListener('click',onStart);startBtn.addEventListener('touchstart',onStart,{passive:false});startBtn.addEventListener('pointerdown',onStart,{passive:false});
+window.addEventListener('resize',()=>{resize();if(!running)draw();});
+resize();draw();
 </script>
-    
 </body>
 </html>
