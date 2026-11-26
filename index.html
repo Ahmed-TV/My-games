@@ -1111,18 +1111,23 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
 let welcomePlayed = false;
 function playWelcome(){
   if(welcomePlayed) return;
+  welcomePlayed = true;
   var a = new Audio('sounds/ahla.mp3');
-  a.play().then(function(){
-    welcomePlayed = true;
-  }).catch(function(){
-    // لو فشل، جرب تاني في اللمسة اللي بعدها
-    welcomePlayed = false;
-    var b = new Audio('https://ahmed-tv.github.io/My-games/sounds/ahla.mp3');
-    b.play().then(function(){ welcomePlayed = true; }).catch(function(){});
-  });
+  a.play().catch(function(){ welcomePlayed = false; });
 }
+// أول لمسة في أي حتة فاضية
 document.addEventListener('pointerdown', playWelcome);
-document.addEventListener('touchstart', playWelcome);
+// لما تدوس على أي كارت، استنى ثانية واسمع صوتك وبعدين ادخل اللعبة
+document.querySelectorAll('a.game-card').forEach(function(card){
+  card.addEventListener('click', function(e){
+    if(!welcomePlayed){
+      e.preventDefault();
+      playWelcome();
+      var link = card.href;
+      setTimeout(function(){ window.location.href = link; }, 900);
+    }
+  });
+});
 </script>
 </body>
 </html>
