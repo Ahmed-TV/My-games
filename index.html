@@ -1111,15 +1111,18 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
 let welcomePlayed = false;
 function playWelcome(){
   if(welcomePlayed) return;
-  welcomePlayed = true;
   var a = new Audio('sounds/ahla.mp3');
-  a.play().catch(function(){
+  a.play().then(function(){
+    welcomePlayed = true;
+  }).catch(function(){
+    // لو فشل، جرب تاني في اللمسة اللي بعدها
+    welcomePlayed = false;
     var b = new Audio('https://ahmed-tv.github.io/My-games/sounds/ahla.mp3');
-    b.play();
+    b.play().then(function(){ welcomePlayed = true; }).catch(function(){});
   });
 }
-document.addEventListener('click', playWelcome, {once:true});
-document.addEventListener('touchstart', playWelcome, {once:true});
+document.addEventListener('pointerdown', playWelcome);
+document.addEventListener('touchstart', playWelcome);
 </script>
 </body>
 </html>
