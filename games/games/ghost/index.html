@@ -1,1 +1,61 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>صائد الأشباح | أحمد عبدالعزيز Ahmed TV</title>
+<style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+html,body{margin:0;height:100%;overflow:hidden;background:#050505;font-family:system-ui,Arial;color:#fff}
+body{display:flex;flex-direction:column}
+.header{width:100%;min-height:96px;background:linear-gradient(135deg,#000000,#450a0a,#1a0000);padding:6px;display:flex;align-items:center;gap:8px;border-bottom:3px solid #dc2626}
+.logo{width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid #dc2626;flex-shrink:0;background:#fff}
+.htxt{flex:1;min-width:0;line-height:1.25}
+.htxt .names{font-size:22px;font-weight:900;white-space:normal}
+.htxt .names b{color:#fff;font-size:22px}
+.htxt h1{font-size:21px;margin:0;color:#fca5a5}
+.htxt .sub{font-size:12px;color:#fecaca}
+.sound-btn{height:30px;background:#fff;color:#000;border:none;border-radius:20px;padding:0 10px;font-weight:900;font-size:13px;cursor:pointer;margin-top:6px}
+.stats{display:flex;gap:5px;padding:6px;justify-content:center}
+.pill{background:#1a0000;border:2px solid #dc2626;border-radius:20px;padding:5px 10px;font-weight:900;font-size:14px}
+.pill b{color:#facc15}
+.how{width:100%;max-width:520px;margin:0 auto;background:#7f1d1d;color:#fff!important;border:2px solid #ef4444;border-radius:10px;text-align:center;font-weight:900;font-size:14px;padding:6px}
+#grid{flex:1;width:100%;max-width:520px;margin:10px auto 0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:6px;padding:0 8px 8px;min-height:0}
+.cell{background:linear-gradient(180deg,#1a0000,#050505);border:2px solid #450a0a;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:34px;cursor:pointer;position:relative;overflow:hidden}
+.cell.ghost{background:#3b0764;border-color:#dc2626;box-shadow:0 0 14px #dc2626;animation:float .8s infinite alternate}
+@keyframes float{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
+.cell.bomb{background:#450a0a;border-color:#ef4444}
+.cell.hit{background:#14532d;border-color:#22c55e}
+.msg{text-align:center;font-weight:900;font-size:16px;padding:6px;min-height:26px;color:#fde68a}
+.btns{display:flex;gap:8px;justify-content:center;padding:6px}
+.big{background:linear-gradient(180deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:20px;padding:12px 22px;font-weight:900;font-size:18px;cursor:pointer}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:18px;z-index:99}
+#overlay .biglogo{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #dc2626}
+#overlay h2{font-size:26px;margin:0}
+#overlay p{font-size:16px;color:#fecaca;margin:0;line-height:1.6}
+</style></head>
+<body>
+<div class="header">
+<img class="logo" src="../../logo.png" alt="logo">
+<div class="htxt"><div class="names">أحمد عبدالعزيز <b>Ahmed TV</b></div><h1>👻 صائد الأشباح</h1><div class="sub">اصطاد الأشباح قبل ما تختفي - وابعد عن القنابل!</div></div>
+<button class="sound-btn" id="soundBtn">🔊 تشغيل الصوت</button>
+</div>
+<div class="stats"><div class="pill">👻 أشباح اصطادتها: <b id="score">0</b></div><div class="pill">💣 قنابل غلط: <b id="bombs">0</b></div><div class="pill">🏆 المرحلة: <b id="level">1</b></div><div class="pill">⏰ الوقت: <b id="time">30</b></div><div class="pill">💣 محاولات: <b id="lives">3</b></div></div>
+<div class="how">دوس على الشبح قبل ما يختفي! اوعى تدوس على القنبلة 💣</div>
+<div id="grid"></div>
+<div class="msg" id="msg">دوس على الشبح!</div>
+<div class="btns"><button class="big" id="startBtn">▶️ ابدأ اللعب</button><button class="big" id="againBtn" style="background:linear-gradient(180deg,#991b1b,#450a0a);display:none">🔄 العب تاني</button></div>
+<div id="overlay"><img class="biglogo" src="../../logo.png"><h2>أهلاً بيك يا بطل! 👋</h2><p>أنا أحمد عبدالعزيز Ahmed TV<br>أهلاً بيك في <b>صائد الأشباح</b> 👻💀<br>لعبة رعب - الأشباح بتطير وبتختفي في الضلمة!<br>10 مراحل مرعبة - اصطاد 10 أشباح في كل مرحلة</p><button class="big" id="playBtn">👻 ابدأ الصيد</button></div>
+<script>
+var muted=false,started=false,score=0,bombHits=0,level=1,timeLeft=30,lives=3,timer=null,spawnTimer=null,target=10;
+var sounds={sah:'../../sounds/sah.mp3',ghalat:'../../sounds/ghalat.mp3',hawel:'../../sounds/hawel.mp3',kesebt:'../../sounds/kesebt.mp3',khesert:'../../sounds/khesert.mp3',ebda:'../../sounds/ebda.mp3',ahla:'../../sounds/ahla.mp3'};
+function voice(k){if(muted)return;try{var a=new Audio(sounds[k]||sounds.sah);a.play();}catch(e){}}
+var grid=document.getElementById('grid'),msg=document.getElementById('msg');
+for(var i=0;i<25;i++){var c=document.createElement('div');c.className='cell';c.innerHTML='🌙';grid.appendChild(c);}
+function build(){score=0;bombHits=0;document.getElementById('bombs').textContent=0;timeLeft=Math.max(30-(level-1)*2,18);lives=3;document.getElementById('score').textContent=0;document.getElementById('level').textContent=level;document.getElementById('time').textContent=timeLeft;document.getElementById('lives').textContent=3;msg.textContent='دوس على الشبح!';}
+function start(){started=true;build();document.getElementById('overlay').style.display='none';document.getElementById('startBtn').style.display='none';document.getElementById('againBtn').style.display='none';voice('ebda');clearInterval(timer);clearInterval(spawnTimer);timer=setInterval(function(){timeLeft--;document.getElementById('time').textContent=timeLeft;if(timeLeft<=0){endGame(false);}},1000);spawnTimer=setInterval(spawn,900-Math.min(level*70,600));spawn();}
+function spawn(){if(!started)return;var cells=grid.children;for(var i=0;i<cells.length;i++){cells[i].className='cell';cells[i].innerHTML='🌙';cells[i].onclick=null;}var n=Math.min(2+level,6);for(var k=0;k<n;k++){var idx=Math.floor(Math.random()*25);var cell=cells[idx];var isBomb=Math.random()<(0.22+level*0.02);if(isBomb){cell.className='cell bomb';cell.innerHTML='💣';cell.onclick=function(){lives--;bombHits++;document.getElementById('lives').textContent=lives;document.getElementById('bombs').textContent=bombHits;voice('ghalat');msg.textContent='💥 أوووه قنبلة غلط! دي '+bombHits+' قنبلة غلط - فاضل '+lives+' محاولات';this.className='cell hit';this.innerHTML='💥';if(lives<=0)endGame(false);};}else{cell.className='cell ghost';cell.innerHTML=['👻','👽','🧟','🦇','🎃'][Math.floor(Math.random()*5)];cell.onclick=function(){score++;document.getElementById('score').textContent=score;voice('sah');msg.textContent='👏 الله! اصطادت شبح!';this.className='cell hit';this.innerHTML='✨';this.onclick=null;if(score>=target){nextLevel();}};}}}
+function nextLevel(){clearInterval(timer);clearInterval(spawnTimer);started=false;voice('kesebt');if(level>=10){msg.textContent='🏆 كسبت! اصطادت '+score+' شبح - ودوست على '+bombHits+' قنبلة غلط بس! انت صائد أشباح محترف!';document.getElementById('againBtn').style.display='inline-block';return;}level++;msg.textContent='🎉 المرحلة '+level+' من 10! الأشباح بقت أسرع وأخطر!';setTimeout(function(){start();},1200);}
+function endGame(win){clearInterval(timer);clearInterval(spawnTimer);started=false;voice('khesert');msg.textContent='⏰ خلص الوقت! اصطادت '+score+' شبح - ودوست على '+bombHits+' قنبلة غلط';document.getElementById('againBtn').style.display='inline-block';}
+document.getElementById('playBtn').onclick=function(){voice('ahla');start();};
+document.getElementById('startBtn').onclick=start;
+document.getElementById('againBtn').onclick=function(){level=1;start();};
+document.getElementById('soundBtn').onclick=function(){muted=!muted;this.textContent=muted?'🔇 كتم':'🔊 تشغيل الصوت';if(!muted)voice('sah');};
+</script></body></html>
