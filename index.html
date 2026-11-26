@@ -1108,23 +1108,23 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
     }
 
   <script>
+var ahlaAudio = new Audio('sounds/ahla.mp3');
+ahlaAudio.preload = 'auto';
+ahlaAudio.load();
 let welcomePlayed = false;
 function playWelcome(){
   if(welcomePlayed) return;
   welcomePlayed = true;
-  var a = new Audio('sounds/ahla.mp3');
-  a.play().catch(function(){ welcomePlayed = false; });
+  ahlaAudio.play().catch(function(){ welcomePlayed = false; });
 }
-// أول لمسة في أي حتة فاضية
 document.addEventListener('pointerdown', playWelcome);
-// لما تدوس على أي كارت، استنى ثانية واسمع صوتك وبعدين ادخل اللعبة
 document.querySelectorAll('a.game-card').forEach(function(card){
   card.addEventListener('click', function(e){
     if(!welcomePlayed){
       e.preventDefault();
       playWelcome();
       var link = card.href;
-      setTimeout(function(){ window.location.href = link; }, 900);
+      setTimeout(function(){ window.location.href = link; }, 2000);
     }
   });
 });
