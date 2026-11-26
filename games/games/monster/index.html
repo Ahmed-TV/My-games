@@ -1,1 +1,69 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>مطاردة الوحش | أحمد عبدالعزيز Ahmed TV</title>
+<style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+html,body{margin:0;height:100%;overflow:hidden;background:#050505;font-family:system-ui,Arial;color:#fff}
+body{display:flex;flex-direction:column}
+.header{width:100%;min-height:96px;background:linear-gradient(135deg,#000,#450a0a,#1a0000);padding:6px;display:flex;align-items:center;gap:8px;border-bottom:3px solid #dc2626}
+.logo{width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid #dc2626;flex-shrink:0;background:#fff}
+.htxt{flex:1;min-width:0;line-height:1.25}
+.htxt .names{font-size:22px;font-weight:900}
+.htxt h1{font-size:21px;margin:0;color:#fca5a5}
+.htxt .sub{font-size:12px;color:#fecaca}
+.sound-btn{height:30px;background:#fff;color:#000;border:none;border-radius:20px;padding:0 10px;font-weight:900;font-size:13px;cursor:pointer;margin-top:6px}
+.stats{display:flex;gap:5px;padding:6px;justify-content:center;flex-wrap:wrap}
+.pill{background:#1a0000;border:2px solid #dc2626;border-radius:20px;padding:5px 10px;font-weight:900;font-size:13px}
+.pill b{color:#facc15}
+.how{width:100%;max-width:520px;margin:0 auto;background:#7f1d1d;color:#fff!important;border:2px solid #ef4444;border-radius:10px;text-align:center;font-weight:900;font-size:14px;padding:6px}
+#grid{direction:ltr;flex:1;width:100%;max-width:520px;margin:10px auto 0;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:4px;padding:0 8px 4px;min-height:0}
+.cell{background:linear-gradient(180deg,#1a0000,#050505);border:2px solid #450a0a;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.cell.player{background:#14532d;border-color:#22c55e;box-shadow:0 0 12px #22c55e}
+.cell.monster{background:#450a0a;border-color:#ef4444;animation:shake .5s infinite}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.msg{text-align:center;font-weight:900;font-size:15px;padding:4px;min-height:24px;color:#fde68a}
+.controls{display:flex;direction:ltr;justify-content:center;gap:6px;padding:6px}
+.controls button{width:62px;height:62px;line-height:1.1;border-radius:50%;border:3px solid #dc2626;background:#1a0000;color:#fff;font-size:26px;cursor:pointer}
+.controls button:active{background:#7f1d1d}
+.btns{display:flex;gap:8px;justify-content:center;padding:4px}
+.big{background:linear-gradient(180deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:20px;padding:11px 20px;font-weight:900;font-size:17px;cursor:pointer}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:18px;z-index:99}
+#overlay .biglogo{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #dc2626}
+#overlay h2{font-size:26px;margin:0}
+#overlay p{font-size:16px;color:#fecaca;margin:0;line-height:1.6}
+</style></head>
+<body>
+<div class="header"><img class="logo" src="../../logo.png"><div class="htxt"><div class="names">أحمد عبدالعزيز Ahmed TV</div><h1>🏃 مطاردة الوحش</h1><div class="sub">اهرب من الوحش - واجمع كل الجواهر!</div></div><button class="sound-btn" id="soundBtn">🔊 تشغيل الصوت</button></div>
+<div class="stats"><div class="pill">💎 جواهر: <b id="gems">0</b></div><div class="pill">👹 خبطت في وحش: <b id="hits">0</b></div><div class="pill">🏆 مرحلة: <b id="level">1</b>/10</div><div class="pill">⏰ وقت: <b id="time">40</b></div><div class="pill">❤️ حياة: <b id="lives">3</b></div></div>
+<div class="how">المرحلة <span id="howLevel">1</span> من 10 - حرك البطل بالأسهم - اجمع الجواهر قبل ما الوحش يمسكك!</div>
+<div id="grid"></div><div class="msg" id="msg">حرك البطل!</div>
+<div class="controls"><button id="up">⬆️<br><span style="font-size:11px">فوق</span></button></div>
+<div class="controls"><button id="left">⬅️<br><span style="font-size:11px">شمال</span></button><button id="down">⬇️<br><span style="font-size:11px">تحت</span></button><button id="right">➡️<br><span style="font-size:11px">يمين</span></button></div>
+<div class="btns"><button class="big" id="startBtn">▶️ ابدأ المغامرة</button><button class="big" id="againBtn" style="background:linear-gradient(180deg,#991b1b,#450a0a);display:none">🔄 العب تاني</button></div>
+<div id="overlay"><img class="biglogo" src="../../logo.png"><h2>أهلاً بيك يا بطل! 👋</h2><p>أنا أحمد عبدالعزيز Ahmed TV<br>أهلاً بيك في <b>مطاردة الوحش</b> 🏃👹<br>لعبة مغامرة متطورة - انت بتتحرك بنفسك!<br>10 مراحل - اجمع الجواهر واهرب من الوحش<br>الوحش بيجري وراك بجد!</p><button class="big" id="playBtn">🏃 ابدأ الهروب</button></div>
+<script>
+var muted=false,started=false,level=1,gems=0,hits=0,lives=3,timeLeft=40,timer=null,monsterTimer=null;
+var px=0,py=0,mx=5,my=5,need=6,totalGems=0;
+var sounds={sah:'../../sounds/sah.mp3',ghalat:'../../sounds/ghalat.mp3',hawel:'../../sounds/hawel.mp3',kesebt:'../../sounds/kesebt.mp3',khesert:'../../sounds/khesert.mp3',ebda:'../../sounds/ebda.mp3',ahla:'../../sounds/ahla.mp3'};
+function voice(k){if(muted)return;try{new Audio(sounds[k]||sounds.sah).play();}catch(e){}}
+var grid=document.getElementById('grid'),msg=document.getElementById('msg');
+for(var i=0;i<36;i++){var c=document.createElement('div');c.className='cell';grid.appendChild(c);}
+function draw(gemCells){var cells=grid.children;for(var i=0;i<36;i++){cells[i].className='cell';cells[i].innerHTML='🌑';}gemCells.forEach(function(p){var idx=p.y*6+p.x;cells[idx].innerHTML='💎';});cells[my*6+mx].className='cell monster';cells[my*6+mx].innerHTML='👹';cells[py*6+px].className='cell player';cells[py*6+px].innerHTML='🏃';}
+var gemCells=[];
+function build(){px=0;py=0;mx=5;my=5;gems=0;hits=0;lives=3;need=5+level;timeLeft=Math.max(40-(level-1)*2,22);document.getElementById('gems').textContent=0;document.getElementById('hits').textContent=0;document.getElementById('level').textContent=level;var hl=document.getElementById('howLevel');if(hl)hl.textContent=level;document.getElementById('time').textContent=timeLeft;document.getElementById('lives').textContent=3;msg.textContent='اجمع '+need+' جواهر!';gemCells=[];while(gemCells.length<need){var x=Math.floor(Math.random()*6),y=Math.floor(Math.random()*6);if((x==0&&y==0)||(x==5&&y==5))continue;if(!gemCells.some(function(p){return p.x==x&&p.y==y;}))gemCells.push({x:x,y:y});}draw(gemCells);}
+function start(){started=true;build();document.getElementById('overlay').style.display='none';document.getElementById('startBtn').style.display='none';document.getElementById('againBtn').style.display='none';voice('ebda');clearInterval(timer);clearInterval(monsterTimer);timer=setInterval(function(){timeLeft--;document.getElementById('time').textContent=timeLeft;if(timeLeft<=0)endGame();},1000);monsterTimer=setInterval(moveMonster,900-Math.min(level*60,500));}
+function move(dx,dy){if(!started)return;var nx=px+dx,ny=py+dy;if(nx<0||nx>5||ny<0||ny>5)return;px=nx;py=ny;check();}
+function check(){var idx=gemCells.findIndex(function(p){return p.x==px&&p.y==py;});if(idx>=0){gemCells.splice(idx,1);gems++;document.getElementById('gems').textContent=gems;voice('sah');msg.textContent='💎 الله! جمعت جوهرة! فاضل '+(need-gems)+' جوهرة';if(gems>=need){nextLevel();return;}}if(px==mx&&py==my){hitMonster();return;}draw(gemCells);}
+function hitMonster(){hits++;lives--;document.getElementById('hits').textContent=hits;document.getElementById('lives').textContent=lives;voice('ghalat');msg.textContent='👹 أوووه الوحش مسكك! دي '+hits+' مرة - فاضل '+lives+' حياة';px=0;py=0;mx=5;my=5;if(lives<=0){endGame();return;}draw(gemCells);}
+function moveMonster(){if(!started)return;if(mx<px)mx++;else if(mx>px)mx--;if(my<py)my++;else if(my>py)my--;if(mx==px&&my==py){hitMonster();return;}draw(gemCells);}
+function nextLevel(){clearInterval(timer);clearInterval(monsterTimer);started=false;voice('kesebt');if(level>=10){msg.textContent='🏆 كسبت! خلصت الـ 10 مراحل! جمعت '+gems+' جوهرة - والوحش مسكك '+hits+' مرة بس!';document.getElementById('againBtn').style.display='inline-block';return;}level++;msg.textContent='🎉 المرحلة '+level+' من 10! الوحش بقى أسرع!';setTimeout(function(){start();},1200);}
+function endGame(){clearInterval(timer);clearInterval(monsterTimer);started=false;voice('khesert');msg.textContent='⏰ خلصت! جمعت '+gems+' جوهرة - والوحش مسكك '+hits+' مرة';document.getElementById('againBtn').style.display='inline-block';}
+document.getElementById('playBtn').onclick=function(){voice('ahla');start();};
+document.getElementById('startBtn').onclick=start;
+document.getElementById('againBtn').onclick=function(){level=1;start();};
+document.getElementById('up').onclick=function(){move(0,-1);};
+document.getElementById('down').onclick=function(){move(0,1);};
+document.getElementById('left').onclick=function(){move(-1,0);};
+document.getElementById('right').onclick=function(){move(1,0);};
+document.getElementById('soundBtn').onclick=function(){muted=!muted;this.textContent=muted?'🔇 كتم':'🔊 تشغيل الصوت';if(!muted)voice('sah');};
+</script></body></html>
