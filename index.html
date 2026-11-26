@@ -1107,27 +1107,15 @@ document.addEventListener('selectstart',function(e){e.preventDefault();return fa
       el.style.whiteSpace = 'nowrap';
     }
 
-  <script>
-var ahlaAudio = new Audio('sounds/ahla.mp3');
-ahlaAudio.preload = 'auto';
-ahlaAudio.load();
-let welcomePlayed = false;
-function playWelcome(){
-  if(welcomePlayed) return;
-  welcomePlayed = true;
-  ahlaAudio.play().catch(function(){ welcomePlayed = false; });
-}
-document.addEventListener('pointerdown', playWelcome);
-document.querySelectorAll('a.game-card').forEach(function(card){
-  card.addEventListener('click', function(e){
-    if(!welcomePlayed){
-      e.preventDefault();
-      playWelcome();
-      var link = card.href;
-      setTimeout(function(){ window.location.href = link; }, 2000);
-    }
+  <audio id="ahla" src="sounds/ahla.mp3" preload="auto"></audio>
+<script>
+var banner = document.querySelector('.banner img') || document.querySelector('img.banner') || document.getElementById('bannerImg');
+if(banner){
+  banner.style.cursor = 'pointer';
+  banner.addEventListener('pointerdown', function(){
+    document.getElementById('ahla').play();
   });
-});
+}
 </script>
 </body>
 </html>
