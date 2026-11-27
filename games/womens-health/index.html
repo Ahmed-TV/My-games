@@ -254,8 +254,11 @@ const questions=[{q:"ما هو الفيتامين المهم لصحة العظا
 {q:"ما هو ألم الحوض؟", a:["ألم في الرأس", "ألم في الظهر", "ألم في البطن", "ألم في منطقة الحوض"], c:3},
 {q:"متى يراجع الطبيب لألم الحوض؟", a:["بعد سنة", "أبداً", "إذا كان شديد أو مستمر", "عند التعب فقط"], c:2}];
 let soundOn=true;
-function playCorrect(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o1=ctx.createOscillator(), o2=ctx.createOscillator(), g=ctx.createGain(); o1.type='sine'; o1.frequency.value=523; o2.type='sine'; o2.frequency.value=784; g.gain.value=0.18; o1.connect(g); o2.connect(g); g.connect(ctx.destination); o1.start(); o2.start(ctx.currentTime+0.12); o1.stop(ctx.currentTime+0.15); o2.stop(ctx.currentTime+0.35);}catch(e){} }
-function playWrong(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sawtooth'; o.frequency.value=180; g.gain.value=0.15; o.connect(g); g.connect(ctx.destination); o.start(); o.frequency.setValueAtTime(180,ctx.currentTime); o.frequency.linearRampToValueAtTime(90,ctx.currentTime+0.3); o.stop(ctx.currentTime+0.32);}catch(e){} }
+var _ac={};
+function voice(k){if(!soundOn)return;try{if(!_ac[k]){_ac[k]=new Audio('../../sounds/'+k+'.mp3');_ac[k].preload='auto';}var a=_ac[k];a.currentTime=0;var pr=a.play();if(pr)pr.catch(function(){});}catch(e){}}
+
+function playCorrect(){voice('sah');}
+function playWrong(){voice('ghalat');}
 let order=[],idx=0,score=0,correct=0,locked=false;const $=id=>document.getElementById(id);
 let best=parseInt(localStorage.getItem("womens_health_best")||"0");$("best").textContent=best;$("bestStart").textContent=best;
 function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
