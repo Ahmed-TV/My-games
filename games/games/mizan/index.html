@@ -1,1 +1,64 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>لعبة الميزان | أحمد عبدالعزيز Ahmed TV</title>
+<style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+html,body{margin:0;height:100%;overflow:hidden;font-family:system-ui,Arial}
+body{background:linear-gradient(180deg,#fef3c7,#fde68a);display:flex;flex-direction:column;color:#0f172a}
+.top{margin:10px 12px 0;background:#fff;border-radius:20px;padding:8px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.top img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:3px solid #f59e0b}
+.top .t{flex:1;line-height:1.2}
+.top .t .name{font-size:18px;font-weight:900}
+.top .t .g{font-size:17px;font-weight:900;color:#b45309}
+.sound{width:44px;height:44px;border-radius:50%;border:none;background:#f59e0b;color:#fff;font-size:20px;cursor:pointer}
+.stats{display:flex;gap:6px;padding:8px;justify-content:center;flex-wrap:wrap}
+.pill{background:#fff;border-radius:20px;padding:6px 10px;font-weight:900;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.pill b{color:#b45309}
+.hint{text-align:center;background:#fff;border-radius:16px;margin:0 12px;padding:7px;font-weight:900;font-size:14px}
+#game{flex:1;margin:10px 12px 0;background:#fff;border-radius:22px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:0;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.scale{display:flex;direction:ltr;align-items:flex-end;gap:10px;width:100%;max-width:420px}
+.pan{flex:1;direction:ltr;background:#fef3c7;border:3px solid #f59e0b;border-radius:18px;min-height:120px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;padding:8px;font-size:32px}
+.pan.heavy{border-color:#22c55e;background:#dcfce7}
+.pan.light{border-color:#ef4444}
+.bar{width:100%;max-width:420px;height:10px;background:#92400e;border-radius:10px;position:relative}
+.bar::before{content:"⚖️";position:absolute;left:50%;top:-22px;transform:translateX(-50%);font-size:26px}
+.q{font-size:18px;font-weight:900;text-align:center}
+.msg{text-align:center;font-weight:900;padding:5px;min-height:24px;color:#92400e;font-size:16px}
+.btns{display:flex;direction:ltr;gap:8px;justify-content:center;padding:8px;flex-wrap:nowrap}
+.btns button{border:none;border-radius:22px;padding:13px 14px;font-weight:900;font-size:15px;cursor:pointer;color:#fff}
+#leftBtn{background:#2563eb;flex:1}#eqBtn{background:#f59e0b;color:#000;flex:1}#rightBtn{background:#dc2626;flex:1}
+.big{background:#22c55e;color:#fff;border:none;border-radius:30px;padding:12px 24px;font-weight:900;font-size:18px;cursor:pointer}
+#overlay{position:fixed;inset:0;background:linear-gradient(180deg,#fde68a,#f59e0b);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:20px;z-index:99;color:#0f172a}
+#overlay img{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #fff}
+#overlay h2{font-size:26px;margin:0}
+#overlay p{font-size:16px;color:#451a03;margin:0;line-height:1.7}
+</style></head>
+<body>
+<div class="top"><img src="../../logo.png"><div class="t"><div class="name">أحمد عبدالعزيز Ahmed TV</div><div class="g">⚖️ لعبة الميزان</div></div><button class="sound" id="soundBtn">🔊</button></div>
+<div class="stats"><div class="pill">✅ صح: <b id="right">0</b></div><div class="pill">❌ غلط: <b id="wrong">0</b></div><div class="pill">🏆 مرحلة: <b id="level">1</b>/10</div><div class="pill">❓ سؤال: <b id="qnum">1</b>/100</div><div class="pill">⏰ وقت: <b id="time">60</b></div></div>
+<div class="hint">فكر كويس أوي - أنهي كفة أتقل؟</div>
+<div id="game"><div class="q" id="question">انهي أتقل؟</div><div style="display:flex;direction:ltr;gap:10px;width:100%;max-width:420px;font-weight:900;text-align:center"><div style="flex:1">⬅️ الشمال</div><div style="flex:1">اليمين ➡️</div></div><div class="scale"><div class="pan" id="leftPan"></div><div class="pan" id="rightPan"></div></div><div class="bar"></div><div style="font-size:12px;color:#78716c">الكفة التقيلة هتنزل لتحت بعد ما تختار</div></div>
+<div class="msg" id="msg">فكر قبل ما تدوس!</div>
+<div class="btns"><button id="leftBtn">⬅️ الشمال أتقل</button><button id="eqBtn">⚖️ متساويين</button><button id="rightBtn">اليمين أتقل ➡️</button></div>
+<div class="btns"><button class="big" id="startBtn">⚖️ ابدأ التفكير</button><button class="big" id="againBtn" style="background:#7c3aed;display:none">🔄 العب تاني</button></div>
+<div id="overlay"><img src="../../logo.png"><h2>أهلاً بيك يا بطل! ⚖️</h2><p>أنا أحمد عبدالعزيز Ahmed TV<br>أهلاً بيك في <b>لعبة الميزان</b><br>لعبة تفكير - لازم تفكر قبل ما تدوس<br>انهي كفة أتقل؟ الشمال ولا اليمين ولا متساويين؟<br>100 سؤال - 10 مراحل - 10 مراحل - 60 ثانية</p><button class="big" id="playBtn">⚖️ ابدأ التفكير</button></div>
+<script>
+var muted=false,started=false,correct=0,wrong=0,qnum=1,timeLeft=60,timer=null,leftW=0,rightW=0,answered=false,curL=null,curR=null;
+var items=[{e:'🍎',w:1,n:'تفاح'},{e:'🍊',w:1,n:'برتقال'},{e:'🍌',w:1,n:'موز'},{e:'🍓',w:1,n:'فراولة'},{e:'🍒',w:1,n:'كريز'},{e:'🍋',w:1,n:'ليمون'},{e:'🍐',w:2,n:'كمثرى'},{e:'🥝',w:1,n:'كيوي'},{e:'🍑',w:2,n:'خوخ'},{e:'🥭',w:2,n:'مانجو'},{e:'🍇',w:2,n:'عنب'},{e:'🥑',w:2,n:'أفوكادو'},{e:'🥦',w:1,n:'بروكلي'},{e:'🥕',w:1,n:'جزر'},{e:'🌽',w:2,n:'ذرة'},{e:'🥔',w:2,n:'بطاطس'},{e:'🍍',w:3,n:'أناناس'},{e:'🥥',w:3,n:'جوز هند'},{e:'🍈',w:4,n:'شمام'},{e:'🎃',w:4,n:'قرع'},{e:'🍉',w:5,n:'بطيخ'},{e:'🍆',w:3,n:'باذنجان'},{e:'🥒',w:1,n:'خيار'},{e:'🍅',w:1,n:'طماطم'}];
+var sounds={sah:'../../sounds/sah.mp3',ghalat:'../../sounds/ghalat.mp3',kesebt:'../../sounds/kesebt.mp3',khesert:'../../sounds/khesert.mp3',ebda:'../../sounds/ebda.mp3',ahla:'../../sounds/ahla.mp3'};
+function voice(k){if(muted)return;try{new Audio(sounds[k]||sounds.sah).play();}catch(e){}}
+var msg=document.getElementById('msg');
+function randItems(){var n=1+Math.floor(Math.random()*(2+Math.min(Math.floor(qnum/8),3)));var arr=[],w=0;for(var i=0;i<n;i++){var it=items[Math.floor(Math.random()*items.length)];arr.push(it);w+=it.w;}return {arr:arr,w:w,names:arr.map(function(x){return x.n;}).join(' + ')};}
+function newQ(){answered=false;document.getElementById('leftPan').className='pan';document.getElementById('rightPan').className='pan';var L=randItems(),R=randItems();if(Math.random()<0.10){R.w=L.w;R.arr=L.arr.slice();R.names=L.names;}leftW=L.w;rightW=R.w;curL=L;curR=R;function renderPan(id,arr){document.getElementById(id).innerHTML=arr.map(function(x){return '<div style="text-align:center;line-height:1.1"><div style="font-size:30px">'+x.e+'</div><div style="font-size:11px;font-weight:900;color:#444">'+x.n+'</div></div>';}).join('');}renderPan('leftPan',L.arr);renderPan('rightPan',R.arr);document.getElementById('level').textContent=1;document.getElementById('qnum').textContent=qnum;var lv=Math.ceil(qnum/10);var le=document.getElementById('level');if(le)le.textContent=lv;msg.textContent='فكر - انهي أتقل؟';}
+function build(){correct=0;wrong=0;qnum=1;timeLeft=60;document.getElementById('right').textContent=0;document.getElementById('wrong').textContent=0;document.getElementById('time').textContent=60;}
+function start(){started=true;build();document.getElementById('overlay').style.display='none';document.getElementById('startBtn').style.display='none';document.getElementById('againBtn').style.display='none';voice('ebda');newQ();clearInterval(timer);timer=setInterval(function(){timeLeft--;document.getElementById('time').textContent=timeLeft;if(timeLeft<=0)endGame();},1000);}
+function answer(choice){if(!started||answered)return;answered=true;var real=leftW>rightW?'left':(rightW>leftW?'right':'eq');document.getElementById('leftPan').classList.add(leftW>=rightW?'heavy':'light');document.getElementById('rightPan').classList.add(rightW>=leftW?'heavy':'light');if(choice==real){correct++;document.getElementById('right').textContent=correct;voice('sah');msg.textContent='✅ صح! الشمال: '+curL.names+' = '+leftW+' - اليمين: '+curR.names+' = '+rightW;}else{wrong++;document.getElementById('wrong').textContent=wrong;voice('ghalat');msg.textContent='❌ غلط! الصح: '+(real=='left'?'الشمال أتقل':(real=='right'?'اليمين أتقل':'متساويين'))+' - الشمال: '+curL.names+' = '+leftW+' - اليمين: '+curR.names+' = '+rightW;}setTimeout(function(){if(qnum>=100){endGame();return;}qnum++;newQ();},1100);}
+function endGame(){clearInterval(timer);started=false;voice(qnum>=100&&correct>=60?'kesebt':'khesert');msg.textContent='🏁 خلصت الـ 10 مراحل! جاوبت '+correct+' صح من 100 - وغلطت '+wrong+' مرة';document.getElementById('againBtn').style.display='inline-block';}
+document.getElementById('playBtn').onclick=function(){voice('ahla');start();};
+document.getElementById('startBtn').onclick=start;
+document.getElementById('againBtn').onclick=start;
+document.getElementById('leftBtn').onclick=function(){answer('left');};
+document.getElementById('eqBtn').onclick=function(){answer('eq');};
+document.getElementById('rightBtn').onclick=function(){answer('right');};
+document.getElementById('soundBtn').onclick=function(){muted=!muted;this.textContent=muted?'🔇':'🔊';if(!muted)voice('sah');};
+</script></body></html>
