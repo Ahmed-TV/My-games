@@ -66,7 +66,7 @@ const OLD_PLAYERS=[{n:"حسن شحاتة",num:10,pos:"أسطورة",cat:"قدا�
 const ALL_PLAYERS=[...NEW_PLAYERS,...OLD_PLAYERS];
 const HISTORY=[{q:"تأسس نادي الزمالك سنة كام؟",a:"1911",opts:["1911","1907","1920","1900"]},{q:"ما هو لقب نادي الزمالك؟",a:"مدرسة الفن والهندسة",opts:["مدرسة الفن والهندسة","المارد الأحمر","القلعة البيضاء","زعيم الثغر"]},{q:"ما هو لون تيشيرت الزمالك الأساسي؟",a:"أبيض",opts:["أبيض","أحمر","أزرق","أخضر"]},{q:"من هو الهداف التاريخي للزمالك؟",a:"عبد الحليم علي",opts:["عبد الحليم علي","حسن شحاتة","شيكابالا","عمرو زكي"]},{q:"أين يقع مقر نادي الزمالك؟",a:"ميت عقبة - الجيزة",opts:["ميت عقبة - الجيزة","الجزيرة - القاهرة","الإسكندرية","المنصورة"]},{q:"من هو اللاعب الملقب بالمعلم؟",a:"حسن شحاتة",opts:["حسن شحاتة","حازم إمام","شيكابالا","فاروق جعفر"]},{q:"من هو اللاعب الملقب بالاباتشي؟",a:"شيكابالا",opts:["شيكابالا","ميدو","عمرو زكي","حازم إمام"]},{q:"كم مرة فاز الزمالك بدوري أبطال أفريقيا؟",a:"5 مرات",opts:["5 مرات","3 مرات","7 مرات","10 مرات"]},{q:"ما هو شعار الزمالك؟",a:"الزمالك أولا",opts:["الزمالك أولا","الزمالك فوق الجميع","روح الفانلة البيضاء","كلهم صح"]},{q:"من هو الحارس الأسطوري للزمالك؟",a:"عبد الواحد السيد",opts:["عبد الواحد السيد","محمد صبحي","محمد عواد","نادر السيد"]},{q:"في أي سنة تأسس الزمالك؟",a:"1911",opts:["1911","1907","1915","1920"]},{q:"ما هو الطائر في شعار الزمالك؟",a:"رامي السهام",opts:["رامي السهام","النسر","الصقر","الحمامة"]},{q:"من هو اللاعب الملقب بالثعلب؟",a:"حازم إمام",opts:["حازم إمام","حسن شحاتة","شيكابالا","جمال حمزة"]},{q:"من هو مدرب الزمالك التاريخي أوتوفستر؟",a:"أوتوفستر",opts:["أوتوفستر","مانويل جوزيه","حسن شحاتة","جيسوالدو فيريرا"]},{q:"كم عدد بطولات الدوري المصري للزمالك تقريبا؟",a:"14 بطولة",opts:["14 بطولة","10 بطولات","20 بطولة","5 بطولات"]},{q:"من هو اللاعب الملقب بالبلدوزر؟",a:"عمرو زكي",opts:["عمرو زكي","ميدو","عبد الحليم علي","سيف الجزيري"]},{q:"ما هو اسم ملعب الزمالك؟",a:"ستاد القاهرة",opts:["ستاد القاهرة","ستاد برج العرب","ستاد الدفاع الجوي","ستاد السلام"]},{q:"من هو رئيس الزمالك الأسطوري؟",a:"محمد حسن حلمي",opts:["محمد حسن حلمي","مرتضى منصور","حسين لبيب","ممدوح عباس"]},{q:"من هو اللاعب الملقب بالعالمي؟",a:"أحمد حسام ميدو",opts:["أحمد حسام ميدو","شيكابالا","حازم إمام","عمرو زكي"]},{q:"ما هي ألوان الزمالك؟",a:"أبيض وأحمر",opts:["أبيض وأحمر","أحمر وأسود","أبيض وأزرق","أخضر وأبيض"]}];
 function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
-function buildQuestions(cat){
+function buildQuestions(cat){voice('ebda');
 let pool=cat==='الكل'?ALL_PLAYERS:cat==='جدد'?NEW_PLAYERS:OLD_PLAYERS;let qs=[];
 pool.forEach(p=>{
 let others=shuffle(ALL_PLAYERS.filter(x=>x!==p&&x.n!==p.n)).slice(0,3);
@@ -81,17 +81,20 @@ pool.forEach(p=>{qs.push({type:'cat',p:p,q:'اللاعب '+p.n+' من فئة ا�
 let hIdx=0;while(qs.length<300){let h=HISTORY[hIdx%HISTORY.length];let opts=shuffle(h.opts);qs.push({type:'hist',p:ALL_PLAYERS[hIdx%ALL_PLAYERS.length],q:h.q,correct:h.a,opts:[...new Set(opts)]});hIdx++;if(hIdx>500)break;}
 return shuffle(qs).slice(0,300);}
 let soundOn=true,audioCtx=null;
+var _ac={};
+function voice(k){if(!soundOn)return;try{if(!_ac[k]){_ac[k]=new Audio('../../sounds/'+k+'.mp3');_ac[k].preload='auto';}var a=_ac[k];a.currentTime=0;var pr=a.play();if(pr)pr.catch(function(){});}catch(e){}}
+
 function getCtx(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}
 function playTone(f,dur,vol,type,delay){if(!soundOn)return;const ctx=getCtx();if(!ctx)return;try{const t0=ctx.currentTime+delay;const o=ctx.createOscillator(),g=ctx.createGain();o.type=type||'triangle';o.frequency.value=f;g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol,t0+0.02);g.gain.exponentialRampToValueAtTime(0.001,t0+dur);o.connect(g);g.connect(ctx.destination);o.start(t0);o.stop(t0+dur);}catch(e){}}
-function playCorrect(){[523,659,784,1046].forEach((f,i)=>playTone(f,0.35,0.14,'triangle',i*0.09));}
-function playWrong(){playTone(180,0.3,0.1,'sawtooth',0);}
+function playCorrect(){voice('sah');}
+function playWrong(){voice('ghalat');}
 function playSkip(){playTone(400,0.15,0.08,'sine',0);}
 function playChant(){[523,523,659,784,784,659,523].forEach((f,i)=>playTone(f,0.22,0.07,'triangle',i*0.16));}
 let currentCat='الكل',questions=[],idx=0,score=0,correctCount=0,locked=false,skipped=0;
 function setCat(cat,btn){document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentCat=cat;startQuiz();}
 function startQuiz(){playChant();questions=buildQuestions(currentCat);idx=0;score=0;correctCount=0;skipped=0;document.getElementById('totalQ').textContent=questions.length;document.getElementById('score').textContent=score;document.getElementById('correctCount').textContent=correctCount;loadQ();}
 function loadQ(){
-if(idx>=questions.length){document.getElementById('qText').textContent='خلصت الـ 300 سؤال!';document.getElementById('feedback').textContent='نتيجتك: '+score+' نقطة • صح: '+correctCount+' • تخطي: '+skipped+' - دوس تخطي عشان تلعب تاني';document.getElementById('answers').innerHTML='';return;}
+if(idx>=questions.length){voice(correctCount>=Math.ceil(questions.length*0.6)?'kesebt':'khesert');document.getElementById('qText').textContent='خلصت الـ 300 سؤال!';document.getElementById('feedback').textContent='نتيجتك: '+score+' نقطة • صح: '+correctCount+' • تخطي: '+skipped+' - دوس تخطي عشان تلعب تاني';document.getElementById('answers').innerHTML='';return;}
 locked=false;const it=questions[idx];
 document.getElementById('count').textContent=idx+1;
 document.getElementById('qNum').textContent=it.p.num;
