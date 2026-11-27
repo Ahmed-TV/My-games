@@ -108,15 +108,18 @@ const DATA=[
 ];
 function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
 let soundOn=true,audioCtx=null;
+var _ac={};
+function voice(k){if(!soundOn)return;try{if(!_ac[k]){_ac[k]=new Audio('../../sounds/'+k+'.mp3');_ac[k].preload='auto';}var a=_ac[k];a.currentTime=0;var pr=a.play();if(pr)pr.catch(function(){});}catch(e){}}
+
 function getCtx(){if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();return audioCtx;}
 document.addEventListener('pointerdown',()=>{getCtx();});
 document.addEventListener('touchstart',()=>{getCtx();});
 function tone(f,dur,vol,type,delay,slideTo){if(!soundOn)return;const ctx=getCtx();if(!ctx)return;try{const t0=ctx.currentTime+(delay||0);const o=ctx.createOscillator(),g=ctx.createGain();o.type=type||'triangle';o.frequency.setValueAtTime(f,t0);if(slideTo)o.frequency.exponentialRampToValueAtTime(slideTo,t0+dur);g.gain.setValueAtTime(0.0001,t0);g.gain.linearRampToValueAtTime(vol,t0+0.02);g.gain.exponentialRampToValueAtTime(0.001,t0+dur);o.connect(g);g.connect(ctx.destination);o.start(t0);o.stop(t0+dur+0.08);}catch(e){}}
-function playCorrect(){tone(523,0.15,0.25,'triangle',0);tone(659,0.15,0.25,'triangle',0.15);tone(784,0.4,0.28,'triangle',0.3);}
-function playWrong(){tone(220,0.35,0.25,'square',0);tone(180,0.5,0.25,'square',0.35);}
+function playCorrect(){voice('sah');}
+function playWrong(){voice('ghalat');}
 function playSkip(){tone(600,0.2,0.2,'sine',0,900);}
 let curType='الكل',qs=[],idx=0,score=0,correct=0,locked=false;
-function build(){qs=[];let seen=new Set();
+function build(){voice('ebda');qs=[];let seen=new Set();
 DATA.forEach(c=>{
 let types=curType==='الكل'?['حرف-اول','حرف-ناقص','معنى','عكس','جمع','كلمة-بالحرف']:(curType==='حرف'?['حرف-اول','حرف-ناقص','كلمة-بالحرف']:(curType==='كلمة'?['معنى','جمع']:['عكس']));
 types.forEach(t=>{
@@ -135,7 +138,7 @@ qs.push({q:q,correct:corr,opts:shuffle([corr,...others]),icon:icon,name:c.w});
 });
 qs=shuffle(qs).slice(0,200);
 }
-function loadQ(){if(idx>=qs.length){document.getElementById('qText').textContent='خلصت الـ '+qs.length+' سؤال!';document.getElementById('feedback').textContent='نتيجتك: '+score+' - صح: '+correct;document.getElementById('answers').innerHTML='';return;}locked=false;let it=qs[idx];document.getElementById('qicon').textContent=it.icon;document.getElementById('qText').textContent=it.q;document.getElementById('prog').style.width=((idx+1)/qs.length*100)+'%';document.getElementById('progText').textContent='السؤال '+(idx+1)+' / '+qs.length;document.getElementById('feedback').textContent='السؤال '+(idx+1)+' من '+qs.length;let ans=document.getElementById('answers');ans.innerHTML='';it.opts.forEach(o=>{let b=document.createElement('button');b.className='answer';b.textContent=o;b.onclick=()=>choose(o===it.correct,b,it);ans.appendChild(b);});document.getElementById('nextBtn').disabled=true;}
+function loadQ(){if(idx>=qs.length){voice(correct>=Math.ceil(qs.length*0.6)?'kesebt':'khesert');document.getElementById('qText').textContent='خلصت الـ '+qs.length+' سؤال!';document.getElementById('feedback').textContent='نتيجتك: '+score+' - صح: '+correct;document.getElementById('answers').innerHTML='';return;}locked=false;let it=qs[idx];document.getElementById('qicon').textContent=it.icon;document.getElementById('qText').textContent=it.q;document.getElementById('prog').style.width=((idx+1)/qs.length*100)+'%';document.getElementById('progText').textContent='السؤال '+(idx+1)+' / '+qs.length;document.getElementById('feedback').textContent='السؤال '+(idx+1)+' من '+qs.length;let ans=document.getElementById('answers');ans.innerHTML='';it.opts.forEach(o=>{let b=document.createElement('button');b.className='answer';b.textContent=o;b.onclick=()=>choose(o===it.correct,b,it);ans.appendChild(b);});document.getElementById('nextBtn').disabled=true;}
 function choose(ok,btn,it){if(locked)return;locked=true;[...document.getElementById('answers').children].forEach(b=>{b.disabled=true;if(b.textContent===it.correct)b.classList.add('correct');else if(b===btn)b.classList.add('wrong');});if(ok){playCorrect();score+=10;correct++;document.getElementById('feedback').textContent='صح! +10';}else{playWrong();document.getElementById('feedback').textContent='غلط - الصح: '+it.correct;}document.getElementById('nextBtn').disabled=false;}
 function skipQ(){playSkip();if(idx>=qs.length){build();idx=0;loadQ();return;}document.getElementById('feedback').textContent='تخطيت - الصح: '+qs[idx].correct;idx++;setTimeout(loadQ,600);}
 function setType(t,btn){document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');curType=t;idx=0;score=0;correct=0;build();loadQ();}
