@@ -1,1 +1,99 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>لعبة الجري | أحمد عبد العزيز</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;touch-action:manipulation}
+html,body{height:100%;height:100svh;max-height:100svh;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#fef3c7;color:#fff;display:flex;flex-direction:column;align-items:center;padding:4px 8px;overflow:hidden!important}
+.header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2px}
+.logo-wrap{width:48px;height:48px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#000}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:22px;line-height:1.2;color:#b45309}
+h1 small{display:block;font-size:12px;color:#059669;margin-top:2px}
+.names{text-align:center;margin-bottom:4px;line-height:1.3}
+.names .ar{display:block;font-size:18px;color:#b45309;font-weight:900}
+.names .en{display:block;font-size:14px;color:#92400e;font-weight:900}
+.stats{display:flex;gap:8px;justify-content:center;margin:3px 0 5px}
+.stat{background:#fff;border:2px solid #f59e0b;border-radius:12px;padding:3px 12px;min-width:76px;text-align:center}
+.stat b{display:block;font-size:17px;color:#b45309}
+.stat span{font-size:10px;color:#92400e}
+#hearts{font-size:20px;letter-spacing:4px;text-align:center;margin-bottom:3px}
+#game-container{width:100%;max-width:500px;flex:1;min-height:0;position:relative;background:#fde68a;border:3px solid #f59e0b;border-radius:20px;overflow:hidden;touch-action:none}
+.watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(180,83,9,0.10);font-size:34px;font-weight:900;pointer-events:none;z-index:0;white-space:nowrap}
+canvas{width:100%;height:100%;display:block;z-index:1;touch-action:none}
+#jumpBtn{width:100%;max-width:500px;margin-top:8px;background:linear-gradient(90deg,#f59e0b,#10b981);color:#fff;border:2px solid #fff;border-radius:16px;padding:12px;font-size:22px;font-weight:900;cursor:pointer;box-shadow:0 0 20px rgba(245,158,11,.7);text-shadow:0 2px 4px #000;flex-shrink:0}
+#jumpBtn:active{transform:scale(.97)}
+#overlay{position:absolute;inset:0;background:rgba(255,251,235,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:15px;gap:10px;z-index:10}
+#overlay h2{font-size:24px;color:#b45309}
+#overlay p{line-height:1.6;font-size:14px;color:#44403c}
+.btn-start{background:linear-gradient(90deg,#f59e0b,#10b981);color:#fff;border:2px solid #fff;padding:13px 26px;border-radius:14px;font-size:17px;font-weight:900;cursor:pointer;width:80%;max-width:220px}
+#muteBtn{position:absolute;top:8px;left:8px;z-index:20;background:#fff;border:2px solid #f59e0b;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:900;color:#b45309;cursor:pointer}
+</style>
+</head>
+<body oncontextmenu="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبد العزيز"></div><h1>لعبة الجري<small>مغامرة الصحراء - اجمع العملات</small></h1></div>
+<div class="names"><span class="ar">أحمد عبد العزيز</span><span class="en">Ahmed TV</span></div>
+<div id="hearts">❤️❤️❤️</div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="coins">0</b><span>العملات 🪙</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
+</div>
+<div id="game-container"><button id="muteBtn">🔊 تشغيل الصوت</button><div class="watermark">أحمد عبد العزيز</div><canvas id="gameCanvas"></canvas><div id="overlay"><h2>🏜️ مغامرة الصحراء</h2><p>اجري في الصحراء!<br>اقفز فوق الصبار �🌵<br>اجمع العملات الذهبية 🪙<br>عندك 3 قلوب .. يلا يا بطل!</p><button class="btn-start" id="startBtn">ابدأ اللعب</button></div></div>
+<button id="jumpBtn">🦘 اقفز</button>
+<script>
+var _ac={},soundOn=true,_ahla=false;
+function voice(n){if(!soundOn)return;try{if(!_ac[n]){_ac[n]=new Audio('../../sounds/'+n+'.mp3');_ac[n].preload='auto';}var a=_ac[n];a.currentTime=0;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('pointerdown',function(){if(!_ahla){_ahla=true;voice('ahla');}},{once:false});
+document.getElementById('muteBtn').onclick=function(e){e.stopPropagation();soundOn=!soundOn;this.textContent=soundOn?'🔊 تشغيل الصوت':'🔇 كتم';};
+const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');
+const scoreEl=document.getElementById('score'),coinsEl=document.getElementById('coins'),bestEl=document.getElementById('best'),heartsEl=document.getElementById('hearts'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),jumpBtn=document.getElementById('jumpBtn');
+let W=0,H=0,running=false,score=0,coins=0,level=1;
+let best=parseInt(localStorage.getItem('runnerDesertBest')||'0');bestEl.textContent=best;
+let speed=3.2,lives=3,isHit=false,groundY=0;
+let player={x:50,y:0,w:34,h:46,vy:0,gravity:0.42,jumpForce:-17,isJumping:false};
+let obstacles=[],coinsArr=[],timer=0,coinTimer=0,clouds=[];
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;groundY=H-60;clouds=[];for(let i=0;i<4;i++)clouds.push({x:Math.random()*W,y:20+Math.random()*60,s:30+Math.random()*30});player.y=groundY;if(!running)draw();}
+function reset(){score=0;coins=0;level=1;scoreEl.textContent=0;coinsEl.textContent=0;speed=3.2;lives=3;updateHearts();player.y=groundY;player.vy=0;player.isJumping=false;obstacles=[];coinsArr=[];timer=0;coinTimer=0;isHit=false;running=true;overlay.style.display='none';voice('ebda');loop();}
+function updateHearts(){let s="";for(let i=0;i<3;i++)s+=(i<lives)?"❤️":"🖤";heartsEl.textContent=s;}
+function jump(){if(!running||isHit)return;if(!player.isJumping){player.vy=player.jumpForce;player.isJumping=true;}}
+function spawnObs(){const h=30+Math.random()*22;obstacles.push({x:W,y:groundY+46-h,w:22,h:h});}
+function spawnCoin(){coinsArr.push({x:W,y:groundY-40-Math.random()*70,r:12,taken:false});}
+function update(){if(!running)return;player.vy+=player.gravity;player.y+=player.vy;if(player.y>groundY){player.y=groundY;player.vy=0;player.isJumping=false;}
+if(!isHit){timer++;coinTimer++;if(timer>140){spawnObs();timer=0;}if(coinTimer>70){spawnCoin();coinTimer=0;}}
+for(let i=obstacles.length-1;i>=0;i--){let o=obstacles[i];if(!isHit)o.x-=speed;if(player.x<o.x+o.w&&player.x+player.w>o.x&&player.y<o.y+o.h&&player.y+player.h>o.y){lose();break;}if(o.x+o.w<0)obstacles.splice(i,1);}
+for(let i=coinsArr.length-1;i>=0;i--){let c=coinsArr[i];if(!isHit)c.x-=speed;let cx=c.x,cy=c.y,px=player.x+17,py=player.y+23;if(Math.hypot(cx-px,cy-py)<30){coins++;coinsEl.textContent=coins;score+=5;scoreEl.textContent=score;voice('sah');coinsArr.splice(i,1);continue;}if(c.x<-20)coinsArr.splice(i,1);}
+clouds.forEach(c=>{c.x-=0.6;if(c.x<-60){c.x=W+20;c.y=20+Math.random()*60;}});
+if(score>0&&score%50===0&&level<10){level=Math.floor(score/50)+1;speed=3.2+level*0.25;}
+}
+function lose(){if(isHit)return;isHit=true;lives--;updateHearts();voice('ghalat');canvas.style.opacity='0.5';setTimeout(()=>canvas.style.opacity='1',200);if(lives<=0){end();}else{setTimeout(()=>{isHit=false;obstacles=obstacles.filter(o=>o.x>player.x+100);},900);}}
+function draw(){let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#bae6fd');g.addColorStop(0.55,'#fde68a');g.addColorStop(1,'#f59e0b');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(W-60,50,26,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='rgba(255,255,255,.9)';clouds.forEach(c=>{ctx.beginPath();ctx.arc(c.x,c.y,16,0,Math.PI*2);ctx.arc(c.x+18,c.y+4,14,0,Math.PI*2);ctx.fill();});
+ctx.fillStyle='#a16207';ctx.beginPath();ctx.moveTo(30,groundY+40);ctx.lineTo(80,groundY-70);ctx.lineTo(130,groundY+40);ctx.closePath();ctx.fill();
+ctx.fillStyle='#ca8a04';ctx.beginPath();ctx.moveTo(120,groundY+40);ctx.lineTo(165,groundY-50);ctx.lineTo(210,groundY+40);ctx.closePath();ctx.fill();
+ctx.fillStyle='#92400e';ctx.fillRect(0,groundY+40,W,H-groundY-40);
+ctx.fillStyle='#fef3c7';for(let x=0;x<W;x+=30)ctx.fillRect(x,groundY+40,14,4);
+let px=player.x,py=player.y;
+ctx.fillStyle=isHit?'rgba(255,0,0,.5)':'rgba(0,0,0,.15)';ctx.beginPath();ctx.ellipse(px+17,groundY+44,20,5,0,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#78350f';ctx.fillRect(px+2,py+12,30,26);ctx.fillStyle='#fcd7d7';ctx.beginPath();ctx.arc(px+17,py+6,11,0,Math.PI*2);ctx.fill();ctx.fillStyle='#451a03';ctx.beginPath();ctx.arc(px+14,py+3,11,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f59e0b';ctx.fillRect(px+6,py-6,22,6);
+ctx.fillStyle='#1c1917';ctx.fillRect(px+8,py+34,8,10);ctx.fillRect(px+20,py+34,8,10);
+obstacles.forEach(o=>{ctx.fillStyle='#059669';ctx.fillRect(o.x+8,o.y,8,o.h);ctx.fillStyle='#047857';ctx.fillRect(o.x,o.y+8,24,8);ctx.fillRect(o.x+4,o.y+16,16,6);ctx.fillStyle='#fff';ctx.fillRect(o.x+2,o.y+10,3,3);});
+coinsArr.forEach(c=>{ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(c.x-3,c.y-3,4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#b45309';ctx.font='bold 12px Tahoma';ctx.textAlign='center';ctx.fillText('🪙',c.x,c.y+4);});
+ctx.fillStyle='#451a03';ctx.font='bold 13px Tahoma';ctx.textAlign='left';ctx.fillText('المرحلة '+level+'  |  السرعة '+(speed.toFixed(1)),10,20);
+}
+function loop(){if(!running)return;update();draw();requestAnimationFrame(loop);}
+function end(){running=false;if(score>best){best=score;localStorage.setItem('runnerDesertBest',best);bestEl.textContent=best;voice('kesebt');}else{voice('khesert');}overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">🏜️</div><h2>خلصت اللعبة!</h2><p>النقاط: <b style="color:#b45309;font-size:22px">${score}</b><br>العملات: 🪙 ${coins}<br>أعلى نتيجة: ${best}<br>جرب تاني يا بطل!</p><button class="btn-start" id="againBtn">العب تاني</button>`;document.getElementById('againBtn').onclick=()=>reset();}
+function onStart(e){if(e)e.preventDefault();reset();}
+function onJump(e){if(e)e.preventDefault();jump();}
+jumpBtn.addEventListener('click',onJump);jumpBtn.addEventListener('touchstart',onJump,{passive:false});jumpBtn.addEventListener('pointerdown',onJump,{passive:false});
+canvas.addEventListener('touchstart',onJump,{passive:false});canvas.addEventListener('pointerdown',onJump,{passive:false});
+document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump();}});
+startBtn.addEventListener('click',onStart);startBtn.addEventListener('touchstart',onStart,{passive:false});startBtn.addEventListener('pointerdown',onStart,{passive:false});
+window.addEventListener('resize',()=>{resize();if(!running)draw();});
+resize();draw();
+</script>
+</body>
+</html>
