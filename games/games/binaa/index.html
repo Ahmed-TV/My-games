@@ -1,1 +1,84 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"><title>Ahmed TV - لعبة البناء</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+html,body{height:100%;overflow:hidden}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#FFE0B2,#FFCC80,#FB8C00);color:#4E342E;height:100vh;height:100dvh;display:flex;justify-content:center;padding:8px 10px}
+.game{width:100%;max-width:500px;height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#FFF8E1,#FFE0B2);border:3px solid #EF6C00;border-radius:20px;padding:8px;box-shadow:0 18px 50px #0008;position:relative;overflow:hidden}
+header{text-align:center;padding:2px 0 4px;flex-shrink:0;display:flex;flex-direction:column;align-items:center}
+.logo-img{width:58px;height:58px;border-radius:50%;border:3px solid #EF6C00;object-fit:cover;background:#fff;box-shadow:0 0 12px rgba(239,108,0,.4)}
+.brand{font-size:22px;font-weight:900;margin:2px 0;color:#4E342E}
+.names{font-size:12px;color:#EF6C00;font-weight:700}
+.sub{color:#6D4C41;font-size:11px}
+.soundbtn{margin-top:5px;border:1px solid #EF6C00;background:linear-gradient(180deg,#fff,#FFE0B2);color:#4E342E;border-radius:22px;padding:6px 14px;font-weight:900;font-family:inherit;cursor:pointer;font-size:12px;box-shadow:0 3px 0 #EF6C00,0 4px 10px rgba(0,0,0,.12)}.soundbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #EF6C00}
+.panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.hidden{display:none!important}
+.start-box{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;text-align:center;padding:8px}
+.start-box h2{font-size:20px}
+.start-box p{font-size:13px;line-height:1.7}
+.stats{display:flex;gap:8px;justify-content:center;width:100%}
+.stat{flex:1;background:#fff;border:1px solid #FFCC80;border-radius:14px;padding:8px}
+.stat strong{display:block;font-size:18px}
+.stat span{font-size:11px}
+.mainbtn{font-family:inherit;font-weight:900;border:0;border-radius:22px;padding:14px;background:linear-gradient(180deg,#FFB74D,#FF9800 55%,#EF6C00);color:#fff;cursor:pointer;font-size:17px;width:100%;box-shadow:0 5px 0 #BF360C,0 8px 18px rgba(239,108,0,.35);text-shadow:0 1px 2px #0003;transition:transform .08s}.mainbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #BF360C}
+.lvl-row{display:flex;gap:6px;width:100%}
+.lvl{flex:1;padding:10px 4px;border-radius:16px;border:2px solid #EF6C00;background:linear-gradient(180deg,#fff,#FFE0B2);font-weight:900;font-family:inherit;cursor:pointer;font-size:13px;box-shadow:0 3px 0 #EF6C00;transition:transform .08s}.lvl:active{transform:translateY(2px);box-shadow:0 1px 0 #EF6C00}
+.lvl.on{background:linear-gradient(180deg,#FF9800,#EF6C00);color:#fff;box-shadow:0 3px 0 #BF360C,0 5px 12px rgba(239,108,0,.35)}
+.top{display:flex;justify-content:space-between;gap:6px;font-size:12px;font-weight:800;color:#4E342E;margin:4px 0}
+.pill{background:#fff;border:1px solid #FFCC80;padding:4px 8px;border-radius:20px}
+#stage{flex:1;position:relative;background:linear-gradient(180deg,#81D4FA 0 38%,#FFF8E1 38%);border:2px solid #FFCC80;border-radius:14px;overflow:hidden;touch-action:none}
+.ground{position:absolute;left:0;right:0;bottom:0;height:14px;background:#8D6E63}
+.crane{position:absolute;top:0;height:52px;transition:left .08s linear}
+.crane-bar{position:absolute;top:0;left:50%;width:4px;height:34px;background:#4E342E;transform:translateX(-50%)}
+.rope{position:absolute;top:34px;left:50%;width:4px;background:repeating-linear-gradient(#4E342E 0 6px,#FFD54F 6px 12px);transform:translateX(-50%);z-index:2}
+.hang-stone{position:absolute;left:50%;transform:translateX(-50%);width:72px;height:26px;border-radius:4px;border:2px solid #4E342E;background:#FF9800;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:14px;z-index:3}
+.crane-hook{position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:22px}
+.crane-cab{position:absolute;top:0;left:50%;transform:translateX(-50%);background:#FFD54F;border:2px solid #4E342E;border-radius:8px;padding:2px 6px;font-size:16px;white-space:nowrap}
+.block{position:absolute;border-radius:4px;border:2px solid #4E342E;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px}
+.rubble{position:absolute;border-radius:4px;border:2px solid #4E342E;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:12px;opacity:.85;filter:grayscale(.3)}
+.tower-block{position:absolute;border-radius:4px;border:2px solid #4E342E;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:12px}
+.msg{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);background:#fff;border:2px solid #EF6C00;border-radius:14px;padding:8px 12px;font-weight:900;font-size:14px;z-index:10;text-align:center}
+.controls{display:flex;gap:8px;margin-top:6px;direction:ltr;position:relative;z-index:20}
+.cbtn{flex:1;font-family:inherit;font-weight:900;border:0;border-radius:18px;padding:16px 4px;font-size:22px;min-height:56px;cursor:pointer;background:linear-gradient(180deg,#FFFFFF,#FFE0B2);border:2px solid #EF6C00;color:#4E342E;box-shadow:0 4px 0 #BF360C,0 6px 14px rgba(0,0,0,.18);transition:transform .08s,box-shadow .08s;touch-action:none}.cbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #BF360C,0 2px 6px rgba(0,0,0,.15)}
+#leftBtn{background:linear-gradient(180deg,#BBDEFB,#64B5F6);border-color:#1565C0;color:#0D47A1;box-shadow:0 4px 0 #1565C0,0 6px 14px rgba(21,101,192,.25)}
+#rightBtn{background:linear-gradient(180deg,#BBDEFB,#64B5F6);border-color:#1565C0;color:#0D47A1;box-shadow:0 4px 0 #1565C0,0 6px 14px rgba(21,101,192,.25)}
+#ropeUpBtn,#ropeDownBtn{background:linear-gradient(180deg,#E1BEE7,#BA68C8);border-color:#7B1FA2;color:#4A148C;box-shadow:0 4px 0 #7B1FA2,0 6px 14px rgba(123,31,162,.25);font-size:13px}
+.cbtn.drop{background:linear-gradient(180deg,#FFB74D,#FF9800 55%,#EF6C00);color:#fff;font-size:15px;text-shadow:0 1px 2px #0003;border-color:#BF360C;box-shadow:0 4px 0 #BF360C,0 6px 16px rgba(239,108,0,.45)}
+footer{text-align:center;font-size:11px;padding:4px 0 0}
+footer a{color:#EF6C00;text-decoration:none;font-weight:800}
+</style></head>
+<body><div class="game">
+<header><img src="../../logo.png" class="logo-img" alt="Ahmed TV"><div class="brand">لعبة البناء 🏗️</div><div class="names">أحمد عبدالعزيز • Ahmed TV</div><div class="sub">حرك الرافعة .. ونزل الحجر .. وابني أعلى برج</div><button class="soundbtn" id="soundBtn">🔊 الصوت: شغال</button></header>
+<div class="panel" id="startPanel"><div class="start-box"><h2>🏗️ هتبني البرج؟</h2><p>حرك الرافعة يمين وشمال<br>ظبط <b>طول الحبل</b> ⬆️⬇️ عشان الحجر يبقى فوق البرج<br>ودوس <b>حط الحجر ⬇️</b><br>معاك 12 قلب ❤️ .. لو الحجر وقع هتخسر قلب واحد بس</p><div class="stats"><div class="stat"><strong>❤️ × 12</strong><span>3 قلوب</span></div><div class="stat"><strong>10</strong><span>حجارة في كل مرحلة</span></div><div class="stat"><strong>3</strong><span>مراحل</span></div></div><div class="lvl-row"><button class="lvl on" data-l="0">🐢 سهل - بطيء</button><button class="lvl" data-l="1">🐇 وسط</button><button class="lvl" data-l="2">🚀 سريع</button></div><button class="mainbtn" id="startBtn">ابدأ البناء</button></div></div>
+<div class="panel hidden" id="playPanel"><div class="top"><span class="pill">المرحلة: <b id="lvlTxt">1</b></span><span class="pill">الحجر: <b id="blockTxt">1 / 10</b></span><span class="pill">❤️ <b id="heartTxt">12</b></span><span class="pill">🏗️ <b id="scoreTxt">0</b></span></div><div id="stage"><div class="ground"></div><div class="crane" id="crane"><div class="crane-cab">🏗️</div><div class="crane-bar"></div><div class="rope" id="rope" style="height:46px"></div><div class="hang-stone" id="hangStone" style="top:80px">🧱</div></div><div class="msg hidden" id="msg"></div></div><div style="text-align:center;font-size:12px;font-weight:800;color:#4E342E;margin:3px 0" id="ropeLbl">الحبل: 46 cm - ظبطه عشان الحجر يبقى فوق البرج</div><div class="controls"><button class="cbtn" id="leftBtn">◀</button><button class="cbtn" id="ropeUpBtn">⬆️ قصّر</button><button class="cbtn drop" id="dropBtn">حط الحجر ⬇️</button><button class="cbtn" id="ropeDownBtn">طوّل ⬇️</button><button class="cbtn" id="rightBtn">▶</button></div></div>
+<div class="panel hidden" id="endPanel"><div class="start-box"><h2 id="endTitle">خلصت!</h2><p id="endText"></p><div class="stats"><div class="stat"><strong id="finalScore">0</strong><span>حجر صح</span></div><div class="stat"><strong id="finalLvl">1</strong><span>مرحلة</span></div></div><button class="mainbtn" id="againBtn">العب تاني</button></div></div>
+<footer><a href="../../index.html">Ahmed TV - كل ألعابي</a></footer></div>
+<script>
+let soundOn=true;var _vc={};function voice(n){if(!soundOn)return;try{var a=_vc[n];if(!a){a=new Audio('../../sounds/'+n+'.mp3');a.preload='auto';_vc[n]=a;}a.currentTime=0;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+var _ahla=false;document.addEventListener('pointerdown',function(){if(!_ahla){_ahla=true;voice('ahla');}});
+let lvl=0,levelNames=['المرحلة الأولى','المرحلة الثانية','المرحلة الثالثة'],speeds=[1.2,1.6,2.0],fallSpeeds=[1.3,1.7,2.1];
+let craneX=50,dir=1,playing=false,falling=null,tower=[],rubble=[],hearts=12,streak=0,ropeLen=46,blockNum=1,score=0,curLvl=1,raf=null,last=0;
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{document.querySelectorAll('.lvl').forEach(x=>x.classList.remove('on'));b.classList.add('on');lvl=+b.dataset.l;});
+$('soundBtn').onclick=function(){soundOn=!soundOn;this.textContent=soundOn?'🔊 الصوت: شغال':'🔇 الصوت: مطفي';};
+function showMsg(t){const m=$('msg');m.textContent=t;m.classList.remove('hidden');setTimeout(()=>m.classList.add('hidden'),1200);}
+function resetTower(){tower=[];rubble=[];document.querySelectorAll('.tower-block').forEach(e=>e.remove());document.querySelectorAll('.rubble').forEach(e=>e.remove());}
+function startGame(){playing=true;hearts=12;ropeLen=46;updateRope();blockNum=1;score=0;curLvl=1;resetTower();$('startPanel').classList.add('hidden');$('endPanel').classList.add('hidden');$('playPanel').classList.remove('hidden');voice('ebda');updateTop();showMsg(levelNames[0]+' 🐢');last=performance.now();if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);}
+function updateTop(){$('lvlTxt').textContent=curLvl;$('blockTxt').textContent=blockNum+' / 10';$('heartTxt').textContent=hearts;$('scoreTxt').textContent=score;}
+function updateRope(){let r=$('rope');let h=$('hangStone');if(!r||!h)return;r.style.height=ropeLen+'px';h.style.top=(34+ropeLen)+'px';let lbl=$('ropeLbl');if(lbl)lbl.textContent='الحبل: '+Math.round(ropeLen)+' cm';}
+function loop(t){if(!playing)return;if(!falling){$('crane').style.left='calc('+craneX+'% - 25px)';updateRope();}requestAnimationFrame(loop);}
+let moveTimer=null;function startMove(d){stopMove();moveTimer=setInterval(()=>{craneX=Math.max(10,Math.min(90,craneX+d*1.8));$('crane').style.left='calc('+craneX+'% - 25px)';},30);}
+function stopMove(){if(moveTimer){clearInterval(moveTimer);moveTimer=null;}}
+function drop(){if(!playing||falling)return;falling=true;let colors=['#EF6C00','#FF9800','#4CAF50','#2196F3','#9C27B0','#E91E63','#009688','#795548','#FF5722','#607D8B'];let c=colors[Math.floor(Math.random()*colors.length)];let el=document.createElement('div');el.className='block';el.style.background=c;el.style.width='72px';el.style.height='26px';el.style.left='calc('+craneX+'% - 36px)';el.style.top=(34+ropeLen+26)+'px';$('hangStone').style.visibility='hidden';$('rope').style.visibility='hidden';el.textContent='🧱';$('stage').appendChild(el);let y=(34+ropeLen+26);let wind=(Math.random()*2-1)*0.3;let startLeft=craneX;let xPos=startLeft;let iv=setInterval(()=>{y+=fallSpeeds[curLvl-1]*2.0;xPos+=wind;el.style.left='calc('+xPos+'% - 36px)';el.style.top=y+'px';let st=$('stage').getBoundingClientRect();let towerTop=st.height-14 - tower.length*26;if(y>=towerTop){clearInterval(iv);land(el);}if(y>st.height){clearInterval(iv);} },16);}
+function land(el){falling=false;$('hangStone').style.visibility='visible';$('rope').style.visibility='visible';ropeLen=46;updateRope();let st=$('stage').getBoundingClientRect();let br=el.getBoundingClientRect();let bx=br.left - st.left;let bw=br.width;let prevX = tower.length===0 ? (st.width/2-36) : parseFloat(tower[tower.length-1].style.left);let overlap=Math.min(bx+bw,prevX+72)-Math.max(bx,prevX);if(tower.length===0){overlap=72-Math.abs((bx+36)-st.width/2);}if(overlap>=32){el.className='tower-block';let snapX = tower.length===0 ? (st.width/2-36) : (prevX+(bx-prevX)*0.4);el.style.left=snapX+'px';el.style.top=(st.height-14-(tower.length+1)*26)+'px';tower.push(el);rubble.forEach(e=>e.remove());rubble=[];score++;streak++;if(streak%4===0 && hearts<12){hearts++;showMsg('❤️ + قلب زيادة!');}voice('sah');showMsg('برافو! 🧱 +1');blockNum++;if(blockNum>10){if(curLvl<3){curLvl++;blockNum=1;resetTower();voice('ebda');showMsg(levelNames[curLvl-1]+' 🎉');}else{endGame(true);return;}} }else{el.className='rubble';el.style.top=(st.height-14-26)+'px';el.style.left=bx+'px';rubble.push(el);streak=0;if(rubble.length>4){let old=rubble.shift();old.remove();}hearts--;voice('ghalat');showMsg('الحجر وقع تحت! 🧱 حاول تاني - فاضل '+hearts+' قلوب');if(hearts<=0){endGame(false);return;}}updateTop();}
+function endGame(win){playing=false;if(raf)cancelAnimationFrame(raf);$('playPanel').classList.add('hidden');$('endPanel').classList.remove('hidden');$('finalScore').textContent=score;$('finalLvl').textContent=curLvl;if(win){$('endTitle').textContent='بطل البناء! 🏆';$('endText').textContent='بنيت 3 مراحل كاملة! انت معلم كبير.';voice('kesebt');}else{$('endTitle').textContent='حاول تاني! 💪';$('endText').textContent='بنيت '+score+' حجارة. حاول تاني وابني أعلى برج.';voice('khesert');}}
+$('startBtn').onclick=startGame;$('againBtn').onclick=()=>{$('endPanel').classList.add('hidden');$('startPanel').classList.remove('hidden');};
+function bindHold(id,d){let el=$(id);if(!el)return;let start=e=>{if(e.cancelable)e.preventDefault();craneX=Math.max(10,Math.min(90,craneX+d*4));$('crane').style.left='calc('+craneX+'% - 25px)';startMove(d);};let stop=e=>{if(e.cancelable)e.preventDefault();stopMove();};el.addEventListener('pointerdown',start);el.addEventListener('pointerup',stop);el.addEventListener('pointerleave',stop);el.addEventListener('pointercancel',stop);el.addEventListener('touchstart',start,{passive:false});el.addEventListener('touchend',stop);el.addEventListener('mousedown',start);el.addEventListener('mouseup',stop);el.addEventListener('click',()=>{craneX=Math.max(10,Math.min(90,craneX+d*4));$('crane').style.left='calc('+craneX+'% - 25px)';});}
+bindHold('leftBtn',-1);bindHold('rightBtn',1);
+function bindRope(id,d){let el=$(id);if(!el)return;let tm=null;let busy=false;let st=e=>{if(busy)return;busy=true;if(e.cancelable)e.preventDefault();ropeLen=Math.max(15,Math.min(180,ropeLen+d*5));updateRope();tm=setInterval(()=>{ropeLen=Math.max(15,Math.min(180,ropeLen+d*2));updateRope();},40);};let sp=e=>{busy=false;if(e.cancelable)e.preventDefault();if(tm){clearInterval(tm);tm=null;}};el.addEventListener('pointerdown',st);el.addEventListener('pointerup',sp);el.addEventListener('pointerleave',sp);el.addEventListener('pointercancel',sp);}
+bindRope('ropeUpBtn',-1);bindRope('ropeDownBtn',1);
+let db=$('dropBtn');db.addEventListener('click',drop);db.addEventListener('pointerdown',e=>{if(e.cancelable)e.preventDefault();drop();});db.addEventListener('touchstart',e=>{e.preventDefault();drop();},{passive:false});
+// swipe
+let sx=0;let stEl=$('stage');stEl.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});stEl.addEventListener('touchmove',e=>{let x=e.touches[0].clientX;let d=x-sx;sx=x;craneX=Math.max(12,Math.min(88,craneX+d*0.08));},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){craneX=Math.max(10,Math.min(90,craneX-4));$('crane').style.left='calc('+craneX+'% - 25px)';}if(e.key==='ArrowRight'){craneX=Math.max(10,Math.min(90,craneX+4));$('crane').style.left='calc('+craneX+'% - 25px)';}if(e.key===' '||e.key==='Enter'){e.preventDefault();drop();}});
+</script></body></html>
