@@ -155,17 +155,21 @@ const questions=[{q:"رمز السلام العالمي إيه؟", a:["الحم�
 {q:"كلمة طيبة سلام؟", a:["لا علاقة", "نعم", "ضد السلام", "لا"], c:1},
 {q:"مساعدة الآخر سلام؟", a:["نعم", "ضد السلام", "لا", "لا علاقة"], c:0}];
 let soundOn=true;
-function playCorrect(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o1=ctx.createOscillator(), o2=ctx.createOscillator(), g=ctx.createGain(); o1.type='sine'; o1.frequency.value=523; o2.type='sine'; o2.frequency.value=784; g.gain.value=0.18; o1.connect(g); o2.connect(g); g.connect(ctx.destination); o1.start(); o2.start(ctx.currentTime+0.12); o1.stop(ctx.currentTime+0.15); o2.stop(ctx.currentTime+0.35);}catch(e){} }
-function playWrong(){ if(!soundOn) return; try{ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sawtooth'; o.frequency.value=180; g.gain.value=0.15; o.connect(g); g.connect(ctx.destination); o.start(); o.frequency.setValueAtTime(180,ctx.currentTime); o.frequency.linearRampToValueAtTime(90,ctx.currentTime+0.3); o.stop(ctx.currentTime+0.32);}catch(e){} }
+var _voiceCache={};
+function voice(n){ if(!soundOn) return; try{ var a=_voiceCache[n]; if(!a){ a=new Audio('../../sounds/'+n+'.mp3'); a.preload='auto'; _voiceCache[n]=a; } a.currentTime=0; var p=a.play(); if(p) p.catch(function(){}); }catch(e){} }
+var _ahlaPlayed=false;
+document.addEventListener('pointerdown',function(){ if(!_ahlaPlayed){ _ahlaPlayed=true; voice('ahla'); } });
+function playCorrect(){ voice('sah'); }
+function playWrong(){ voice('ghalat'); }
 let order=[],idx=0,score=0,correct=0,locked=false;const $=id=>document.getElementById(id);
 let best=parseInt(localStorage.getItem("world_peace_best")||"0");$("best").textContent=best;$("bestStart").textContent=best;
 function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
 function show(s){["start","play","result"].forEach(x=>$(x).classList.toggle("hidden",x!==s))}
-function startGame(){order=shuffle(questions);idx=0;score=0;correct=0;show("play");loadQ()}
+function startGame(){order=shuffle(questions);idx=0;score=0;correct=0;show("play");voice('ebda');loadQ()}
 function loadQ(){locked=false;const it=order[idx];$("count").textContent=`السؤال ${idx+1} من ${order.length}`;$("score").textContent=score;$("bar").style.width=(idx/order.length*100)+"%";$("cat").textContent=it.cat;$("question").textContent=it.q;$("feedback").textContent="اختبر معلوماتك! اختر إجابتك!";$("answers").innerHTML="";it.a.forEach((ans,i)=>{const b=document.createElement("button");b.className="answer";b.textContent=ans;b.onclick=()=>choose(i);$("answers").appendChild(b)});$("nextBtn").disabled=true;$("nextBtn").textContent=idx===order.length-1?"عرض النتيجة ←":"السؤال التالي ←"}
 function choose(ch){if(locked)return;locked=true;const it=order[idx];const btns=[...$("answers").children];btns.forEach((b,i)=>{b.disabled=true;if(i===it.c)b.classList.add("correct");else if(i===ch)b.classList.add("wrong")});if(ch===it.c){score+=10;correct++;playCorrect();$("feedback").textContent="✅ إجابة صحيحة! برافو 👏 🔊"}else{playWrong();$("feedback").textContent="❌ إجابة خاطئة 🔊 - الصح: "+it.a[it.c]};$("score").textContent=score;$("nextBtn").disabled=false}
 function next(){if(!locked)return;idx++;if(idx>=order.length){finish();return}loadQ()}
-function finish(){show("result");$("finalScore").textContent=score;$("rightCount").textContent=correct;if(score>best){best=score;localStorage.setItem("world_peace_best",String(best));$("best").textContent=best}let t,m;if(correct>=80){t="صانع سلام عظيم! 🕊️🏆";m="مستوى رائع جدا! انت صانع سلام عظيم."}else if(correct>=60){t="سفير السلام! 🧠";m="أداء ممتاز! قربت من القمة."}else if(correct>=30){t="بداية قوية! 💪";m="عندك أساس كويس، حاول تاني وحطم رقمك."}else{t="التحدي مستمر! 🔥";m="كل محاولة بتقوي معلوماتك، العب تاني."}$("resultTitle").textContent=t;$("resultText").textContent=m}
+function finish(){show("result");voice(correct>=60?"kesebt":"khesert");$("finalScore").textContent=score;$("rightCount").textContent=correct;if(score>best){best=score;localStorage.setItem("world_peace_best",String(best));$("best").textContent=best}let t,m;if(correct>=80){t="صانع سلام عظيم! 🕊️🏆";m="مستوى رائع جدا! انت صانع سلام عظيم."}else if(correct>=60){t="سفير السلام! 🧠";m="أداء ممتاز! قربت من القمة."}else if(correct>=30){t="بداية قوية! 💪";m="عندك أساس كويس، حاول تاني وحطم رقمك."}else{t="التحدي مستمر! 🔥";m="كل محاولة بتقوي معلوماتك، العب تاني."}$("resultTitle").textContent=t;$("resultText").textContent=m}
 $("startBtn").onclick=startGame;$("nextBtn").onclick=next;$("againBtn").onclick=startGame; $("skipBtn").onclick=function(){ if(idx>=order.length) return; $("feedback").textContent="⏭️ تم التخطي - الصح: "+order[idx].a[order[idx].c]; idx++; if(idx>=order.length){finish();return} setTimeout(loadQ,350); }; $("soundBtn").onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?"🔊 الصوت: شغال":"🔇 الصوت: مطفي"; this.classList.toggle("off",!soundOn); };
 </script>
 </body></html>
