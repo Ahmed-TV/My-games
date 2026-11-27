@@ -1,1 +1,108 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>الديناصور المتكور | أحمد عبد العزيز</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none!important;user-select:none!important;touch-action:manipulation}
+html,body{height:100%;height:100svh;max-height:100svh;overflow:hidden!important}
+body{font-family:Tahoma,Arial,sans-serif;background:#2d0a4e;color:#facc15;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 8px 6px;overflow:hidden!important;gap:4px}
+.header{width:100%;max-width:500px;text-align:center;flex-shrink:0}
+.top-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1px}
+.logo-wrap{width:52px;height:52px;flex-shrink:0;border-radius:50%;overflow:hidden;border:3px solid #facc15;background:#2d0a4e}
+.logo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:21px;line-height:1.15;color:#facc15;text-align:center}
+h1 small{display:block;font-size:12px;color:#22d3ee;margin-top:2px}
+.names{text-align:center;margin-bottom:2px;line-height:1.25}
+.names .ar{display:block;font-size:18px;color:#facc15;font-weight:900}
+.names .en{display:block;font-size:14px;color:#f472b6;font-weight:900}
+.stats{display:flex;gap:8px;justify-content:center;margin:2px 0 4px;width:100%;max-width:500px}
+.stat{flex:1;background:#4c1d95;border:2px solid #facc15;border-radius:12px;padding:4px 6px;min-width:0;text-align:center}
+.stat b{display:block;font-size:17px;color:#facc15}
+.stat span{font-size:10px;color:#a5f3fc}
+#hearts{font-size:20px;letter-spacing:4px;text-align:center;margin-bottom:3px}
+#game-container{width:100%;max-width:500px;flex:1;min-height:220px;position:relative;background:#4c1d95;border:3px solid #facc15;border-radius:20px;overflow:hidden;touch-action:none;display:flex;flex-direction:column}
+.watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(250,204,21,0.12);font-size:32px;font-weight:900;pointer-events:none;z-index:0;white-space:nowrap}
+canvas{width:100%;height:100%;display:block;z-index:1;touch-action:none}
+#jumpBtn{width:100%;max-width:500px;margin-top:6px;background:linear-gradient(90deg,#f59e0b,#ec4899,#8b5cf6,#06b6d4);color:#2d0a4e;border:2px solid #facc15;border-radius:16px;padding:12px;font-size:22px;font-weight:900;cursor:pointer;box-shadow:0 0 20px rgba(236,72,153,.8);flex-shrink:0}
+#jumpBtn:active{transform:scale(.97)}
+#overlay{position:absolute;inset:0;background:rgba(45,10,78,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;gap:10px;z-index:10}
+#overlay h2{font-size:24px;color:#facc15}
+#overlay p{line-height:1.6;font-size:14px;color:#fde68a}
+.btn-start{background:linear-gradient(90deg,#f59e0b,#ec4899,#8b5cf6);color:#2d0a4e;border:2px solid #facc15;padding:13px 26px;border-radius:14px;font-size:17px;font-weight:900;cursor:pointer;width:80%;max-width:220px}
+#muteBtn{position:absolute;top:8px;right:8px;left:auto;z-index:20;background:#facc15;border:2px solid #ec4899;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:900;color:#2d0a4e;cursor:pointer}
+#stageBanner{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);z-index:25;background:#facc15;color:#2d0a4e;border:3px solid #ec4899;border-radius:16px;padding:10px 18px;font-size:20px;font-weight:900;display:none;text-align:center;white-space:nowrap;box-shadow:0 0 20px rgba(250,204,21,.9)}
+</style>
+</head>
+<body oncontextmenu="return false">
+<div class="header">
+<div class="top-row"><div class="logo-wrap"><img src="../../logo.png" alt="أحمد عبد العزيز"></div><h1>الديناصور المتكور<small>كورة ديناصور - لم البيض الملون</small></h1></div>
+<div class="names"><span class="ar">أحمد عبد العزيز</span><span class="en">Ahmed TV</span></div>
+<div id="hearts">💜💜💜</div>
+<div class="stats"><div class="stat"><b id="score">0</b><span>النقاط</span></div><div class="stat"><b id="eggs">0</b><span>البيض 🥚</span></div><div class="stat"><b id="best">0</b><span>الأفضل</span></div></div>
+</div>
+<div id="game-container"><div id="stageBanner">المرحلة الأولى</div><button id="muteBtn">🔊 تشغيل الصوت</button><div class="watermark">أحمد عبد العزيز</div><canvas id="gameCanvas"></canvas><div id="overlay"><h2>🦖⚽ الديناصور المتكور</h2><p>الديناصور بقى كورة وبيتدحرج!<br>دوس عشان ينط 🦘<br>لم البيض الملون 🥚<br>اهرب من الديناصور الكبير 🦖<br>عندك 3 قلوب</p><button class="btn-start" id="startBtn">ابدأ اللعب</button></div></div>
+<button id="jumpBtn">⚽ نط يا كورة</button>
+<script>
+var _ac={},soundOn=true,_ahla=false;
+function voice(n){if(!soundOn)return;try{if(!_ac[n]){_ac[n]=new Audio('../../sounds/'+n+'.mp3');_ac[n].preload='auto';}var a=_ac[n];a.currentTime=0;var p=a.play();if(p)p.catch(function(){});}catch(e){}}
+document.addEventListener('pointerdown',function(){if(!_ahla){_ahla=true;voice('ahla');}});
+document.getElementById('muteBtn').onclick=function(e){e.stopPropagation();soundOn=!soundOn;this.textContent=soundOn?'🔊 تشغيل الصوت':'🔇 كتم';};
+const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');
+const scoreEl=document.getElementById('score'),eggsEl=document.getElementById('eggs'),bestEl=document.getElementById('best'),heartsEl=document.getElementById('hearts'),overlay=document.getElementById('overlay'),startBtn=document.getElementById('startBtn'),jumpBtn=document.getElementById('jumpBtn');
+let W=0,H=0,running=false,score=0,eggs=0,level=1,rot=0;
+let best=parseInt(localStorage.getItem('dinoBallBest')||'0');bestEl.textContent=best;
+let stageNames=['الأولى','الثانية','الثالثة','الرابعة','الخامسة','السادسة','السابعة','الثامنة','التاسعة','العاشرة'];
+function stageName(n){return stageNames[Math.min(n-1,9)]||n;}
+function showStageBanner(){var b=document.getElementById('stageBanner');if(!b)return;b.textContent='المرحلة '+stageName(level);b.style.display='block';setTimeout(function(){b.style.display='none';},1800);}
+let speed=0.8,lives=3,isHit=false,groundY=0;
+let player={x:60,y:0,r:26,vy:0,gravity:0.42,jumpForce:-22,isJumping:false};
+let obstacles=[],eggsArr=[],timer=0,eggTimer=0,bigDino={x:0};
+function resize(){const r=canvas.parentElement.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);W=r.width;H=r.height;groundY=H-60;player.y=groundY-player.r;bigDino.x=W+100;if(!running)draw();}
+function reset(){score=0;eggs=0;level=1;scoreEl.textContent=0;eggsEl.textContent=0;speed=0.8;lives=3;updateHearts();player.y=groundY-player.r;player.vy=0;player.isJumping=false;obstacles=[];eggsArr=[];timer=0;eggTimer=0;isHit=false;rot=0;overlay.style.display='none';voice('ebda');showStageBanner();setTimeout(function(){running=true;loop();},600);}
+function updateHearts(){let s="";for(let i=0;i<3;i++)s+=(i<lives)?"💜":"🖤";heartsEl.textContent=s;}
+function jump(){if(!running||isHit)return;if(!player.isJumping){player.vy=player.jumpForce;player.isJumping=true;}}
+function spawnObs(){const h=28+Math.random()*20;obstacles.push({x:W,y:groundY-h,w:24,h:h,kind:Math.floor(Math.random()*2)});}
+function spawnEgg(){const cols=['#facc15','#f472b6','#22d3ee','#a78bfa','#fb923c'];eggsArr.push({x:W,y:groundY-50-Math.random()*80,r:13,color:cols[Math.floor(Math.random()*cols.length)]});}
+function update(){if(!running)return;player.vy+=player.gravity;player.y+=player.vy;rot+=speed*0.05;if(player.y>groundY-player.r){player.y=groundY-player.r;player.vy=0;player.isJumping=false;}
+if(!isHit){timer++;eggTimer++;if(timer>280){spawnObs();timer=0;}if(eggTimer>65){spawnEgg();eggTimer=0;}}
+bigDino.x-=speed*0.25;if(bigDino.x<-120)bigDino.x=W+150;
+for(let i=obstacles.length-1;i>=0;i--){let o=obstacles[i];if(!isHit)o.x-=speed;if(player.x+player.r>o.x&&player.x-player.r<o.x+o.w&&player.y+player.r>o.y&&player.y-player.r<o.y+o.h){lose();break;}if(o.x+o.w<0)obstacles.splice(i,1);}
+for(let i=eggsArr.length-1;i>=0;i--){let e=eggsArr[i];if(!isHit)e.x-=speed;let dx=e.x-player.x,dy=e.y-player.y;if(Math.hypot(dx,dy)<player.r+e.r){eggs++;eggsEl.textContent=eggs;score+=10;scoreEl.textContent=score;voice('sah');eggsArr.splice(i,1);continue;}if(e.x<-20)eggsArr.splice(i,1);}
+var need=level*8;if(eggs>=need&&level<10){level++;speed=0.8+(level-1)*0.6;showStageBanner();voice('sah');}
+}
+function lose(){if(isHit)return;isHit=true;lives--;updateHearts();voice('ghalat');canvas.style.opacity='0.5';setTimeout(()=>canvas.style.opacity='1',200);if(lives<=0){end();}else{setTimeout(()=>{isHit=false;obstacles=obstacles.filter(o=>o.x>player.x+100);},900);}}
+function draw(){let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#4c1d95');g.addColorStop(0.5,'#7c3aed');g.addColorStop(1,'#db2777');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(W-55,45,20,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f472b6';ctx.beginPath();ctx.arc(W-85,55,12,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#2d0a4e';ctx.fillRect(0,groundY,W,H-groundY);
+ctx.fillStyle='#f59e0b';for(let x=0;x<W;x+=28)ctx.fillRect(x,groundY,16,4);
+ctx.fillStyle='#fde68a';ctx.font='bold 13px Tahoma';ctx.textAlign='left';var spdLabel=level===1?'بطيئة':level===2?'متوسطة':level===3?'سريعة':'أسرع!';ctx.fillText('المرحلة '+stageName(level)+'  |  '+spdLabel+'  |  البيض '+eggs+'/'+(level*8),10,20);
+// big dino chasing
+let bx=bigDino.x,by=groundY-30;
+ctx.fillStyle='#166534';ctx.fillRect(bx,by-30,55,35);ctx.beginPath();ctx.arc(bx+45,by-35,16,0,Math.PI*2);ctx.fill();ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(bx+50,by-38,3,0,Math.PI*2);ctx.fill();ctx.fillStyle='#166534';ctx.fillRect(bx+5,by+5,10,12);ctx.fillRect(bx+35,by+5,10,12);
+// player ball dino
+let px=player.x,py=player.y;
+ctx.save();ctx.translate(px,py);ctx.rotate(rot);
+ctx.fillStyle='#22c55e';ctx.beginPath();ctx.arc(0,0,player.r,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#16a34a';ctx.beginPath();ctx.arc(-8,-8,10,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(10,8,8,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(8,-12,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#2d0a4e';ctx.beginPath();ctx.arc(9,-12,2,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#f472b6';ctx.beginPath();ctx.moveTo(-4,-22);ctx.lineTo(0,-30);ctx.lineTo(5,-22);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(8,-20);ctx.lineTo(13,-28);ctx.lineTo(17,-19);ctx.closePath();ctx.fill();
+ctx.restore();
+ctx.fillStyle='#facc15';ctx.font='bold 11px Tahoma';ctx.textAlign='center';ctx.fillText('🦖',px,py+4);
+obstacles.forEach(o=>{if(o.kind===0){ctx.fillStyle='#f97316';ctx.fillRect(o.x,o.y,o.w,o.h);ctx.fillStyle='#facc15';ctx.fillRect(o.x+3,o.y+5,o.w-6,4);}else{ctx.fillStyle='#06b6d4';ctx.beginPath();ctx.arc(o.x+o.w/2,o.y+o.h/2,o.w/2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#2d0a4e';ctx.beginPath();ctx.arc(o.x+o.w/2,o.y+o.h/2,6,0,Math.PI*2);ctx.fill();}});
+eggsArr.forEach(e=>{ctx.fillStyle=e.color;ctx.beginPath();ctx.ellipse(e.x,e.y,e.r,e.r+4,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fde68a';ctx.beginPath();ctx.arc(e.x-4,e.y-5,3,0,Math.PI*2);ctx.fill();});
+}
+function loop(){if(!running)return;update();draw();requestAnimationFrame(loop);}
+function end(){running=false;if(score>best){best=score;localStorage.setItem('dinoBallBest',best);bestEl.textContent=best;voice('kesebt');}else{voice('khesert');}overlay.style.display='flex';overlay.innerHTML=`<div style="font-size:35px">🦖⚽</div><h2>خلصت اللعبة!</h2><p>النقاط: <b style="color:#facc15;font-size:22px">${score}</b><br>البيض: 🥚 ${eggs}<br>أعلى نتيجة: ${best}<br>جرب تاني يا بطل!</p><button class="btn-start" id="againBtn">العب تاني</button>`;document.getElementById('againBtn').onclick=()=>reset();}
+function onStart(e){if(e)e.preventDefault();reset();}
+function onJump(e){if(e)e.preventDefault();jump();}
+jumpBtn.addEventListener('click',onJump);jumpBtn.addEventListener('touchstart',onJump,{passive:false});jumpBtn.addEventListener('pointerdown',onJump,{passive:false});
+canvas.addEventListener('touchstart',onJump,{passive:false});canvas.addEventListener('pointerdown',onJump,{passive:false});
+document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump();}});
+startBtn.addEventListener('click',onStart);startBtn.addEventListener('touchstart',onStart,{passive:false});startBtn.addEventListener('pointerdown',onStart,{passive:false});
+window.addEventListener('resize',()=>{resize();if(!running)draw();});
+resize();draw();
+</script>
+</body>
+</html>
